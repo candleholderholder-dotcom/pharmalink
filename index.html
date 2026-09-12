@@ -586,7 +586,7 @@
         .btn-wide-checkout {
             width: 100%;
             padding: 16px;
-            background: #25D366;
+            background: var(--feather-teal);
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -797,6 +797,134 @@
         #toast-notification.show {
             transform: translateX(-50%) translateY(0);
         }
+
+        /* مفتاح اختيار نمط الشراء (علبة / ظرف) */
+        .purchase-mode-toggle {
+            display: inline-flex;
+            background: #f1f5f9;
+            border-radius: 6px;
+            padding: 2px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 8px;
+        }
+
+        .mode-btn {
+            background: none;
+            border: none;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            border-radius: 4px;
+            color: var(--rock-grey);
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: var(--feather-teal);
+            color: #fff;
+        }
+
+        /* تنسيق محرك طباعة الفاتورة الرسمية PDF عبر @media print */
+        #invoice-print-container {
+            display: none;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #invoice-print-container,
+            #invoice-print-container * {
+                visibility: visible;
+            }
+
+            #invoice-print-container {
+                display: block !important;
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 100%;
+                background: #fff;
+                padding: 30px;
+                direction: rtl;
+                color: #000;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .invoice-print-sheet {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        .invoice-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--feather-teal);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .invoice-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        .invoice-table th,
+        .invoice-table td {
+            border: 1px solid #cbd5e1;
+            padding: 10px 12px;
+            font-size: 13px;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .invoice-table th {
+            background: #f1f5f9;
+            color: var(--rock-grey);
+            font-weight: 900;
+        }
+
+        .invoice-signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px dashed #cbd5e1;
+            text-align: center;
+            font-weight: 900;
+            font-size: 13px;
+        }
+
+        .signature-box {
+            width: 30%;
+            height: 70px;
+            border-bottom: 2px solid #000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 5px;
+        }
     </style>
 </head>
 
@@ -918,7 +1046,7 @@
         <nav class="bottom-ribbon" id="bottom-ribbon-nav"></nav>
     </div>
 
-    <!-- نافذة منبثقة لإضافة دواء جديد للمستودع مع مسح الباركود والتعلم التلقائي -->
+    <!-- نافذة منبثقة لإضافة دواء جديد للمستودع مع سعة العلبة ومسح الباركود -->
     <div class="modal-overlay" id="add-medicine-modal">
         <div class="modal-card">
             <div class="modal-header">
@@ -942,8 +1070,7 @@
             </div>
             <div class="form-group">
                 <label>الاسم التجاري للدواء</label>
-                <input type="text" id="new-med-name" class="gateway-input"
-                    placeholder="مثال: Augmentin 1g أو أدخله يدوياً...">
+                <input type="text" id="new-med-name" class="gateway-input" placeholder="مثال: Augmentin 1g...">
             </div>
             <div class="form-group">
                 <label>التركيب العلمي</label>
@@ -960,17 +1087,25 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>السعر الافتراضي بالدولار الأمريكي ($)</label>
+                <label>سعر العلبة الكاملة بالدولار الأمريكي ($)</label>
                 <input type="number" step="0.1" id="new-med-price" class="gateway-input" placeholder="0.00">
             </div>
             <div class="form-group">
-                <label>الكمية المتوفرة بالمخزون</label>
+                <label>سعة العلبة (عدد الظروف داخل العلبة الواحدة)</label>
+                <input type="number" id="new-med-strips-per-box" class="gateway-input" value="3" min="1"
+                    placeholder="مثال: 3 ظروف لكل علبة">
+            </div>
+            <div class="form-group">
+                <label>الكمية المتوفرة (إجمالي عدد العلب الكاملة)</label>
                 <input type="number" id="new-med-stock" class="gateway-input" placeholder="0">
             </div>
             <button class="btn-wide-checkout" style="background-color: var(--feather-teal);"
                 onclick="saveNewMedicine()">حفظ وإضافة للمخزون الحي</button>
         </div>
     </div>
+
+    <!-- حاوية طباعة الفاتورة الرسومية الرسمية كملف PDF (تظهر حصراً أثناء الطباعة) -->
+    <div id="invoice-print-container"></div>
 
     <script>
         /* === محرك الحالة العالمي وقاعدة البيانات المدمجة === */
@@ -987,29 +1122,27 @@
             currencySymbols: { USD: "$", TL: "₺", SYP: "ل.س" },
 
             medicines: [
-                { id: 101, barcode: "6281072011111", warehouseName: "مستودع الألفية الدوائي", region: "حلب وريفها", name: "Augmentin 1g Tabs", formula: "Amoxicillin / Clavulanate", category: "مضادات حيوية", priceUSD: 12.0, stock: 120 },
-                { id: 102, barcode: "6281072022222", warehouseName: "مستودع الألفية الدوائي", region: "حلب وريفها", name: "Concor 5mg", formula: "Bisoprolol Fumarate", category: "مزمن", priceUSD: 7.5, stock: 15 },
-                { id: 103, barcode: "6281072033333", warehouseName: "مستودع الشفاء المركزي", region: "حلب وريفها", name: "Panadol Extra", formula: "Paracetamol + Caffeine", category: "مسكنات", priceUSD: 4.0, stock: 500 },
-                { id: 104, barcode: "6281072044444", warehouseName: "مستودع الشفاء المركزي", region: "حلب وريفها", name: "Syringe 5ml", formula: "Disposable Medical Device", category: "مستهلكات", priceUSD: 0.8, stock: 8 },
-                { id: 105, barcode: "6281072055555", warehouseName: "مستودع إدلب الطبي", region: "إدلب وريفها", name: "Ceftriaxone 1g", formula: "Ceftriaxone Sodium", category: "مضادات حيوية", priceUSD: 14.0, stock: 80 }
+                { id: 101, barcode: "6281072011111", warehouseName: "مستودع الألفية الدوائي", region: "حلب وريفها", name: "Augmentin 1g Tabs", formula: "Amoxicillin / Clavulanate", category: "مضادات حيوية", priceUSD: 12.0, stripsPerBox: 3, stockBoxes: 40 },
+                { id: 102, barcode: "6281072022222", warehouseName: "مستودع الألفية الدوائي", region: "حلب وريفها", name: "Concor 5mg", formula: "Bisoprolol Fumarate", category: "مزمن", priceUSD: 7.5, stripsPerBox: 2, stockBoxes: 30 },
+                { id: 103, barcode: "6281072033333", warehouseName: "مستودع الشفاء المركزي", region: "حلب وريفها", name: "Panadol Extra", formula: "Paracetamol + Caffeine", category: "مسكنات", priceUSD: 4.0, stripsPerBox: 4, stockBoxes: 125 },
+                { id: 104, barcode: "6281072044444", warehouseName: "مستودع الشفاء المركزي", region: "حلب وريفها", name: "Syringe 5ml", formula: "Disposable Medical Device", category: "مستهلكات", priceUSD: 0.8, stripsPerBox: 1, stockBoxes: 50 },
+                { id: 105, barcode: "6281072055555", warehouseName: "مستودع إدلب الطبي", region: "إدلب وريفها", name: "Ceftriaxone 1g", formula: "Ceftriaxone Sodium", category: "مضادات حيوية", priceUSD: 14.0, stripsPerBox: 1, stockBoxes: 80 }
             ],
 
-            // قاعدة البيانات القياسية الفورية (Hardcoded Product Registry) مع دعم التعلّم الحي
             barcodeDatabase: {
-                "6281072011111": { name: "Augmentin 1g Tabs", formula: "Amoxicillin / Clavulanate", category: "مضادات حيوية", priceUSD: 12.0 },
-                "6281072022222": { name: "Concor 5mg", formula: "Bisoprolol Fumarate", category: "مزمن", priceUSD: 7.5 },
-                "6281072033333": { name: "Panadol Extra", formula: "Paracetamol + Caffeine", category: "مسكنات", priceUSD: 4.0 },
-                "6281072044444": { name: "Syringe 5ml", formula: "Disposable Medical Device", category: "مستهلكات", priceUSD: 0.8 },
-                "6281072055555": { name: "Ceftriaxone 1g", formula: "Ceftriaxone Sodium", category: "مضادات حيوية", priceUSD: 14.0 },
-                // أدوية إضافية شائعة بباراكودات قياسية عالمية للتجربة المباشرة
-                "5449000000996": { name: "Coca-Cola / Refreshment", formula: "Carbonated Beverage", category: "مستهلكات", priceUSD: 1.0 },
-                "3057640109302": { name: "Brufen 400mg", formula: "Ibuprofen", category: "مسكنات", priceUSD: 5.5 }
+                "6281072011111": { name: "Augmentin 1g Tabs", formula: "Amoxicillin / Clavulanate", category: "مضادات حيوية", priceUSD: 12.0, stripsPerBox: 3 },
+                "6281072022222": { name: "Concor 5mg", formula: "Bisoprolol Fumarate", category: "مزمن", priceUSD: 7.5, stripsPerBox: 2 },
+                "6281072033333": { name: "Panadol Extra", formula: "Paracetamol + Caffeine", category: "مسكنات", priceUSD: 4.0, stripsPerBox: 4 },
+                "6281072044444": { name: "Syringe 5ml", formula: "Disposable Medical Device", category: "مستهلكات", priceUSD: 0.8, stripsPerBox: 1 },
+                "6281072055555": { name: "Ceftriaxone 1g", formula: "Ceftriaxone Sodium", category: "مضادات حيوية", priceUSD: 14.0, stripsPerBox: 1 },
+                "5449000000996": { name: "Coca-Cola / Refreshment", formula: "Carbonated Beverage", category: "مستهلكات", priceUSD: 1.0, stripsPerBox: 6 },
+                "3057640109302": { name: "Brufen 400mg", formula: "Ibuprofen", category: "مسكنات", priceUSD: 5.5, stripsPerBox: 2 }
             },
 
-            cart: [],
+            cart: [], // عناصر السلة تدعم النمط (box أو strip)
             orders: [
-                { id: "ORD-9021", pharmacyName: "صيدلية النور الحديثة", region: "حلب وريفها", itemsText: "Augmentin 1g (x10), Concor 5mg (x5)", totalCostUSD: 157.5, status: "pending" },
-                { id: "ORD-9022", pharmacyName: "صيدلية الرازي", region: "حلب وريفها", itemsText: "Panadol Extra (x50)", totalCostUSD: 200.0, status: "accepted" }
+                { id: "ORD-9021", pharmacyName: "صيدلية النور الحديثة", region: "حلب وريفها", itemsText: "Augmentin 1g (علبة x2), Concor 5mg (ظرف x3)", totalCostUSD: 35.25, status: "pending" },
+                { id: "ORD-9022", pharmacyName: "صيدلية الرازي", region: "حلب وريفها", itemsText: "Panadol Extra (علبة x10)", totalCostUSD: 41.0, status: "accepted" }
             ],
             stats: { totalOrders: 142, activeWarehouses: 18, financialFlowUSD: 48900 }
         };
@@ -1140,7 +1273,7 @@
             }
         }
 
-        /* === واجهة الصيدلي: سوق الأدوية === */
+        /* === واجهة الصيدلي: سوق الأدوية مع نظام بيع الأجزاء والعلب (Box / Strip) === */
         function renderPharmacistMarket(container) {
             container.innerHTML = `
                 <div class="search-filter-bar">
@@ -1163,9 +1296,9 @@
                                 <th>اسم الدواء</th>
                                 <th>التركيب العلمي</th>
                                 <th>المستودع المورد</th>
-                                <th>السعر</th>
+                                <th>الأسعار (علبة / ظرف)</th>
                                 <th>الكمية المتاحة</th>
-                                <th>إجراء</th>
+                                <th>نمط الشراء والإجراء</th>
                             </tr>
                         </thead>
                         <tbody id="market-table-body"></tbody>
@@ -1204,35 +1337,89 @@
             }
 
             validMeds.forEach(med => {
-                const stockClass = med.stock > 25 ? 'stock-high' : 'stock-low';
-                const stockText = med.stock > 25 ? `${med.stock} (متوفر)` : `${med.stock} (موشك على النفاد)`;
+                const stripPriceUSD = med.priceUSD / med.stripsPerBox;
+                const totalStripsAvailable = (med.stockBoxes * med.stripsPerBox);
+                const stockClass = totalStripsAvailable > 50 ? 'stock-high' : 'stock-low';
+                const stockText = `${med.stockBoxes} علبة (${totalStripsAvailable} ظرف)`;
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><strong>${med.name}</strong><br><span style="font-size:11px; color:var(--rock-grey);">${med.category}</span></td>
+                    <td><strong>${med.name}</strong><br><span style="font-size:11px; color:var(--rock-grey);">${med.category} (السعة: ${med.stripsPerBox} ظروف/علبة)</span></td>
                     <td>${med.formula}</td>
                     <td><span style="color:var(--feather-teal);">${med.warehouseName}</span></td>
-                    <td><strong>${formatPrice(med.priceUSD)}</strong></td>
+                    <td>
+                        <div>علبة: <strong>${formatPrice(med.priceUSD)}</strong></div>
+                        <div style="font-size:12px; color:var(--rock-grey);">ظرف: <strong>${formatPrice(stripPriceUSD)}</strong></div>
+                    </td>
                     <td><span class="stock-indicator ${stockClass}">${stockText}</span></td>
-                    <td><button class="btn-action btn-primary-action" onclick="addToCart(${med.id})"><i class="fa-solid fa-cart-plus"></i> إضافة</button></td>
+                    <td>
+                        <div class="purchase-mode-toggle" id="toggle-mode-${med.id}">
+                            <button class="mode-btn active" onclick="setPurchaseMode(${med.id}, 'box', this)">علبة كاملة</button>
+                            <button class="mode-btn" onclick="setPurchaseMode(${med.id}, 'strip', this)">ظرف منفرد</button>
+                        </div>
+                        <div>
+                            <button class="btn-action btn-primary-action" onclick="addToCartAdvanced(${med.id})"><i class="fa-solid fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function addToCart(medId) {
-            const med = AppState.medicines.find(m => m.id === medId);
-            if (!med || med.stock <= 0) { alert("عذراً، الدواء غير متوفر حالياً."); return; }
-            const existing = AppState.cart.find(item => item.medicineId === medId);
-            if (existing) {
-                if (existing.quantity < med.stock) existing.quantity++;
-                else { alert("لقد وصلت للحد الأقصى المتوفر في المخزون."); return; }
-            } else {
-                AppState.cart.push({ medicineId: med.id, name: med.name, warehouseName: med.warehouseName, priceUSD: med.priceUSD, quantity: 1, maxStock: med.stock });
-            }
-            showToast(`تمت إضافة "${med.name}" إلى السلة`);
+        // تتبع النمط المختار لكل دواء في السوق (افتراضياً علبة)
+        const activePurchaseModes = {};
+        function setPurchaseMode(medId, mode, btnElement) {
+            activePurchaseModes[medId] = mode;
+            const parent = document.getElementById(`toggle-mode-${medId}`);
+            parent.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
         }
 
-        /* === واجهة الصيدلي: سلة الطلب والواتساب === */
+        function addToCartAdvanced(medId) {
+            const med = AppState.medicines.find(m => m.id === medId);
+            if (!med) return;
+            const mode = activePurchaseModes[medId] || 'box';
+            const stripUnitPrice = med.priceUSD / med.stripsPerBox;
+
+            // حساب المتاحة بالإجمال كأظرف
+            const totalAvailableStrips = (med.stockBoxes * med.stripsPerBox);
+
+            // التحقق من السلة الحالية لنفس الدواء
+            const existingCartItem = AppState.cart.find(i => i.medicineId === medId && i.mode === mode);
+
+            let requestedStripsUnits = mode === 'box' ? med.stripsPerBox : 1;
+
+            // حساب ما تم طلبه سابقاً في السلة من هذا الدواء بجميع أنماطه
+            let currentCartStripsCount = 0;
+            AppState.cart.forEach(i => {
+                if (i.medicineId === medId) {
+                    currentCartStripsCount += (i.mode === 'box' ? (i.quantity * i.stripsPerBox) : i.quantity);
+                }
+            });
+
+            if ((currentCartStripsCount + requestedStripsUnits) > totalAvailableStrips) {
+                alert("عذراً، الكمية المطلوبة تتجاوز المخزون الحي المتوفر في المستودع.");
+                return;
+            }
+
+            if (existingCartItem) {
+                existingCartItem.quantity++;
+            } else {
+                AppState.cart.push({
+                    medicineId: med.id,
+                    name: med.name,
+                    warehouseName: med.warehouseName,
+                    mode: mode, // 'box' أو 'strip'
+                    stripsPerBox: med.stripsPerBox,
+                    unitPriceUSD: mode === 'box' ? med.priceUSD : stripUnitPrice,
+                    quantity: 1,
+                    maxStrips: totalAvailableStrips
+                });
+            }
+            showToast(`تمت إضافة "${med.name}" (${mode === 'box' ? 'علبة كاملة' : 'ظرف منفرد'}) إلى السلة`);
+        }
+
+        /* === واجهة الصيدلي: سلة الطلب والمحرك الرسومي للطباعة كـ PDF === */
         function renderPharmacistCart(container) {
             let itemsHtml = '';
             let subtotalUSD = 0;
@@ -1241,13 +1428,14 @@
                 itemsHtml = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--rock-grey);">سلة الطلب فارغة حالياً.</td></tr>`;
             } else {
                 AppState.cart.forEach((item, idx) => {
-                    const lineTotalUSD = item.priceUSD * item.quantity;
+                    const lineTotalUSD = item.unitPriceUSD * item.quantity;
                     subtotalUSD += lineTotalUSD;
+                    const modeLabel = item.mode === 'box' ? 'علبة كاملة' : 'ظرف منفرد';
                     itemsHtml += `
                         <tr>
-                            <td><strong>${item.name}</strong><br><span style="font-size:11px; color:var(--rock-grey);">${item.warehouseName}</span></td>
-                            <td>${formatPrice(item.priceUSD)}</td>
-                            <td><input type="number" min="1" max="${item.maxStock}" value="${item.quantity}" style="width:60px; padding:6px; border:2px solid var(--border-color); border-radius:6px; text-align:center; font-weight:900;" onchange="updateCartQty(${idx}, this.value)"></td>
+                            <td><strong>${item.name}</strong><br><span style="font-size:11px; color:var(--feather-teal);">النمط: ${modeLabel}</span><br><span style="font-size:11px; color:var(--rock-grey);">${item.warehouseName}</span></td>
+                            <td>${formatPrice(item.unitPriceUSD)}</td>
+                            <td><input type="number" min="1" value="${item.quantity}" style="width:60px; padding:6px; border:2px solid var(--border-color); border-radius:6px; text-align:center; font-weight:900;" onchange="updateCartQty(${idx}, this.value)"></td>
                             <td><strong>${formatPrice(lineTotalUSD)}</strong></td>
                             <td><button class="btn-action btn-secondary-action" onclick="removeFromCart(${idx})"><i class="fa-solid fa-trash"></i></button></td>
                         </tr>
@@ -1263,7 +1451,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>المادة الدوائية</th>
+                                <th>المادة الدوائية والنمط</th>
                                 <th>السعر الإفرادي</th>
                                 <th>الكمية</th>
                                 <th>الإجمالي الفرعي</th>
@@ -1277,8 +1465,8 @@
                     <div class="cart-summary-row"><span>مجموع المواد:</span><span>${formatPrice(subtotalUSD)}</span></div>
                     <div class="cart-summary-row"><span>ضريبة نقابة الأطباء والصيادلة (2.5%):</span><span>${formatPrice(syndTaxUSD)}</span></div>
                     <div class="cart-summary-row total"><span>المجموع النهائي المستحق:</span><span>${formatPrice(grandTotalUSD)}</span></div>
-                    <button class="btn-wide-checkout" onclick="sendWhatsAppInvoice()">
-                        <i class="fa-brands fa-whatsapp" style="font-size:20px;"></i> إرسال الطلبيّة ومشاركة الفاتورة عبر WhatsApp
+                    <button class="btn-wide-checkout" onclick="generateAndPrintPDFInvoice()">
+                        <i class="fa-solid fa-file-pdf" style="font-size:20px;"></i> إرسال الطلبية وتوليد فاتورة PDF رسمية للطباعة
                     </button>
                 </div>
             `;
@@ -1287,46 +1475,135 @@
         function updateCartQty(index, val) {
             const qty = parseInt(val);
             if (isNaN(qty) || qty < 1) return;
-            if (qty > AppState.cart[index].maxStock) { alert("الكمية المطلوبة تتجاوز المخزون المتوفر."); renderActiveTab(1); return; }
             AppState.cart[index].quantity = qty;
             renderActiveTab(1);
         }
 
         function removeFromCart(index) { AppState.cart.splice(index, 1); renderActiveTab(1); }
 
-        function sendWhatsAppInvoice() {
+        /* محرك توليد الفاتورة الرسومية والطباعة كـ PDF (Visual PDF/Print Engine) */
+        function generateAndPrintPDFInvoice() {
             if (AppState.cart.length === 0) { alert("السلة فارغة."); return; }
-            let subtotalUSD = AppState.cart.reduce((sum, item) => sum + (item.priceUSD * item.quantity), 0);
-            let syndTaxUSD = subtotalUSD * 0.025;
-            let grandTotalUSD = subtotalUSD + syndTaxUSD;
-            let itemsDescription = AppState.cart.map(i => `• ${i.name} (الكمية: ${i.quantity})`).join('\n');
 
-            AppState.cart.forEach(cartItem => {
-                const med = AppState.medicines.find(m => m.id === cartItem.medicineId);
-                if (med) med.stock -= cartItem.quantity;
+            const subtotalUSD = AppState.cart.reduce((sum, item) => sum + (item.unitPriceUSD * item.quantity), 0);
+            const syndTaxUSD = subtotalUSD * 0.025;
+            const grandTotalUSD = subtotalUSD + syndTaxUSD;
+            const orderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
+            const currentDate = new Date().toLocaleDateString('ar-SY', { year: 'numeric', month: 'long', day: 'numeric' });
+            const warehouseNameTarget = AppState.cart[0].warehouseName;
+
+            let itemsTableRows = '';
+            let itemsTextSummary = [];
+
+            AppState.cart.forEach(item => {
+                const modeStr = item.mode === 'box' ? 'علبة كاملة' : 'ظرف منفرد';
+                const lineTot = item.unitPriceUSD * item.quantity;
+                itemsTableRows += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${modeStr}</td>
+                        <td>${item.quantity}</td>
+                        <td>${formatPrice(item.unitPriceUSD)}</td>
+                        <td><strong>${formatPrice(lineTot)}</strong></td>
+                    </tr>
+                `;
+                itemsTextSummary.push(`${item.name} (${modeStr} x${item.quantity})`);
+
+                // خصم دقيق من المخزون الحي (بالعلب والظروف)
+                const medRef = AppState.medicines.find(m => m.id === item.medicineId);
+                if (medRef) {
+                    let totalStripsToDeduct = item.mode === 'box' ? (item.quantity * medRef.stripsPerBox) : item.quantity;
+                    let currentTotalStrips = (medRef.stockBoxes * medRef.stripsPerBox) - totalStripsToDeduct;
+                    if (currentTotalStrips < 0) currentTotalStrips = 0;
+                    medRef.stockBoxes = parseFloat((currentTotalStrips / medRef.stripsPerBox).toFixed(2));
+                }
             });
 
-            const newOrder = {
-                id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+            // تسجيل الطلب في قائمة المستودع الواردة
+            AppState.orders.unshift({
+                id: orderId,
                 pharmacyName: AppState.facilityName,
                 region: AppState.region,
-                itemsText: AppState.cart.map(i => `${i.name} (x${i.quantity})`).join(', '),
+                itemsText: itemsTextSummary.join(', '),
                 totalCostUSD: grandTotalUSD,
                 status: "pending"
-            };
-            AppState.orders.unshift(newOrder);
+            });
 
-            const message = `*فاتورة طلبية طبية جديدة - PharmaLink* 💊\n\n` +
-                `🏥 *الصيدلية المرسلة:* ${AppState.facilityName}\n` +
-                `📍 *المركز الإقليمي:* ${AppState.region}\n\n` +
-                `📦 *تفاصيل المواد المطلوبة:*\n${itemsDescription}\n\n` +
-                `💰 *المجموع النهائي (شامل ضريبة النقابة):* ${formatPrice(grandTotalUSD)}\n\n` +
-                `_تم إنشاء هذه الفاتورة الآلية عبر منصة PharmaLink B2B الطبية._`;
+            // بناء هيكل ورقة الفاتورة الرسمية المخصصة للطباعة
+            const printContainer = document.getElementById('invoice-print-container');
+            printContainer.innerHTML = `
+                <div class="invoice-print-sheet">
+                    <div class="invoice-header-flex">
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <div class="split-capsule" style="width:80px; height:35px;">
+                                <div class="capsule-right"></div>
+                                <div class="capsule-divider"></div>
+                                <div class="capsule-left"></div>
+                            </div>
+                            <div>
+                                <h2 style="color: #145A56; font-size:22px; font-weight:900;">PharmaLink - فارمالينك</h2>
+                                <p style="font-size:12px; color:#707070; font-weight:900;">منصة B2B الطبية الرقمية المعتمدة</p>
+                            </div>
+                        </div>
+                        <div style="text-align: left;">
+                            <h3 style="font-size:18px; font-weight:900;">فاتورة توريد دوائي رسمية</h3>
+                            <p style="font-size:13px; font-weight:900;">رقم الطلب: ${orderId}</p>
+                            <p style="font-size:13px; font-weight:900;">التاريخ: ${currentDate}</p>
+                        </div>
+                    </div>
 
-            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+                    <div class="invoice-meta-grid">
+                        <div>🏥 <strong>الصيدلية المشترية:</strong> ${AppState.facilityName} (${AppState.region})</div>
+                        <div>📦 <strong>المستودع المورد:</strong> ${warehouseNameTarget}</div>
+                    </div>
+
+                    <table class="invoice-table">
+                        <thead>
+                            <tr>
+                                <th>المادة الدوائية</th>
+                                <th>نمط الشراء</th>
+                                <th>الكمية</th>
+                                <th>السعر الإفرادي (${AppState.activeCurrency})</th>
+                                <th>الإجمالي الفرعي (${AppState.activeCurrency})</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsTableRows}
+                        </tbody>
+                    </table>
+
+                    <div style="float: left; width: 320px; font-weight: 900; font-size: 14px; margin-bottom: 30px;">
+                        <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>مجموع المواد:</span><span>${formatPrice(subtotalUSD)}</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>ضريبة النقابة (2.5%):</span><span>${formatPrice(syndTaxUSD)}</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 2px solid #000; font-size: 16px; color: #145A56;"><span>الإجمالي النهائي:</span><span>${formatPrice(grandTotalUSD)}</span></div>
+                    </div>
+                    <div style="clear: both;"></div>
+
+                    <div class="invoice-signatures">
+                        <div>
+                            <div class="signature-box"></div>
+                            <p style="margin-top:8px;">توقيع الصيدلاني المستلم</p>
+                        </div>
+                        <div>
+                            <div class="signature-box"></div>
+                            <p style="margin-top:8px;">ختم المستودع المورد</p>
+                        </div>
+                        <div>
+                            <div class="signature-box"></div>
+                            <p style="margin-top:8px;">توقيع سائق التوصيل اللوجستي</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
             AppState.cart = [];
-            showToast("تم إرسال الطلبية بنجاح وتحديث المخزون الحي!");
+            showToast("تم إرسال الطلبية وتوليد الفاتورة بنجاح!");
             renderActiveTab(1);
+
+            // استدعاء نافذة الطباعة الرسمية لل متصفح (window.print)
+            setTimeout(() => {
+                window.print();
+            }, 300);
         }
 
         function renderPharmacistNetwork(container) {
@@ -1347,11 +1624,11 @@
             `;
         }
 
-        /* === واجهة المستودع: مخزوني ومسح الباركود مع محرك التعلم والتعبئة التلقائية === */
+        /* === واجهة المستودع: مخزوني ومسح الباركود مع سعة العلبة والتعلم التلقائي === */
         function renderWarehouseInventory(container) {
             container.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="font-weight:900; color:var(--rock-grey);">قائمة أدوية المستودع الحية</h3>
+                    <h3 style="font-weight:900; color:var(--rock-grey);">قائمة أدوية المستودع الحية (بإدارة الأجزاء والعلب)</h3>
                     <button class="btn-action btn-primary-action" onclick="toggleAddMedicineModal(true)"><i class="fa-solid fa-plus"></i> إضافة دواء جديد</button>
                 </div>
                 <div class="data-table-container">
@@ -1361,9 +1638,9 @@
                                 <th>الباركود</th>
                                 <th>الاسم التجاري</th>
                                 <th>التركيب العلمي</th>
-                                <th>التصنيف</th>
-                                <th>السعر</th>
-                                <th>الكمية</th>
+                                <th>سعة العلبة</th>
+                                <th>سعر العلبة</th>
+                                <th>المخزون (علب / ظروف)</th>
                             </tr>
                         </thead>
                         <tbody id="warehouse-inv-tbody"></tbody>
@@ -1385,14 +1662,15 @@
             }
 
             myMeds.forEach(med => {
+                const totalStrips = Math.round(med.stockBoxes * med.stripsPerBox);
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><code>${med.barcode || 'N/A'}</code></td>
-                    <td><strong>${med.name}</strong></td>
+                    <td><strong>${med.name}</strong><br><span style="font-size:11px; color:var(--rock-grey);">${med.category}</span></td>
                     <td>${med.formula}</td>
-                    <td>${med.category}</td>
+                    <td>${med.stripsPerBox} ظروف/علبة</td>
                     <td><strong>${formatPrice(med.priceUSD)}</strong></td>
-                    <td><span style="color:${med.stock < 25 ? '#991b1b' : 'inherit'}; font-weight:900;">${med.stock} وحدة</span></td>
+                    <td><span style="color:${med.stockBoxes < 10 ? '#991b1b' : 'inherit'}; font-weight:900;">${med.stockBoxes} علبة (${totalStrips} ظرف)</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1407,7 +1685,6 @@
             }
         }
 
-        /* نظام مسح الباركود الحقيقي مع محرك المطابقة الفورية والتعلم الذاتي */
         function startRealBarcodeScanner() {
             const scannerContainer = document.getElementById('scanner-container');
             scannerContainer.style.display = 'block';
@@ -1420,40 +1697,32 @@
                 { facingMode: "environment" },
                 { fps: 10, qrbox: { width: 250, height: 100 } },
                 (decodedText) => {
-                    // نجاح القراءة البرمجية للباركود
                     document.getElementById('new-med-barcode').value = decodedText;
-
-                    // إصدار صوت تنبيه خفيف (Beep)
                     playBeepSound();
 
-                    // إيقاف الكاميرا تلقائياً
                     html5QrCodeScanner.stop().then(() => {
                         scannerContainer.style.display = 'none';
                     }).catch(err => console.log(err));
 
-                    // 1. فحص المطابقة الفورية في قاعدة البيانات (Instant Match Engine)
                     const matchedProduct = AppState.barcodeDatabase[decodedText];
 
                     if (matchedProduct) {
-                        // تعبئة البيانات تلقائياً وفوراً إذا كان المنتج معروفاً
                         document.getElementById('new-med-name').value = matchedProduct.name;
                         document.getElementById('new-med-formula').value = matchedProduct.formula;
                         document.getElementById('new-med-category').value = matchedProduct.category;
                         document.getElementById('new-med-price').value = matchedProduct.priceUSD;
+                        document.getElementById('new-med-strips-per-box').value = matchedProduct.stripsPerBox || 3;
                         showToast(`✨ تم التعرف على الدواء فوراً: ${matchedProduct.name}`);
                     } else {
-                        // 2. محرك التعلّم التلقائي (Dynamic Learning Engine) للمنتجات الجديدة كلياً
                         document.getElementById('new-med-name').value = "";
                         document.getElementById('new-med-formula').value = "";
                         document.getElementById('new-med-price').value = "";
-                        showToast(`🔍 باركود جديد (${decodedText}). يرجى إدخال اسم الدواء وسعره يدوياً لحفظه في الذاكرة الحية.`);
+                        showToast(`🔍 باركود جديد (${decodedText}). يرجى إدخال البيانات لحفظه في الذاكرة الحية.`);
                     }
                 },
-                (errorMessage) => {
-                    // الأخطاء المتكررة أثناء التقاط الإطار تتجاهل بسلاسة لتجنب إزعاج المستخدم
-                }
+                (errorMessage) => { }
             ).catch(err => {
-                alert("تعذر الوصول إلى كاميرا الجهاز. تأكد من منح الأذونات اللازمة أو استخدم متصفحاً مدعوماً.");
+                alert("تعذر الوصول إلى كاميرا الجهاز.");
                 scannerContainer.style.display = 'none';
             });
         }
@@ -1479,19 +1748,20 @@
             const formula = document.getElementById('new-med-formula').value.trim();
             const category = document.getElementById('new-med-category').value;
             const priceUSDInput = parseFloat(document.getElementById('new-med-price').value);
-            const stock = parseInt(document.getElementById('new-med-stock').value);
+            const stripsPerBox = parseInt(document.getElementById('new-med-strips-per-box').value) || 3;
+            const stockBoxes = parseFloat(document.getElementById('new-med-stock').value);
 
-            if (!barcode || !name || !formula || isNaN(priceUSDInput) || isNaN(stock)) {
-                alert("يرجى التأكد من مسح الباركود وتعبئة كافة الحقول المطلوبة.");
+            if (!barcode || !name || !formula || isNaN(priceUSDInput) || isNaN(stockBoxes)) {
+                alert("يرجى التأكد من مسح الباركود وتعبئة كافة الحقول المطلوبة بدقة.");
                 return;
             }
 
-            // تطبيق التعلم التلقائي: حفظ المنتج الجديد في قاعدة بيانات الجلسة الحية لكي يتعرف عليه النظام تلقائياً في المرات القادمة
             AppState.barcodeDatabase[barcode] = {
                 name: name,
                 formula: formula,
                 category: category,
-                priceUSD: priceUSDInput
+                priceUSD: priceUSDInput,
+                stripsPerBox: stripsPerBox
             };
 
             const newMed = {
@@ -1503,7 +1773,8 @@
                 formula: formula,
                 category: category,
                 priceUSD: priceUSDInput,
-                stock: stock
+                stripsPerBox: stripsPerBox,
+                stockBoxes: stockBoxes
             };
 
             AppState.medicines.unshift(newMed);
