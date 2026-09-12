@@ -697,6 +697,44 @@
             color: var(--rock-grey);
         }
 
+        /* حاوية محاكي الماسح الضوئي للباركود */
+        .barcode-scanner-box {
+            background: #0f172a;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 20px;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .laser-line {
+            width: 100%;
+            height: 3px;
+            background: #ef4444;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-shadow: 0 0 10px #ef4444;
+            animation: scanLaser 1.5s infinite ease-in-out;
+        }
+
+        @keyframes scanLaser {
+            0% {
+                top: 10%;
+            }
+
+            50% {
+                top: 90%;
+            }
+
+            100% {
+                top: 10%;
+            }
+        }
+
         /* أزرار تفاعلية للطلبات الواردة */
         .order-status-badge {
             padding: 6px 12px;
@@ -922,7 +960,7 @@
         <nav class="bottom-ribbon" id="bottom-ribbon-nav"></nav>
     </div>
 
-    <!-- نافذة منبثقة لإضافة دواء جديد للمستودع -->
+    <!-- نافذة منبثقة لإضافة دواء جديد للمستودع مع محاكي الباركود -->
     <div class="modal-overlay" id="add-medicine-modal">
         <div class="modal-card">
             <div class="modal-header">
@@ -930,6 +968,20 @@
                 <button class="modal-close-btn" onclick="toggleAddMedicineModal(false)"><i
                         class="fa-solid fa-xmark"></i></button>
             </div>
+
+            <!-- زر تشغيل محاكي الباركود الحصري -->
+            <div style="margin-bottom: 20px; text-align: center;">
+                <button class="btn-action btn-secondary-action" style="width: 100%; padding: 12px; background: #0f172a;"
+                    onclick="runBarcodeScannerSimulation()">
+                    <i class="fa-solid fa-camera"></i> مسح باركود الدواء تلقائياً (محاكي الكاميرا)
+                </button>
+                <div id="barcode-scanner-box" class="barcode-scanner-box">
+                    <div class="laser-line"></div>
+                    <p style="margin-top: 15px; font-weight: 900; font-size: 14px;">جاري قراءة الباركود واستخراج بيانات
+                        الدواء...</p>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label>الاسم التجاري للدواء</label>
                 <input type="text" id="new-med-name" class="gateway-input" placeholder="مثال: Augmentin 1g">
@@ -1418,7 +1470,7 @@
             `;
         }
 
-        /* ================= واجهة المستودع: 1. مخزوني ================= */
+        /* ================= واجهة المستودع: 1. مخزوني مع محاكي الباركود ================= */
         function renderWarehouseInventory(container) {
             container.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -1470,6 +1522,34 @@
 
         function toggleAddMedicineModal(show) {
             document.getElementById('add-medicine-modal').style.display = show ? 'flex' : 'none';
+            document.getElementById('barcode-scanner-box').style.display = 'none';
+        }
+
+        /* محاكي الماسح الضوئي للباركود الحصري */
+        function runBarcodeScannerSimulation() {
+            const scannerBox = document.getElementById('barcode-scanner-box');
+            scannerBox.style.display = 'block';
+
+            setTimeout(() => {
+                scannerBox.style.display = 'none';
+
+                // تعبئة البيانات تلقائياً عشوائياً بشكل ذكي
+                const randomMeds = [
+                    { name: "Ciprobay 500mg", formula: "Ciprofloxacin", cat: "مضادات حيوية", price: 11.5, stock: 150 },
+                    { name: "Glucophage 850mg", formula: "Metformin Hydrochloride", cat: "مزمن", price: 6.0, stock: 300 },
+                    { name: "Brufen 400mg", formula: "Ibuprofen", cat: "مسكنات", price: 4.5, stock: 220 },
+                    { name: "Alcohol Swabs Box", formula: "Isopropyl Alcohol 70%", cat: "مستهلكات", price: 2.0, stock: 400 }
+                ];
+                const selected = randomMeds[Math.floor(Math.random() * randomMeds.length)];
+
+                document.getElementById('new-med-name').value = selected.name;
+                document.getElementById('new-med-formula').value = selected.formula;
+                document.getElementById('new-med-category').value = selected.cat;
+                document.getElementById('new-med-price').value = selected.price;
+                document.getElementById('new-med-stock').value = selected.stock;
+
+                showToast("تم مسح الباركود واستخراج البيانات بنجاح!");
+            }, 2000);
         }
 
         function saveNewMedicine() {
