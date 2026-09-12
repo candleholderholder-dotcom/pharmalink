@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PharmaLink - فارمالينك</title>
-    <!-- خط Cairo للأوزان العريضة -->
+    <!-- خط Cairo الرسمي بالأوزان العريضة -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@800;900&display=swap" rel="stylesheet">
     <!-- مكتبة FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- مكتبة مسح الباركود الحقيقي عبر الكاميرا (html5-qrcode) -->
+    <!-- مكتبة مسح الباركود الحقيقي عبر كاميرا الهاتف (html5-qrcode) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <style>
         :root {
@@ -918,7 +918,7 @@
         <nav class="bottom-ribbon" id="bottom-ribbon-nav"></nav>
     </div>
 
-    <!-- نافذة منبثقة لإضافة دواء جديد للمستودع مع مسح الباركود الحقيقي عبر الكاميرا -->
+    <!-- نافذة منبثقة لإضافة دواء جديد للمستودع مع مسح الباركود والتعلم التلقائي -->
     <div class="modal-overlay" id="add-medicine-modal">
         <div class="modal-card">
             <div class="modal-header">
@@ -942,7 +942,8 @@
             </div>
             <div class="form-group">
                 <label>الاسم التجاري للدواء</label>
-                <input type="text" id="new-med-name" class="gateway-input" placeholder="مثال: Augmentin 1g">
+                <input type="text" id="new-med-name" class="gateway-input"
+                    placeholder="مثال: Augmentin 1g أو أدخله يدوياً...">
             </div>
             <div class="form-group">
                 <label>التركيب العلمي</label>
@@ -972,7 +973,7 @@
     </div>
 
     <script>
-        /* === محرك الحالة العالمي ومعادلات الصرف === */
+        /* === محرك الحالة العالمي وقاعدة البيانات المدمجة === */
         const AppState = {
             currentStep: 1,
             facilityName: "",
@@ -990,17 +991,19 @@
                 { id: 102, barcode: "6281072022222", warehouseName: "مستودع الألفية الدوائي", region: "حلب وريفها", name: "Concor 5mg", formula: "Bisoprolol Fumarate", category: "مزمن", priceUSD: 7.5, stock: 15 },
                 { id: 103, barcode: "6281072033333", warehouseName: "مستودع الشفاء المركزي", region: "حلب وريفها", name: "Panadol Extra", formula: "Paracetamol + Caffeine", category: "مسكنات", priceUSD: 4.0, stock: 500 },
                 { id: 104, barcode: "6281072044444", warehouseName: "مستودع الشفاء المركزي", region: "حلب وريفها", name: "Syringe 5ml", formula: "Disposable Medical Device", category: "مستهلكات", priceUSD: 0.8, stock: 8 },
-                { id: 105, barcode: "6281072055555", warehouseName: "مستودع إدلب الطبي", region: "إدلب وريفها", name: "Ceftriaxone 1g", formula: "Ceftriaxone Sodium", category: "مضادات حيوية", priceUSD: 14.0, stock: 80 },
-                { id: 106, barcode: "6281072066666", warehouseName: "مستودع منبج الإقليمي", region: "منبج وريفها", name: "Voltaren 75mg", formula: "Diclofenac Sodium", category: "مسكنات", priceUSD: 8.5, stock: 200 }
+                { id: 105, barcode: "6281072055555", warehouseName: "مستودع إدلب الطبي", region: "إدلب وريفها", name: "Ceftriaxone 1g", formula: "Ceftriaxone Sodium", category: "مضادات حيوية", priceUSD: 14.0, stock: 80 }
             ],
 
-            // قاعدة بيانات الأدوية المعرفة مسبقاً للتعرف الفوري عبر الباركود الحقيقي
+            // قاعدة البيانات القياسية الفورية (Hardcoded Product Registry) مع دعم التعلّم الحي
             barcodeDatabase: {
                 "6281072011111": { name: "Augmentin 1g Tabs", formula: "Amoxicillin / Clavulanate", category: "مضادات حيوية", priceUSD: 12.0 },
                 "6281072022222": { name: "Concor 5mg", formula: "Bisoprolol Fumarate", category: "مزمن", priceUSD: 7.5 },
                 "6281072033333": { name: "Panadol Extra", formula: "Paracetamol + Caffeine", category: "مسكنات", priceUSD: 4.0 },
                 "6281072044444": { name: "Syringe 5ml", formula: "Disposable Medical Device", category: "مستهلكات", priceUSD: 0.8 },
-                "6281072055555": { name: "Ceftriaxone 1g", formula: "Ceftriaxone Sodium", category: "مضادات حيوية", priceUSD: 14.0 }
+                "6281072055555": { name: "Ceftriaxone 1g", formula: "Ceftriaxone Sodium", category: "مضادات حيوية", priceUSD: 14.0 },
+                // أدوية إضافية شائعة بباراكودات قياسية عالمية للتجربة المباشرة
+                "5449000000996": { name: "Coca-Cola / Refreshment", formula: "Carbonated Beverage", category: "مستهلكات", priceUSD: 1.0 },
+                "3057640109302": { name: "Brufen 400mg", formula: "Ibuprofen", category: "مسكنات", priceUSD: 5.5 }
             },
 
             cart: [],
@@ -1344,7 +1347,7 @@
             `;
         }
 
-        /* === واجهة المستودع: مخزوني ومسح الباركود عبر الكاميرا الحقيقية === */
+        /* === واجهة المستودع: مخزوني ومسح الباركود مع محرك التعلم والتعبئة التلقائية === */
         function renderWarehouseInventory(container) {
             container.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -1404,7 +1407,7 @@
             }
         }
 
-        /* تشغيل ماسح الباركود الحقيقي عبر مكتبة html5-qrcode وكاميرا الجهاز */
+        /* نظام مسح الباركود الحقيقي مع محرك المطابقة الفورية والتعلم الذاتي */
         function startRealBarcodeScanner() {
             const scannerContainer = document.getElementById('scanner-container');
             scannerContainer.style.display = 'block';
@@ -1420,28 +1423,34 @@
                     // نجاح القراءة البرمجية للباركود
                     document.getElementById('new-med-barcode').value = decodedText;
 
-                    // إصدار صوت تنبيه خفيف (Beep) باستخدام Web Audio API
+                    // إصدار صوت تنبيه خفيف (Beep)
                     playBeepSound();
 
-                    // إيقاف الكاميرا تلقائياً بعد القراءة الناجحة
+                    // إيقاف الكاميرا تلقائياً
                     html5QrCodeScanner.stop().then(() => {
                         scannerContainer.style.display = 'none';
                     }).catch(err => console.log(err));
 
-                    // البحث السريع في قاعدة البيانات الداخلية للتعرف على الدواء
-                    const foundMed = AppState.barcodeDatabase[decodedText];
-                    if (foundMed) {
-                        document.getElementById('new-med-name').value = foundMed.name;
-                        document.getElementById('new-med-formula').value = foundMed.formula;
-                        document.getElementById('new-med-category').value = foundMed.category;
-                        document.getElementById('new-med-price').value = foundMed.priceUSD;
-                        showToast(`تم التعرف على الدواء برمجياً: ${foundMed.name}!`);
+                    // 1. فحص المطابقة الفورية في قاعدة البيانات (Instant Match Engine)
+                    const matchedProduct = AppState.barcodeDatabase[decodedText];
+
+                    if (matchedProduct) {
+                        // تعبئة البيانات تلقائياً وفوراً إذا كان المنتج معروفاً
+                        document.getElementById('new-med-name').value = matchedProduct.name;
+                        document.getElementById('new-med-formula').value = matchedProduct.formula;
+                        document.getElementById('new-med-category').value = matchedProduct.category;
+                        document.getElementById('new-med-price').value = matchedProduct.priceUSD;
+                        showToast(`✨ تم التعرف على الدواء فوراً: ${matchedProduct.name}`);
                     } else {
-                        showToast(`تم قراءة الباركود بنجاح: ${decodedText}. يرجى إكمال البيانات.`);
+                        // 2. محرك التعلّم التلقائي (Dynamic Learning Engine) للمنتجات الجديدة كلياً
+                        document.getElementById('new-med-name').value = "";
+                        document.getElementById('new-med-formula').value = "";
+                        document.getElementById('new-med-price').value = "";
+                        showToast(`🔍 باركود جديد (${decodedText}). يرجى إدخال اسم الدواء وسعره يدوياً لحفظه في الذاكرة الحية.`);
                     }
                 },
                 (errorMessage) => {
-                    // الأخطاء المتكررة أثناء البحث عن إطار الباركود يتم تجاهلها بسلاسة
+                    // الأخطاء المتكررة أثناء التقاط الإطار تتجاهل بسلاسة لتجنب إزعاج المستخدم
                 }
             ).catch(err => {
                 alert("تعذر الوصول إلى كاميرا الجهاز. تأكد من منح الأذونات اللازمة أو استخدم متصفحاً مدعوماً.");
@@ -1455,8 +1464,8 @@
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = "sine";
-                osc.frequency.value = 800;
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                osc.frequency.value = 850;
+                gain.gain.setValueAtTime(0.12, ctx.currentTime);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
                 osc.start();
@@ -1472,15 +1481,22 @@
             const priceUSDInput = parseFloat(document.getElementById('new-med-price').value);
             const stock = parseInt(document.getElementById('new-med-stock').value);
 
-            if (!name || !formula || isNaN(priceUSDInput) || isNaN(stock)) {
-                alert("يرجى تعبئة كافة الحقول الأساسية بدقة.");
+            if (!barcode || !name || !formula || isNaN(priceUSDInput) || isNaN(stock)) {
+                alert("يرجى التأكد من مسح الباركود وتعبئة كافة الحقول المطلوبة.");
                 return;
             }
 
+            // تطبيق التعلم التلقائي: حفظ المنتج الجديد في قاعدة بيانات الجلسة الحية لكي يتعرف عليه النظام تلقائياً في المرات القادمة
+            AppState.barcodeDatabase[barcode] = {
+                name: name,
+                formula: formula,
+                category: category,
+                priceUSD: priceUSDInput
+            };
+
             const newMed = {
                 id: Date.now(),
-                barcode: barcode || `BC-${Math.floor(100000 + Math.random() * 900000)}`,
-                warehouseId: 99,
+                barcode: barcode,
                 warehouseName: AppState.facilityName,
                 region: AppState.region,
                 name: name,
@@ -1492,7 +1508,7 @@
 
             AppState.medicines.unshift(newMed);
             toggleAddMedicineModal(false);
-            showToast("تمت إضافة الدواء بنجاح للمخزون الحي!");
+            showToast("تم حفظ الدواء الجديد وتحديث قاعدة المعرفة بنجاح!");
             renderActiveTab(0);
         }
 
