@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaLink - نظام الربط اللوجستي الدوائي الذكي</title>
+    <!-- FontAwesome Icons CDN عبر Cloudflare -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ================= المتغيرات الأساسية والهوية البصرية الدقيقة ================= */
+        :root {
+            --primary-blue: #0066CC;
+            --primary-blue-hover: #0052A3;
+            --slate-gray: #707070;
+            --slate-gray-hover: #5E5E5E;
+            --bg-canvas: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
+            --border-color: rgba(112, 112, 112, 0.18);
+            --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-luxury: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ================= الحركات والانيميشن الاحترافي ================= */
+        @keyframes pulse-capsule {
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 0 rgba(0, 102, 204, 0));
+            }
+
+            50% {
+                transform: scale(1.04);
+                filter: drop-shadow(0 8px 16px rgba(0, 102, 204, 0.25));
+            }
+        }
+
+        .animate-capsule {
+            animation: pulse-capsule 2.4s infinite ease-in-out;
+        }
+
+        @keyframes fade-slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fade-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* ================= تصميم حباية الدواء البيضاوية الأفقية (50/50 Split Capsule) ================= */
+        .capsule-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #FFFFFF;
+            border-radius: 9999px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .capsule-pill.normal {
+            width: 88px;
+            height: 44px;
+            padding: 3px;
+        }
+
+        .capsule-pill.large {
+            width: 176px;
+            height: 88px;
+            padding: 5px;
+        }
+
+        .capsule-core {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            border-radius: 9999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* النصف الأيسر: رمادي داكن مع انحناءة بيضاء تفصيلية */
+        .capsule-left-half {
+            width: 50%;
+            background-color: var(--slate-gray);
+            position: relative;
+        }
+
+        .capsule-left-half::after {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 20%;
+            bottom: 20%;
+            width: 3px;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 99px;
+        }
+
+        /* النصف الأيمن: أزرق طبي نابض */
+        .capsule-right-half {
+            width: 50%;
+            background-color: var(--primary-blue);
+        }
+
+        /* الخط الفاصل الأبيض العمودي المنتصف تماماً */
+        .capsule-seam {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 50%;
+            width: 2px;
+            background-color: #FFFFFF;
+            z-index: 10;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ================= قواعد النصوص والشعارات العلامية (Branding Typography) ================= */
+        .brand-text {
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-pharma {
+            color: var(--slate-gray);
+        }
+
+        .brand-link {
+            color: var(--primary-blue);
+        }
+
+        /* ================= نظام إدارة المراحل (Stage Management Router) ================= */
+        .app-stage {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        .app-stage.active {
+            display: flex;
+        }
+
+        /* STAGE 1: الشاشة الترحيبية السينمائية */
+        #stage-splash {
+            position: fixed;
+            inset: 0;
+            background: #FFFFFF;
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            transition: opacity 0.5s ease;
+        }
+
+        /* STAGE 2: بوابة تسجيل الدخول (Credentials Gateway) */
+        .gateway-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: radial-gradient(circle at 50% 30%, #FFFFFF 0%, var(--bg-canvas) 100%);
+        }
+
+        .gateway-card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border-top: 5px solid var(--primary-blue);
+            border-radius: 20px;
+            box-shadow: var(--shadow-luxury);
+            padding: 36px;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* النماذج وعناصر الإدخال المحترفة */
+        .form-block {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--slate-gray);
+            margin-bottom: 8px;
+        }
+
+        .input-box-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 15px;
+            color: var(--slate-gray);
+            font-size: 14px;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 13px 18px 13px 44px;
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--primary-blue);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-input:focus~.input-icon {
+            color: var(--primary-blue);
+        }
+
+        /* أزرار تبديل الأدوار الثنائية */
+        .role-switcher-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .role-option-btn {
+            padding: 13px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: #F8FAFC;
+            color: var(--slate-gray);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .role-option-btn.active {
+            background: var(--primary-blue);
+            color: #FFFFFF;
+            border-color: var(--primary-blue);
+            box-shadow: 0 8px 16px -4px rgba(0, 102, 204, 0.35);
+        }
+
+        .btn-submit-primary {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-blue);
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -5px rgba(0, 102, 204, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit-primary:hover {
+            background: var(--primary-blue-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-submit-primary:active {
+            transform: translateY(1px);
+        }
+
+        /* ================= STAGE 3: لوحة التحكم ومساحات العمل الرئيسية ================= */
+        .dashboard-main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 100px;
+        }
+
+        /* شريط الحالة والإشعارات العلوي */
+        .top-status-ribbon {
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .live-toast-box {
+            background: #F0FDF4;
+            color: #166534;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #BBF7D0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 450px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* حاوية العمل الرئيسية */
+        .content-container {
+            flex: 1;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        .workspace-view {
+            display: none;
+        }
+
+        .workspace-view.active {
+            display: block;
+        }
+
+        /* البطاقات والجداول المعمارية */
+        .enterprise-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-subtle);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .enterprise-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .enterprise-table th {
+            background: #F8FAFC;
+            color: var(--slate-gray);
+            font-size: 12px;
+            text-transform: uppercase;
+            padding: 14px 18px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .enterprise-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #F1F5F9;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .enterprise-table tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        /* أزرار الفلترة الأفقية (Filter Pills) */
+        .filter-pills-row {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            margin-bottom: 20px;
+        }
+
+        .filter-pill-item {
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: #FFFFFF;
+            color: var(--slate-gray);
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-pill-item.active {
+            background: var(--primary-blue);
+            color: #FFFFFF;
+            border-color: var(--primary-blue);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+        }
+
+        /* الأزرار العامة والإجراءات */
+        .btn-action-sm {
+            padding: 7px 16px;
+            background: var(--primary-blue);
+            color: #FFFFFF;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 102, 204, 0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-action-sm:hover {
+            background: var(--primary-blue-hover);
+        }
+
+        .btn-danger-sm {
+            background: #EF4444;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger-sm:hover {
+            background: #DC2626;
+        }
+
+        /* شريط التنقل السفلي الثابت (Bottom Navigation Bar) */
+        .bottom-nav-ribbon {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08);
+            padding: 10px 20px;
+            z-index: 1000;
+            max-width: 760px;
+            margin: 0 auto;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+
+        .nav-items-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .nav-anchor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 14px;
+            cursor: pointer;
+            color: var(--slate-gray);
+            background: transparent;
+            border: none;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-anchor.active {
+            color: var(--primary-blue);
+            background: rgba(0, 102, 204, 0.08);
+            font-weight: 700;
+        }
+
+        .nav-anchor i {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .nav-anchor span {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .nav-alert-badge {
+            position: absolute;
+            top: 4px;
+            left: 30%;
+            background: #EF4444;
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 900;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= STAGE 1: CINEMATIC VISUAL SPLASH SCREEN ================= -->
+    <div id="stage-splash" class="app-stage active">
+        <div class="animate-capsule" style="display: flex; flex-direction: column; align-items: center; gap: 18px;">
+            <div class="capsule-pill large">
+                <div class="capsule-core">
+                    <div class="capsule-left-half"></div>
+                    <div class="capsule-right-half"></div>
+                    <div class="capsule-seam"></div>
+                </div>
+            </div>
+            <div>
+                <span class="brand-text" style="font-size: 38px;">
+                    <span class="brand-pharma">Pharma</span><span class="brand-link">Link</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= STAGE 2: THE REFINED CREDENTIALS GATEWAY ================= -->
+    <div id="stage-gateway" class="app-stage">
+        <div class="gateway-wrapper">
+            <div class="gateway-card fade-in">
+                <div style="text-align: center; margin-bottom: 26px;">
+                    <div style="display: flex; justify-content: center; margin-bottom: 14px;">
+                        <div class="capsule-pill normal">
+                            <div class="capsule-core">
+                                <div class="capsule-left-half"></div>
+                                <div class="capsule-right-half"></div>
+                                <div class="capsule-seam"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 style="font-size: 22px; margin-bottom: 4px;">
+                        <span class="brand-text" style="font-size: 25px;">
+                            <span class="brand-pharma">Pharma</span><span class="brand-link">Link</span>
+                        </span>
+                    </h1>
+                    <p style="font-size: 12px; font-weight: 700; color: var(--slate-gray);">غرفة تعبئة معلومات المنصة
+                        التجارية اللوجستية</p>
+                </div>
+
+                <form id="authGatewayForm" onsubmit="processLoginExecution(event)">
+                    <div class="form-block">
+                        <label class="form-label">تحديد الهوية المهنية:</label>
+                        <div class="role-switcher-grid">
+                            <button type="button" id="roleBtnPharm" class="role-option-btn active"
+                                onclick="switchLoginRole('pharmacist')">
+                                <i class="fa-solid fa-user-doctor"></i> صيدلاني
+                            </button>
+                            <button type="button" id="roleBtnWh" class="role-option-btn"
+                                onclick="switchLoginRole('warehouse')">
+                                <i class="fa-solid fa-warehouse"></i> صاحب مستودع
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-block">
+                        <label class="form-label" id="authNameLabel">اسم المنشأة الصيدلانية</label>
+                        <div class="input-box-wrapper">
+                            <i id="authNameIcon" class="fa-solid fa-clinic-medical input-icon"></i>
+                            <input type="text" id="authFacilityInput" class="form-input"
+                                placeholder="مثال: صيدلية أوزكان النموذجية" required>
+                        </div>
+                    </div>
+
+                    <div class="form-block">
+                        <label class="form-label">كلمة المرور المشفرة</label>
+                        <div class="input-box-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="authPasswordInput" class="form-input" placeholder="••••••••"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-block">
+                        <label class="form-label">النطاق الجغرافي للتشغيل</label>
+                        <div class="input-box-wrapper">
+                            <i class="fa-solid fa-map-location-dot input-icon"></i>
+                            <select id="authRegionSelect" class="form-select">
+                                <option value="حلب وريفها">حلب وريفها</option>
+                                <option value="إدلب وريفها">إدلب وريفها</option>
+                                <option value="منبج وريفها">منبج وريفها</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit-primary">تسجيل الدخول</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= STAGE 3: THE HIGH-FIDELITY MAIN WORKSPACES ================= -->
+    <div id="stage-dashboard" class="app-stage">
+        <div class="dashboard-main-wrapper">
+
+            <!-- شريط الحالة والإشعارات العلوي -->
+            <header class="top-status-ribbon">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div class="capsule-pill" style="width: 36px; height: 18px; padding: 2px;">
+                        <div class="capsule-core">
+                            <div class="capsule-left-half"></div>
+                            <div class="capsule-right-half"></div>
+                            <div class="capsule-seam"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="brand-text" style="font-size: 15px;">
+                            <span class="brand-pharma">Pharma</span><span class="brand-link">Link</span>
+                        </span>
+                        <p id="topRibbonSub" style="font-size: 11px; color: var(--slate-gray); font-weight: 700;"></p>
+                    </div>
+                </div>
+                <div class="live-toast-box">
+                    <i class="fa-solid fa-circle-check" style="color: #10B981;"></i>
+                    <span id="systemToastText">أهلاً بك يا أوزكان بيك في شبكة PharmaLink اللوجستية المعتمدة.</span>
+                </div>
+            </header>
+
+            <!-- حاوية عرض مساحات العمل الديناميكية -->
+            <main class="content-container">
+
+                <!-- 1. WORKSPACE: PHARMACIST -->
+                <div id="workspace-pharmacist" class="workspace-view">
+
+                    <!-- SUB-VIEW 0: MARKETPLACE -->
+                    <div id="pharm-sub-0" class="pharm-inner-pane">
+                        <div class="enterprise-card"
+                            style="padding: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                            <div>
+                                <h2 style="font-size: 17px; font-weight: 900; color: var(--primary-blue);">سوق الأدوية
+                                    والمستلزمات الطبية المعتمدة</h2>
+                                <p style="font-size: 12px; color: var(--slate-gray); margin-top: 2px;">استعراض الموارد
+                                    والأرصدة المتاحة في مستودعات نطاقك الجغرافي المحدد.</p>
+                            </div>
+                            <div style="width: 310px;">
+                                <div class="input-box-wrapper">
+                                    <i class="fa-solid fa-search input-icon"></i>
+                                    <input type="text" id="pharmacistSearchInput" class="form-input"
+                                        placeholder="بحث بالاسم التجاري أو المادة الفعالة..."
+                                        oninput="renderPharmacistMarketplace()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- أزرار الفلترة حسب التصنيف العلاجي -->
+                        <div class="filter-pills-row" id="pharmacistCategoryPills">
+                            <button class="filter-pill-item active"
+                                onclick="setPharmacistCategory('الكل', this)">الكل</button>
+                            <button class="filter-pill-item"
+                                onclick="setPharmacistCategory('المضادات الحيوية', this)">المضادات الحيوية</button>
+                            <button class="filter-pill-item"
+                                onclick="setPharmacistCategory('المسكنات', this)">المسكنات</button>
+                            <button class="filter-pill-item"
+                                onclick="setPharmacistCategory('أدوية الأمراض المزمنة', this)">أدوية الأمراض
+                                المزمنة</button>
+                            <button class="filter-pill-item"
+                                onclick="setPharmacistCategory('المستلزمات الطبية', this)">المستلزمات الطبية</button>
+                        </div>
+
+                        <div class="enterprise-card">
+                            <div style="overflow-x: auto;">
+                                <table class="enterprise-table">
+                                    <thead>
+                                        <tr>
+                                            <th>اسم الدواء التجاري</th>
+                                            <th>المادة الفعالة</th>
+                                            <th>الشركة المصنعة</th>
+                                            <th>المستودع المورد</th>
+                                            <th>الكمية المتاحة</th>
+                                            <th>سعر العلبة (ل.س)</th>
+                                            <th style="text-align: center;">إضافة للسلة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pharmacistTableBody">
+                                        <!-- يُعبأ ديناميكياً عبر الجافاسكريبت -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-VIEW 1: CART MATRIX & ORDER DISPATCH -->
+                    <div id="pharm-sub-1" class="pharm-inner-pane" style="display: none;">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items: start;">
+                            <div class="enterprise-card" style="padding: 24px;">
+                                <h3
+                                    style="font-size: 16px; font-weight: 900; color: var(--primary-blue); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #F1F5F9;">
+                                    سلة مشتريات الصيدلية الحالية</h3>
+                                <div id="pharmacistCartItemsBox">
+                                    <!-- يُعبأ ديناميكياً -->
+                                </div>
+                            </div>
+                            <div class="enterprise-card" style="padding: 24px;">
+                                <h3
+                                    style="font-size: 16px; font-weight: 900; color: var(--primary-blue); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #F1F5F9;">
+                                    ملخص الفاتورة المالية</h3>
+                                <div
+                                    style="display: flex; flex-direction: column; gap: 12px; font-size: 14px; margin-bottom: 24px;">
+                                    <div
+                                        style="display: flex; justify-content: space-between; color: var(--slate-gray);">
+                                        <span>إجمالي الأصناف:</span>
+                                        <span id="cartSubTotalText" style="font-weight: 700; color: var(--text-main);">0
+                                            ل.س</span>
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; color: var(--slate-gray);">
+                                        <span>رسوم نقابة الصيادلة (2%):</span>
+                                        <span id="cartTaxText" style="font-weight: 700; color: var(--text-main);">0
+                                            ل.س</span>
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; color: var(--slate-gray);">
+                                        <span>الشحن والتوصيل اللوجستي:</span>
+                                        <span style="font-weight: 700; color: #10B981;">مجاني ضمن النطاق</span>
+                                    </div>
+                                    <div
+                                        style="border-top: 1px solid #F1F5F9; padding-top: 12px; display: flex; justify-content: space-between; font-weight: 900;">
+                                        <span style="color: var(--slate-gray);">الإجمالي النهائي:</span>
+                                        <span id="cartGrandTotalText"
+                                            style="color: var(--primary-blue); font-size: 18px;">0 ل.س</span>
+                                    </div>
+                                </div>
+                                <button onclick="executeOrderDispatch()" id="dispatchOrderBtn"
+                                    class="btn-submit-primary" style="background: #10B981;" disabled>
+                                    إرسال الطلبيّة للمستودعات بشكل فوري
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. WORKSPACE: WAREHOUSE -->
+                <div id="workspace-warehouse" class="workspace-view" style="display: none;">
+
+                    <!-- SUB-VIEW 0: INVENTORY LEDGER -->
+                    <div id="wh-sub-0" class="wh-inner-pane">
+                        <div class="enterprise-card" style="padding: 24px; margin-bottom: 24px;">
+                            <h3
+                                style="font-size: 16px; font-weight: 900; color: var(--primary-blue); margin-bottom: 16px;">
+                                إضافة صنف دوائي جديد لكتالوج المستودع</h3>
+                            <form onsubmit="handleWarehouseAddMedicine(event)"
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px;">
+                                <div class="form-block" style="margin-bottom:0;">
+                                    <label class="form-label">اسم الدواء التجاري</label>
+                                    <input type="text" id="newDrugName" class="form-input"
+                                        placeholder="مثال: أسبرين 100 مغ" required style="padding-left:14px;">
+                                </div>
+                                <div class="form-block" style="margin-bottom:0;">
+                                    <label class="form-label">المادة الفعالة</label>
+                                    <input type="text" id="newDrugActive" class="form-input" placeholder="مثال: Aspirin"
+                                        required style="padding-left:14px;">
+                                </div>
+                                <div class="form-block" style="margin-bottom:0;">
+                                    <label class="form-label">الشركة المصنعة</label>
+                                    <input type="text" id="newDrugCompany" class="form-input"
+                                        placeholder="مثال: الشرق للأدوية" required style="padding-left:14px;">
+                                </div>
+                                <div class="form-block" style="margin-bottom:0;">
+                                    <label class="form-label">الرصيد المتاح (علبة)</label>
+                                    <input type="number" id="newDrugStock" class="form-input" placeholder="1000"
+                                        required style="padding-left:14px;">
+                                </div>
+                                <div class="form-block" style="margin-bottom:0;">
+                                    <label class="form-label">سعر الجملة (ل.س)</label>
+                                    <input type="number" id="newDrugPrice" class="form-input" placeholder="15000"
+                                        required style="padding-left:14px;">
+                                </div>
+                                <div class="form-block" style="margin-bottom:0;">
+                                    <label class="form-label">التصنيف العلاجي</label>
+                                    <select id="newDrugCategory" class="form-select" style="padding-left:14px;">
+                                        <option value="المضادات الحيوية">المضادات الحيوية</option>
+                                        <option value="المسكنات">المسكنات</option>
+                                        <option value="أدوية الأمراض المزمنة">أدوية الأمراض المزمنة</option>
+                                        <option value="المستلزمات الطبية">المستلزمات الطبية</option>
+                                    </select>
+                                </div>
+                                <div
+                                    style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 6px;">
+                                    <button type="submit" class="btn-action-sm">إدراج الصنف في المخزون</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="enterprise-card">
+                            <div
+                                style="padding: 16px 20px; background: #F8FAFC; border-bottom: 1px solid var(--border-color);">
+                                <h4 style="font-size: 14px; font-weight: 900; color: var(--primary-blue);">سجل المخزون
+                                    والأرصدة الحالية للمستودع</h4>
+                            </div>
+                            <div style="overflow-x: auto;">
+                                <table class="enterprise-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الدواء</th>
+                                            <th>المادة الفعالة</th>
+                                            <th>التصنيف</th>
+                                            <th>الرصيد المتاح</th>
+                                            <th>السعر</th>
+                                            <th>النطاق الجغرافي</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="warehouseInventoryTableBody">
+                                        <!-- يُعبأ ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-VIEW 1: INCOMING REQUESTS QUEUE -->
+                    <div id="wh-sub-1" class="wh-inner-pane" style="display: none;">
+                        <div class="enterprise-card">
+                            <div
+                                style="padding: 16px 20px; background: #F8FAFC; border-bottom: 1px solid var(--border-color);">
+                                <h4 style="font-size: 14px; font-weight: 900; color: var(--primary-blue);">إدارة
+                                    الطلبيات الصيدلانية الواردة (Incoming Queue)</h4>
+                            </div>
+                            <div id="warehouseIncomingOrdersBox">
+                                <!-- يُعبأ ديناميكياً -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. WORKSPACE: ANALYTICS MATRIX -->
+                <div id="workspace-analytics" class="workspace-view" style="display: none;">
+                    <h2 style="font-size: 18px; font-weight: 900; color: var(--primary-blue); margin-bottom: 22px;">
+                        الشبكة الإقليمية ومؤشرات الأداء اللوجستي</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                        <div class="enterprise-card" style="padding: 24px;">
+                            <p style="font-size: 12px; font-weight: 700; color: var(--slate-gray); margin-bottom: 6px;">
+                                الصيدليات النشطة بالنطاق</p>
+                            <p style="font-size: 30px; font-weight: 900; color: var(--primary-blue);">512</p>
+                            <span
+                                style="font-size: 11px; color: #10B981; font-weight: 700; margin-top: 8px; display: inline-block;">↑
+                                14% نمو تشغيلي شهري</span>
+                        </div>
+                        <div class="enterprise-card" style="padding: 24px;">
+                            <p style="font-size: 12px; font-weight: 700; color: var(--slate-gray); margin-bottom: 6px;">
+                                المستودعات الطبية المعتمدة</p>
+                            <p style="font-size: 30px; font-weight: 900; color: var(--primary-blue);">28</p>
+                            <span
+                                style="font-size: 11px; color: var(--slate-gray); font-weight: 700; margin-top: 8px; display: inline-block;">تغطية
+                                حلب، إدلب، منبج</span>
+                        </div>
+                        <div class="enterprise-card" style="padding: 24px;">
+                            <p style="font-size: 12px; font-weight: 700; color: var(--slate-gray); margin-bottom: 6px;">
+                                الطلبيات المُعَالَجَة يومياً</p>
+                            <p style="font-size: 30px; font-weight: 900; color: var(--primary-blue);">1,480</p>
+                            <span
+                                style="font-size: 11px; color: #10B981; font-weight: 700; margin-top: 8px; display: inline-block;">كفاءة
+                                تسليم 99.2%</span>
+                        </div>
+                        <div class="enterprise-card" style="padding: 24px;">
+                            <p style="font-size: 12px; font-weight: 700; color: var(--slate-gray); margin-bottom: 6px;">
+                                حجم التداول التجاري</p>
+                            <p style="font-size: 26px; font-weight: 900; color: var(--primary-blue);">94.6M ل.س</p>
+                            <span
+                                style="font-size: 11px; color: var(--slate-gray); font-weight: 700; margin-top: 8px; display: inline-block;">محدث
+                                عبر عقد الشبكة الفوري</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. WORKSPACE: ACCOUNT MANAGEMENT HUB -->
+                <div id="workspace-account" class="workspace-view" style="display: none;">
+                    <div style="max-width: 620px; margin: 0 auto;">
+                        <div class="enterprise-card" style="padding: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 18px; padding-bottom: 24px; border-bottom: 1px solid #F1F5F9; margin-bottom: 24px;">
+                                <div id="accHubIconBox"
+                                    style="width: 64px; height: 64px; border-radius: 16px; background: rgba(0,102,204,0.1); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                    <i class="fa-solid fa-user-doctor"></i>
+                                </div>
+                                <div>
+                                    <h3 id="accHubNameText"
+                                        style="font-size: 18px; font-weight: 900; color: var(--primary-blue);">اسم
+                                        المنشأة</h3>
+                                    <p style="font-size: 12px; color: var(--slate-gray); margin-top: 4px;">الهوية
+                                        المهنية: <strong id="accHubRoleText" style="color: var(--text-main);">صيدلاني
+                                            معتمد</strong></p>
+                                    <p style="font-size: 12px; color: var(--slate-gray);">نطاق العمل: <strong
+                                            id="accHubRegionText" style="color: var(--text-main);">حلب وريفها</strong>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 24px;">
+                                <h4
+                                    style="font-size: 12px; font-weight: 700; color: var(--slate-gray); text-transform: uppercase; margin-bottom: 12px;">
+                                    التراخيص والاعتمادات الرسمية</h4>
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #F8FAFC; border-radius: 14px; border: 1px solid var(--border-color); font-size: 12px;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <i class="fa-solid fa-shield-halved"
+                                            style="color: #10B981; font-size: 20px;"></i>
+                                        <div>
+                                            <p style="font-weight: 700; color: var(--text-main);">رخصة مزاولة المهنة
+                                                والربط اللوجستي الآمن</p>
+                                            <p style="color: var(--slate-gray); margin-top: 2px;">معتمدة من مديرية الصحة
+                                                والجهات التنظيمية الإقليمية</p>
+                                        </div>
+                                    </div>
+                                    <span
+                                        style="padding: 4px 12px; background: #ECFDF5; color: #047857; font-weight: 700; border-radius: 8px; border: 1px solid #A7F3D0;">ساري
+                                        المفعول</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 28px;">
+                                <h4
+                                    style="font-size: 12px; font-weight: 700; color: var(--slate-gray); text-transform: uppercase; margin-bottom: 12px;">
+                                    إعدادات الحساب النظامية</h4>
+                                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: center; padding: 14px; background: #F8FAFC; border-radius: 12px; border: 1px solid var(--border-color);">
+                                        <span style="font-weight: 700; color: var(--text-main);">تنبيهات الإرسال الفوري
+                                            لطلبيات المستودع</span>
+                                        <span
+                                            style="padding: 4px 10px; background: var(--primary-blue); color: #FFFFFF; font-weight: 700; border-radius: 8px;">مفعل</span>
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: center; padding: 14px; background: #F8FAFC; border-radius: 12px; border: 1px solid var(--border-color);">
+                                        <span style="font-weight: 700; color: var(--text-main);">لغة النظام
+                                            المعتمدة</span>
+                                        <span style="font-weight: 700; color: var(--primary-blue);">العربية الفصحى
+                                            (الرسمية)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button onclick="executeSafeLogout()" class="btn-submit-primary"
+                                    style="background: var(--slate-gray); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                    <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج الآمن
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- شريط التنقل السفلي الثابت (Bottom Navigation Deck) -->
+            <nav class="bottom-nav-ribbon">
+                <div class="nav-items-grid">
+                    <button onclick="routerSwitchTab(0)" id="navAnchor-0" class="nav-anchor active">
+                        <i id="navIcon-0" class="fa-solid fa-store"></i>
+                        <span id="navText-0">سوق الأدوية</span>
+                    </button>
+                    <button onclick="routerSwitchTab(1)" id="navAnchor-1" class="nav-anchor">
+                        <i id="navIcon-1" class="fa-solid fa-cart-shopping"></i>
+                        <span id="navText-1">سلة الطلب</span>
+                        <span id="badgeCartCount" class="nav-alert-badge" style="display: none;">0</span>
+                        <span id="badgeOrderCount" class="nav-alert-badge" style="display: none;">0</span>
+                    </button>
+                    <button onclick="routerSwitchTab(2)" id="navAnchor-2" class="nav-anchor">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>الشبكة</span>
+                    </button>
+                    <button onclick="routerSwitchTab(3)" id="navAnchor-3" class="nav-anchor">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>الحساب</span>
+                    </button>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+
+    <!-- ================= هندسة البيانات ومنطق الدولة (Vanilla JavaScript State Engine) ================= -->
+    <script>
+        // قاعدة البيانات المركزية الافتراضية الشاملة للأدوية والطلبيات اللوجستية
+        let globalMedicinesDataset = [
+            { id: 1, name: 'باراسيتامول 500 مغ', activeIngredient: 'Paracetamol', company: 'الشرق للأدوية', stock: 1500, warehouse: 'مستودع ابن سينا', price: 15000, region: 'حلب وريفها', category: 'المسكنات' },
+            { id: 2, name: 'أموكسيسيلين 500 مغ', activeIngredient: 'Amoxicillin', company: 'البركة الدوائية', stock: 650, warehouse: 'مستودع الشفاء', price: 32000, region: 'إدلب وريفها', category: 'المضادات الحيوية' },
+            { id: 3, name: 'إيبوبروفين 400 مغ', activeIngredient: 'Ibuprofen', company: 'الديار الطبية', stock: 950, warehouse: 'مستودع ابن سينا', price: 20000, region: 'حلب وريفها', category: 'المسكنات' },
+            { id: 4, name: 'ميتفورمين 850 مغ', activeIngredient: 'Metformin', company: 'الشفا الدوائية', stock: 400, warehouse: 'مستودع الألفية', price: 28000, region: 'منبج وريفها', category: 'أدوية الأمراض المزمنة' },
+            { id: 5, name: 'سيتريزين 10 مغ', activeIngredient: 'Cetirizine', company: 'اليرموك للصناعات', stock: 800, warehouse: 'مستودع النخبة', price: 18500, region: 'منبج وريفها', category: 'المستلزمات الطبية' },
+            { id: 6, name: 'أوميبرازول 20 مغ', activeIngredient: 'Omeprazole', company: 'سوريا الفارابي', stock: 420, warehouse: 'مستودع الشفاء', price: 41000, region: 'إدلب وريفها', category: 'أدوية الأمراض المزمنة' },
+            { id: 7, name: 'سيفوتكس 1غ (حقن)', activeIngredient: 'Cefotaxime', company: 'الدولي للأدوية', stock: 300, warehouse: 'مستودع النخبة', price: 55000, region: 'حلب وريفها', category: 'المضادات الحيوية' },
+            { id: 8, name: 'كمامات طبية معقمة (علبة 50)', activeIngredient: 'Medical Masks', company: 'مؤسسة المستلزمات', stock: 2500, warehouse: 'مستودع ابن سينا', price: 12000, region: 'حلب وريفها', category: 'المستلزمات الطبية' }
+        ];
+
+        let globalOrdersDataset = [
+            { id: 'ORD-901', pharmacy: 'صيدلية النور المركزية', region: 'حلب وريفها', items: [{ name: 'باراسيتامول 500 مغ', qty: 50, price: 15000 }], total: 765000, status: 'قيد الانتظار', time: 'منذ 10 دقائق' },
+            { id: 'ORD-902', pharmacy: 'صيدلية الشفاء التخصصية', region: 'إدلب وريفها', items: [{ name: 'أموكسيسيلين 500 مغ', qty: 30, price: 32000 }], total: 979200, status: 'معتمد وجاري التجهيز', time: 'منذ 45 دقيقة' }
+        ];
+
+        let activePharmacistCart = [];
+        let sessionUser = {
+            role: 'pharmacist',
+            name: '',
+            region: 'حلب وريفها'
+        };
+        let activeFilterCategory = 'الكل';
+        let currentActiveTab = 0;
+
+        // تنفيذ الانتقال التلقائي من الشاشة الترحيبية (Stage 1) إلى بوابة الدخول (Stage 2) بعد 3.5 ثانية بدقة
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('stage-splash').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('stage-splash').classList.remove('active');
+                    document.getElementById('stage-gateway').classList.add('active');
+                }, 500);
+            }, 3500);
+        });
+
+        // تبديل الأدوار في بوابة تسجيل الدخول (صيدلاني / صاحب مستودع)
+        function switchLoginRole(role) {
+            sessionUser.role = role;
+            const btnPharm = document.getElementById('roleBtnPharm');
+            const btnWh = document.getElementById('roleBtnWh');
+            const label = document.getElementById('authNameLabel');
+            const input = document.getElementById('authFacilityInput');
+            const icon = document.getElementById('authNameIcon');
+
+            if (role === 'pharmacist') {
+                btnPharm.classList.add('active');
+                btnWh.classList.remove('active');
+                label.innerText = 'اسم المنشأة الصيدلانية';
+                input.placeholder = 'مثال: صيدلية أوزكان النموذجية';
+                icon.className = 'fa-solid fa-clinic-medical input-icon';
+            } else {
+                btnWh.classList.add('active');
+                btnPharm.classList.remove('active');
+                label.innerText = 'اسم المستودع الرئيسي';
+                input.placeholder = 'مثال: مستودع الشفاء اللوجستي';
+                icon.className = 'fa-solid fa-warehouse input-icon';
+            }
+        }
+
+        // معالجة الدخول وحفظ البيانات والانتقال إلى لوحة التحكم (Stage 3)
+        function processLoginExecution(e) {
+            e.preventDefault();
+            const nameVal = document.getElementById('authFacilityInput').value.trim();
+            const regionVal = document.getElementById('authRegionSelect').value;
+
+            sessionUser.name = nameVal || (sessionUser.role === 'pharmacist' ? 'صيدلية أوزكان النموذجية' : 'مستودع الشفاء المركزي');
+            sessionUser.region = regionVal;
+
+            document.getElementById('stage-gateway').classList.remove('active');
+            document.getElementById('stage-dashboard').classList.add('active');
+
+            initializeWorkspaceState();
+            setSystemToast(`أهلاً بك يا أوزكان بيك. تم المصادقة وبدء جلسة ${sessionUser.name} بنجاح.`);
+        }
+
+        // تهيئة واجهات مساحة العمل بناءً على دور المستخدم الحالي
+        function initializeWorkspaceState() {
+            const isPharm = sessionUser.role === 'pharmacist';
+
+            document.getElementById('topRibbonSub').innerText = `${isPharm ? 'صيدلاني معتمد' : 'مستودع رئيسي'}: ${sessionUser.name} (${sessionUser.region})`;
+
+            // تحديث أيقونات ونصوص شريط التنقل السفلي
+            document.getElementById('navIcon-0').className = isPharm ? 'fa-solid fa-store' : 'fa-solid fa-boxes-packing';
+            document.getElementById('navText-0').innerText = isPharm ? 'سوق الأدوية' : 'مخزوني';
+
+            document.getElementById('navIcon-1').className = isPharm ? 'fa-solid fa-cart-shopping' : 'fa-solid fa-clipboard-list';
+            document.getElementById('navText-1').innerText = isPharm ? 'سلة الطلب' : 'الطلبات الواردة';
+
+            // تعبئة بيانات الحساب
+            document.getElementById('accHubNameText').innerText = sessionUser.name;
+            document.getElementById('accHubRoleText').innerText = isPharm ? 'صيدلاني معتمد' : 'صاحب مستودع رئيسي';
+            document.getElementById('accHubRegionText').innerText = sessionUser.region;
+            document.getElementById('accHubIconBox').innerHTML = isPharm ? '<i class="fa-solid fa-user-doctor"></i>' : '<i class="fa-solid fa-warehouse"></i>';
+
+            routerSwitchTab(0);
+        }
+
+        // راوتر التنقل السفلي للتبويبات
+        function routerSwitchTab(tabIndex) {
+            currentActiveTab = tabIndex;
+
+            for (let i = 0; i < 4; i++) {
+                const anchor = document.getElementById(`navAnchor-${i}`);
+                if (i === tabIndex) {
+                    anchor.classList.add('active');
+                } else {
+                    anchor.classList.remove('active');
+                }
+            }
+
+            document.getElementById('workspace-pharmacist').style.display = 'none';
+            document.getElementById('workspace-warehouse').style.display = 'none';
+            document.getElementById('workspace-analytics').style.display = 'none';
+            document.getElementById('workspace-account').style.display = 'none';
+
+            if (tabIndex === 2) {
+                document.getElementById('workspace-analytics').style.display = 'block';
+            } else if (tabIndex === 3) {
+                document.getElementById('workspace-account').style.display = 'block';
+            } else {
+                if (sessionUser.role === 'pharmacist') {
+                    document.getElementById('workspace-pharmacist').style.display = 'block';
+                    document.getElementById('pharm-sub-0').style.display = tabIndex === 0 ? 'block' : 'none';
+                    document.getElementById('pharm-sub-1').style.display = tabIndex === 1 ? 'block' : 'none';
+                    if (tabIndex === 0) renderPharmacistMarketplace();
+                    if (tabIndex === 1) renderCartManagementView();
+                } else {
+                    document.getElementById('workspace-warehouse').style.display = 'block';
+                    document.getElementById('wh-sub-0').style.display = tabIndex === 0 ? 'block' : 'none';
+                    document.getElementById('wh-sub-1').style.display = tabIndex === 1 ? 'block' : 'none';
+                    if (tabIndex === 0) renderWarehouseInventoryLedger();
+                    if (tabIndex === 1) renderWarehouseIncomingQueue();
+                }
+            }
+            refreshBadgeCounters();
+        }
+
+        // تحديث العدّادات الرقمية (Badges) الحية
+        function refreshBadgeCounters() {
+            const badgeCart = document.getElementById('badgeCartCount');
+            const badgeOrder = document.getElementById('badgeOrderCount');
+
+            if (sessionUser.role === 'pharmacist') {
+                if (activePharmacistCart.length > 0) {
+                    badgeCart.style.display = 'flex';
+                    badgeCart.innerText = activePharmacistCart.length;
+                } else {
+                    badgeCart.style.display = 'none';
+                }
+                badgeOrder.style.display = 'none';
+            } else {
+                badgeCart.style.display = 'none';
+                const pendingOrdersCount = globalOrdersDataset.filter(o => o.status === 'قيد الانتظار').length;
+                if (pendingOrdersCount > 0) {
+                    badgeOrder.style.display = 'flex';
+                    badgeOrder.innerText = pendingOrdersCount;
+                } else {
+                    badgeOrder.style.display = 'none';
+                }
+            }
+        }
+
+        // عرض سوق الأدوية للصيدلاني مع الفلترة الحية
+        function renderPharmacistMarketplace() {
+            const tbody = document.getElementById('pharmacistTableBody');
+            const searchVal = document.getElementById('pharmacistSearchInput') ? document.getElementById('pharmacistSearchInput').value.toLowerCase() : '';
+
+            const matchedRows = globalMedicinesDataset
+                .filter(m => m.region === sessionUser.region)
+                .filter(m => activeFilterCategory === 'الكل' || m.category === activeFilterCategory)
+                .filter(m => m.name.toLowerCase().includes(searchVal) || m.activeIngredient.toLowerCase().includes(searchVal));
+
+            tbody.innerHTML = '';
+            if (matchedRows.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 36px; color: var(--slate-gray);">لا توجد أصناف دوائية مطابقة لمعايير البحث في نطاقك الجغرافي.</td></tr>`;
+                return;
+            }
+
+            matchedRows.forEach(drug => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight: 700; color: var(--primary-blue);">${drug.name}</td>
+                        <td style="color: var(--slate-gray);">${drug.activeIngredient}</td>
+                        <td style="color: var(--slate-gray);">${drug.company}</td>
+                        <td style="font-weight: 700; font-size: 13px;">${drug.warehouse}</td>
+                        <td><span style="padding: 4px 10px; background: #ECFDF5; color: #047857; font-weight: 700; border-radius: 8px; border: 1px solid #A7F3D0;">${drug.stock} علبة</span></td>
+                        <td style="font-weight: 700;">${drug.price.toLocaleString()} ل.س</td>
+                        <td style="text-align: center;">
+                            <button onclick="addDrugToCart(${drug.id})" class="btn-action-sm">
+                                <i class="fa-solid fa-cart-plus" style="margin-left: 4px;"></i> إضافة
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function setPharmacistCategory(catName, btnEl) {
+            activeFilterCategory = catName;
+            const pills = document.querySelectorAll('#pharmacistCategoryPills .filter-pill-item');
+            pills.forEach(p => p.classList.remove('active'));
+            btnEl.classList.add('active');
+            renderPharmacistMarketplace();
+        }
+
+        // إضافة صنف إلى سلة المشتريات
+        function addDrugToCart(drugId) {
+            const drug = globalMedicinesDataset.find(d => d.id === drugId);
+            if (!drug) return;
+
+            const existingItem = activePharmacistCart.find(i => i.id === drugId);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                activePharmacistCart.push({ ...drug, qty: 1 });
+            }
+
+            setSystemToast(`تمت إضافة "${drug.name}" بنجاح إلى سلة مشتريات صيدليتك.`);
+            refreshBadgeCounters();
+        }
+
+        // عرض تفاصيل السلة والحسابات المالية
+        function renderCartManagementView() {
+            const container = document.getElementById('pharmacistCartItemsBox');
+            const subTotalSpan = document.getElementById('cartSubTotalText');
+            const taxSpan = document.getElementById('cartTaxText');
+            const grandTotalSpan = document.getElementById('cartGrandTotalText');
+            const dispatchBtn = document.getElementById('dispatchOrderBtn');
+
+            if (activePharmacistCart.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 48px 0; color: var(--slate-gray);">
+                        <i class="fa-solid fa-cart-shopping" style="font-size: 42px; margin-bottom: 12px; color: #CBD5E1;"></i>
+                        <p style="font-size: 14px; font-weight: 700;">سلة المشتريات فارغة حالياً. انتقل إلى سوق الأدوية لاختيار الأصناف.</p>
+                    </div>
+                `;
+                subTotalSpan.innerText = '0 ل.س';
+                taxSpan.innerText = '0 ل.س';
+                grandTotalSpan.innerText = '0 ل.س';
+                dispatchBtn.disabled = true;
+                return;
+            }
+
+            let subTotalCalc = 0;
+            container.innerHTML = '';
+            activePharmacistCart.forEach(item => {
+                const lineTotal = item.price * item.qty;
+                subTotalCalc += lineTotal;
+                container.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: #F8FAFC; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                        <div>
+                            <p style="font-weight: 900; color: var(--primary-blue); font-size: 14px;">${item.name}</p>
+                            <p style="font-size: 11px; color: var(--slate-gray); margin-top: 2px;">الكمية المطلوبة: ${item.qty} علبة | السعر الفردي: ${item.price.toLocaleString()} ل.س</p>
+                        </div>
+                        <div style="font-weight: 900; color: var(--primary-blue); font-size: 14px;">
+                            ${lineTotal.toLocaleString()} ل.س
+                        </div>
+                    </div>
+                `;
+            });
+
+            const taxCalc = Math.round(subTotalCalc * 0.02); // رسم نقابة الصيادلة 2%
+            const grandTotalCalc = subTotalCalc + taxCalc;
+
+            subTotalSpan.innerText = subTotalCalc.toLocaleString() + ' ل.س';
+            taxSpan.innerText = taxCalc.toLocaleString() + ' ل.س';
+            grandTotalSpan.innerText = grandTotalCalc.toLocaleString() + ' ل.س';
+            dispatchBtn.disabled = false;
+        }
+
+        // إرسال الطلبيّة للمستودعات بشكل فوري
+        function executeOrderDispatch() {
+            if (activePharmacistCart.length === 0) return;
+
+            const subTotal = activePharmacistCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const tax = Math.round(subTotal * 0.02);
+            const grandTotal = subTotal + tax;
+
+            const newOrderRecord = {
+                id: `ORD-${Math.floor(100 + Math.random() * 900)}`,
+                pharmacy: sessionUser.name,
+                region: sessionUser.region,
+                items: [...activePharmacistCart],
+                total: grandTotal,
+                status: 'قيد الانتظار',
+                time: 'الآن'
+            };
+
+            globalOrdersDataset.unshift(newOrderRecord);
+            activePharmacistCart = [];
+            setSystemToast('تم إرسال الطلبيّة للمستودعات بشكل فوري وتم توجيهها بنجاح!');
+            routerSwitchTab(1);
+        }
+
+        // إضافة صنف دوائي جديد من قبل المستودع
+        function handleWarehouseAddMedicine(e) {
+            e.preventDefault();
+            const name = document.getElementById('newDrugName').value;
+            const active = document.getElementById('newDrugActive').value;
+            const company = document.getElementById('newDrugCompany').value;
+            const stock = Number(document.getElementById('newDrugStock').value);
+            const price = Number(document.getElementById('newDrugPrice').value);
+            const category = document.getElementById('newDrugCategory').value;
+
+            const newRecord = {
+                id: globalMedicinesDataset.length + 1,
+                name,
+                activeIngredient: active,
+                company,
+                stock,
+                price,
+                region: sessionUser.region,
+                category,
+                warehouse: sessionUser.name
+            };
+
+            globalMedicinesDataset.unshift(newRecord);
+            e.target.reset();
+            renderWarehouseInventoryLedger();
+            setSystemToast(`أضاف مستودعك صنف "${name}" إلى كتالوج الشبكة بنجاح.`);
+        }
+
+        // عرض سجل مخزون المستودع
+        function renderWarehouseInventoryLedger() {
+            const tbody = document.getElementById('warehouseInventoryTableBody');
+            const matchedList = globalMedicinesDataset.filter(m => m.warehouse === sessionUser.name || m.region === sessionUser.region);
+
+            tbody.innerHTML = '';
+            matchedList.forEach(drug => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight: 700; color: var(--primary-blue);">${drug.name}</td>
+                        <td style="color: var(--slate-gray);">${drug.activeIngredient}</td>
+                        <td style="font-size: 13px;">${drug.category}</td>
+                        <td style="font-weight: 700; color: #047857;">${drug.stock} علبة</td>
+                        <td style="font-weight: 700;">${drug.price.toLocaleString()} ل.س</td>
+                        <td style="color: var(--slate-gray); font-size: 12px;">${drug.region}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // عرض الطلبيات الواردة للمستودع
+        function renderWarehouseIncomingQueue() {
+            const container = document.getElementById('warehouseIncomingOrdersBox');
+            container.innerHTML = '';
+
+            if (globalOrdersDataset.length === 0) {
+                container.innerHTML = `<div style="padding: 36px; text-align: center; color: var(--slate-gray);">لا توجد طلبيات صيدلانية واردة في طابور العمل حالياً.</div>`;
+                return;
+            }
+
+            globalOrdersDataset.forEach(order => {
+                const statusColor = order.status === 'قيد الانتظار' ? '#F59E0B' : order.status === 'معتمد وجاري التجهيز' ? '#10B981' : '#EF4444';
+                container.innerHTML += `
+                    <div style="padding: 20px; border-bottom: 1px solid #F1F5F9; display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-weight: 900; color: var(--primary-blue); font-size: 15px;">${order.id}</span>
+                                <span style="font-weight: 700; color: var(--text-main);">${order.pharmacy}</span>
+                                <span style="font-size: 11px; color: var(--slate-gray);">(${order.region})</span>
+                            </div>
+                            <span style="padding: 4px 12px; background: ${statusColor}15; color: ${statusColor}; font-weight: 700; font-size: 12px; border-radius: 8px; border: 1px solid ${statusColor}40;">
+                                ${order.status}
+                            </span>
+                        </div>
+                        <p style="font-size: 12px; color: var(--slate-gray);">وقت الإرسال: ${order.time} | القيمة الإجمالية للفاتورة: <strong style="color: var(--primary-blue);">${order.total.toLocaleString()} ل.س</strong></p>
+                        <p style="font-size: 13px; color: var(--text-main); font-weight: 700;">الأصناف المطلوبة: ${order.items.map(i => `${i.name} (${i.qty} علبة)`).join('، ')}</p>
+                        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px;">
+                            <button onclick="updateOrderStatusAction('${order.id}', 'معتمد وجاري التجهيز')" class="btn-action-sm" style="background: #10B981;">قبول وتجهيز الطلبية</button>
+                            <button onclick="updateOrderStatusAction('${order.id}', 'مرفوض')" class="btn-action-sm btn-danger-sm">رفض الطلب</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateOrderStatusAction(orderId, newStatus) {
+            const targetOrder = globalOrdersDataset.find(o => o.id === orderId);
+            if (targetOrder) {
+                targetOrder.status = newStatus;
+                setSystemToast(`تم تحديث حالة الطلبية ${orderId} إلى: ${newStatus}`);
+                renderWarehouseIncomingQueue();
+                refreshBadgeCounters();
+            }
+        }
+
+        // تحديث رسائل شريط الإشعارات العلوي
+        function setSystemToast(msg) {
+            document.getElementById('systemToastText').innerText = msg;
+        }
+
+        // تسجيل الخروج الآمن ومسح المتغيرات والعودة للبوابة
+        function executeSafeLogout() {
+            sessionUser = { role: 'pharmacist', name: '', region: 'حلب وريفها' };
+            activePharmacistCart = [];
+            document.getElementById('stage-dashboard').classList.remove('active');
+            document.getElementById('stage-gateway').classList.add('active');
+            document.getElementById('authGatewayForm').reset();
+            switchLoginRole('pharmacist');
+            setSystemToast('تم إتمام تسجيل الخروج الآمن بنجاح وإعادة ضبط الجلسة.');
+        }
+    </script>
+</body>
+
+</html>
