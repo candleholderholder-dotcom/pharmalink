@@ -336,13 +336,69 @@
             box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.08);
         }
 
-        select.form-control {
-            padding-right: 48px;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23707070' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: left 16px center;
-            background-size: 16px;
+        /* Custom Regional Selector Component */
+        .custom-select-trigger {
+            width: 100%;
+            padding: 14px 48px 14px 16px;
+            background: var(--clinical-tint);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .custom-select-trigger:hover {
+            border-color: var(--feathery-teal);
+            background: var(--clinical-white);
+        }
+
+        .custom-select-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 100%;
+            background: var(--clinical-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-card);
+            z-index: 1050;
+            display: none;
+            overflow: hidden;
+            animation: fadeInStep 0.2s ease;
+        }
+
+        .custom-select-dropdown.active {
+            display: block;
+        }
+
+        .custom-select-option {
+            padding: 14px 18px;
+            cursor: pointer;
+            font-size: 0.98rem;
+            color: var(--text-main);
+            transition: var(--transition-smooth);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .custom-select-option:last-child {
+            border-bottom: none;
+        }
+
+        .custom-select-option:hover {
+            background: rgba(0, 128, 128, 0.06);
+            color: var(--feathery-teal);
+        }
+
+        .custom-select-option.selected {
+            background: var(--feathery-teal);
+            color: var(--clinical-white);
+            font-weight: 700;
         }
 
         /* Role Selector Cards */
@@ -522,7 +578,6 @@
             overflow-y: auto;
             padding: 28px;
             padding-bottom: 110px;
-            /* Leave space for bottom ribbon */
             max-width: 1240px;
             width: 100%;
             margin: 0 auto;
@@ -985,6 +1040,31 @@
             color: var(--feathery-teal);
         }
 
+        /* Custom Notification / Alert Popup Modal */
+        .notification-modal-box {
+            background: var(--clinical-white);
+            width: 100%;
+            max-width: 440px;
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .notification-icon-wrapper {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: rgba(0, 128, 128, 0.1);
+            color: var(--feathery-teal);
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
         /* Account Hub Profile Card */
         .profile-card {
             text-align: center;
@@ -1082,17 +1162,22 @@
                     </div>
                 </div>
 
-                <!-- Step 3: Regional Distribution Hub -->
+                <!-- Step 3: Custom Regional Selector Hub -->
                 <div class="wizard-step" id="wizard-step-3">
-                    <div class="form-group">
+                    <div class="form-group" style="position: relative;">
                         <label class="form-label">اختر مركز التوزيع الإقليمي المستهدف</label>
-                        <div class="input-icon-wrapper">
-                            <i class="fa-solid fa-map-location-dot"></i>
-                            <select id="input-region" class="form-control" required>
-                                <option value="حلب وريفها">حلب وريفها</option>
-                                <option value="إدلب وريفها">إدلب وريفها</option>
-                                <option value="منبج وريفها">منبج وريفها</option>
-                            </select>
+                        <div class="custom-select-trigger" id="region-selector-trigger"
+                            onclick="AppState.toggleRegionDropdown()">
+                            <span id="selected-region-text">حلب وريفها</span>
+                            <i class="fa-solid fa-chevron-down" style="color: var(--slate-gray);"></i>
+                        </div>
+                        <div class="custom-select-dropdown" id="region-selector-dropdown">
+                            <div class="custom-select-option selected" onclick="AppState.selectRegion('حلب وريفها')">حلب
+                                وريفها</div>
+                            <div class="custom-select-option" onclick="AppState.selectRegion('إدلب وريفها')">إدلب وريفها
+                            </div>
+                            <div class="custom-select-option" onclick="AppState.selectRegion('منبج وريفها')">منبج وريفها
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1179,7 +1264,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">التصنيف الدوائي</label>
-                    <select id="new-med-category" class="form-control" required>
+                    <select id="new-med-category" class="form-control" required
+                        style="background: var(--clinical-tint);">
                         <option value="مضادات حيوية">مضادات حيوية</option>
                         <option value="أدوية مزمنة">أدوية مزمنة</option>
                         <option value="مسكنات آلام">مسكنات آلام</option>
@@ -1201,6 +1287,22 @@
                     <button type="submit" class="btn btn-primary">حفظ وإضافة للمخزون</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Styled Modal Notification / Confirmation Popup Template -->
+    <div class="modal-overlay" id="modal-notification">
+        <div class="notification-modal-box">
+            <div class="notification-icon-wrapper" id="notif-modal-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 id="notif-modal-title"
+                style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px;">إشعار النظام
+            </h3>
+            <p id="notif-modal-message" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">نص
+                الإرسال أو التنبيه هنا...</p>
+            <button class="btn btn-primary" style="width: 100%; padding: 12px;"
+                onclick="AppState.closeNotificationModal()">حسناً</button>
         </div>
     </div>
 
@@ -1245,21 +1347,85 @@
                     const splash = document.getElementById('splash-screen');
                     if (splash) splash.classList.add('fade-out');
                 }, 3500);
+
+                // Close region dropdown on outside click
+                window.addEventListener('click', (e) => {
+                    const trigger = document.getElementById('region-selector-trigger');
+                    const dropdown = document.getElementById('region-selector-dropdown');
+                    if (trigger && dropdown && !trigger.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+            },
+
+            // --- STYLIZED NOTIFICATION MODAL HELPER ---
+            showNotification(title, message, isSuccess = true) {
+                const modal = document.getElementById('modal-notification');
+                const titleEl = document.getElementById('notif-modal-title');
+                const msgEl = document.getElementById('notif-modal-message');
+                const iconWrapper = document.getElementById('notif-modal-icon');
+
+                titleEl.innerText = title;
+                msgEl.innerText = message;
+
+                if (isSuccess) {
+                    iconWrapper.style.background = 'rgba(16, 185, 129, 0.1)';
+                    iconWrapper.style.color = '#10B981';
+                    iconWrapper.innerHTML = '<i class="fa-solid fa-check"></i>';
+                } else {
+                    iconWrapper.style.background = 'rgba(239, 68, 68, 0.1)';
+                    iconWrapper.style.color = '#EF4444';
+                    iconWrapper.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+                }
+
+                modal.classList.add('active');
+            },
+
+            closeNotificationModal() {
+                document.getElementById('modal-notification').classList.remove('active');
+            },
+
+            // --- CUSTOM REGIONAL SELECTOR HANDLERS ---
+            toggleRegionDropdown() {
+                const dropdown = document.getElementById('region-selector-dropdown');
+                dropdown.classList.toggle('active');
+            },
+
+            selectRegion(regionName) {
+                this.userMetadata.region = regionName;
+                document.getElementById('selected-region-text').innerText = regionName;
+
+                // Update selected styles in dropdown options
+                const options = document.querySelectorAll('.custom-select-option');
+                options.forEach(opt => {
+                    if (opt.innerText === regionName) {
+                        opt.classList.add('selected');
+                    } else {
+                        opt.classList.remove('selected');
+                    }
+                });
+
+                document.getElementById('region-selector-dropdown').classList.remove('active');
             },
 
             // --- WIZARD NAVIGATION (STAGE 2) ---
             nextStep() {
                 if (this.currentStep === 1) {
                     const val = document.getElementById('input-facility-name').value.trim();
-                    if (!val) { alert('يرجى إدخال اسم المنشأة الطبية'); return; }
+                    if (!val) {
+                        this.showNotification('خطأ في الادخال', 'يرجى إدخال اسم المنشأة الطبية أولاً', false);
+                        return;
+                    }
                     this.userMetadata.facilityName = val;
                 } else if (this.currentStep === 2) {
                     const val = document.getElementById('input-password').value.trim();
-                    if (!val) { alert('يرجى إدخال رمز التشغيل السريع'); return; }
+                    if (!val) {
+                        this.showNotification('خطأ في الأمان', 'يرجى إدخال رمز التشغيل السريع', false);
+                        return;
+                    }
                     this.userMetadata.password = val;
                 } else if (this.currentStep === 3) {
-                    const val = document.getElementById('input-region').value;
-                    this.userMetadata.region = val;
+                    // Region is already updated via selectRegion
                 }
 
                 if (this.currentStep < 4) {
@@ -1527,7 +1693,7 @@
                     existing.quantity += delta;
                     if (existing.quantity > med.stock) {
                         existing.quantity = med.stock;
-                        alert('عذراً، الكمية المطلوبة تتجاوز المخزون المتوفر لدى المستودع.');
+                        this.showNotification('تنبيه المخزون', 'عذراً، الكمية المطلوبة تتجاوز المخزون المتوفر لدى المستودع.', false);
                     }
                     if (existing.quantity <= 0) {
                         this.cart = this.cart.filter(c => c.medId !== medId);
@@ -1536,7 +1702,7 @@
                     if (med.stock > 0) {
                         this.cart.push({ medId: med.id, quantity: 1 });
                     } else {
-                        alert('المادة غير متوفرة حالياً في المخزون.');
+                        this.showNotification('نفاد المخزون', 'المادة غير متوفرة حالياً في المخزون.', false);
                     }
                 }
                 this.renderWorkspace();
@@ -1667,7 +1833,8 @@
                 // Flush cart
                 this.cart = [];
 
-                alert('تم إرسال الطلبية بنجاح إلى شبكة المستودعات الإقليمية المعتمدة!');
+                // Display matching styled success confirmation popup
+                this.showNotification('تم إرسال الطلبية بنجاح', 'تم إرسال طلبيتك إلى شبكة المستودعات الإقليمية المعتمدة وسيتم تجهيزها فوراً.', true);
                 this.switchTab('marketplace');
             },
 
@@ -1922,6 +2089,7 @@
                     this.selectedCategoryFilter = 'الكل';
 
                     document.getElementById('credentials-wizard-form').reset();
+                    document.getElementById('selected-region-text').innerText = 'حلب وريفها';
                     document.getElementById('app-container').classList.remove('active');
                     document.getElementById('gateway-container').classList.remove('hidden');
                     this.updateWizardUI();
