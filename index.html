@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - نظام الربط اللوجستي الدوائي الذكي</title>
+    <title>PharmaLink - شبكة التجارة واللوجستيات الدوائية الذكية</title>
     <!-- FontAwesome Icons CDN عبر Cloudflare -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Cairo -->
@@ -42,23 +42,29 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ================= الحركات والانيميشن الاحترافي ================= */
-        @keyframes pulse-capsule {
-
-            0%,
-            100% {
-                transform: scale(1);
+        /* ================= الحركات والانيميشن السينمائي المتقدم (Stage 1) ================= */
+        @keyframes cinematic-capsule-entry {
+            0% {
+                opacity: 0;
+                transform: translateY(-80px) scale(0.85);
                 filter: drop-shadow(0 0 0 rgba(0, 102, 204, 0));
             }
 
-            50% {
-                transform: scale(1.04);
-                filter: drop-shadow(0 8px 16px rgba(0, 102, 204, 0.25));
+            60% {
+                opacity: 1;
+                transform: translateY(10px) scale(1.05);
+                filter: drop-shadow(0 15px 35px rgba(0, 102, 204, 0.35));
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: drop-shadow(0 8px 20px rgba(0, 102, 204, 0.22));
             }
         }
 
-        .animate-capsule {
-            animation: pulse-capsule 2.4s infinite ease-in-out;
+        .animate-cinematic-entry {
+            animation: cinematic-capsule-entry 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes fade-slide-in {
@@ -77,7 +83,7 @@
             animation: fade-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* ================= تصميم حباية الدواء البيضاوية الأفقية (50/50 Split Capsule) ================= */
+        /* ================= تصميم حباية الدواء البيضاوية الأفقية بدقة مطابقة (50/50 Split) ================= */
         .capsule-pill {
             display: inline-flex;
             align-items: center;
@@ -135,7 +141,7 @@
             background-color: var(--primary-blue);
         }
 
-        /* الخط الفاصل الأبيض العمودي المنتصف تماماً */
+        /* الخط الفاصل الأبيض العمودي في المنتصف تماماً */
         .capsule-seam {
             position: absolute;
             top: 0;
@@ -161,7 +167,7 @@
             color: var(--primary-blue);
         }
 
-        /* ================= نظام إدارة المراحل (Stage Management Router) ================= */
+        /* ================= نظام إدارة المراحل (State Router Engine) ================= */
         .app-stage {
             display: none;
             flex: 1;
@@ -172,7 +178,7 @@
             display: flex;
         }
 
-        /* STAGE 1: الشاشة الترحيبية السينمائية */
+        /* STAGE 1: الشاشة الترحيبية السينمائية الفاخرة */
         #stage-splash {
             position: fixed;
             inset: 0;
@@ -181,11 +187,11 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            gap: 20px;
-            transition: opacity 0.5s ease;
+            gap: 22px;
+            transition: opacity 0.6s ease;
         }
 
-        /* STAGE 2: بوابة تسجيل الدخول (Credentials Gateway) */
+        /* STAGE 2: بوابة تسجيل الدخول التنفيذية */
         .gateway-wrapper {
             flex: 1;
             display: flex;
@@ -199,7 +205,7 @@
             width: 100%;
             max-width: 480px;
             background: var(--card-bg);
-            border-top: 5px solid var(--primary-blue);
+            border-top: 6px solid var(--primary-blue);
             border-radius: 20px;
             box-shadow: var(--shadow-luxury);
             padding: 36px;
@@ -208,7 +214,7 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        /* النماذج وعناصر الإدخال المحترفة */
+        /* النماذج وعناصر الإدخال والتحكم */
         .form-block {
             margin-bottom: 20px;
         }
@@ -314,7 +320,7 @@
             transform: translateY(1px);
         }
 
-        /* ================= STAGE 3: لوحة التحكم ومساحات العمل الرئيسية ================= */
+        /* ================= STAGE 3: لوحات العمل ومساحات العرض الفخمة ================= */
         .dashboard-main-wrapper {
             flex: 1;
             display: flex;
@@ -347,7 +353,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            max-width: 450px;
+            max-width: 500px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -540,9 +546,10 @@
 
 <body>
 
-    <!-- ================= STAGE 1: CINEMATIC VISUAL SPLASH SCREEN ================= -->
+    <!-- ================= STAGE 1: THE ULTRA-LUXURY CINEMATIC SPLASH SCREEN ================= -->
     <div id="stage-splash" class="app-stage active">
-        <div class="animate-capsule" style="display: flex; flex-direction: column; align-items: center; gap: 18px;">
+        <div class="animate-cinematic-entry"
+            style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
             <div class="capsule-pill large">
                 <div class="capsule-core">
                     <div class="capsule-left-half"></div>
@@ -551,14 +558,14 @@
                 </div>
             </div>
             <div>
-                <span class="brand-text" style="font-size: 38px;">
+                <span class="brand-text" style="font-size: 40px; letter-spacing: -0.03em;">
                     <span class="brand-pharma">Pharma</span><span class="brand-link">Link</span>
                 </span>
             </div>
         </div>
     </div>
 
-    <!-- ================= STAGE 2: THE REFINED CREDENTIALS GATEWAY ================= -->
+    <!-- ================= STAGE 2: THE EXECUTIVE CREDENTIALS GATEWAY ================= -->
     <div id="stage-gateway" class="app-stage">
         <div class="gateway-wrapper">
             <div class="gateway-card fade-in">
@@ -573,7 +580,7 @@
                         </div>
                     </div>
                     <h1 style="font-size: 22px; margin-bottom: 4px;">
-                        <span class="brand-text" style="font-size: 25px;">
+                        <span class="brand-text" style="font-size: 26px;">
                             <span class="brand-pharma">Pharma</span><span class="brand-link">Link</span>
                         </span>
                     </h1>
@@ -619,9 +626,9 @@
                         <div class="input-box-wrapper">
                             <i class="fa-solid fa-map-location-dot input-icon"></i>
                             <select id="authRegionSelect" class="form-select">
-                                <option value="حلب وريفها">حلب وريفها</option>
-                                <option value="إدلب وريفها">إدلب وريفها</option>
-                                <option value="منبج وريفها">منبج وريفها</option>
+                                <option value="حلب وريفها">حلب وريفها بالكامل</option>
+                                <option value="إدلب وريفها">إدلب وريفها بالكامل</option>
+                                <option value="منبج وريفها">منبج وريفها بالكامل</option>
                             </select>
                         </div>
                     </div>
@@ -632,11 +639,11 @@
         </div>
     </div>
 
-    <!-- ================= STAGE 3: THE HIGH-FIDELITY MAIN WORKSPACES ================= -->
+    <!-- ================= STAGE 3: THE ISOLATED WORKSPACES & BOTTOM NAVIGATION BAR ================= -->
     <div id="stage-dashboard" class="app-stage">
         <div class="dashboard-main-wrapper">
 
-            <!-- شريط الحالة والإشعارات العلوي -->
+            <!-- شريط الحالة والإشعارات العلوي الذكي -->
             <header class="top-status-ribbon">
                 <div style="display: flex; align-items: center; gap: 14px;">
                     <div class="capsule-pill" style="width: 36px; height: 18px; padding: 2px;">
@@ -655,11 +662,12 @@
                 </div>
                 <div class="live-toast-box">
                     <i class="fa-solid fa-circle-check" style="color: #10B981;"></i>
-                    <span id="systemToastText">أهلاً بك يا أوزكان بيك في شبكة PharmaLink اللوجستية المعتمدة.</span>
+                    <span id="systemToastText">[تنبيه الشبكة]: تم توجيه طلبيتك الرقمية الفورية مباشرة للمستودع
+                        بنجاح.</span>
                 </div>
             </header>
 
-            <!-- حاوية عرض مساحات العمل الديناميكية -->
+            <!-- حاوية مساحات العمل الديناميكية -->
             <main class="content-container">
 
                 <!-- 1. WORKSPACE: PHARMACIST -->
@@ -679,13 +687,13 @@
                                 <div class="input-box-wrapper">
                                     <i class="fa-solid fa-search input-icon"></i>
                                     <input type="text" id="pharmacistSearchInput" class="form-input"
-                                        placeholder="بحث بالاسم التجاري أو المادة الفعالة..."
+                                        placeholder="بحث سريع بالاسم أو المادة الفعالة..."
                                         oninput="renderPharmacistMarketplace()">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- أزرار الفلترة حسب التصنيف العلاجي -->
+                        <!-- أزرار الفلترة الأفقية حسب التصنيف العلاجي -->
                         <div class="filter-pills-row" id="pharmacistCategoryPills">
                             <button class="filter-pill-item active"
                                 onclick="setPharmacistCategory('الكل', this)">الكل</button>
@@ -715,7 +723,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="pharmacistTableBody">
-                                        <!-- يُعبأ ديناميكياً عبر الجافاسكريبت -->
+                                        <!-- يُعبأ ديناميكياً -->
                                     </tbody>
                                 </table>
                             </div>
@@ -905,7 +913,7 @@
                     </div>
                 </div>
 
-                <!-- 4. WORKSPACE: ACCOUNT MANAGEMENT HUB -->
+                <!-- 4. WORKSPACE: ACCOUNT MANAGEMENT HUB ("الحساب") -->
                 <div id="workspace-account" class="workspace-view" style="display: none;">
                     <div style="max-width: 620px; margin: 0 auto;">
                         <div class="enterprise-card" style="padding: 32px;">
@@ -984,7 +992,7 @@
 
             </main>
 
-            <!-- شريط التنقل السفلي الثابت (Bottom Navigation Deck) -->
+            <!-- شريط التنقل السفلي الثابت (Bottom Navigation Ribbon) -->
             <nav class="bottom-nav-ribbon">
                 <div class="nav-items-grid">
                     <button onclick="routerSwitchTab(0)" id="navAnchor-0" class="nav-anchor active">
@@ -1039,18 +1047,18 @@
         let activeFilterCategory = 'الكل';
         let currentActiveTab = 0;
 
-        // تنفيذ الانتقال التلقائي من الشاشة الترحيبية (Stage 1) إلى بوابة الدخول (Stage 2) بعد 3.5 ثانية بدقة
+        // تنفيذ الانتقال التلقائي من الشاشة الترحيبية السينمائية (Stage 1) إلى بوابة الدخول (Stage 2) بعد 3.5 ثانية بدقة
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.getElementById('stage-splash').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('stage-splash').classList.remove('active');
                     document.getElementById('stage-gateway').classList.add('active');
-                }, 500);
+                }, 600);
             }, 3500);
         });
 
-        // تبديل الأدوار في بوابة تسجيل الدخول (صيدلاني / صاحب مستودع)
+        // تبديل الأدوار في بوابة تسجيل الدخول التنفيذية (صيدلاني / صاحب مستودع)
         function switchLoginRole(role) {
             sessionUser.role = role;
             const btnPharm = document.getElementById('roleBtnPharm');
@@ -1090,20 +1098,20 @@
             setSystemToast(`أهلاً بك يا أوزكان بيك. تم المصادقة وبدء جلسة ${sessionUser.name} بنجاح.`);
         }
 
-        // تهيئة واجهات مساحة العمل بناءً على دور المستخدم الحالي
+        // تهيئة واجهات مساحة العمل بناءً على دور المستخدم الحالي وعزل الصلاحيات
         function initializeWorkspaceState() {
             const isPharm = sessionUser.role === 'pharmacist';
 
             document.getElementById('topRibbonSub').innerText = `${isPharm ? 'صيدلاني معتمد' : 'مستودع رئيسي'}: ${sessionUser.name} (${sessionUser.region})`;
 
-            // تحديث أيقونات ونصوص شريط التنقل السفلي
+            // تحديث أيقونات ونصوص شريط التنقل السفلي الثابت
             document.getElementById('navIcon-0').className = isPharm ? 'fa-solid fa-store' : 'fa-solid fa-boxes-packing';
             document.getElementById('navText-0').innerText = isPharm ? 'سوق الأدوية' : 'مخزوني';
 
             document.getElementById('navIcon-1').className = isPharm ? 'fa-solid fa-cart-shopping' : 'fa-solid fa-clipboard-list';
             document.getElementById('navText-1').innerText = isPharm ? 'سلة الطلب' : 'الطلبات الواردة';
 
-            // تعبئة بيانات الحساب
+            // تعبئة بيانات الحساب في لوحة الحساب
             document.getElementById('accHubNameText').innerText = sessionUser.name;
             document.getElementById('accHubRoleText').innerText = isPharm ? 'صيدلاني معتمد' : 'صاحب مستودع رئيسي';
             document.getElementById('accHubRegionText').innerText = sessionUser.region;
@@ -1112,7 +1120,7 @@
             routerSwitchTab(0);
         }
 
-        // راوتر التنقل السفلي للتبويبات
+        // راوتر التنقل السفلي للتبويبات مع إدارة عزل البيانات
         function routerSwitchTab(tabIndex) {
             currentActiveTab = tabIndex;
 
@@ -1152,7 +1160,7 @@
             refreshBadgeCounters();
         }
 
-        // تحديث العدّادات الرقمية (Badges) الحية
+        // تحديث العدّادات الرقمية الحية في الشريط السفلي
         function refreshBadgeCounters() {
             const badgeCart = document.getElementById('badgeCartCount');
             const badgeOrder = document.getElementById('badgeOrderCount');
@@ -1177,7 +1185,7 @@
             }
         }
 
-        // عرض سوق الأدوية للصيدلاني مع الفلترة الحية
+        // عرض سوق الأدوية للصيدلاني بناءً على نطاقه الجغرافي والفلترة الحية
         function renderPharmacistMarketplace() {
             const tbody = document.getElementById('pharmacistTableBody');
             const searchVal = document.getElementById('pharmacistSearchInput') ? document.getElementById('pharmacistSearchInput').value.toLowerCase() : '';
@@ -1189,7 +1197,7 @@
 
             tbody.innerHTML = '';
             if (matchedRows.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 36px; color: var(--slate-gray);">لا توجد أصناف دوائية مطابقة لمعايير البحث في نطاقك الجغرافي.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 36px; color: var(--slate-gray);">لا توجد أصناف دوائية مطابقة لمعايير البحث في نطاقك الجغرافي (${sessionUser.region}).</td></tr>`;
                 return;
             }
 
@@ -1220,7 +1228,7 @@
             renderPharmacistMarketplace();
         }
 
-        // إضافة صنف إلى سلة المشتريات
+        // إضافة صنف إلى سلة المشتريات وتحديث المؤشرات
         function addDrugToCart(drugId) {
             const drug = globalMedicinesDataset.find(d => d.id === drugId);
             if (!drug) return;
@@ -1236,7 +1244,7 @@
             refreshBadgeCounters();
         }
 
-        // عرض تفاصيل السلة والحسابات المالية
+        // عرض تفاصيل السلة والحسابات المالية التلقائية
         function renderCartManagementView() {
             const container = document.getElementById('pharmacistCartItemsBox');
             const subTotalSpan = document.getElementById('cartSubTotalText');
@@ -1285,7 +1293,7 @@
             dispatchBtn.disabled = false;
         }
 
-        // إرسال الطلبيّة للمستودعات بشكل فوري
+        // تنفيذ إرسال الطلبيّة للمستودعات بشكل فوري
         function executeOrderDispatch() {
             if (activePharmacistCart.length === 0) return;
 
@@ -1305,11 +1313,11 @@
 
             globalOrdersDataset.unshift(newOrderRecord);
             activePharmacistCart = [];
-            setSystemToast('تم إرسال الطلبيّة للمستودعات بشكل فوري وتم توجيهها بنجاح!');
+            setSystemToast('[تنبيه الشبكة]: تم توجيه طلبيتك الرقمية الفورية مباشرة للمستودع المورد بنجاح تام!');
             routerSwitchTab(1);
         }
 
-        // إضافة صنف دوائي جديد من قبل المستودع
+        // إضافة صنف دوائي جديد من قبل المستودع مباشرة
         function handleWarehouseAddMedicine(e) {
             e.preventDefault();
             const name = document.getElementById('newDrugName').value;
@@ -1357,7 +1365,7 @@
             });
         }
 
-        // عرض الطلبيات الواردة للمستودع
+        // عرض الطلبيات الواردة للمستودع مع أزرار القبول والرفض
         function renderWarehouseIncomingQueue() {
             const container = document.getElementById('warehouseIncomingOrdersBox');
             container.innerHTML = '';
@@ -1396,18 +1404,18 @@
             const targetOrder = globalOrdersDataset.find(o => o.id === orderId);
             if (targetOrder) {
                 targetOrder.status = newStatus;
-                setSystemToast(`تم تحديث حالة الطلبية ${orderId} إلى: ${newStatus}`);
+                setSystemToast(`تم تحديث حالة الطلبية ${orderId} بنجاح إلى: ${newStatus}`);
                 renderWarehouseIncomingQueue();
                 refreshBadgeCounters();
             }
         }
 
-        // تحديث رسائل شريط الإشعارات العلوي
+        // تحديث رسائل التنبيهات والتوست
         function setSystemToast(msg) {
             document.getElementById('systemToastText').innerText = msg;
         }
 
-        // تسجيل الخروج الآمن ومسح المتغيرات والعودة للبوابة
+        // تنفيذ تسجيل الخروج الآمن ومسح المتغيرات والعودة الفورية لبوابة الدخول
         function executeSafeLogout() {
             sessionUser = { role: 'pharmacist', name: '', region: 'حلب وريفها' };
             activePharmacistCart = [];
