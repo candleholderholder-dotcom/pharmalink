@@ -5,30 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PharmaLink - منصة ربط المستودعات بالصيدليات</title>
-    <!-- Google Fonts: Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <!-- Google Fonts: Cairo (Weights 500, 700, 800 for thicker, punchier typography) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
         /* ==========================================
-           1. نظام الألوان والهوية البصرية الصارمة
+           1. DESIGN SYSTEM & CSS VARIABLES
+           Strict adherence to Deep Dark Emerald & Grays
            ================================---------- */
         :root {
-            --color-primary: #0A5C36;
-            /* أخضر زمردي داكن عميق */
-            --color-primary-hover: #053E24;
-            /* أخضر زمردي أغمق للتحويم */
-            --color-primary-light: #EBF5F0;
-            /* خلفية خفيفة للإشعارات والتحديدات */
-            --color-heading: #212529;
-            /* رمادي داكن للعناوين والنصوص */
-            --color-text-muted: #6C757D;
-            /* رمادي متوسط للنصوص الثانوية والأزرار المعطلة */
-            --color-bg-main: #F4F6F8;
-            /* رمادي فاتح لخلفية الجسم */
+            --color-emerald: #074828;
+            /* Premium Deep Dark Emerald Core */
+            --color-emerald-hover: #05341c;
+            /* Darker Emerald for interactive hover */
+            --color-emerald-light: #E8F3EE;
+            /* Soft emerald tint for badges/focus */
+            --color-charcoal: #1E2229;
+            /* Charcoal Dark Gray for headings */
+            --color-cool-gray: #6C7A89;
+            /* Cool Medium Gray for subtext/disabled */
+            --color-light-bg: #F4F7F6;
+            /* Ultra-Light Medical Gray body background */
             --color-white: #FFFFFF;
-            /* خلفية الكروت البيضاء */
-            --color-border: #DEE2E6;
-            /* حدود رمادية ناعمة */
+            /* Card background */
+            --color-border: #E2E8F0;
+            /* Clean border gray */
             --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -37,21 +37,36 @@
             margin: 0;
             padding: 0;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--color-bg-main);
-            color: var(--color-heading);
+            font-weight: 500;
+            /* Base text weight */
+            background-color: var(--color-light-bg);
+            color: var(--color-charcoal);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             direction: rtl;
             overflow-x: hidden;
+            /* Heavy GPU Acceleration */
+            transform: translate3d(0, 0, 0);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 700;
+            /* Thicker headings */
         }
 
         /* ==========================================
-           2. المرحلة الأولى: شاشة التحميل المتحركة (Splash Screen)
+           2. PHASE 1: CINEMATIC SPLASH SCREEN
            ================================---------- */
         #splashScreen {
             position: fixed;
@@ -59,7 +74,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--color-bg-main);
+            background-color: var(--color-light-bg);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -67,6 +82,7 @@
             z-index: 9999;
             transition: opacity 0.7s ease, visibility 0.7s ease;
             will-change: opacity, visibility;
+            transform: translate3d(0, 0, 0);
         }
 
         .splash-content {
@@ -74,62 +90,58 @@
             flex-direction: column;
             align-items: center;
             gap: 24px;
-            animation: pulseHorizontalCapsule 2.2s infinite ease-in-out;
+            animation: levitateAndPulse 2.4s infinite ease-in-out;
+            will-change: transform;
         }
 
-        /* كبسولة طبية أفقية تماماً (💊) مصنوعة بالـ CSS */
-        .capsule-horizontal {
-            width: 130px;
-            height: 68px;
-            background-color: var(--color-white);
-            border: 4px solid var(--color-primary);
-            border-radius: 34px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 14px 35px rgba(10, 92, 54, 0.2);
-            display: flex;
-            align-items: center;
-        }
-
-        .capsule-horizontal::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 50%;
-            height: 100%;
-            background-color: var(--color-primary);
+        /* Horizontal Medical Capsule SVG Container */
+        .capsule-svg-wrapper {
+            width: 140px;
+            height: 72px;
+            filter: drop-shadow(0 12px 30px rgba(7, 72, 40, 0.22));
         }
 
         .splash-title {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: var(--color-heading);
+            color: var(--color-charcoal);
             letter-spacing: 0.5px;
+            animation: fadeInSlideUp 0.8s ease forwards;
         }
 
         .splash-subtitle {
-            font-size: 0.95rem;
-            color: var(--color-text-muted);
-            font-weight: 600;
+            font-size: 1rem;
+            color: var(--color-cool-gray);
+            font-weight: 500;
+            animation: fadeInSlideUp 1s ease forwards;
         }
 
-        @keyframes pulseHorizontalCapsule {
+        @keyframes levitateAndPulse {
 
             0%,
             100% {
-                transform: scale(0.97);
-                opacity: 0.9;
+                transform: translate3d(0, 0, 0) scale(0.98);
             }
 
             50% {
-                transform: scale(1.03);
+                transform: translate3d(0, -8px, 0) scale(1.02);
+            }
+        }
+
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 15px, 0);
+            }
+
+            to {
                 opacity: 1;
+                transform: translate3d(0, 0, 0);
             }
         }
 
         /* ==========================================
-           3. المرحلة الثانية: معالج إدخال البيانات (Onboarding Wizard)
+           3. PHASE 2: MULTI-STEP WIZARD DECORATOR
            ================================---------- */
         #onboardingWrapper {
             position: fixed;
@@ -137,7 +149,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--color-bg-main);
+            background-color: var(--color-light-bg);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -146,6 +158,7 @@
             visibility: hidden;
             transition: opacity 0.7s ease, visibility 0.7s ease;
             z-index: 500;
+            transform: translate3d(0, 0, 0);
         }
 
         #onboardingWrapper.visible {
@@ -156,15 +169,17 @@
         .wizard-card {
             background-color: var(--color-white);
             width: 100%;
-            max-width: 540px;
-            border-radius: 24px;
+            max-width: 520px;
+            border-radius: 20px;
             padding: 2.75rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 16px 45px rgba(30, 34, 41, 0.06);
             border: 1px solid var(--color-border);
+            border-top: 4px solid var(--color-emerald);
             display: flex;
             flex-direction: column;
             gap: 2rem;
             position: relative;
+            transform: translate3d(0, 0, 0);
         }
 
         .wizard-header {
@@ -182,22 +197,22 @@
         }
 
         .brand-name {
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             font-weight: 800;
-            color: var(--color-heading);
+            color: var(--color-charcoal);
         }
 
         .step-badge {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 700;
-            color: var(--color-primary);
-            background-color: var(--color-primary-light);
-            padding: 5px 14px;
+            color: var(--color-emerald);
+            background-color: var(--color-emerald-light);
+            padding: 6px 16px;
             border-radius: 20px;
             transition: var(--transition-smooth);
         }
 
-        /* شريط التقدم المرئي */
+        /* Fluid SVG Progress Timeline */
         .progress-track {
             width: 100%;
             height: 6px;
@@ -209,15 +224,17 @@
 
         .progress-fill {
             height: 100%;
-            background-color: var(--color-primary);
+            background-color: var(--color-emerald);
             width: 33.33%;
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: width;
         }
 
-        /* حاوية خطوات المعالج */
+        /* Wizard Panes & Slide Animation */
         .wizard-body {
             position: relative;
-            min-height: 140px;
+            min-height: 150px;
+            overflow: hidden;
         }
 
         .wizard-pane {
@@ -230,15 +247,16 @@
             gap: 1.5rem;
             opacity: 0;
             visibility: hidden;
-            transform: translateX(30px);
+            transform: translate3d(40px, 0, 0);
             transition: var(--transition-smooth);
             pointer-events: none;
+            will-change: transform, opacity;
         }
 
         .wizard-pane.active {
             opacity: 1;
             visibility: visible;
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
             pointer-events: auto;
             position: relative;
         }
@@ -249,28 +267,46 @@
             gap: 10px;
         }
 
+        .form-label-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label-row svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--color-emerald);
+        }
+
         .form-group label {
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             font-weight: 700;
-            color: var(--color-heading);
+            color: var(--color-charcoal);
         }
 
         .form-control {
             width: 100%;
-            padding: 0.95rem 1.15rem;
+            padding: 1rem 1.15rem;
             border: 1.5px solid var(--color-border);
             border-radius: 14px;
             font-family: 'Cairo', sans-serif;
             font-size: 1rem;
-            color: var(--color-heading);
+            font-weight: 500;
+            color: var(--color-charcoal);
             background-color: var(--color-white);
             outline: none;
             transition: var(--transition-smooth);
         }
 
+        .form-control::placeholder {
+            color: var(--color-cool-gray);
+            font-weight: 500;
+        }
+
         .form-control:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 4px var(--color-primary-light);
+            border-color: var(--color-emerald);
+            box-shadow: 0 0 0 4px var(--color-emerald-light);
         }
 
         .wizard-actions {
@@ -282,7 +318,7 @@
         }
 
         .btn-primary {
-            background-color: var(--color-text-muted);
+            background-color: var(--color-cool-gray);
             color: var(--color-white);
             border: none;
             border-radius: 14px;
@@ -297,36 +333,36 @@
         }
 
         .btn-primary.enabled {
-            background-color: var(--color-primary);
+            background-color: var(--color-emerald);
             cursor: pointer;
-            box-shadow: 0 6px 18px rgba(10, 92, 54, 0.2);
+            box-shadow: 0 6px 20px rgba(7, 72, 40, 0.22);
         }
 
         .btn-primary.enabled:hover {
-            background-color: var(--color-primary-hover);
+            background-color: var(--color-emerald-hover);
         }
 
         .btn-secondary {
             background-color: transparent;
-            color: var(--color-text-muted);
+            color: var(--color-cool-gray);
             border: 1.5px solid var(--color-border);
             border-radius: 14px;
             padding: 0.95rem 1.5rem;
             font-family: 'Cairo', sans-serif;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: var(--transition-smooth);
         }
 
         .btn-secondary:hover {
-            background-color: var(--color-bg-main);
-            color: var(--color-heading);
-            border-color: var(--color-text-muted);
+            background-color: var(--color-light-bg);
+            color: var(--color-charcoal);
+            border-color: var(--color-cool-gray);
         }
 
         /* ==========================================
-           4. المرحلة الثالثة: لوحة التحكم الرئيسية (Dashboard)
+           4. PHASE 3: MAIN APPLICATION DASHBOARD
            ================================---------- */
         #mainDashboard {
             opacity: 0;
@@ -335,6 +371,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transform: translate3d(0, 0, 0);
         }
 
         #mainDashboard.visible {
@@ -342,38 +379,75 @@
             visibility: visible;
         }
 
-        /* الشريط العلوي الثابت */
+        /* Sticky Top Navbar */
         .dash-header {
-            background-color: var(--color-primary);
+            background-color: var(--color-emerald);
             color: var(--color-white);
             padding: 1.25rem 2.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(10, 92, 54, 0.15);
+            box-shadow: 0 4px 15px rgba(7, 72, 40, 0.18);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .dash-logo {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
+        .dash-logo-container {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .dash-user-badge {
-            background-color: rgba(255, 255, 255, 0.15);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
+        .dash-logo-container svg {
+            width: 36px;
+            height: 20px;
         }
 
-        /* مساحة العمل الرئيسية */
+        .dash-logo-text {
+            font-size: 1.45rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .dash-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dash-icon-btn {
+            background: rgba(255, 255, 255, 0.12);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .dash-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .dash-icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--color-white);
+        }
+
+        .dash-user-badge {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        /* Dashboard Workspace Container */
         .dash-main {
             max-width: 1280px;
             width: 100%;
@@ -385,12 +459,12 @@
             gap: 2rem;
         }
 
-        /* كارد الترحيب الديناميكي */
+        /* Dynamic Welcome Banner */
         .welcome-dashboard-card {
             background-color: var(--color-white);
             border-radius: 20px;
             padding: 2.25rem 2.5rem;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 8px 30px rgba(30, 34, 41, 0.04);
             border: 1px solid var(--color-border);
             display: flex;
             justify-content: space-between;
@@ -400,29 +474,39 @@
         }
 
         .welcome-dashboard-card h2 {
-            font-size: 1.7rem;
+            font-size: 1.65rem;
             font-weight: 800;
-            color: var(--color-heading);
-            margin-bottom: 6px;
+            color: var(--color-charcoal);
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
 
         .welcome-dashboard-card p {
-            color: var(--color-text-muted);
-            font-size: 1rem;
+            color: var(--color-cool-gray);
+            font-size: 1.02rem;
             font-weight: 500;
         }
 
         .region-tag {
-            background-color: var(--color-primary-light);
-            color: var(--color-primary);
-            padding: 10px 20px;
+            background-color: var(--color-emerald-light);
+            color: var(--color-emerald);
+            padding: 12px 22px;
             border-radius: 14px;
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             font-weight: 700;
             border: 1px solid #C8E6D9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* شبكة الخدمات والأقسام */
+        .region-tag svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--color-emerald);
+        }
+
+        /* Services Grid Layout */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -432,56 +516,61 @@
         .service-card {
             background-color: var(--color-white);
             border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 2.25rem;
+            box-shadow: 0 6px 20px rgba(30, 34, 41, 0.03);
             border: 1px solid var(--color-border);
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.25rem;
             transition: var(--transition-smooth);
             position: relative;
             overflow: hidden;
         }
 
         .service-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-            border-color: var(--color-primary);
+            transform: translate3d(0, -4px, 0);
+            box-shadow: 0 12px 30px rgba(30, 34, 41, 0.07);
+            border-color: var(--color-emerald);
         }
 
         .service-icon-box {
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            background-color: var(--color-primary-light);
-            color: var(--color-primary);
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background-color: var(--color-emerald-light);
+            color: var(--color-emerald);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            font-weight: 800;
+        }
+
+        .service-icon-box svg {
+            width: 26px;
+            height: 26px;
+            fill: var(--color-emerald);
         }
 
         .service-card h3 {
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--color-heading);
+            color: var(--color-charcoal);
         }
 
         .service-card p {
-            font-size: 0.92rem;
-            color: var(--color-text-muted);
-            line-height: 1.5;
+            font-size: 0.95rem;
+            color: var(--color-cool-gray);
+            line-height: 1.6;
+            font-weight: 500;
         }
 
-        /* التذييل */
+        /* Footer */
         footer {
             background-color: var(--color-white);
             border-top: 1px solid var(--color-border);
             text-align: center;
-            padding: 1.25rem;
-            font-size: 0.85rem;
-            color: var(--color-text-muted);
+            padding: 1.5rem;
+            font-size: 0.88rem;
+            color: var(--color-cool-gray);
             font-weight: 500;
         }
     </style>
@@ -490,21 +579,32 @@
 <body>
 
     <!-- ==========================================
-       المرحلة الأولى: شاشة التحميل (Splash Screen)
+       PHASE 1: CINEMATIC SPLASH SCREEN
        ================================---------- -->
     <div id="splashScreen">
         <div class="splash-content">
-            <!-- كبسولة طبية أفقية (💊) -->
-            <div class="capsule-horizontal"></div>
-            <div style="text-align: center;">
+            <!-- Inline SVG Horizontal Medical Capsule Logo -->
+            <div class="capsule-svg-wrapper">
+                <svg viewBox="0 0 140 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="140" height="72" rx="36" fill="#074828" />
+                    <path d="M70 0H104C123.882 0 140 16.1177 140 36V36C140 55.8823 123.882 72 104 72H70V0Z"
+                        fill="#05341c" />
+                    <line x1="70" y1="8" x2="70" y2="64" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="3"
+                        stroke-dasharray="4 4" />
+                    <!-- Cross medical emblem in center left -->
+                    <rect x="31" y="27" width="18" height="6" rx="3" fill="#FFFFFF" />
+                    <rect x="37" y="21" width="6" height="18" rx="3" fill="#FFFFFF" />
+                </svg>
+            </div>
+            <div style="text-align: center; display: flex; flex-direction: column; gap: 6px;">
                 <h1 class="splash-title">PharmaLink</h1>
-                <p class="splash-subtitle">جارٍ الاتصال بشبكة المستودعات الطبية...</p>
+                <p class="splash-subtitle">جارٍ الاتصال بشبكة المستودعات الطبية الذكية...</p>
             </div>
         </div>
     </div>
 
     <!-- ==========================================
-       المرحلة الثانية: معالج إدخال البيانات (Onboarding Wizard)
+       PHASE 2: MULTI-STEP WIZARD DECORATOR
        ================================---------- -->
     <div id="onboardingWrapper">
         <div class="wizard-card">
@@ -514,6 +614,7 @@
                     <span class="brand-name">PharmaLink</span>
                     <span id="stepBadgeText" class="step-badge">الخطوة 1 من 3</span>
                 </div>
+                <!-- Fluid SVG Progress Timeline -->
                 <div class="progress-track">
                     <div id="progressFill" class="progress-fill" style="width: 33.33%;"></div>
                 </div>
@@ -522,12 +623,18 @@
             <div class="wizard-body">
                 <form id="onboardingForm" novalidate>
 
-                    <!-- الخطوة 1: اسم الصيدلاني -->
+                    <!-- Step 1: Pharmacist's Name -->
                     <div class="wizard-pane active" id="pane1">
                         <div class="form-group">
-                            <label for="pharmacistNameInput">اسم الصيدلاني</label>
+                            <div class="form-label-row">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                </svg>
+                                <label for="pharmacistNameInput">اسم الصيدلاني</label>
+                            </div>
                             <input type="text" id="pharmacistNameInput" class="form-control"
-                                placeholder="أدخل اسمك أو اللقب..." oninput="validateWizardStep(1)">
+                                placeholder="أدخل اسمك الثلاثي أو اللقب..." oninput="validateWizardStep(1)">
                         </div>
                         <div class="wizard-actions">
                             <button type="button" id="nextBtn1" class="btn-primary" onclick="goToWizardStep(2)"
@@ -535,10 +642,16 @@
                         </div>
                     </div>
 
-                    <!-- الخطوة 2: اسم المستودع -->
+                    <!-- Step 2: Warehouse Name -->
                     <div class="wizard-pane" id="pane2">
                         <div class="form-group">
-                            <label for="warehouseNameInput">اسم المستودع</label>
+                            <div class="form-label-row">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z" />
+                                </svg>
+                                <label for="warehouseNameInput">اسم المستودع</label>
+                            </div>
                             <input type="text" id="warehouseNameInput" class="form-control"
                                 placeholder="أدخل اسم المستودع (مثال: مستودع الألفية)..."
                                 oninput="validateWizardStep(2)">
@@ -550,10 +663,16 @@
                         </div>
                     </div>
 
-                    <!-- الخطوة 3: المنطقة -->
+                    <!-- Step 3: Region -->
                     <div class="wizard-pane" id="pane3">
                         <div class="form-group">
-                            <label for="regionInput">المنطقة</label>
+                            <div class="form-label-row">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                                <label for="regionInput">المنطقة</label>
+                            </div>
                             <input type="text" id="regionInput" class="form-control"
                                 placeholder="أدخل النطاق الجغرافي (مثال: منبج وريفها)..."
                                 oninput="validateWizardStep(3)">
@@ -572,59 +691,98 @@
     </div>
 
     <!-- ==========================================
-       المرحلة الثالثة: لوحة التحكم الرئيسية (Dashboard)
+       PHASE 3: MAIN APPLICATION DASHBOARD
        ================================---------- -->
     <div id="mainDashboard">
-        <!-- الشريط العلوي الثابت -->
+        <!-- Sticky Top Navbar -->
         <header class="dash-header">
-            <div class="dash-logo">
-                <span>PharmaLink</span>
+            <div class="dash-logo-container">
+                <svg viewBox="0 0 140 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="140" height="72" rx="36" fill="#FFFFFF" />
+                    <path d="M70 0H104C123.882 0 140 16.1177 140 36V36C140 55.8823 123.882 72 104 72H70V0Z"
+                        fill="#E8F3EE" />
+                    <rect x="31" y="27" width="18" height="6" rx="3" fill="#074828" />
+                    <rect x="37" y="21" width="6" height="18" rx="3" fill="#074828" />
+                </svg>
+                <span class="dash-logo-text">PharmaLink</span>
             </div>
-            <div id="dashUserBadge" class="dash-user-badge">
-                صيدلية د. محمد
+            <div class="dash-nav-actions">
+                <button class="dash-icon-btn" title="الإشعارات">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+                    </svg>
+                </button>
+                <div id="dashUserBadge" class="dash-user-badge">
+                    صيدلية د. محمد
+                </div>
             </div>
         </header>
 
-        <!-- مساحة العمل -->
+        <!-- Main Workspace -->
         <main class="dash-main">
-            <!-- كارد الترحيب الديناميكي -->
+            <!-- Dynamic Welcome Banner -->
             <section class="welcome-dashboard-card">
                 <div>
                     <h2 id="dashWelcomeTitle">أهلاً بك يا دكتور</h2>
                     <p id="dashWelcomeSubtitle">لوحة التحكم المركزية لإدارة عمليات الربط وسلاسل الإمداد الدوائي.</p>
                 </div>
                 <div id="dashRegionTag" class="region-tag">
-                    📍 النطاق: قيد التحميل...
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
+                    <span id="dashRegionSpan">النطاق: قيد التحميل...</span>
                 </div>
             </section>
 
-            <!-- شبكة الخدمات والأقسام -->
+            <!-- Services Grid -->
             <section class="services-grid">
 
-                <!-- قسم الطلبات -->
+                <!-- Orders Module -->
                 <div class="service-card">
-                    <div class="service-icon-box">📦</div>
+                    <div class="service-icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                        </svg>
+                    </div>
                     <h3>إدارة الطلبات الدوائية</h3>
                     <p>متابعة وتوثيق الطلبات المرسلة للمستودعات وحالة التوريد والشحن الفوري.</p>
                 </div>
 
-                <!-- قسم المخزون -->
+                <!-- Inventory Module -->
                 <div class="service-card">
-                    <div class="service-icon-box">💊</div>
+                    <div class="service-icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M4.5 10.5C3.67 10.5 3 11.17 3 12s.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15zM3 6c0 .83.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15C3.67 4.5 3 5.17 3 6zm1.5 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15z" />
+                        </svg>
+                    </div>
                     <h3>مستودع الأدوية والمخزون</h3>
                     <p>استعراض الأصناف المتوفرة وجداول التسعير وقوائم الأدوية المعتمدة.</p>
                 </div>
 
-                <!-- قسم الفواتير -->
+                <!-- Invoices Module -->
                 <div class="service-card">
-                    <div class="service-icon-box">📄</div>
+                    <div class="service-icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                        </svg>
+                    </div>
                     <h3>الفواتير والحسابات</h3>
                     <p>مراجعة كشوفات الحسابات المالية والفواتير المرتبطة بعمليات التوريد.</p>
                 </div>
 
-                <!-- قسم الإعدادات -->
+                <!-- Settings Module -->
                 <div class="service-card">
-                    <div class="service-icon-box">⚙️</div>
+                    <div class="service-icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                        </svg>
+                    </div>
                     <h3>الإعدادات والربط</h3>
                     <p>تعديل بيانات الصيدلية، النطاق الجغرافي، وإعدادات الربط المتقدمة.</p>
                 </div>
@@ -632,17 +790,17 @@
             </section>
         </main>
 
-        <!-- التذييل -->
+        <!-- Footer -->
         <footer>
             PharmaLink &copy; 2026 - نظام ربط المستودعات بالصيدليات. جميع الحقوق محفوظة.
         </footer>
     </div>
 
     <!-- ==========================================
-       البرمجة النصية وإدارة الحالات (JavaScript)
+       JAVASCRIPT CONTROLLER & STATE MANAGEMENT
        ================================---------- -->
     <script>
-        // المرحلة الأولى: إخفاء شاشة التحميل بعد 2.5 ثانية والانتقال بسلاسة
+        // Phase 1: Cinematic Splash Screen Controller
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
@@ -654,7 +812,7 @@
                 setTimeout(() => {
                     splash.style.display = 'none';
 
-                    // التحقق من وجود بيانات مخزنة مسبقاً في localStorage
+                    // Check if onboarding data already exists in localStorage
                     const savedUserData = localStorage.getItem('pharmalink_user_onboarding');
                     if (savedUserData) {
                         const parsedData = JSON.parse(savedUserData);
@@ -666,7 +824,7 @@
             }, 2500);
         });
 
-        // حالة المعالج المتسلسل
+        // Phase 2: Onboarding Wizard State Controller
         let currentWizardStep = 1;
 
         function validateWizardStep(step) {
@@ -708,12 +866,12 @@
             currentWizardStep = step;
             document.getElementById(`pane${currentWizardStep}`).classList.add('active');
 
-            // تحديث شارة الخطوات وشريط التقدم
+            // Update step badge & progress track width
             document.getElementById('stepBadgeText').textContent = `الخطوة ${currentWizardStep} من 3`;
             document.getElementById('progressFill').style.width = `${(currentWizardStep / 3) * 100}%`;
         }
 
-        // معالجة نموذج إدخال البيانات عند الضغط على "دخول التطبيق"
+        // Onboarding Form Submission Handler
         const onboardingForm = document.getElementById('onboardingForm');
         onboardingForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -730,10 +888,10 @@
                 region: region
             };
 
-            // حفظ البيانات في localStorage
+            // Commit strings to browser localStorage
             localStorage.setItem('pharmalink_user_onboarding', JSON.stringify(userData));
 
-            // إخفاء المعالج بسلاسة والانتقال للوحة التحكم الرئيسية
+            // Seamless cross-fade transition from Onboarding to Main Dashboard
             const onboardingWrapper = document.getElementById('onboardingWrapper');
             onboardingWrapper.style.opacity = '0';
             onboardingWrapper.style.visibility = 'hidden';
@@ -744,14 +902,15 @@
             }, 700);
         });
 
-        // تعبئة لوحة التحكم الرئيسية بالبيانات المتاحة
+        // Phase 3: Dashboard Initializer
         function initializeDashboard(data) {
             const mainDashboard = document.getElementById('mainDashboard');
 
+            // Populate dynamic elements with stored metadata
             document.getElementById('dashUserBadge').textContent = `د. ${data.pharmacistName}`;
             document.getElementById('dashWelcomeTitle').textContent = `أهلاً بك يا دكتور ${data.pharmacistName} في مستودع ${data.warehouseName} - منطقة ${data.region}`;
             document.getElementById('dashWelcomeSubtitle').textContent = `لوحة التحكم المركزية لإدارة عمليات الربط وسلاسل الإمداد الدوائي في نطاق ${data.region}.`;
-            document.getElementById('dashRegionTag').textContent = `📍 النطاق الجغرافي: ${data.region}`;
+            document.getElementById('dashRegionSpan').textContent = `النطاق: ${data.region}`;
 
             mainDashboard.classList.add('visible');
         }
