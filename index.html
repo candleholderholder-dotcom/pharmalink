@@ -49,41 +49,8 @@
             color: var(--charcoal-dark);
         }
 
-        /* Utility classes */
         .hidden {
             display: none !important;
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .flex-col {
-            flex-direction: column;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .justify-center {
-            justify-content: center;
-        }
-
-        .justify-between {
-            justify-content: space-between;
-        }
-
-        .gap-2 {
-            gap: 0.5rem;
-        }
-
-        .gap-4 {
-            gap: 1rem;
-        }
-
-        .w-full {
-            width: 100%;
         }
 
         /* ================= Phase 1: Cinematic Splash Screen ================= */
@@ -151,8 +118,6 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(7, 72, 40, 0.08);
             padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
             border: 1px solid rgba(108, 122, 137, 0.1);
         }
 
@@ -172,7 +137,6 @@
             font-size: 0.95rem;
         }
 
-        /* Step Timeline */
         .step-timeline {
             display: flex;
             height: 6px;
@@ -189,7 +153,6 @@
             transition: var(--transition-smooth);
         }
 
-        /* Wizard Steps Container */
         .wizard-step {
             display: none;
             animation: fadeInStep 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -318,7 +281,6 @@
             padding-bottom: 90px;
         }
 
-        /* Sticky Navbar */
         .app-navbar {
             background-color: var(--primary-emerald);
             color: var(--white);
@@ -355,7 +317,6 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-        /* App Container & Views */
         .app-container {
             max-width: 1200px;
             width: 100%;
@@ -371,8 +332,6 @@
             border-radius: 16px;
             margin-bottom: 2rem;
             box-shadow: 0 10px 25px rgba(7, 72, 40, 0.15);
-            position: relative;
-            overflow: hidden;
         }
 
         .welcome-banner h2 {
@@ -386,7 +345,6 @@
             font-size: 1rem;
         }
 
-        /* Tab Views */
         .app-view {
             display: none;
             animation: fadeInView 0.4s ease forwards;
@@ -408,54 +366,6 @@
             }
         }
 
-        /* Dashboard Overview Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(108, 122, 137, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: rgba(7, 72, 40, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .stat-icon svg {
-            width: 26px;
-            height: 26px;
-            fill: var(--primary-emerald);
-        }
-
-        .stat-info h4 {
-            font-size: 0.9rem;
-            color: var(--cool-gray);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-info .stat-value {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--charcoal-dark);
-        }
-
-        /* Section Header with Actions */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -468,7 +378,6 @@
             color: var(--charcoal-dark);
         }
 
-        /* Stock Table / Responsive Table */
         .table-container {
             background: var(--white);
             border-radius: 16px;
@@ -520,12 +429,11 @@
             color: #27ae60;
         }
 
-        .badge-warning {
-            background: rgba(241, 196, 15, 0.15);
-            color: #d35400;
+        .badge-info {
+            background: rgba(7, 72, 40, 0.1);
+            color: var(--primary-emerald);
         }
 
-        /* Empty state styling */
         .empty-state {
             text-align: center;
             padding: 3rem;
@@ -540,7 +448,7 @@
             opacity: 0.5;
         }
 
-        /* ================= Modal Window Styles ================= */
+        /* ================= Modal Window & STRICT VERTICALLY STACKED Layout ================= */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -567,12 +475,14 @@
         .modal-card {
             background: var(--white);
             width: 100%;
-            max-width: 500px;
+            max-width: 460px;
             border-radius: 20px;
             padding: 2rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             transform: scale(0.95) translateY(10px);
             transition: var(--transition-smooth);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.open .modal-card {
@@ -606,7 +516,65 @@
             color: var(--danger);
         }
 
-        /* Camera Viewfinder Modal Overlay for Barcode Scanning */
+        /* STRICT VERTICAL STACK CONTAINER inside product entry modal */
+        .vertical-stack-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            width: 100%;
+        }
+
+        .vertical-stack-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            width: 100%;
+        }
+
+        .vertical-stack-item label {
+            font-size: 0.9rem;
+            color: var(--charcoal-dark);
+            font-weight: 800;
+        }
+
+        .stacked-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .stacked-input-wrapper svg {
+            position: absolute;
+            right: 1rem;
+            width: 20px;
+            height: 20px;
+            fill: var(--cool-gray);
+        }
+
+        .stacked-input-wrapper input {
+            width: 100%;
+            padding: 0.8rem 3rem 0.8rem 1rem;
+            border: 2px solid rgba(108, 122, 137, 0.2);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background: var(--medical-bg);
+            color: var(--charcoal-dark);
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .stacked-input-wrapper input:focus {
+            border-color: var(--primary-emerald);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(7, 72, 40, 0.1);
+        }
+
+        .stacked-input-wrapper input:focus+svg {
+            fill: var(--primary-emerald);
+        }
+
+        /* Camera Scanner Modal Overlay */
         .scanner-modal-overlay {
             position: fixed;
             top: 0;
@@ -643,7 +611,7 @@
 
         .scanner-viewport {
             width: 100%;
-            height: 240px;
+            height: 220px;
             background: #000;
             border-radius: 12px;
             position: relative;
@@ -689,7 +657,7 @@
 
         .scanner-placeholder-text {
             color: var(--white);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             position: absolute;
             z-index: 2;
             background: rgba(7, 72, 40, 0.85);
@@ -698,7 +666,31 @@
             bottom: 12px;
         }
 
-        /* ================= Professional Bottom Navigation Bar ================= */
+        .test-barcode-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .test-bc-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .test-bc-btn:hover {
+            background: var(--primary-emerald);
+            border-color: var(--primary-emerald);
+        }
+
+        /* Bottom Navigation Bar (Structured for 2 active primary tabs as requested) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -707,8 +699,9 @@
             background: var(--white);
             border-top: 1px solid rgba(108, 122, 137, 0.15);
             display: flex;
-            justify-content: space-around;
-            padding: 0.6rem 0.5rem;
+            justify-content: center;
+            gap: 3rem;
+            padding: 0.75rem 1rem;
             z-index: 7777;
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
         }
@@ -722,9 +715,8 @@
             gap: 0.35rem;
             cursor: pointer;
             color: var(--cool-gray);
-            flex: 1;
             transition: var(--transition-smooth);
-            padding: 0.25rem 0;
+            padding: 0.25rem 1rem;
         }
 
         .nav-item svg {
@@ -735,7 +727,7 @@
         }
 
         .nav-item span {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 800;
         }
 
@@ -748,9 +740,10 @@
             transform: translateY(-2px);
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .onboarding-card {
+
+            .onboarding-card,
+            .modal-card {
                 padding: 1.5rem;
                 margin: 1rem;
             }
@@ -768,13 +761,9 @@
     <!-- ================= Phase 1: Cinematic Splash Screen ================= -->
     <div id="splash-screen">
         <div class="splash-capsule-container">
-            <!-- Inline SVG Horizontal Capsule split precisely down the middle -->
             <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Left half: Deep Dark Emerald Green (#074828) -->
                 <path d="M30 0H60V60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z" fill="#074828" />
-                <!-- Right half: Elegant Architectural Gray (#6C7A89) -->
                 <path d="M60 0H90C106.568 0 120 13.4315 120 30C120 46.5685 106.568 60 90 60H60V0Z" fill="#6C7A89" />
-                <!-- Subtle medical shine / reflection lines -->
                 <rect x="20" y="12" width="20" height="6" rx="3" fill="white" fill-opacity="0.25" />
             </svg>
         </div>
@@ -789,20 +778,18 @@
                 <p>يرجى إدخال البيانات التالية لبدء استخدام نظام إدارة المخزون</p>
             </div>
 
-            <!-- Dynamic SVG step-indicator timeline -->
             <div class="step-timeline">
                 <div class="step-progress-bar" id="stepProgressBar" style="width: 33.33%;"></div>
             </div>
 
             <form id="onboardingForm" onsubmit="event.preventDefault();">
-                <!-- Step 1: Pharmacist Name -->
+                <!-- Step 1 -->
                 <div class="wizard-step active" id="step-1">
                     <div class="form-group">
                         <label for="pharmacistName">اسم الصيدلاني</label>
                         <div class="input-with-icon">
-                            <input type="text" id="pharmacistName" placeholder="مثال: د. أحمد خالد" required
+                            <input type="text" id="pharmacistName" placeholder="مثال: د. محمد يحيى" required
                                 autocomplete="off">
-                            <!-- Inline SVG User Icon -->
                             <svg viewBox="0 0 24 24">
                                 <path
                                     d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
@@ -821,14 +808,13 @@
                     </div>
                 </div>
 
-                <!-- Step 2: Warehouse Name -->
+                <!-- Step 2 -->
                 <div class="wizard-step" id="step-2">
                     <div class="form-group">
                         <label for="warehouseName">اسم المستودع</label>
                         <div class="input-with-icon">
                             <input type="text" id="warehouseName" placeholder="مثال: مستودع الشفاء الدوائي" required
                                 autocomplete="off">
-                            <!-- Inline SVG Warehouse Icon -->
                             <svg viewBox="0 0 24 24">
                                 <path
                                     d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm12 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM17 12V9.5h2.5l1.96 2.5H17z" />
@@ -836,13 +822,7 @@
                         </div>
                     </div>
                     <div class="wizard-actions">
-                        <button type="button" class="btn btn-secondary" onclick="prevStep(1)">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                            رجوع
-                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(1)">رجوع</button>
                         <button type="button" class="btn btn-primary" id="nextBtn2" disabled onclick="nextStep(3)">
                             التالي
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -853,14 +833,13 @@
                     </div>
                 </div>
 
-                <!-- Step 3: Region -->
+                <!-- Step 3 -->
                 <div class="wizard-step" id="step-3">
                     <div class="form-group">
                         <label for="regionName">المنطقة</label>
                         <div class="input-with-icon">
-                            <input type="text" id="regionName" placeholder="مثال: حلب - المحافظة" required
+                            <input type="text" id="regionName" placeholder="مثال: حلب - المركز" required
                                 autocomplete="off">
-                            <!-- Inline SVG Map-Pin Icon -->
                             <svg viewBox="0 0 24 24">
                                 <path
                                     d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
@@ -868,13 +847,7 @@
                         </div>
                     </div>
                     <div class="wizard-actions">
-                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                            رجوع
-                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">رجوع</button>
                         <button type="button" class="btn btn-primary" id="submitOnboardingBtn" disabled
                             onclick="completeOnboarding()">
                             دخول التطبيق
@@ -891,168 +864,54 @@
 
     <!-- ================= Phase 3: Main Application Dashboard ================= -->
     <div id="main-app" class="hidden">
-        <!-- Sticky Navbar -->
         <header class="app-navbar">
             <div class="brand-logo-text">PharmaLink</div>
             <button class="logout-btn" onclick="resetAppSession()">تسجيل الخروج / إعادة الضبط</button>
         </header>
 
-        <!-- Main App Container -->
         <main class="app-container">
-            <!-- Dynamic Welcome Banner -->
             <div class="welcome-banner">
                 <h2 id="bannerTitle">أهلاً بك يا دكتور...</h2>
-                <p id="bannerSubtitle">لوحة التحكم المركزية لإدارة مخزون المستودع والطلبات بدقة عالية.</p>
+                <p id="bannerSubtitle">لوحة التحكم المركزية لإدارة مخزون المستودع والباركود.</p>
             </div>
 
-            <!-- Tab 1: الرئيسية (Home / Overview) -->
+            <!-- Tab 1: الرئيسية -->
             <section id="view-home" class="app-view active">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <h4>إجمالي الأدوية بالمخزن</h4>
-                            <div class="stat-value" id="statTotalMeds">0</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <h4>الأنواع النشطة</h4>
-                            <div class="stat-value" id="statActiveTypes">0</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.58 22 12s-4.48-10-9.99-10zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <h4>حالة المزامنة</h4>
-                            <div class="stat-value" style="font-size: 1.1rem; color: var(--success); margin-top: 5px;">
-                                متصل بالخادم المحلي</div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="section-header">
-                    <h3>أحدث الأدوية المضافة للمخزن</h3>
+                    <h3>نظرة عامة على المخزون</h3>
                     <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;"
-                        onclick="switchTab('inventory')">إدارة المخزن الكاملة</button>
+                        onclick="switchTab('inventory')">إدارة المخزن والباركود</button>
                 </div>
-                <div class="table-container" id="homeRecentTableContainer">
-                    <!-- Dynamic Recent Table -->
-                </div>
-            </section>
-
-            <!-- Tab 2: الطلبات (Orders Placeholder) -->
-            <section id="view-orders" class="app-view">
-                <div class="section-header">
-                    <h3>طلبات الصيدليات الواردة</h3>
-                </div>
-                <div class="table-container">
-                    <div class="empty-state">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 5h2v5h-2z" />
-                        </svg>
-                        <p>لا توجد طلبات واردة حالياً من الصيدليات المرتبطة.</p>
-                    </div>
+                <div class="table-container" id="homeTableContainer">
+                    <!-- Dynamic Summary Table -->
                 </div>
             </section>
 
-            <!-- Tab 3: المخزن (Warehouse Stock Management) -->
+            <!-- Tab 2: المخزن (Warehouse Inventory Management & Barcode Lookup) -->
             <section id="view-inventory" class="app-view">
                 <div class="section-header">
-                    <h3>إدارة مخزون المستودع والمنتجات الدوائية</h3>
+                    <h3>إدارة مخزون الأدوية والربط الذكي للباركود</h3>
                     <button class="btn btn-primary" onclick="openAddMedicineModal()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5">
                             <path d="M12 5v14M5 12h14" />
                         </svg>
-                        إضافة دواء جديد
+                        إضافة صنف جديد
                     </button>
                 </div>
                 <div class="table-container" id="inventoryTableContainer">
                     <!-- Dynamic Full Inventory Table -->
                 </div>
             </section>
-
-            <!-- Tab 4: الفواتير (Invoices Placeholder) -->
-            <section id="view-invoices" class="app-view">
-                <div class="section-header">
-                    <h3>سجل الفواتير والماليات</h3>
-                </div>
-                <div class="table-container">
-                    <div class="empty-state">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
-                        </svg>
-                        <p>لم يتم اصدار أي فواتير مالية خلال الفترة الحالية.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Tab 5: الإعدادات (Settings) -->
-            <section id="view-settings" class="app-view">
-                <div class="section-header">
-                    <h3>إعدادات المستودع والنظام</h3>
-                </div>
-                <div class="table-container" style="padding: 2rem;">
-                    <div style="margin-bottom: 1.5rem;">
-                        <h4 style="margin-bottom: 0.5rem; color: var(--primary-emerald);">معلومات الحساب المسجلة</h4>
-                        <p style="color: var(--cool-gray); font-size: 0.95rem;">تم ربط هذا الجهاز بنظام مستودعات
-                            PharmaLink المعتمد.</p>
-                    </div>
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                        <div style="background: var(--medical-bg); padding: 1rem; border-radius: 10px;">
-                            <span style="display: block; font-size: 0.8rem; color: var(--cool-gray);">الصيدلاني
-                                المسؤول</span>
-                            <strong id="settingsPharmName" style="font-size: 1.1rem;">-</strong>
-                        </div>
-                        <div style="background: var(--medical-bg); padding: 1rem; border-radius: 10px;">
-                            <span style="display: block; font-size: 0.8rem; color: var(--cool-gray);">المستودع</span>
-                            <strong id="settingsWareName" style="font-size: 1.1rem;">-</strong>
-                        </div>
-                        <div style="background: var(--medical-bg); padding: 1rem; border-radius: 10px;">
-                            <span style="display: block; font-size: 0.8rem; color: var(--cool-gray);">المنطقة</span>
-                            <strong id="settingsRegion" style="font-size: 1.1rem;">-</strong>
-                        </div>
-                    </div>
-                    <button class="btn" style="background: var(--danger); color: var(--white);"
-                        onclick="resetAppSession()">مسح البيانات وإعادة الضبط بالكامل</button>
-                </div>
-            </section>
         </main>
 
-        <!-- Professional Bottom Navigation Bar (5 Items) -->
+        <!-- Professional Bottom Navigation Bar (2 Core Tabs) -->
         <nav class="bottom-nav">
             <button class="nav-item active" onclick="switchTab('home')" id="nav-btn-home">
                 <svg viewBox="0 0 24 24">
                     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                 </svg>
                 <span>الرئيسية</span>
-            </button>
-            <button class="nav-item" onclick="switchTab('orders')" id="nav-btn-orders">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-                </svg>
-                <span>الطلبات</span>
             </button>
             <button class="nav-item" onclick="switchTab('inventory')" id="nav-btn-inventory">
                 <svg viewBox="0 0 24 24">
@@ -1061,39 +920,36 @@
                 </svg>
                 <span>المخزن</span>
             </button>
-            <button class="nav-item" onclick="switchTab('invoices')" id="nav-btn-invoices">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-                </svg>
-                <span>الفواتير</span>
-            </button>
-            <button class="nav-item" onclick="switchTab('settings')" id="nav-btn-settings">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.03 2.18 13.82 2 13.6 2h-4c-.22 0-.43.18-.47.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.04.24.25.42.47.42h4c.22 0 .43-.18.47-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
-                </svg>
-                <span>الإعدادات</span>
-            </button>
         </nav>
     </div>
 
-    <!-- ================= Add Medicine Modal ================= -->
+    <!-- ================= Add Medicine Modal with STRICT VERTICALLY STACKED Layout ================= -->
     <div class="modal-overlay" id="medicineModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>إضافة دواء جديد للمخزن</h3>
+                <h3>إضافة صنف جديد للمخزن والربط بالباركود</h3>
                 <button class="modal-close" onclick="closeAddMedicineModal()">&times;</button>
             </div>
-            <form id="addMedicineForm" onsubmit="saveNewMedicine(event)">
-                <div class="form-group" style="margin-bottom: 1.25rem;">
-                    <label for="medName">اسم الدواء (يُعبأ تلقائياً عبر مسح الباركود)</label>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="medName" placeholder="امسح الباركود أو أدخل اسم الدواء..." required
-                            style="flex: 1; padding: 0.75rem 1rem; border: 2px solid rgba(108,122,137,0.2); border-radius: 10px; background: var(--medical-bg); outline: none;">
-                        <button type="button" class="btn btn-primary" style="padding: 0.75rem 1rem; font-size: 0.9rem;"
+
+            <!-- STRICT VERTICAL STACK CONTAINER -->
+            <form id="addMedicineForm" class="vertical-stack-form" onsubmit="saveNewMedicine(event)">
+
+                <!-- Field 1: Barcode Number with Scan Button -->
+                <div class="vertical-stack-item">
+                    <label for="medBarcode">رقم الباركود</label>
+                    <div style="display: flex; gap: 0.5rem; width: 100%;">
+                        <div class="stacked-input-wrapper" style="flex: 1;">
+                            <input type="text" id="medBarcode" placeholder="أدخل الباركود أو امسحه..." required
+                                autocomplete="off" oninput="checkBarcodeLookup(this.value)">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M2 4h2v16H2V4zm4 0h1v16H6V4zm3 0h3v16H9V4zm4 0h2v16h-2V4zm3 0h1v16h-1V4zm3 0h2v16h-2V4z" />
+                            </svg>
+                        </div>
+                        <button type="button" class="btn btn-primary"
+                            style="padding: 0.75rem 1rem; font-size: 0.85rem; white-space: nowrap;"
                             onclick="openScannerModal()">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3M5 12h14" />
                             </svg>
@@ -1102,22 +958,49 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label for="medPrice">السعر الإفرادي (ل.س)</label>
-                        <input type="number" id="medPrice" placeholder="مثال: 15000" min="1" required
-                            style="width: 100%; padding: 0.75rem 1rem; border: 2px solid rgba(108,122,137,0.2); border-radius: 10px; background: var(--medical-bg); outline: none;">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label for="medQty">الكمية (عدد العلب)</label>
-                        <input type="number" id="medQty" placeholder="مثال: 50" min="1" required
-                            style="width: 100%; padding: 0.75rem 1rem; border: 2px solid rgba(108,122,137,0.2); border-radius: 10px; background: var(--medical-bg); outline: none;">
+                <!-- Field 2: Medicine Name (Locked if known, unlocked if first-time) -->
+                <div class="vertical-stack-item">
+                    <label for="medName">اسم الدواء</label>
+                    <div class="stacked-input-wrapper">
+                        <input type="text" id="medName" placeholder="سيتم التعرف عليه أو طلب إدخاله..." required
+                            autocomplete="off">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                        </svg>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                    <button type="button" class="btn btn-secondary" onclick="closeAddMedicineModal()">إلغاء</button>
-                    <button type="submit" class="btn btn-primary">حفظ وإضافة للمخزن</button>
+                <!-- Field 3: Unit Price -->
+                <div class="vertical-stack-item">
+                    <label for="medPrice">السعر الإفرادي (ل.س)</label>
+                    <div class="stacked-input-wrapper">
+                        <input type="number" id="medPrice" placeholder="مثال: 15000" min="1" required
+                            autocomplete="off">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Field 4: Available Quantity / Boxes -->
+                <div class="vertical-stack-item">
+                    <label for="medQty">الكمية المتوفرة (عدد العلب)</label>
+                    <div class="stacked-input-wrapper">
+                        <input type="number" id="medQty" placeholder="مثال: 50" min="1" required autocomplete="off">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 5h2v5h-2z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Field 5: Submit Button (Stacked at the bottom) -->
+                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                    <button type="button" class="btn btn-secondary" style="flex: 1;"
+                        onclick="closeAddMedicineModal()">إلغاء</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">حفظ وإضافة للمخزن</button>
                 </div>
             </form>
         </div>
@@ -1131,39 +1014,60 @@
                 <h3 style="color: var(--white); font-size: 1.1rem;">مسح باركود الدواء ضوئياً</h3>
                 <button class="modal-close" style="color: var(--white);" onclick="closeScannerModal()">&times;</button>
             </div>
+
+            <div class="test-barcode-buttons">
+                <button type="button" class="test-bc-btn" onclick="simulateScan('62810023')">اكواد تجريبية:
+                    62810023</button>
+                <button type="button" class="test-bc-btn" onclick="simulateScan('50123456')">اكواد تجريبية:
+                    50123456</button>
+                <button type="button" class="test-bc-btn" onclick="simulateScan('99887766')">كود جديد غير معروف</button>
+            </div>
+
             <div class="scanner-viewport">
                 <video id="scannerVideo" autoplay muted playsinline></video>
                 <div class="scanner-laser"></div>
-                <div class="scanner-placeholder-text" id="scannerStatusText">جاري التركيز ومسح الكود...</div>
+                <div class="scanner-placeholder-text" id="scannerStatusText">جاري تشغيل الكاميرا المسحية...</div>
             </div>
-            <p style="color: var(--cool-gray); font-size: 0.85rem; margin-bottom: 1rem;">وجه الكاميرا نحو باركود المنتج
-                للتعرف عليه فوراً.</p>
+            <p style="color: var(--cool-gray); font-size: 0.8rem; margin-bottom: 1rem;">وجه الكاميرا أو اضغط على الأكواد
+                التجريبية بالأعلى.</p>
             <button type="button" class="btn btn-secondary w-full"
                 style="background: rgba(255,255,255,0.1); color: var(--white); border: 1px solid rgba(255,255,255,0.2);"
-                onclick="closeScannerModal()">إلغاء المسح</button>
+                onclick="closeScannerModal()">إغلاق الكاميرا</button>
         </div>
     </div>
 
     <!-- ================= Application JavaScript ================= -->
     <script>
-        // Mock Barcode Lookup Database for instant automated testability
-        const MOCK_BARCODE_DATABASE = [
-            { code: "6251001", name: "أوميبرازول 20 ملغ (Omeprazole)" },
-            { code: "6251002", name: "بندول اكسترا (Panadol Extra)" },
-            { code: "6251003", name: "أوغمينتين 1 غرام (Augmentin 1g)" },
-            { code: "6251004", name: "باراسيتامول 500 ملغ (Paracetamol)" },
-            { code: "6251005", name: "فلوتاك 50 ملغ (Flutac)" }
-        ];
-
         let mediaStream = null;
 
-        // Initialization on DOM load
+        // Web Audio API Professional Beep Generator
+        function playBeepSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch A5 beep
+                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.15);
+            } catch (e) {
+                console.warn('AudioContext not permitted or supported without gesture', e);
+            }
+        }
+
+        // Initialize App on DOM Load
         document.addEventListener('DOMContentLoaded', () => {
             checkAuthAndInit();
             setupOnboardingValidation();
         });
 
-        // Phase 1 & 2 flow control
         function checkAuthAndInit() {
             const savedData = localStorage.getItem('pharmaLink_session');
             setTimeout(() => {
@@ -1181,41 +1085,26 @@
             }, 2500);
         }
 
-        // Onboarding form input validation & wizard progression
         function setupOnboardingValidation() {
             const pName = document.getElementById('pharmacistName');
             const wName = document.getElementById('warehouseName');
             const rName = document.getElementById('regionName');
 
-            pName.addEventListener('input', () => {
-                document.getElementById('nextBtn1').disabled = pName.value.trim() === '';
-            });
-
-            wName.addEventListener('input', () => {
-                document.getElementById('nextBtn2').disabled = wName.value.trim() === '';
-            });
-
-            rName.addEventListener('input', () => {
-                document.getElementById('submitOnboardingBtn').disabled = rName.value.trim() === '';
-            });
+            pName.addEventListener('input', () => { document.getElementById('nextBtn1').disabled = pName.value.trim() === ''; });
+            wName.addEventListener('input', () => { document.getElementById('nextBtn2').disabled = wName.value.trim() === ''; });
+            rName.addEventListener('input', () => { document.getElementById('submitOnboardingBtn').disabled = rName.value.trim() === ''; });
         }
 
-        function nextStep(stepNumber) {
+        function nextStep(step) {
             document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
-
-            const progressBar = document.getElementById('stepProgressBar');
-            if (stepNumber === 2) progressBar.style.width = '66.66%';
-            if (stepNumber === 3) progressBar.style.width = '100%';
+            document.getElementById(`step-${step}`).classList.add('active');
+            document.getElementById('stepProgressBar').style.width = step === 2 ? '66.66%' : '100%';
         }
 
-        function prevStep(stepNumber) {
+        function prevStep(step) {
             document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
-
-            const progressBar = document.getElementById('stepProgressBar');
-            if (stepNumber === 1) progressBar.style.width = '33.33%';
-            if (stepNumber === 2) progressBar.style.width = '66.66%';
+            document.getElementById(`step-${step}`).classList.add('active');
+            document.getElementById('stepProgressBar').style.width = step === 1 ? '33.33%' : '66.66%';
         }
 
         function completeOnboarding() {
@@ -1226,77 +1115,77 @@
             const userData = { pharmacist, warehouse, region };
             localStorage.setItem('pharmaLink_session', JSON.stringify(userData));
 
-            const onboardingScreen = document.getElementById('onboarding-screen');
-            onboardingScreen.style.opacity = '0';
+            const screen = document.getElementById('onboarding-screen');
+            screen.style.opacity = '0';
             setTimeout(() => {
-                onboardingScreen.classList.add('hidden');
+                screen.classList.add('hidden');
                 initMainApp(userData);
             }, 500);
         }
 
-        // Main App Initialization
         function initMainApp(userData) {
             document.getElementById('main-app').classList.remove('hidden');
             document.getElementById('bannerTitle').innerText = `أهلاً بك يا دكتور ${userData.pharmacist} في مستودع ${userData.warehouse} - منطقة ${userData.region}`;
-
-            document.getElementById('settingsPharmName').innerText = userData.pharmacist;
-            document.getElementById('settingsWareName').innerText = userData.warehouse;
-            document.getElementById('settingsRegion').innerText = userData.region;
-
             loadInventoryData();
         }
 
-        // Tab System Switching
         function switchTab(tabId) {
-            document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-
             document.getElementById(`view-${tabId}`).classList.add('active');
             document.getElementById(`nav-btn-${tabId}`).classList.add('active');
         }
 
-        // Reset Session / Log out
         function resetAppSession() {
-            if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج وإعادة ضبط البيانات؟')) {
+            if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج وإعادة ضبط كافة البيانات؟')) {
                 localStorage.removeItem('pharmaLink_session');
                 localStorage.removeItem('pharmaLink_inventory');
+                localStorage.removeItem('pharmaLink_barcodes');
                 location.reload();
             }
         }
 
-        // ================= Inventory Management & On-Demand Barcode Scanning =================
+        // ================= Inventory & Barcode Database Management =================
         function getInventory() {
             const data = localStorage.getItem('pharmaLink_inventory');
             return data ? JSON.parse(data) : [];
         }
 
-        function saveInventory(inventory) {
-            localStorage.setItem('pharmaLink_inventory', JSON.stringify(inventory));
+        function saveInventory(inv) {
+            localStorage.setItem('pharmaLink_inventory', JSON.stringify(inv));
             loadInventoryData();
+        }
+
+        function getBarcodeMap() {
+            const data = localStorage.getItem('pharmaLink_barcodes');
+            return data ? JSON.parse(data) : {
+                "62810023": "أوميبرازول 20 ملغ (Omeprazole)",
+                "50123456": "بندول اكسترا (Panadol Extra)"
+            };
+        }
+
+        function saveBarcodeMap(map) {
+            localStorage.setItem('pharmaLink_barcodes', JSON.stringify(map));
         }
 
         function loadInventoryData() {
             const inventory = getInventory();
-
-            document.getElementById('statTotalMeds').innerText = inventory.reduce((sum, item) => sum + parseInt(item.qty), 0);
-            document.getElementById('statActiveTypes').innerText = inventory.length;
-
-            renderInventoryTables(inventory);
+            renderTables(inventory);
         }
 
-        function renderInventoryTables(inventory) {
+        function renderTables(inventory) {
             const fullContainer = document.getElementById('inventoryTableContainer');
-            const recentContainer = document.getElementById('homeRecentTableContainer');
+            const homeContainer = document.getElementById('homeTableContainer');
 
             if (inventory.length === 0) {
                 const emptyHTML = `
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24"><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm13-11h-2V4c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1v4H4c-1.1 0-2 .9-2 2v3h20v-3c0-1.1-.9-2-2-2zM8 5h8v3H8V5z"/></svg>
-                        <p>لا توجد أدوية مسجلة في المخزن حالياً. اضغط على "إضافة دواء جديد" للبدء.</p>
+                        <p>لا توجد أصناف دوائية مسجلة في المخزن حتى الآن.</p>
                     </div>
                 `;
                 fullContainer.innerHTML = emptyHTML;
-                recentContainer.innerHTML = emptyHTML;
+                homeContainer.innerHTML = emptyHTML;
                 return;
             }
 
@@ -1304,99 +1193,115 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>رقم الباركود</th>
                             <th>اسم الدواء</th>
                             <th>السعر الإفرادي (ل.س)</th>
                             <th>الكمية المتوفرة (علبة)</th>
                             <th>الحالة</th>
-                            <th>تاريخ الإضافة</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
 
             inventory.forEach(item => {
-                const statusBadge = item.qty > 10 ? '<span class="badge badge-success">متوفر</span>' : '<span class="badge badge-warning">مخزون منخفض</span>';
                 tableHTML += `
                     <tr>
+                        <td><code style="font-weight: 800; color: var(--primary-emerald);">${item.barcode}</code></td>
                         <td><strong>${item.name}</strong></td>
                         <td>${Number(item.price).toLocaleString()} ل.س</td>
                         <td>${item.qty} علبة</td>
-                        <td>${statusBadge}</td>
-                        <td>${item.date}</td>
+                        <td><span class="badge badge-success">متوفر بالمخزن</span></td>
                     </tr>
                 `;
             });
 
             tableHTML += `</tbody></table>`;
             fullContainer.innerHTML = tableHTML;
-            recentContainer.innerHTML = tableHTML;
+            homeContainer.innerHTML = tableHTML;
         }
 
-        // Modal Controls for Add Medicine
+        // Barcode Lookup Logic inside form
+        function checkBarcodeLookup(code) {
+            const bcMap = getBarcodeMap();
+            const nameInput = document.getElementById('medName');
+
+            if (bcMap[code]) {
+                // Already known barcode
+                nameInput.value = bcMap[code];
+                nameInput.readOnly = true;
+                nameInput.style.backgroundColor = '#e9f2ee';
+            } else {
+                // First-time introduction
+                nameInput.value = '';
+                nameInput.readOnly = false;
+                nameInput.style.backgroundColor = 'var(--medical-bg)';
+            }
+        }
+
         function openAddMedicineModal() {
             document.getElementById('medicineModal').classList.add('open');
             document.getElementById('addMedicineForm').reset();
+            document.getElementById('medName').readOnly = false;
+            document.getElementById('medName').style.backgroundColor = 'var(--medical-bg)';
         }
 
         function closeAddMedicineModal() {
             document.getElementById('medicineModal').classList.remove('open');
         }
 
-        // Strict On-Demand Barcode Scanner Camera Controls
+        // Camera Scanner Controls
         async function openScannerModal() {
             document.getElementById('scannerModal').classList.add('open');
-            const videoElement = document.getElementById('scannerVideo');
+            const videoEl = document.getElementById('scannerVideo');
             const statusText = document.getElementById('scannerStatusText');
-            statusText.innerText = 'جاري تشغيل الكاميرا المسحية...';
+            statusText.innerText = 'جاري تفعيل الكاميرا الضوئية...';
 
             try {
                 mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                videoElement.srcObject = mediaStream;
-                statusText.innerText = 'الكاميرا نشطة - يتم مسح الباركود...';
-
-                // Simulate successful scan recognition after 1.5 seconds
-                setTimeout(() => {
-                    if (mediaStream) {
-                        const randomMed = MOCK_BARCODE_DATABASE[Math.floor(Math.random() * MOCK_BARCODE_DATABASE.length)];
-                        document.getElementById('medName').value = randomMed.name;
-                        closeScannerModal();
-                    }
-                }, 1500);
-
+                videoEl.srcObject = mediaStream;
+                statusText.innerText = 'الكاميرا نشطة - جاهزة للتقاط الباركود';
             } catch (err) {
-                console.warn('Camera access not available or denied:', err);
-                statusText.innerText = 'الكاميرا غير متاحة - جارٍ اختيار منتج افتراضي...';
-                setTimeout(() => {
-                    const randomMed = MOCK_BARCODE_DATABASE[Math.floor(Math.random() * MOCK_BARCODE_DATABASE.length)];
-                    document.getElementById('medName').value = randomMed.name;
-                    closeScannerModal();
-                }, 1200);
+                console.warn('Camera feed error:', err);
+                statusText.innerText = 'الكاميرا غير متاحة، يجوز استخدام الأكواد التجريبية بالأعلى.';
             }
+        }
+
+        function simulateScan(code) {
+            playBeepSound();
+            document.getElementById('medBarcode').value = code;
+            checkBarcodeLookup(code);
+            closeScannerModal();
         }
 
         function closeScannerModal() {
             document.getElementById('scannerModal').classList.remove('open');
             if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream.getTracks().forEach(t => t.stop());
                 mediaStream = null;
             }
         }
 
-        // Save New Medicine Submission
+        // Save New Medicine Entry
         function saveNewMedicine(event) {
             event.preventDefault();
+            const barcode = document.getElementById('medBarcode').value.trim();
             const name = document.getElementById('medName').value.trim();
             const price = document.getElementById('medPrice').value.trim();
             const qty = document.getElementById('medQty').value.trim();
 
-            const currentDate = new Date().toLocaleDateString('ar-SY', { year: 'numeric', month: 'short', day: 'numeric' });
+            // Save new mapping to barcode database if first-time
+            const bcMap = getBarcodeMap();
+            if (!bcMap[barcode]) {
+                bcMap[barcode] = name;
+                saveBarcodeMap(bcMap);
+            }
 
             const newItem = {
                 id: Date.now(),
+                barcode,
                 name,
                 price,
-                qty,
-                date: currentDate
+                qty
             };
 
             const inventory = getInventory();
