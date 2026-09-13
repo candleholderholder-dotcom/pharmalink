@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - منصة ربط المستودعات بالصيدليات</title>
-    <!-- Google Fonts: Cairo (Weights 500, 700, 800 for thicker, punchier typography) -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&display=swap" rel="stylesheet">
+    <title>PharmaLink - منصة ربط المستودعات بالصيدليات الذكية</title>
+    <!-- Google Fonts: Cairo (Weights 650/600 for body, 800/900 for extra punchy headings) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap" rel="stylesheet">
     <style>
         /* ==========================================
            1. DESIGN SYSTEM & CSS VARIABLES
@@ -42,8 +42,8 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            font-weight: 500;
-            /* Base text weight */
+            font-weight: 600;
+            /* Thicker, punchier semi-bold base text weight */
             background-color: var(--color-light-bg);
             color: var(--color-charcoal);
             min-height: 100vh;
@@ -53,6 +53,8 @@
             overflow-x: hidden;
             /* Heavy GPU Acceleration */
             transform: translate3d(0, 0, 0);
+            padding-bottom: 75px;
+            /* Space for fixed bottom navigation bar */
         }
 
         h1,
@@ -61,8 +63,8 @@
         h4,
         h5,
         h6 {
-            font-weight: 700;
-            /* Thicker headings */
+            font-weight: 900;
+            /* Extra bold headings for striking visual hierarchy */
         }
 
         /* ==========================================
@@ -94,25 +96,25 @@
             will-change: transform;
         }
 
-        /* Horizontal Medical Capsule SVG Container */
+        /* Horizontal Split-Colored Medical Capsule SVG Container */
         .capsule-svg-wrapper {
-            width: 140px;
-            height: 72px;
+            width: 150px;
+            height: 76px;
             filter: drop-shadow(0 12px 30px rgba(7, 72, 40, 0.22));
         }
 
         .splash-title {
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 2.4rem;
+            font-weight: 900;
             color: var(--color-charcoal);
             letter-spacing: 0.5px;
             animation: fadeInSlideUp 0.8s ease forwards;
         }
 
         .splash-subtitle {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--color-cool-gray);
-            font-weight: 500;
+            font-weight: 600;
             animation: fadeInSlideUp 1s ease forwards;
         }
 
@@ -197,14 +199,14 @@
         }
 
         .brand-name {
-            font-size: 1.4rem;
-            font-weight: 800;
+            font-size: 1.5rem;
+            font-weight: 900;
             color: var(--color-charcoal);
         }
 
         .step-badge {
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.9rem;
+            font-weight: 800;
             color: var(--color-emerald);
             background-color: var(--color-emerald-light);
             padding: 6px 16px;
@@ -280,8 +282,8 @@
         }
 
         .form-group label {
-            font-size: 0.98rem;
-            font-weight: 700;
+            font-size: 1.02rem;
+            font-weight: 800;
             color: var(--color-charcoal);
         }
 
@@ -291,8 +293,8 @@
             border: 1.5px solid var(--color-border);
             border-radius: 14px;
             font-family: 'Cairo', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 1.02rem;
+            font-weight: 600;
             color: var(--color-charcoal);
             background-color: var(--color-white);
             outline: none;
@@ -301,7 +303,7 @@
 
         .form-control::placeholder {
             color: var(--color-cool-gray);
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .form-control:focus {
@@ -324,8 +326,8 @@
             border-radius: 14px;
             padding: 0.95rem 2.25rem;
             font-family: 'Cairo', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 1.02rem;
+            font-weight: 800;
             cursor: not-allowed;
             transition: var(--transition-smooth);
             flex-grow: 1;
@@ -349,8 +351,8 @@
             border-radius: 14px;
             padding: 0.95rem 1.5rem;
             font-family: 'Cairo', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
+            font-size: 0.98rem;
+            font-weight: 800;
             cursor: pointer;
             transition: var(--transition-smooth);
         }
@@ -400,13 +402,13 @@
         }
 
         .dash-logo-container svg {
-            width: 36px;
-            height: 20px;
+            width: 40px;
+            height: 22px;
         }
 
         .dash-logo-text {
-            font-size: 1.45rem;
-            font-weight: 800;
+            font-size: 1.55rem;
+            font-weight: 900;
             letter-spacing: 0.5px;
         }
 
@@ -443,8 +445,8 @@
             background-color: rgba(255, 255, 255, 0.15);
             padding: 8px 18px;
             border-radius: 20px;
-            font-size: 0.92rem;
-            font-weight: 700;
+            font-size: 0.95rem;
+            font-weight: 800;
         }
 
         /* Dashboard Workspace Container */
@@ -474,8 +476,8 @@
         }
 
         .welcome-dashboard-card h2 {
-            font-size: 1.65rem;
-            font-weight: 800;
+            font-size: 1.75rem;
+            font-weight: 900;
             color: var(--color-charcoal);
             margin-bottom: 8px;
             line-height: 1.4;
@@ -483,8 +485,8 @@
 
         .welcome-dashboard-card p {
             color: var(--color-cool-gray);
-            font-size: 1.02rem;
-            font-weight: 500;
+            font-size: 1.05rem;
+            font-weight: 600;
         }
 
         .region-tag {
@@ -492,8 +494,8 @@
             color: var(--color-emerald);
             padding: 12px 22px;
             border-radius: 14px;
-            font-size: 0.98rem;
-            font-weight: 700;
+            font-size: 1.02rem;
+            font-weight: 800;
             border: 1px solid #C8E6D9;
             display: flex;
             align-items: center;
@@ -551,16 +553,97 @@
         }
 
         .service-card h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-size: 1.35rem;
+            font-weight: 900;
             color: var(--color-charcoal);
         }
 
         .service-card p {
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             color: var(--color-cool-gray);
             line-height: 1.6;
-            font-weight: 500;
+            font-weight: 600;
+        }
+
+        /* ==========================================
+           5. PROFESSIONAL BOTTOM NAVIGATION BAR
+           ================================---------- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--color-white);
+            border-top: 1px solid var(--color-border);
+            box-shadow: 0 -4px 25px rgba(30, 34, 41, 0.06);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 1rem;
+            z-index: 200;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            flex-grow: 1;
+            transition: var(--transition-smooth);
+            color: var(--color-cool-gray);
+        }
+
+        /* Top Accent Indicator for Active State */
+        .bottom-nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 3px;
+            background-color: transparent;
+            border-radius: 0 0 3px 3px;
+            transition: var(--transition-smooth);
+        }
+
+        .bottom-nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--color-cool-gray);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), fill 0.3s ease;
+            will-change: transform;
+        }
+
+        .bottom-nav-item span {
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 800;
+            transition: color 0.3s ease;
+        }
+
+        /* Active State Styles */
+        .bottom-nav-item.active {
+            color: var(--color-emerald);
+        }
+
+        .bottom-nav-item.active::before {
+            background-color: var(--color-emerald);
+        }
+
+        .bottom-nav-item.active svg {
+            fill: var(--color-emerald);
+            transform: scale(1.15) translate3d(0, -2px, 0);
+        }
+
+        .bottom-nav-item:hover svg {
+            transform: scale(1.08) translate3d(0, -1px, 0);
         }
 
         /* Footer */
@@ -569,9 +652,9 @@
             border-top: 1px solid var(--color-border);
             text-align: center;
             padding: 1.5rem;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             color: var(--color-cool-gray);
-            font-weight: 500;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -583,17 +666,20 @@
        ================================---------- -->
     <div id="splashScreen">
         <div class="splash-content">
-            <!-- Inline SVG Horizontal Medical Capsule Logo -->
+            <!-- Inline SVG Horizontal Split-Colored Medical Capsule Logo -->
             <div class="capsule-svg-wrapper">
-                <svg viewBox="0 0 140 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="140" height="72" rx="36" fill="#074828" />
-                    <path d="M70 0H104C123.882 0 140 16.1177 140 36V36C140 55.8823 123.882 72 104 72H70V0Z"
-                        fill="#05341c" />
-                    <line x1="70" y1="8" x2="70" y2="64" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="3"
+                <svg viewBox="0 0 150 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Left Half: Deep Dark Emerald Green (#074828) -->
+                    <path d="M38 0H75V76H38C17.0132 76 0 58.9868 0 38V38C0 17.0132 17.0132 0 38 0Z" fill="#074828" />
+                    <!-- Right Half: Architectural Gray (#6C7A89) -->
+                    <path d="M75 0H112C132.987 0 150 17.0132 150 38V38C150 58.9868 132.987 76 112 76H75V0Z"
+                        fill="#6C7A89" />
+                    <!-- Center dividing seam -->
+                    <line x1="75" y1="8" x2="75" y2="68" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="3"
                         stroke-dasharray="4 4" />
-                    <!-- Cross medical emblem in center left -->
-                    <rect x="31" y="27" width="18" height="6" rx="3" fill="#FFFFFF" />
-                    <rect x="37" y="21" width="6" height="18" rx="3" fill="#FFFFFF" />
+                    <!-- White medical cross emblem centered on left emerald half -->
+                    <rect x="29" y="32" width="18" height="6" rx="3" fill="#FFFFFF" />
+                    <rect x="35" y="26" width="6" height="18" rx="3" fill="#FFFFFF" />
                 </svg>
             </div>
             <div style="text-align: center; display: flex; flex-direction: column; gap: 6px;">
@@ -674,7 +760,7 @@
                                 <label for="regionInput">المنطقة</label>
                             </div>
                             <input type="text" id="regionInput" class="form-control"
-                                placeholder="أدخل النطاق الجغرافي (مثال: منبج وريفها)..."
+                                placeholder="أدخل النطاق الجغرافي (مثال: حلب وريفها)..."
                                 oninput="validateWizardStep(3)">
                         </div>
                         <div class="wizard-actions">
@@ -697,12 +783,12 @@
         <!-- Sticky Top Navbar -->
         <header class="dash-header">
             <div class="dash-logo-container">
-                <svg viewBox="0 0 140 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="140" height="72" rx="36" fill="#FFFFFF" />
-                    <path d="M70 0H104C123.882 0 140 16.1177 140 36V36C140 55.8823 123.882 72 104 72H70V0Z"
+                <svg viewBox="0 0 150 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M38 0H75V76H38C17.0132 76 0 58.9868 0 38V38C0 17.0132 17.0132 0 38 0Z" fill="#FFFFFF" />
+                    <path d="M75 0H112C132.987 0 150 17.0132 150 38V38C150 58.9868 132.987 76 112 76H75V0Z"
                         fill="#E8F3EE" />
-                    <rect x="31" y="27" width="18" height="6" rx="3" fill="#074828" />
-                    <rect x="37" y="21" width="6" height="18" rx="3" fill="#074828" />
+                    <rect x="29" y="32" width="18" height="6" rx="3" fill="#074828" />
+                    <rect x="35" y="26" width="6" height="18" rx="3" fill="#074828" />
                 </svg>
                 <span class="dash-logo-text">PharmaLink</span>
             </div>
@@ -789,6 +875,44 @@
 
             </section>
         </main>
+
+        <!-- Professional Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <button class="bottom-nav-item active" onclick="switchNavTab(this, 'home')">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+                <span>الرئيسية</span>
+            </button>
+            <button class="bottom-nav-item" onclick="switchNavTab(this, 'orders')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                </svg>
+                <span>الطلبات</span>
+            </button>
+            <button class="bottom-nav-item" onclick="switchNavTab(this, 'inventory')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M4.5 10.5C3.67 10.5 3 11.17 3 12s.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15zM3 6c0 .83.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15C3.67 4.5 3 5.17 3 6zm1.5 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15z" />
+                </svg>
+                <span>المخزن</span>
+            </button>
+            <button class="bottom-nav-item" onclick="switchNavTab(this, 'invoices')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                </svg>
+                <span>الفواتير</span>
+            </button>
+            <button class="bottom-nav-item" onclick="switchNavTab(this, 'settings')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c-.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                </svg>
+                <span>الإعدادات</span>
+            </button>
+        </nav>
 
         <!-- Footer -->
         <footer>
@@ -913,6 +1037,16 @@
             document.getElementById('dashRegionSpan').textContent = `النطاق: ${data.region}`;
 
             mainDashboard.classList.add('visible');
+        }
+
+        // Bottom Navigation Tab Switcher Handler
+        function switchNavTab(btnElement, tabName) {
+            // Remove active class from all tabs
+            const allTabs = document.querySelectorAll('.bottom-nav-item');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Add active class to clicked tab
+            btnElement.classList.add('active');
         }
     </script>
 </body>
