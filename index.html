@@ -4,31 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - منصة ربط المستودعات بالصيدليات الذكية</title>
-    <!-- Google Fonts: Cairo (Weights 650/600 for body, 800/900 for extra punchy headings) -->
+    <title>PharmaLink - نظام إدارة المستودعات والصيدليات</title>
+    <!-- Google Fonts: Cairo with weights 600, 800, 900 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap" rel="stylesheet">
+
     <style>
-        /* ==========================================
-           1. DESIGN SYSTEM & CSS VARIABLES
-           Strict adherence to Deep Dark Emerald & Grays
-           ================================---------- */
+        /* CSS Reset & Design Tokens */
         :root {
-            --color-emerald: #074828;
-            /* Premium Deep Dark Emerald Core */
-            --color-emerald-hover: #05341c;
-            /* Darker Emerald for interactive hover */
-            --color-emerald-light: #E8F3EE;
-            /* Soft emerald tint for badges/focus */
-            --color-charcoal: #1E2229;
-            /* Charcoal Dark Gray for headings */
-            --color-cool-gray: #6C7A89;
-            /* Cool Medium Gray for subtext/disabled */
-            --color-light-bg: #F4F7F6;
-            /* Ultra-Light Medical Gray body background */
-            --color-white: #FFFFFF;
-            /* Card background */
-            --color-border: #E2E8F0;
-            /* Clean border gray */
+            --primary-emerald: #074828;
+            --charcoal-dark: #1E2229;
+            --cool-gray: #6C7A89;
+            --medical-bg: #F4F7F6;
+            --white: #FFFFFF;
+            --danger: #E74C3C;
+            --success: #2ECC71;
             --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -36,25 +27,16 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            /* Thicker, punchier semi-bold base text weight */
-            background-color: var(--color-light-bg);
-            color: var(--color-charcoal);
+            background-color: var(--medical-bg);
+            color: var(--charcoal-dark);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            direction: rtl;
             overflow-x: hidden;
-            /* Heavy GPU Acceleration */
-            transform: translate3d(0, 0, 0);
-            padding-bottom: 75px;
-            /* Space for fixed bottom navigation bar */
+            -webkit-font-smoothing: antialiased;
         }
 
         h1,
@@ -64,989 +46,1329 @@
         h5,
         h6 {
             font-weight: 900;
-            /* Extra bold headings for striking visual hierarchy */
+            color: var(--charcoal-dark);
         }
 
-        /* ==========================================
-           2. PHASE 1: CINEMATIC SPLASH SCREEN
-           ================================---------- */
-        #splashScreen {
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        /* ================= Phase 1: Cinematic Splash Screen ================= */
+        #splash-screen {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--color-light-bg);
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--medical-bg);
+            z-index: 9999;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.7s ease, visibility 0.7s ease;
-            will-change: opacity, visibility;
-            transform: translate3d(0, 0, 0);
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
 
-        .splash-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-            animation: levitateAndPulse 2.4s infinite ease-in-out;
+        .splash-capsule-container {
+            animation: levitateAndPulse 2.5s ease-in-out infinite;
             will-change: transform;
         }
 
-        /* Horizontal Split-Colored Medical Capsule SVG Container */
-        .capsule-svg-wrapper {
-            width: 150px;
-            height: 76px;
-            filter: drop-shadow(0 12px 30px rgba(7, 72, 40, 0.22));
-        }
-
-        .splash-title {
-            font-size: 2.4rem;
-            font-weight: 900;
-            color: var(--color-charcoal);
-            letter-spacing: 0.5px;
-            animation: fadeInSlideUp 0.8s ease forwards;
-        }
-
-        .splash-subtitle {
-            font-size: 1.05rem;
-            color: var(--color-cool-gray);
-            font-weight: 600;
-            animation: fadeInSlideUp 1s ease forwards;
-        }
-
         @keyframes levitateAndPulse {
-
-            0%,
-            100% {
-                transform: translate3d(0, 0, 0) scale(0.98);
+            0% {
+                transform: translateY(0) scale(1);
             }
 
             50% {
-                transform: translate3d(0, -8px, 0) scale(1.02);
+                transform: translateY(-12px) scale(1.03);
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
             }
         }
 
-        @keyframes fadeInSlideUp {
+        .splash-title {
+            margin-top: 1.5rem;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-emerald);
+            letter-spacing: 0.5px;
+        }
+
+        /* ================= Phase 2: Onboarding Form Wizard ================= */
+        #onboarding-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--medical-bg);
+            z-index: 8888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .onboarding-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 520px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(7, 72, 40, 0.08);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(108, 122, 137, 0.1);
+        }
+
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .onboarding-header h2 {
+            font-size: 1.75rem;
+            color: var(--primary-emerald);
+            margin-bottom: 0.5rem;
+        }
+
+        .onboarding-header p {
+            color: var(--cool-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Step Timeline */
+        .step-timeline {
+            display: flex;
+            height: 6px;
+            background: var(--medical-bg);
+            border-radius: 3px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .step-progress-bar {
+            height: 100%;
+            background: var(--primary-emerald);
+            width: 33.33%;
+            transition: var(--transition-smooth);
+        }
+
+        /* Wizard Steps Container */
+        .wizard-step {
+            display: none;
+            animation: fadeInStep 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .wizard-step.active {
+            display: block;
+        }
+
+        @keyframes fadeInStep {
             from {
                 opacity: 0;
-                transform: translate3d(0, 15px, 0);
+                transform: translateX(-20px);
             }
 
             to {
                 opacity: 1;
-                transform: translate3d(0, 0, 0);
+                transform: translateX(0);
             }
         }
 
-        /* ==========================================
-           3. PHASE 2: MULTI-STEP WIZARD DECORATOR
-           ================================---------- */
-        #onboardingWrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--color-light-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.7s ease, visibility 0.7s ease;
-            z-index: 500;
-            transform: translate3d(0, 0, 0);
-        }
-
-        #onboardingWrapper.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .wizard-card {
-            background-color: var(--color-white);
-            width: 100%;
-            max-width: 520px;
-            border-radius: 20px;
-            padding: 2.75rem;
-            box-shadow: 0 16px 45px rgba(30, 34, 41, 0.06);
-            border: 1px solid var(--color-border);
-            border-top: 4px solid var(--color-emerald);
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            position: relative;
-            transform: translate3d(0, 0, 0);
-        }
-
-        .wizard-header {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            border-bottom: 1px solid var(--color-border);
-            padding-bottom: 1.25rem;
-        }
-
-        .brand-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .brand-name {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--color-charcoal);
-        }
-
-        .step-badge {
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: var(--color-emerald);
-            background-color: var(--color-emerald-light);
-            padding: 6px 16px;
-            border-radius: 20px;
-            transition: var(--transition-smooth);
-        }
-
-        /* Fluid SVG Progress Timeline */
-        .progress-track {
-            width: 100%;
-            height: 6px;
-            background-color: var(--color-border);
-            border-radius: 3px;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background-color: var(--color-emerald);
-            width: 33.33%;
-            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: width;
-        }
-
-        /* Wizard Panes & Slide Animation */
-        .wizard-body {
-            position: relative;
-            min-height: 150px;
-            overflow: hidden;
-        }
-
-        .wizard-pane {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            opacity: 0;
-            visibility: hidden;
-            transform: translate3d(40px, 0, 0);
-            transition: var(--transition-smooth);
-            pointer-events: none;
-            will-change: transform, opacity;
-        }
-
-        .wizard-pane.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate3d(0, 0, 0);
-            pointer-events: auto;
-            position: relative;
-        }
-
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .form-label-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .form-label-row svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--color-emerald);
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
-            font-size: 1.02rem;
+            display: block;
+            font-size: 0.95rem;
+            color: var(--charcoal-dark);
+            margin-bottom: 0.5rem;
             font-weight: 800;
-            color: var(--color-charcoal);
         }
 
-        .form-control {
+        .input-with-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-with-icon svg {
+            position: absolute;
+            right: 1rem;
+            width: 22px;
+            height: 22px;
+            fill: var(--cool-gray);
+            transition: fill 0.3s ease;
+        }
+
+        .input-with-icon input {
             width: 100%;
-            padding: 1rem 1.15rem;
-            border: 1.5px solid var(--color-border);
-            border-radius: 14px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 1.02rem;
-            font-weight: 600;
-            color: var(--color-charcoal);
-            background-color: var(--color-white);
+            padding: 0.85rem 3rem 0.85rem 1rem;
+            border: 2px solid rgba(108, 122, 137, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--medical-bg);
+            color: var(--charcoal-dark);
             outline: none;
             transition: var(--transition-smooth);
         }
 
-        .form-control::placeholder {
-            color: var(--color-cool-gray);
-            font-weight: 600;
+        .input-with-icon input:focus {
+            border-color: var(--primary-emerald);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(7, 72, 40, 0.1);
         }
 
-        .form-control:focus {
-            border-color: var(--color-emerald);
-            box-shadow: 0 0 0 4px var(--color-emerald-light);
+        .input-with-icon input:focus+svg {
+            fill: var(--primary-emerald);
         }
 
         .wizard-actions {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             gap: 1rem;
-            margin-top: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.75rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .btn-primary {
-            background-color: var(--color-cool-gray);
-            color: var(--color-white);
-            border: none;
-            border-radius: 14px;
-            padding: 0.95rem 2.25rem;
-            font-family: 'Cairo', sans-serif;
-            font-size: 1.02rem;
-            font-weight: 800;
-            cursor: not-allowed;
-            transition: var(--transition-smooth);
-            flex-grow: 1;
-            text-align: center;
+            background-color: var(--primary-emerald);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(7, 72, 40, 0.2);
         }
 
-        .btn-primary.enabled {
-            background-color: var(--color-emerald);
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(7, 72, 40, 0.22);
-        }
-
-        .btn-primary.enabled:hover {
-            background-color: var(--color-emerald-hover);
+        .btn-primary:hover:not(:disabled) {
+            background-color: #05371e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(7, 72, 40, 0.3);
         }
 
         .btn-secondary {
-            background-color: transparent;
-            color: var(--color-cool-gray);
-            border: 1.5px solid var(--color-border);
-            border-radius: 14px;
-            padding: 0.95rem 1.5rem;
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.98rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: var(--transition-smooth);
+            background-color: var(--medical-bg);
+            color: var(--charcoal-dark);
+            border: 1px solid rgba(108, 122, 137, 0.3);
         }
 
-        .btn-secondary:hover {
-            background-color: var(--color-light-bg);
-            color: var(--color-charcoal);
-            border-color: var(--color-cool-gray);
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #e2e8e6;
         }
 
-        /* ==========================================
-           4. PHASE 3: MAIN APPLICATION DASHBOARD
-           ================================---------- */
-        #mainDashboard {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.8s ease;
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* ================= Phase 3: Main Dashboard & App Layout ================= */
+        #main-app {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            transform: translate3d(0, 0, 0);
+            padding-bottom: 90px;
+            /* Space for bottom nav */
         }
 
-        #mainDashboard.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Sticky Top Navbar */
-        .dash-header {
-            background-color: var(--color-emerald);
-            color: var(--color-white);
-            padding: 1.25rem 2.5rem;
+        /* Sticky Navbar */
+        .app-navbar {
+            background-color: var(--primary-emerald);
+            color: var(--white);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(7, 72, 40, 0.18);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 7777;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .dash-logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .dash-logo-container svg {
-            width: 40px;
-            height: 22px;
-        }
-
-        .dash-logo-text {
-            font-size: 1.55rem;
+        .brand-logo-text {
+            font-size: 1.5rem;
             font-weight: 900;
             letter-spacing: 0.5px;
+            color: var(--white);
         }
 
-        .dash-nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .dash-icon-btn {
-            background: rgba(255, 255, 255, 0.12);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: var(--transition-smooth);
-        }
-
-        .dash-icon-btn:hover {
-            background: rgba(255, 255, 255, 0.22);
-        }
-
-        .dash-icon-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--color-white);
-        }
-
-        .dash-user-badge {
-            background-color: rgba(255, 255, 255, 0.15);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.95rem;
             font-weight: 800;
         }
 
-        /* Dashboard Workspace Container */
-        .dash-main {
-            max-width: 1280px;
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* App Container & Views */
+        .app-container {
+            max-width: 1200px;
             width: 100%;
-            margin: 0 auto;
-            padding: 2.5rem 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
         }
 
-        /* Dynamic Welcome Banner */
-        .welcome-dashboard-card {
-            background-color: var(--color-white);
-            border-radius: 20px;
-            padding: 2.25rem 2.5rem;
-            box-shadow: 0 8px 30px rgba(30, 34, 41, 0.04);
-            border: 1px solid var(--color-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        .welcome-dashboard-card h2 {
-            font-size: 1.75rem;
-            font-weight: 900;
-            color: var(--color-charcoal);
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-
-        .welcome-dashboard-card p {
-            color: var(--color-cool-gray);
-            font-size: 1.05rem;
-            font-weight: 600;
-        }
-
-        .region-tag {
-            background-color: var(--color-emerald-light);
-            color: var(--color-emerald);
-            padding: 12px 22px;
-            border-radius: 14px;
-            font-size: 1.02rem;
-            font-weight: 800;
-            border: 1px solid #C8E6D9;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .region-tag svg {
-            width: 18px;
-            height: 18px;
-            fill: var(--color-emerald);
-        }
-
-        /* Services Grid Layout */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .service-card {
-            background-color: var(--color-white);
-            border-radius: 20px;
-            padding: 2.25rem;
-            box-shadow: 0 6px 20px rgba(30, 34, 41, 0.03);
-            border: 1px solid var(--color-border);
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            transition: var(--transition-smooth);
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary-emerald) 0%, #0a6338 100%);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(7, 72, 40, 0.15);
             position: relative;
             overflow: hidden;
         }
 
-        .service-card:hover {
-            transform: translate3d(0, -4px, 0);
-            box-shadow: 0 12px 30px rgba(30, 34, 41, 0.07);
-            border-color: var(--color-emerald);
+        .welcome-banner h2 {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
-        .service-icon-box {
-            width: 54px;
-            height: 54px;
+        .welcome-banner p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+        }
+
+        /* Tab Views */
+        .app-view {
+            display: none;
+            animation: fadeInView 0.4s ease forwards;
+        }
+
+        .app-view.active {
+            display: block;
+        }
+
+        @keyframes fadeInView {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dashboard Overview Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
             border-radius: 16px;
-            background-color: var(--color-emerald-light);
-            color: var(--color-emerald);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(108, 122, 137, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(7, 72, 40, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .service-icon-box svg {
+        .stat-icon svg {
             width: 26px;
             height: 26px;
-            fill: var(--color-emerald);
+            fill: var(--primary-emerald);
         }
 
-        .service-card h3 {
-            font-size: 1.35rem;
+        .stat-info h4 {
+            font-size: 0.9rem;
+            color: var(--cool-gray);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-info .stat-value {
+            font-size: 1.5rem;
             font-weight: 900;
-            color: var(--color-charcoal);
+            color: var(--charcoal-dark);
         }
 
-        .service-card p {
-            font-size: 0.98rem;
-            color: var(--color-cool-gray);
-            line-height: 1.6;
-            font-weight: 600;
+        /* Section Header with Actions */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        /* ==========================================
-           5. PROFESSIONAL BOTTOM NAVIGATION BAR
-           ================================---------- */
+        .section-header h3 {
+            font-size: 1.25rem;
+            color: var(--charcoal-dark);
+        }
+
+        /* Stock Table / Responsive Table */
+        .table-container {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(108, 122, 137, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        th {
+            background-color: var(--medical-bg);
+            color: var(--charcoal-dark);
+            padding: 1rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 900;
+            border-bottom: 2px solid rgba(108, 122, 137, 0.15);
+        }
+
+        td {
+            padding: 1rem 1.25rem;
+            color: var(--charcoal-dark);
+            border-bottom: 1px solid rgba(108, 122, 137, 0.1);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: rgba(7, 72, 40, 0.02);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .badge-success {
+            background: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
+        }
+
+        .badge-warning {
+            background: rgba(241, 196, 15, 0.15);
+            color: #d35400;
+        }
+
+        /* Empty state styling */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--cool-gray);
+        }
+
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            fill: var(--cool-gray);
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* ================= Modal Window Styles ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(30, 34, 41, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: scale(0.95) translateY(10px);
+            transition: var(--transition-smooth);
+        }
+
+        .modal-overlay.open .modal-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(108, 122, 137, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-emerald);
+            font-size: 1.25rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--cool-gray);
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        /* Barcode Scanner UI inside Modal */
+        .barcode-section {
+            background: var(--medical-bg);
+            border: 2px dashed rgba(108, 122, 137, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .scanner-viewport {
+            width: 100%;
+            height: 140px;
+            background: var(--charcoal-dark);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .scanner-viewport video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .scanner-laser {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--danger);
+            box-shadow: 0 0 8px var(--danger);
+            animation: scanLaser 2s ease-in-out infinite;
+        }
+
+        @keyframes scanLaser {
+            0% {
+                top: 0%;
+            }
+
+            50% {
+                top: 95%;
+            }
+
+            100% {
+                top: 0%;
+            }
+        }
+
+        .scanner-placeholder-text {
+            color: var(--white);
+            font-size: 0.85rem;
+            position: absolute;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+        }
+
+        /* ================= Professional Bottom Navigation Bar ================= */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: var(--color-white);
-            border-top: 1px solid var(--color-border);
-            box-shadow: 0 -4px 25px rgba(30, 34, 41, 0.06);
+            background: var(--white);
+            border-top: 1px solid rgba(108, 122, 137, 0.15);
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            padding: 0 1rem;
-            z-index: 200;
-            transform: translate3d(0, 0, 0);
+            padding: 0.6rem 0.5rem;
+            z-index: 7777;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        .bottom-nav-item {
+        .nav-item {
+            background: none;
+            border: none;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 4px;
-            padding: 10px 16px;
-            background: transparent;
-            border: none;
+            gap: 0.35rem;
             cursor: pointer;
-            position: relative;
-            flex-grow: 1;
+            color: var(--cool-gray);
+            flex: 1;
             transition: var(--transition-smooth);
-            color: var(--color-cool-gray);
+            padding: 0.25rem 0;
         }
 
-        /* Top Accent Indicator for Active State */
-        .bottom-nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20%;
-            right: 20%;
-            height: 3px;
-            background-color: transparent;
-            border-radius: 0 0 3px 3px;
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--cool-gray);
             transition: var(--transition-smooth);
         }
 
-        .bottom-nav-item svg {
-            width: 22px;
-            height: 22px;
-            fill: var(--color-cool-gray);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), fill 0.3s ease;
-            will-change: transform;
-        }
-
-        .bottom-nav-item span {
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.82rem;
+        .nav-item span {
+            font-size: 0.75rem;
             font-weight: 800;
-            transition: color 0.3s ease;
         }
 
-        /* Active State Styles */
-        .bottom-nav-item.active {
-            color: var(--color-emerald);
+        .nav-item.active {
+            color: var(--primary-emerald);
         }
 
-        .bottom-nav-item.active::before {
-            background-color: var(--color-emerald);
+        .nav-item.active svg {
+            fill: var(--primary-emerald);
+            transform: translateY(-2px);
         }
 
-        .bottom-nav-item.active svg {
-            fill: var(--color-emerald);
-            transform: scale(1.15) translate3d(0, -2px, 0);
-        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .onboarding-card {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
 
-        .bottom-nav-item:hover svg {
-            transform: scale(1.08) translate3d(0, -1px, 0);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--color-white);
-            border-top: 1px solid var(--color-border);
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--color-cool-gray);
-            font-weight: 600;
+            .app-container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ==========================================
-       PHASE 1: CINEMATIC SPLASH SCREEN
-       ================================---------- -->
-    <div id="splashScreen">
-        <div class="splash-content">
-            <!-- Inline SVG Horizontal Split-Colored Medical Capsule Logo -->
-            <div class="capsule-svg-wrapper">
-                <svg viewBox="0 0 150 76" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Left Half: Deep Dark Emerald Green (#074828) -->
-                    <path d="M38 0H75V76H38C17.0132 76 0 58.9868 0 38V38C0 17.0132 17.0132 0 38 0Z" fill="#074828" />
-                    <!-- Right Half: Architectural Gray (#6C7A89) -->
-                    <path d="M75 0H112C132.987 0 150 17.0132 150 38V38C150 58.9868 132.987 76 112 76H75V0Z"
-                        fill="#6C7A89" />
-                    <!-- Center dividing seam -->
-                    <line x1="75" y1="8" x2="75" y2="68" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="3"
-                        stroke-dasharray="4 4" />
-                    <!-- White medical cross emblem centered on left emerald half -->
-                    <rect x="29" y="32" width="18" height="6" rx="3" fill="#FFFFFF" />
-                    <rect x="35" y="26" width="6" height="18" rx="3" fill="#FFFFFF" />
-                </svg>
+    <!-- ================= Phase 1: Cinematic Splash Screen ================= -->
+    <div id="splash-screen">
+        <div class="splash-capsule-container">
+            <!-- Inline SVG Horizontal Capsule split precisely down the middle -->
+            <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Left half: Deep Dark Emerald Green (#074828) -->
+                <path d="M30 0H60V60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z" fill="#074828" />
+                <!-- Right half: Elegant Architectural Gray (#6C7A89) -->
+                <path d="M60 0H90C106.568 0 120 13.4315 120 30C120 46.5685 106.568 60 90 60H60V0Z" fill="#6C7A89" />
+                <!-- Subtle medical shine / reflection lines -->
+                <rect x="20" y="12" width="20" height="6" rx="3" fill="white" fill-opacity="0.25" />
+            </svg>
+        </div>
+        <div class="splash-title">PharmaLink</div>
+    </div>
+
+    <!-- ================= Phase 2: Multi-Step Onboarding Form Wizard ================= -->
+    <div id="onboarding-screen" class="hidden">
+        <div class="onboarding-card">
+            <div class="onboarding-header">
+                <h2>إعداد حساب المستودع والصيدلي</h2>
+                <p>يرجى إدخال البيانات التالية لبدء استخدام نظام إدارة المخزون</p>
             </div>
-            <div style="text-align: center; display: flex; flex-direction: column; gap: 6px;">
-                <h1 class="splash-title">PharmaLink</h1>
-                <p class="splash-subtitle">جارٍ الاتصال بشبكة المستودعات الطبية الذكية...</p>
+
+            <!-- Dynamic SVG step-indicator timeline -->
+            <div class="step-timeline">
+                <div class="step-progress-bar" id="stepProgressBar" style="width: 33.33%;"></div>
             </div>
+
+            <form id="onboardingForm" onsubmit="event.preventDefault();">
+                <!-- Step 1: Pharmacist Name -->
+                <div class="wizard-step active" id="step-1">
+                    <div class="form-group">
+                        <label for="pharmacistName">اسم الصيدلاني</label>
+                        <div class="input-with-icon">
+                            <input type="text" id="pharmacistName" placeholder="مثال: د. أحمد خالد" required
+                                autocomplete="off">
+                            <!-- Inline SVG User Icon -->
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="wizard-actions">
+                        <div></div>
+                        <button type="button" class="btn btn-primary" id="nextBtn1" disabled onclick="nextStep(2)">
+                            التالي
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M15 18l-6-6 6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Warehouse Name -->
+                <div class="wizard-step" id="step-2">
+                    <div class="form-group">
+                        <label for="warehouseName">اسم المستودع</label>
+                        <div class="input-with-icon">
+                            <input type="text" id="warehouseName" placeholder="مثال: مستودع الشفاء الدوائي" required
+                                autocomplete="off">
+                            <!-- Inline SVG Warehouse Icon -->
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm12 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM17 12V9.5h2.5l1.96 2.5H17z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="wizard-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(1)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                            رجوع
+                        </button>
+                        <button type="button" class="btn btn-primary" id="nextBtn2" disabled onclick="nextStep(3)">
+                            التالي
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M15 18l-6-6 6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Region -->
+                <div class="wizard-step" id="step-3">
+                    <div class="form-group">
+                        <label for="regionName">المنطقة</label>
+                        <div class="input-with-icon">
+                            <input type="text" id="regionName" placeholder="مثال: حلب - المحافظة" required
+                                autocomplete="off">
+                            <!-- Inline SVG Map-Pin Icon -->
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="wizard-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                            رجوع
+                        </button>
+                        <button type="button" class="btn btn-primary" id="submitOnboardingBtn" disabled
+                            onclick="completeOnboarding()">
+                            دخول التطبيق
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- ==========================================
-       PHASE 2: MULTI-STEP WIZARD DECORATOR
-       ================================---------- -->
-    <div id="onboardingWrapper">
-        <div class="wizard-card">
-
-            <div class="wizard-header">
-                <div class="brand-row">
-                    <span class="brand-name">PharmaLink</span>
-                    <span id="stepBadgeText" class="step-badge">الخطوة 1 من 3</span>
-                </div>
-                <!-- Fluid SVG Progress Timeline -->
-                <div class="progress-track">
-                    <div id="progressFill" class="progress-fill" style="width: 33.33%;"></div>
-                </div>
-            </div>
-
-            <div class="wizard-body">
-                <form id="onboardingForm" novalidate>
-
-                    <!-- Step 1: Pharmacist's Name -->
-                    <div class="wizard-pane active" id="pane1">
-                        <div class="form-group">
-                            <div class="form-label-row">
-                                <svg viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                </svg>
-                                <label for="pharmacistNameInput">اسم الصيدلاني</label>
-                            </div>
-                            <input type="text" id="pharmacistNameInput" class="form-control"
-                                placeholder="أدخل اسمك الثلاثي أو اللقب..." oninput="validateWizardStep(1)">
-                        </div>
-                        <div class="wizard-actions">
-                            <button type="button" id="nextBtn1" class="btn-primary" onclick="goToWizardStep(2)"
-                                disabled>التالي</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Warehouse Name -->
-                    <div class="wizard-pane" id="pane2">
-                        <div class="form-group">
-                            <div class="form-label-row">
-                                <svg viewBox="0 0 24 24">
-                                    <path
-                                        d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z" />
-                                </svg>
-                                <label for="warehouseNameInput">اسم المستودع</label>
-                            </div>
-                            <input type="text" id="warehouseNameInput" class="form-control"
-                                placeholder="أدخل اسم المستودع (مثال: مستودع الألفية)..."
-                                oninput="validateWizardStep(2)">
-                        </div>
-                        <div class="wizard-actions">
-                            <button type="button" class="btn-secondary" onclick="goToWizardStep(1)">رجوع</button>
-                            <button type="button" id="nextBtn2" class="btn-primary" onclick="goToWizardStep(3)"
-                                disabled>التالي</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Region -->
-                    <div class="wizard-pane" id="pane3">
-                        <div class="form-group">
-                            <div class="form-label-row">
-                                <svg viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                                </svg>
-                                <label for="regionInput">المنطقة</label>
-                            </div>
-                            <input type="text" id="regionInput" class="form-control"
-                                placeholder="أدخل النطاق الجغرافي (مثال: حلب وريفها)..."
-                                oninput="validateWizardStep(3)">
-                        </div>
-                        <div class="wizard-actions">
-                            <button type="button" class="btn-secondary" onclick="goToWizardStep(2)">رجوع</button>
-                            <button type="submit" id="submitWizardBtn" class="btn-primary" disabled>دخول
-                                التطبيق</button>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ==========================================
-       PHASE 3: MAIN APPLICATION DASHBOARD
-       ================================---------- -->
-    <div id="mainDashboard">
-        <!-- Sticky Top Navbar -->
-        <header class="dash-header">
-            <div class="dash-logo-container">
-                <svg viewBox="0 0 150 76" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M38 0H75V76H38C17.0132 76 0 58.9868 0 38V38C0 17.0132 17.0132 0 38 0Z" fill="#FFFFFF" />
-                    <path d="M75 0H112C132.987 0 150 17.0132 150 38V38C150 58.9868 132.987 76 112 76H75V0Z"
-                        fill="#E8F3EE" />
-                    <rect x="29" y="32" width="18" height="6" rx="3" fill="#074828" />
-                    <rect x="35" y="26" width="6" height="18" rx="3" fill="#074828" />
-                </svg>
-                <span class="dash-logo-text">PharmaLink</span>
-            </div>
-            <div class="dash-nav-actions">
-                <button class="dash-icon-btn" title="الإشعارات">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
-                    </svg>
-                </button>
-                <div id="dashUserBadge" class="dash-user-badge">
-                    صيدلية د. محمد
-                </div>
-            </div>
+    <!-- ================= Phase 3: Main Application Dashboard ================= -->
+    <div id="main-app" class="hidden">
+        <!-- Sticky Navbar -->
+        <header class="app-navbar">
+            <div class="brand-logo-text">PharmaLink</div>
+            <button class="logout-btn" onclick="resetAppSession()">تسجيل الخروج / إعادة الضبط</button>
         </header>
 
-        <!-- Main Workspace -->
-        <main class="dash-main">
+        <!-- Main App Container -->
+        <main class="app-container">
             <!-- Dynamic Welcome Banner -->
-            <section class="welcome-dashboard-card">
-                <div>
-                    <h2 id="dashWelcomeTitle">أهلاً بك يا دكتور</h2>
-                    <p id="dashWelcomeSubtitle">لوحة التحكم المركزية لإدارة عمليات الربط وسلاسل الإمداد الدوائي.</p>
+            <div class="welcome-banner">
+                <h2 id="bannerTitle">أهلاً بك يا دكتور...</h2>
+                <p id="bannerSubtitle">لوحة التحكم المركزية لإدارة مخزون المستودع والطلبات بدقة عالية.</p>
+            </div>
+
+            <!-- Tab 1: الرئيسية (Home / Overview) -->
+            <section id="view-home" class="app-view active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h4>إجمالي الأدوية بالمخزن</h4>
+                            <div class="stat-value" id="statTotalMeds">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h4>الأنواع النشطة</h4>
+                            <div class="stat-value" id="statActiveTypes">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.58 22 12s-4.48-10-9.99-10zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h4>حالة المزامنة</h4>
+                            <div class="stat-value" style="font-size: 1.1rem; color: var(--success); margin-top: 5px;">
+                                متصل بالخادم المحلي</div>
+                        </div>
+                    </div>
                 </div>
-                <div id="dashRegionTag" class="region-tag">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                    </svg>
-                    <span id="dashRegionSpan">النطاق: قيد التحميل...</span>
+
+                <div class="section-header">
+                    <h3>أحدث الأدوية المضافة للمخزن</h3>
+                    <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;"
+                        onclick="switchTab('inventory')">إدارة المخزن الكاملة</button>
+                </div>
+                <div class="table-container" id="homeRecentTableContainer">
+                    <!-- Dynamic Recent Table -->
                 </div>
             </section>
 
-            <!-- Services Grid -->
-            <section class="services-grid">
-
-                <!-- Orders Module -->
-                <div class="service-card">
-                    <div class="service-icon-box">
+            <!-- Tab 2: الطلبات (Orders Placeholder) -->
+            <section id="view-orders" class="app-view">
+                <div class="section-header">
+                    <h3>طلبات الصيدليات الواردة</h3>
+                </div>
+                <div class="table-container">
+                    <div class="empty-state">
                         <svg viewBox="0 0 24 24">
                             <path
-                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 5h2v5h-2z" />
                         </svg>
+                        <p>لا توجد طلبات واردة حالياً من الصيدليات المرتبطة.</p>
                     </div>
-                    <h3>إدارة الطلبات الدوائية</h3>
-                    <p>متابعة وتوثيق الطلبات المرسلة للمستودعات وحالة التوريد والشحن الفوري.</p>
                 </div>
+            </section>
 
-                <!-- Inventory Module -->
-                <div class="service-card">
-                    <div class="service-icon-box">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M4.5 10.5C3.67 10.5 3 11.17 3 12s.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15zM3 6c0 .83.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15C3.67 4.5 3 5.17 3 6zm1.5 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15z" />
+            <!-- Tab 3: المخزن (Warehouse Stock Management) -->
+            <section id="view-inventory" class="app-view">
+                <div class="section-header">
+                    <h3>إدارة مخزون المستودع والمنتجات الدوائية</h3>
+                    <button class="btn btn-primary" onclick="openAddMedicineModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path d="M12 5v14M5 12h14" />
                         </svg>
-                    </div>
-                    <h3>مستودع الأدوية والمخزون</h3>
-                    <p>استعراض الأصناف المتوفرة وجداول التسعير وقوائم الأدوية المعتمدة.</p>
+                        إضافة دواء جديد
+                    </button>
                 </div>
+                <div class="table-container" id="inventoryTableContainer">
+                    <!-- Dynamic Full Inventory Table -->
+                </div>
+            </section>
 
-                <!-- Invoices Module -->
-                <div class="service-card">
-                    <div class="service-icon-box">
+            <!-- Tab 4: الفواتير (Invoices Placeholder) -->
+            <section id="view-invoices" class="app-view">
+                <div class="section-header">
+                    <h3>سجل الفواتير والماليات</h3>
+                </div>
+                <div class="table-container">
+                    <div class="empty-state">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
                         </svg>
+                        <p>لم يتم اصدار أي فواتير مالية خلال الفترة الحالية.</p>
                     </div>
-                    <h3>الفواتير والحسابات</h3>
-                    <p>مراجعة كشوفات الحسابات المالية والفواتير المرتبطة بعمليات التوريد.</p>
                 </div>
+            </section>
 
-                <!-- Settings Module -->
-                <div class="service-card">
-                    <div class="service-icon-box">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
-                        </svg>
+            <!-- Tab 5: الإعدادات (Settings) -->
+            <section id="view-settings" class="app-view">
+                <div class="section-header">
+                    <h3>إعدادات المستودع والنظام</h3>
+                </div>
+                <div class="table-container" style="padding: 2rem;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="margin-bottom: 0.5rem; color: var(--primary-emerald);">معلومات الحساب المسجلة</h4>
+                        <p style="color: var(--cool-gray); font-size: 0.95rem;">تم ربط هذا الجهاز بنظام مستودعات
+                            PharmaLink المعتمد.</p>
                     </div>
-                    <h3>الإعدادات والربط</h3>
-                    <p>تعديل بيانات الصيدلية، النطاق الجغرافي، وإعدادات الربط المتقدمة.</p>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div style="background: var(--medical-bg); padding: 1rem; border-radius: 10px;">
+                            <span style="display: block; font-size: 0.8rem; color: var(--cool-gray);">الصيدلاني
+                                المسؤول</span>
+                            <strong id="settingsPharmName" style="font-size: 1.1rem;">-</strong>
+                        </div>
+                        <div style="background: var(--medical-bg); padding: 1rem; border-radius: 10px;">
+                            <span style="display: block; font-size: 0.8rem; color: var(--cool-gray);">المستودع</span>
+                            <strong id="settingsWareName" style="font-size: 1.1rem;">-</strong>
+                        </div>
+                        <div style="background: var(--medical-bg); padding: 1rem; border-radius: 10px;">
+                            <span style="display: block; font-size: 0.8rem; color: var(--cool-gray);">المنطقة</span>
+                            <strong id="settingsRegion" style="font-size: 1.1rem;">-</strong>
+                        </div>
+                    </div>
+                    <button class="btn" style="background: var(--danger); color: var(--white);"
+                        onclick="resetAppSession()">مسح البيانات وإعادة الضبط بالكامل</button>
                 </div>
-
             </section>
         </main>
 
-        <!-- Professional Bottom Navigation Bar -->
+        <!-- Professional Bottom Navigation Bar (5 Items) -->
         <nav class="bottom-nav">
-            <button class="bottom-nav-item active" onclick="switchNavTab(this, 'home')">
+            <button class="nav-item active" onclick="switchTab('home')" id="nav-btn-home">
                 <svg viewBox="0 0 24 24">
                     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                 </svg>
                 <span>الرئيسية</span>
             </button>
-            <button class="bottom-nav-item" onclick="switchNavTab(this, 'orders')">
+            <button class="nav-item" onclick="switchTab('orders')" id="nav-btn-orders">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                </svg>
+                <span>الطلبات</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('inventory')" id="nav-btn-inventory">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm13-11h-2V4c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1v4H4c-1.1 0-2 .9-2 2v3h20v-3c0-1.1-.9-2-2-2zM8 5h8v3H8V5z" />
+                </svg>
+                <span>المخزن</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('invoices')" id="nav-btn-invoices">
                 <svg viewBox="0 0 24 24">
                     <path
                         d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
                 </svg>
-                <span>الطلبات</span>
-            </button>
-            <button class="bottom-nav-item" onclick="switchNavTab(this, 'inventory')">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M4.5 10.5C3.67 10.5 3 11.17 3 12s.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15zM3 6c0 .83.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15C3.67 4.5 3 5.17 3 6zm1.5 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-15z" />
-                </svg>
-                <span>المخزن</span>
-            </button>
-            <button class="bottom-nav-item" onclick="switchNavTab(this, 'invoices')">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
-                </svg>
                 <span>الفواتير</span>
             </button>
-            <button class="bottom-nav-item" onclick="switchNavTab(this, 'settings')">
+            <button class="nav-item" onclick="switchTab('settings')" id="nav-btn-settings">
                 <svg viewBox="0 0 24 24">
                     <path
-                        d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c-.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                        d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.03 2.18 13.82 2 13.6 2h-4c-.22 0-.43.18-.47.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.04.24.25.42.47.42h4c.22 0 .43-.18.47-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
                 </svg>
                 <span>الإعدادات</span>
             </button>
         </nav>
-
-        <!-- Footer -->
-        <footer>
-            PharmaLink &copy; 2026 - نظام ربط المستودعات بالصيدليات. جميع الحقوق محفوظة.
-        </footer>
     </div>
 
-    <!-- ==========================================
-       JAVASCRIPT CONTROLLER & STATE MANAGEMENT
-       ================================---------- -->
+    <!-- ================= Add Medicine Modal ================= -->
+    <div class="modal-overlay" id="medicineModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>إضافة دواء جديد للمخزن</h3>
+                <button class="modal-close" onclick="closeAddMedicineModal()">&times;</button>
+            </div>
+            <form id="addMedicineForm" onsubmit="saveNewMedicine(event)">
+                <!-- Barcode Scanning Feature Section -->
+                <div class="barcode-section">
+                    <div class="scanner-viewport">
+                        <video id="scannerVideo" autoplay muted playsinline></video>
+                        <div class="scanner-laser"></div>
+                        <div class="scanner-placeholder-text" id="scannerStatusText">جاري تشغيل كاميرا الباركود...</div>
+                    </div>
+                    <button type="button" class="btn btn-secondary w-full" style="font-size: 0.9rem; padding: 0.5rem;"
+                        onclick="simulateBarcodeScan()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3M5 12h14" />
+                        </svg>
+                        مسح الباركود (محاكاة أو التقاط تلقائي)
+                    </button>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="medName">اسم الدواء (يُعبأ تلقائياً عند مسح الباركود)</label>
+                    <input type="text" id="medName" placeholder="اختر الدواء أو امسح الباركود..." required
+                        style="width: 100%; padding: 0.75rem 1rem; border: 2px solid rgba(108,122,137,0.2); border-radius: 10px; background: var(--medical-bg); outline: none;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="medPrice">السعر الإفرادي (ل.س)</label>
+                        <input type="number" id="medPrice" placeholder="مثال: 15000" min="1" required
+                            style="width: 100%; padding: 0.75rem 1rem; border: 2px solid rgba(108,122,137,0.2); border-radius: 10px; background: var(--medical-bg); outline: none;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="medQty">الكمية (عدد العلب)</label>
+                        <input type="number" id="medQty" placeholder="مثال: 50" min="1" required
+                            style="width: 100%; padding: 0.75rem 1rem; border: 2px solid rgba(108,122,137,0.2); border-radius: 10px; background: var(--medical-bg); outline: none;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddMedicineModal()">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ وإضافة للمخزن</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= Application JavaScript ================= -->
     <script>
-        // Phase 1: Cinematic Splash Screen Controller
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splashScreen');
-                const onboardingWrapper = document.getElementById('onboardingWrapper');
+        // Mock Barcode Lookup Database for instant automated testability
+        const MOCK_BARCODE_DATABASE = [
+            { code: "6251001", name: "أوميبرازول 20 ملغ (Omeprazole)" },
+            { code: "6251002", name: "بندول اكسترا (Panadol Extra)" },
+            { code: "6251003", name: "أجويماتين 1 كغ (Augmentin 1g)" },
+            { code: "6251004", name: "باراسيتامول 500 ملغ (Paracetamol)" },
+            { code: "6251005", name: "فلوتاك 50 ملغ (Flutac)" }
+        ];
 
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
+        let mediaStream = null;
 
-                setTimeout(() => {
-                    splash.style.display = 'none';
-
-                    // Check if onboarding data already exists in localStorage
-                    const savedUserData = localStorage.getItem('pharmalink_user_onboarding');
-                    if (savedUserData) {
-                        const parsedData = JSON.parse(savedUserData);
-                        initializeDashboard(parsedData);
-                    } else {
-                        onboardingWrapper.classList.add('visible');
-                    }
-                }, 700);
-            }, 2500);
+        // Initialization on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthAndInit();
+            setupOnboardingValidation();
         });
 
-        // Phase 2: Onboarding Wizard State Controller
-        let currentWizardStep = 1;
+        // Phase 1 & 2 flow control
+        function checkAuthAndInit() {
+            const savedData = localStorage.getItem('pharmaLink_session');
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.classList.add('hidden');
+                    if (savedData) {
+                        // User already onboarded, jump to Main App
+                        const userData = JSON.parse(savedData);
+                        initMainApp(userData);
+                    } else {
+                        // Show Onboarding Wizard
+                        document.getElementById('onboarding-screen').classList.remove('hidden');
+                    }
+                }, 800);
+            }, 2500);
+        }
 
-        function validateWizardStep(step) {
-            if (step === 1) {
-                const val = document.getElementById('pharmacistNameInput').value.trim();
-                const btn = document.getElementById('nextBtn1');
-                if (val.length > 0) {
-                    btn.classList.add('enabled');
-                    btn.removeAttribute('disabled');
-                } else {
-                    btn.classList.remove('enabled');
-                    btn.setAttribute('disabled', 'true');
-                }
-            } else if (step === 2) {
-                const val = document.getElementById('warehouseNameInput').value.trim();
-                const btn = document.getElementById('nextBtn2');
-                if (val.length > 0) {
-                    btn.classList.add('enabled');
-                    btn.removeAttribute('disabled');
-                } else {
-                    btn.classList.remove('enabled');
-                    btn.setAttribute('disabled', 'true');
-                }
-            } else if (step === 3) {
-                const val = document.getElementById('regionInput').value.trim();
-                const btn = document.getElementById('submitWizardBtn');
-                if (val.length > 0) {
-                    btn.classList.add('enabled');
-                    btn.removeAttribute('disabled');
-                } else {
-                    btn.classList.remove('enabled');
-                    btn.setAttribute('disabled', 'true');
-                }
+        // Onboarding form input validation & wizard progression
+        function setupOnboardingValidation() {
+            const pName = document.getElementById('pharmacistName');
+            const wName = document.getElementById('warehouseName');
+            const rName = document.getElementById('regionName');
+
+            pName.addEventListener('input', () => {
+                document.getElementById('nextBtn1').disabled = pName.value.trim() === '';
+            });
+
+            wName.addEventListener('input', () => {
+                document.getElementById('nextBtn2').disabled = wName.value.trim() === '';
+            });
+
+            rName.addEventListener('input', () => {
+                document.getElementById('submitOnboardingBtn').disabled = rName.value.trim() === '';
+            });
+        }
+
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+
+            const progressBar = document.getElementById('stepProgressBar');
+            if (stepNumber === 2) progressBar.style.width = '66.66%';
+            if (stepNumber === 3) progressBar.style.width = '100%';
+        }
+
+        function prevStep(stepNumber) {
+            document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+
+            const progressBar = document.getElementById('stepProgressBar');
+            if (stepNumber === 1) progressBar.style.width = '33.33%';
+            if (stepNumber === 2) progressBar.style.width = '66.66%';
+        }
+
+        function completeOnboarding() {
+            const pharmacist = document.getElementById('pharmacistName').value.trim();
+            const warehouse = document.getElementById('warehouseName').value.trim();
+            const region = document.getElementById('regionName').value.trim();
+
+            const userData = { pharmacist, warehouse, region };
+            localStorage.setItem('pharmaLink_session', JSON.stringify(userData));
+
+            // Fade out onboarding and enter main app
+            const onboardingScreen = document.getElementById('onboarding-screen');
+            onboardingScreen.style.opacity = '0';
+            setTimeout(() => {
+                onboardingScreen.classList.add('hidden');
+                initMainApp(userData);
+            }, 500);
+        }
+
+        // Main App Initialization
+        function initMainApp(userData) {
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('bannerTitle').innerText = `أهلاً بك يا دكتور ${userData.pharmacist} في مستودع ${userData.warehouse} - منطقة ${userData.region}`;
+
+            // Populate settings view
+            document.getElementById('settingsPharmName').innerText = userData.pharmacist;
+            document.getElementById('settingsWareName').innerText = userData.warehouse;
+            document.getElementById('settingsRegion').innerText = userData.region;
+
+            loadInventoryData();
+        }
+
+        // Tab System Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(`view-${tabId}`).classList.add('active');
+            document.getElementById(`nav-btn-${tabId}`).classList.add('active');
+        }
+
+        // Reset Session / Log out
+        function resetAppSession() {
+            if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج وإعادة ضبط البيانات؟')) {
+                localStorage.removeItem('pharmaLink_session');
+                localStorage.removeItem('pharmaLink_inventory');
+                location.reload();
             }
         }
 
-        function goToWizardStep(step) {
-            document.getElementById(`pane${currentWizardStep}`).classList.remove('active');
-            currentWizardStep = step;
-            document.getElementById(`pane${currentWizardStep}`).classList.add('active');
-
-            // Update step badge & progress track width
-            document.getElementById('stepBadgeText').textContent = `الخطوة ${currentWizardStep} من 3`;
-            document.getElementById('progressFill').style.width = `${(currentWizardStep / 3) * 100}%`;
+        // ================= Inventory Management & Barcode Simulation =================
+        function getInventory() {
+            const data = localStorage.getItem('pharmaLink_inventory');
+            return data ? JSON.parse(data) : [];
         }
 
-        // Onboarding Form Submission Handler
-        const onboardingForm = document.getElementById('onboardingForm');
-        onboardingForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+        function saveInventory(inventory) {
+            localStorage.setItem('pharmaLink_inventory', JSON.stringify(inventory));
+            loadInventoryData();
+        }
 
-            const pharmacistName = document.getElementById('pharmacistNameInput').value.trim();
-            const warehouseName = document.getElementById('warehouseNameInput').value.trim();
-            const region = document.getElementById('regionInput').value.trim();
+        function loadInventoryData() {
+            const inventory = getInventory();
 
-            if (!pharmacistName || !warehouseName || !region) return;
+            // Update Dashboard Stats
+            document.getElementById('statTotalMeds').innerText = inventory.reduce((sum, item) => sum + parseInt(item.qty), 0);
+            document.getElementById('statActiveTypes').innerText = inventory.length;
 
-            const userData = {
-                pharmacistName: pharmacistName,
-                warehouseName: warehouseName,
-                region: region
+            renderInventoryTables(inventory);
+        }
+
+        function renderInventoryTables(inventory) {
+            const fullContainer = document.getElementById('inventoryTableContainer');
+            const recentContainer = document.getElementById('homeRecentTableContainer');
+
+            if (inventory.length === 0) {
+                const emptyHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24"><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm13-11h-2V4c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1v4H4c-1.1 0-2 .9-2 2v3h20v-3c0-1.1-.9-2-2-2zM8 5h8v3H8V5z"/></svg>
+                        <p>لا توجد أدوية مسجلة في المخزن حالياً. اضغط على "إضافة دواء جديد" للبدء.</p>
+                    </div>
+                `;
+                fullContainer.innerHTML = emptyHTML;
+                recentContainer.innerHTML = emptyHTML;
+                return;
+            }
+
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم الدواء</th>
+                            <th>السعر الإفرادي (ل.س)</th>
+                            <th>الكمية المتوفرة (علبة)</th>
+                            <th>الحالة</th>
+                            <th>تاريخ الإضافة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            inventory.forEach(item => {
+                const statusBadge = item.qty > 10 ? '<span class="badge badge-success">متوفر</span>' : '<span class="badge badge-warning">مخزون منخفض</span>';
+                tableHTML += `
+                    <tr>
+                        <td><strong>${item.name}</strong></td>
+                        <td>${Number(item.price).toLocaleString()} ل.س</td>
+                        <td>${item.qty} علبة</td>
+                        <td>${statusBadge}</td>
+                        <td>${item.date}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `</tbody></table>`;
+            fullContainer.innerHTML = tableHTML;
+            recentContainer.innerHTML = tableHTML;
+        }
+
+        // Modal Controls
+        function openAddMedicineModal() {
+            document.getElementById('medicineModal').classList.add('open');
+            document.getElementById('addMedicineForm').reset();
+            startCameraStream();
+        }
+
+        function closeAddMedicineModal() {
+            document.getElementById('medicineModal').classList.remove('open');
+            stopCameraStream();
+        }
+
+        // Camera Stream & Barcode Scanner Handling
+        async function startCameraStream() {
+            const videoElement = document.getElementById('scannerVideo');
+            const statusText = document.getElementById('scannerStatusText');
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                videoElement.srcObject = mediaStream;
+                statusText.innerText = 'الكاميرا نشطة - وجه الكاميرا نحو باركود الدواء';
+            } catch (err) {
+                console.warn('Camera access not available or denied:', err);
+                statusText.innerText = 'الكاميرا غير متاحة - انقر زر المسح للمحاكاة الفورية';
+            }
+        }
+
+        function stopCameraStream() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+        }
+
+        // Simulated or Native Barcode Scan Resolution
+        function simulateBarcodeScan() {
+            // Pick a random mock medicine from database
+            const randomMed = MOCK_BARCODE_DATABASE[Math.floor(Math.random() * MOCK_BARCODE_DATABASE.length)];
+            const nameInput = document.getElementById('medName');
+            const statusText = document.getElementById('scannerStatusText');
+
+            nameInput.value = randomMed.name;
+            statusText.innerText = `تم قراءة الباركود بنجاح: ${randomMed.code}`;
+
+            // Visual feedback flash on input
+            nameInput.style.borderColor = 'var(--success)';
+            setTimeout(() => {
+                nameInput.style.borderColor = 'rgba(108,122,137,0.2)';
+            }, 1000);
+        }
+
+        // Save New Medicine Submission
+        function saveNewMedicine(event) {
+            event.preventDefault();
+            const name = document.getElementById('medName').value.trim();
+            const price = document.getElementById('medPrice').value.trim();
+            const qty = document.getElementById('medQty').value.trim();
+
+            const currentDate = new Date().toLocaleDateString('ar-SY', { year: 'numeric', month: 'short', day: 'numeric' });
+
+            const newItem = {
+                id: Date.now(),
+                name,
+                price,
+                qty,
+                date: currentDate
             };
 
-            // Commit strings to browser localStorage
-            localStorage.setItem('pharmalink_user_onboarding', JSON.stringify(userData));
-
-            // Seamless cross-fade transition from Onboarding to Main Dashboard
-            const onboardingWrapper = document.getElementById('onboardingWrapper');
-            onboardingWrapper.style.opacity = '0';
-            onboardingWrapper.style.visibility = 'hidden';
-
-            setTimeout(() => {
-                onboardingWrapper.style.display = 'none';
-                initializeDashboard(userData);
-            }, 700);
-        });
-
-        // Phase 3: Dashboard Initializer
-        function initializeDashboard(data) {
-            const mainDashboard = document.getElementById('mainDashboard');
-
-            // Populate dynamic elements with stored metadata
-            document.getElementById('dashUserBadge').textContent = `د. ${data.pharmacistName}`;
-            document.getElementById('dashWelcomeTitle').textContent = `أهلاً بك يا دكتور ${data.pharmacistName} في مستودع ${data.warehouseName} - منطقة ${data.region}`;
-            document.getElementById('dashWelcomeSubtitle').textContent = `لوحة التحكم المركزية لإدارة عمليات الربط وسلاسل الإمداد الدوائي في نطاق ${data.region}.`;
-            document.getElementById('dashRegionSpan').textContent = `النطاق: ${data.region}`;
-
-            mainDashboard.classList.add('visible');
-        }
-
-        // Bottom Navigation Tab Switcher Handler
-        function switchNavTab(btnElement, tabName) {
-            // Remove active class from all tabs
-            const allTabs = document.querySelectorAll('.bottom-nav-item');
-            allTabs.forEach(tab => tab.classList.remove('active'));
-
-            // Add active class to clicked tab
-            btnElement.classList.add('active');
+            const inventory = getInventory();
+            inventory.unshift(newItem); // Add to beginning of array
+            saveInventory(inventory);
+            closeAddMedicineModal();
         }
     </script>
 </body>
