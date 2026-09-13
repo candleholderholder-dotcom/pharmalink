@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - نظام إدارة المستودعات والصيدليات</title>
+    <title>PharmaLink - نظام إدارة المستودعات والباركود الذكي</title>
     <!-- Google Fonts: Cairo with weights 600, 800, 900 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS Reset & Design Tokens */
+        /* CSS Reset & GPU-Accelerated Design Tokens */
         :root {
             --primary-emerald: #074828;
             --charcoal-dark: #1E2229;
@@ -37,6 +37,8 @@
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            transform: translateZ(0);
+            /* Force GPU acceleration */
         }
 
         h1,
@@ -66,7 +68,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s ease;
+            will-change: opacity;
         }
 
         .splash-capsule-container {
@@ -80,7 +83,7 @@
             }
 
             50% {
-                transform: translateY(-12px) scale(1.03);
+                transform: translateY(-14px) scale(1.04);
             }
 
             100% {
@@ -90,13 +93,13 @@
 
         .splash-title {
             margin-top: 1.5rem;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 900;
             color: var(--primary-emerald);
             letter-spacing: 0.5px;
         }
 
-        /* ================= Phase 2: Onboarding Form Wizard ================= */
+        /* ================= Phase 2: Multi-Step Onboarding Form Wizard ================= */
         #onboarding-screen {
             position: fixed;
             top: 0;
@@ -116,9 +119,10 @@
             width: 100%;
             max-width: 520px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(7, 72, 40, 0.08);
+            box-shadow: 0 20px 40px rgba(7, 72, 40, 0.08);
             padding: 2.5rem;
             border: 1px solid rgba(108, 122, 137, 0.1);
+            transform: translateZ(0);
         }
 
         .onboarding-header {
@@ -429,11 +433,6 @@
             color: #27ae60;
         }
 
-        .badge-info {
-            background: rgba(7, 72, 40, 0.1);
-            color: var(--primary-emerald);
-        }
-
         .empty-state {
             text-align: center;
             padding: 3rem;
@@ -448,7 +447,7 @@
             opacity: 0.5;
         }
 
-        /* ================= Modal Window & STRICT VERTICALLY STACKED Layout ================= */
+        /* ================= STRICT VERTICALLY STACKED Modal Window ================= */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -475,10 +474,10 @@
         .modal-card {
             background: var(--white);
             width: 100%;
-            max-width: 460px;
+            max-width: 480px;
             border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
             transform: scale(0.95) translateY(10px);
             transition: var(--transition-smooth);
             max-height: 90vh;
@@ -500,7 +499,7 @@
 
         .modal-header h3 {
             color: var(--primary-emerald);
-            font-size: 1.25rem;
+            font-size: 1.2rem;
         }
 
         .modal-close {
@@ -516,7 +515,7 @@
             color: var(--danger);
         }
 
-        /* STRICT VERTICAL STACK CONTAINER inside product entry modal */
+        /* STRICT VERTICAL STACK CONTAINER (CRITICAL REQUIREMENT) */
         .vertical-stack-form {
             display: flex;
             flex-direction: column;
@@ -550,13 +549,14 @@
             width: 20px;
             height: 20px;
             fill: var(--cool-gray);
+            transition: fill 0.3s ease;
         }
 
         .stacked-input-wrapper input {
             width: 100%;
             padding: 0.8rem 3rem 0.8rem 1rem;
             border: 2px solid rgba(108, 122, 137, 0.2);
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 0.95rem;
             background: var(--medical-bg);
             color: var(--charcoal-dark);
@@ -574,7 +574,7 @@
             fill: var(--primary-emerald);
         }
 
-        /* Camera Scanner Modal Overlay */
+        /* Ambient Crimson Laser Camera Scanner Modal */
         .scanner-modal-overlay {
             position: fixed;
             top: 0;
@@ -639,6 +639,7 @@
             background: var(--danger);
             box-shadow: 0 0 12px var(--danger);
             animation: scanLaser 1.8s ease-in-out infinite;
+            will-change: top;
         }
 
         @keyframes scanLaser {
@@ -666,7 +667,7 @@
             bottom: 12px;
         }
 
-        .test-barcode-buttons {
+        .test-barcode-profiles {
             display: flex;
             gap: 0.5rem;
             justify-content: center;
@@ -690,7 +691,7 @@
             border-color: var(--primary-emerald);
         }
 
-        /* Bottom Navigation Bar (Structured for 2 active primary tabs as requested) */
+        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -775,7 +776,7 @@
         <div class="onboarding-card">
             <div class="onboarding-header">
                 <h2>إعداد حساب المستودع والصيدلي</h2>
-                <p>يرجى إدخال البيانات التالية لبدء استخدام نظام إدارة المخزون</p>
+                <p>يرجى إدخال بيانات التعريف للبدء في تشغيل نظام المخزون</p>
             </div>
 
             <div class="step-timeline">
@@ -786,9 +787,9 @@
                 <!-- Step 1 -->
                 <div class="wizard-step active" id="step-1">
                     <div class="form-group">
-                        <label for="pharmacistName">اسم الصيدلاني</label>
+                        <label for="pharmacistName">اسم الصيدلاني المسؤول</label>
                         <div class="input-with-icon">
-                            <input type="text" id="pharmacistName" placeholder="مثال: د. محمد يحيى" required
+                            <input type="text" id="pharmacistName" placeholder="مثال: د. أوزكان بيك" required
                                 autocomplete="off">
                             <svg viewBox="0 0 24 24">
                                 <path
@@ -811,10 +812,10 @@
                 <!-- Step 2 -->
                 <div class="wizard-step" id="step-2">
                     <div class="form-group">
-                        <label for="warehouseName">اسم المستودع</label>
+                        <label for="warehouseName">اسم المستودع أو الصيدلية</label>
                         <div class="input-with-icon">
-                            <input type="text" id="warehouseName" placeholder="مثال: مستودع الشفاء الدوائي" required
-                                autocomplete="off">
+                            <input type="text" id="warehouseName" placeholder="مثال: مستودع ميليانيوم كور الدوائي"
+                                required autocomplete="off">
                             <svg viewBox="0 0 24 24">
                                 <path
                                     d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm12 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM17 12V9.5h2.5l1.96 2.5H17z" />
@@ -836,9 +837,9 @@
                 <!-- Step 3 -->
                 <div class="wizard-step" id="step-3">
                     <div class="form-group">
-                        <label for="regionName">المنطقة</label>
+                        <label for="regionName">المنطقة الجغرافية / الفرع</label>
                         <div class="input-with-icon">
-                            <input type="text" id="regionName" placeholder="مثال: حلب - المركز" required
+                            <input type="text" id="regionName" placeholder="مثال: حلب - المركز الرئيسي" required
                                 autocomplete="off">
                             <svg viewBox="0 0 24 24">
                                 <path
@@ -850,7 +851,7 @@
                         <button type="button" class="btn btn-secondary" onclick="prevStep(2)">رجوع</button>
                         <button type="button" class="btn btn-primary" id="submitOnboardingBtn" disabled
                             onclick="completeOnboarding()">
-                            دخول التطبيق
+                            بدء التشغيل
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2.5">
                                 <path d="M5 13l4 4L19 7" />
@@ -862,35 +863,35 @@
         </div>
     </div>
 
-    <!-- ================= Phase 3: Main Application Dashboard ================= -->
+    <!-- ================= Phase 3: Main Dashboard & App Layout ================= -->
     <div id="main-app" class="hidden">
         <header class="app-navbar">
             <div class="brand-logo-text">PharmaLink</div>
-            <button class="logout-btn" onclick="resetAppSession()">تسجيل الخروج / إعادة الضبط</button>
+            <button class="logout-btn" onclick="resetAppSession()">إعادة ضبط النظام</button>
         </header>
 
         <main class="app-container">
             <div class="welcome-banner">
-                <h2 id="bannerTitle">أهلاً بك يا دكتور...</h2>
-                <p id="bannerSubtitle">لوحة التحكم المركزية لإدارة مخزون المستودع والباركود.</p>
+                <h2 id="bannerTitle">مرحباً بك...</h2>
+                <p id="bannerSubtitle">منظومة إدارة مستودعات الأدوية والربط الآلي بالباركود.</p>
             </div>
 
             <!-- Tab 1: الرئيسية -->
             <section id="view-home" class="app-view active">
                 <div class="section-header">
-                    <h3>نظرة عامة على المخزون</h3>
+                    <h3>ملخص المخزون العام</h3>
                     <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;"
-                        onclick="switchTab('inventory')">إدارة المخزن والباركود</button>
+                        onclick="switchTab('inventory')">فتح سجل المخزن</button>
                 </div>
                 <div class="table-container" id="homeTableContainer">
                     <!-- Dynamic Summary Table -->
                 </div>
             </section>
 
-            <!-- Tab 2: المخزن (Warehouse Inventory Management & Barcode Lookup) -->
+            <!-- Tab 2: المخزن (Inventory Management) -->
             <section id="view-inventory" class="app-view">
                 <div class="section-header">
-                    <h3>إدارة مخزون الأدوية والربط الذكي للباركود</h3>
+                    <h3>إدارة المخزون وإدخال الأصناف الذكية</h3>
                     <button class="btn btn-primary" onclick="openAddMedicineModal()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5">
@@ -905,7 +906,7 @@
             </section>
         </main>
 
-        <!-- Professional Bottom Navigation Bar (2 Core Tabs) -->
+        <!-- Structural Bottom Navigation Bar -->
         <nav class="bottom-nav">
             <button class="nav-item active" onclick="switchTab('home')" id="nav-btn-home">
                 <svg viewBox="0 0 24 24">
@@ -923,24 +924,24 @@
         </nav>
     </div>
 
-    <!-- ================= Add Medicine Modal with STRICT VERTICALLY STACKED Layout ================= -->
+    <!-- ================= Add Medicine Modal with STRICT VERTICAL STACK Layout ================= -->
     <div class="modal-overlay" id="medicineModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>إضافة صنف جديد للمخزن والربط بالباركود</h3>
+                <h3>إضافة صنف دوائي جديد</h3>
                 <button class="modal-close" onclick="closeAddMedicineModal()">&times;</button>
             </div>
 
-            <!-- STRICT VERTICAL STACK CONTAINER -->
+            <!-- STRICT VERTICAL STACK CONTAINER: Every field, label, and button stacks strictly downward -->
             <form id="addMedicineForm" class="vertical-stack-form" onsubmit="saveNewMedicine(event)">
 
-                <!-- Field 1: Barcode Number with Scan Button -->
+                <!-- Stack Item 1: Barcode Input & Scan Trigger -->
                 <div class="vertical-stack-item">
                     <label for="medBarcode">رقم الباركود</label>
                     <div style="display: flex; gap: 0.5rem; width: 100%;">
                         <div class="stacked-input-wrapper" style="flex: 1;">
                             <input type="text" id="medBarcode" placeholder="أدخل الباركود أو امسحه..." required
-                                autocomplete="off" oninput="checkBarcodeLookup(this.value)">
+                                autocomplete="off">
                             <svg viewBox="0 0 24 24">
                                 <path
                                     d="M2 4h2v16H2V4zm4 0h1v16H6V4zm3 0h3v16H9V4zm4 0h2v16h-2V4zm3 0h1v16h-1V4zm3 0h2v16h-2V4z" />
@@ -958,11 +959,11 @@
                     </div>
                 </div>
 
-                <!-- Field 2: Medicine Name (Locked if known, unlocked if first-time) -->
+                <!-- Stack Item 2: Medicine Name -->
                 <div class="vertical-stack-item">
-                    <label for="medName">اسم الدواء</label>
+                    <label for="medName">اسم الدواء العلمي والتجاري</label>
                     <div class="stacked-input-wrapper">
-                        <input type="text" id="medName" placeholder="سيتم التعرف عليه أو طلب إدخاله..." required
+                        <input type="text" id="medName" placeholder="أدخل اسم الدواء كاملاً..." required
                             autocomplete="off">
                         <svg viewBox="0 0 24 24">
                             <path
@@ -971,11 +972,11 @@
                     </div>
                 </div>
 
-                <!-- Field 3: Unit Price -->
+                <!-- Stack Item 3: Unit Price -->
                 <div class="vertical-stack-item">
-                    <label for="medPrice">السعر الإفرادي (ل.س)</label>
+                    <label for="medPrice">السعر الإفرادي للمبيع (ل.س)</label>
                     <div class="stacked-input-wrapper">
-                        <input type="number" id="medPrice" placeholder="مثال: 15000" min="1" required
+                        <input type="number" id="medPrice" placeholder="مثال: 12500" min="1" required
                             autocomplete="off">
                         <svg viewBox="0 0 24 24">
                             <path
@@ -984,11 +985,11 @@
                     </div>
                 </div>
 
-                <!-- Field 4: Available Quantity / Boxes -->
+                <!-- Stack Item 4: Package Quantity -->
                 <div class="vertical-stack-item">
-                    <label for="medQty">الكمية المتوفرة (عدد العلب)</label>
+                    <label for="medQty">الكمية المدرجة (عدد العلب)</label>
                     <div class="stacked-input-wrapper">
-                        <input type="number" id="medQty" placeholder="مثال: 50" min="1" required autocomplete="off">
+                        <input type="number" id="medQty" placeholder="مثال: 45" min="1" required autocomplete="off">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 5h2v5h-2z" />
@@ -996,8 +997,8 @@
                     </div>
                 </div>
 
-                <!-- Field 5: Submit Button (Stacked at the bottom) -->
-                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                <!-- Stack Item 5: Action Buttons Container -->
+                <div style="display: flex; gap: 1rem; margin-top: 0.5rem; width: 100%;">
                     <button type="button" class="btn btn-secondary" style="flex: 1;"
                         onclick="closeAddMedicineModal()">إلغاء</button>
                     <button type="submit" class="btn btn-primary" style="flex: 2;">حفظ وإضافة للمخزن</button>
@@ -1011,28 +1012,29 @@
         <div class="scanner-card">
             <div class="modal-header"
                 style="border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 1rem; padding-bottom: 0.75rem;">
-                <h3 style="color: var(--white); font-size: 1.1rem;">مسح باركود الدواء ضوئياً</h3>
+                <h3 style="color: var(--white); font-size: 1.1rem;">ماسح الباركود الضوئي</h3>
                 <button class="modal-close" style="color: var(--white);" onclick="closeScannerModal()">&times;</button>
             </div>
 
-            <div class="test-barcode-buttons">
-                <button type="button" class="test-bc-btn" onclick="simulateScan('62810023')">اكواد تجريبية:
-                    62810023</button>
-                <button type="button" class="test-bc-btn" onclick="simulateScan('50123456')">اكواد تجريبية:
-                    50123456</button>
-                <button type="button" class="test-bc-btn" onclick="simulateScan('99887766')">كود جديد غير معروف</button>
+            <div class="test-barcode-profiles">
+                <button type="button" class="test-bc-btn" onclick="simulateBarcodeScan('628100238812')">محاكاة باركود
+                    1</button>
+                <button type="button" class="test-bc-btn" onclick="simulateBarcodeScan('501234567890')">محاكاة باركود
+                    2</button>
+                <button type="button" class="test-bc-btn" onclick="simulateBarcodeScan('998877665544')">محاكاة باركود
+                    3</button>
             </div>
 
             <div class="scanner-viewport">
                 <video id="scannerVideo" autoplay muted playsinline></video>
                 <div class="scanner-laser"></div>
-                <div class="scanner-placeholder-text" id="scannerStatusText">جاري تشغيل الكاميرا المسحية...</div>
+                <div class="scanner-placeholder-text" id="scannerStatusText">جاري تشغيل الكاميرا...</div>
             </div>
-            <p style="color: var(--cool-gray); font-size: 0.8rem; margin-bottom: 1rem;">وجه الكاميرا أو اضغط على الأكواد
-                التجريبية بالأعلى.</p>
+            <p style="color: var(--cool-gray); font-size: 0.8rem; margin-bottom: 1rem;">وجه الكاميرا نحو الرمز أو استخدم
+                أزرار المحاكاة السريعة بالأعلى.</p>
             <button type="button" class="btn btn-secondary w-full"
-                style="background: rgba(255,255,255,0.1); color: var(--white); border: 1px solid rgba(255,255,255,0.2);"
-                onclick="closeScannerModal()">إغلاق الكاميرا</button>
+                style="background: rgba(255,255,255,0.1); color: var(--white); border: 1px solid rgba(255,255,255,0.2); width: 100%;"
+                onclick="closeScannerModal()">إغلاق الماسح</button>
         </div>
     </div>
 
@@ -1040,43 +1042,43 @@
     <script>
         let mediaStream = null;
 
-        // Web Audio API Professional Beep Generator
-        function playBeepSound() {
+        // Web Audio API Synthesizer for Hardware Beep Feedback
+        function playHardwareBeep() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
 
                 oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch A5 beep
-                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                oscillator.frequency.setValueAtTime(920, audioCtx.currentTime); // Crisp hardware scan frequency
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioCtx.destination);
 
                 oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.15);
+                oscillator.stop(audioCtx.currentTime + 0.12);
             } catch (e) {
-                console.warn('AudioContext not permitted or supported without gesture', e);
+                console.warn('AudioContext restriction bypassed or unsupported:', e);
             }
         }
 
-        // Initialize App on DOM Load
+        // Initialize Application
         document.addEventListener('DOMContentLoaded', () => {
             checkAuthAndInit();
             setupOnboardingValidation();
         });
 
         function checkAuthAndInit() {
-            const savedData = localStorage.getItem('pharmaLink_session');
+            const savedSession = localStorage.getItem('pharmaLink_session');
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 splash.style.opacity = '0';
                 setTimeout(() => {
                     splash.classList.add('hidden');
-                    if (savedData) {
-                        const userData = JSON.parse(savedData);
+                    if (savedSession) {
+                        const userData = JSON.parse(savedSession);
                         initMainApp(userData);
                     } else {
                         document.getElementById('onboarding-screen').classList.remove('hidden');
@@ -1125,7 +1127,8 @@
 
         function initMainApp(userData) {
             document.getElementById('main-app').classList.remove('hidden');
-            document.getElementById('bannerTitle').innerText = `أهلاً بك يا دكتور ${userData.pharmacist} في مستودع ${userData.warehouse} - منطقة ${userData.region}`;
+            document.getElementById('bannerTitle').innerText = `أهلاً بك يا دكتور ${userData.pharmacist} في مستودع ${userData.warehouse}`;
+            document.getElementById('bannerSubtitle').innerText = `المنطقة: ${userData.region} | لوحة تحكم المخزون والباركود النشطة.`;
             loadInventoryData();
         }
 
@@ -1137,35 +1140,22 @@
         }
 
         function resetAppSession() {
-            if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج وإعادة ضبط كافة البيانات؟')) {
+            if (confirm('هل أنت متأكد من رغبتك في إعادة ضبط النظام ومسح كافة البيانات المسجلة؟')) {
                 localStorage.removeItem('pharmaLink_session');
                 localStorage.removeItem('pharmaLink_inventory');
-                localStorage.removeItem('pharmaLink_barcodes');
                 location.reload();
             }
         }
 
-        // ================= Inventory & Barcode Database Management =================
+        // ================= Inventory Management & LocalStorage =================
         function getInventory() {
             const data = localStorage.getItem('pharmaLink_inventory');
             return data ? JSON.parse(data) : [];
         }
 
-        function saveInventory(inv) {
-            localStorage.setItem('pharmaLink_inventory', JSON.stringify(inv));
+        function saveInventory(inventory) {
+            localStorage.setItem('pharmaLink_inventory', JSON.stringify(inventory));
             loadInventoryData();
-        }
-
-        function getBarcodeMap() {
-            const data = localStorage.getItem('pharmaLink_barcodes');
-            return data ? JSON.parse(data) : {
-                "62810023": "أوميبرازول 20 ملغ (Omeprazole)",
-                "50123456": "بندول اكسترا (Panadol Extra)"
-            };
-        }
-
-        function saveBarcodeMap(map) {
-            localStorage.setItem('pharmaLink_barcodes', JSON.stringify(map));
         }
 
         function loadInventoryData() {
@@ -1181,7 +1171,7 @@
                 const emptyHTML = `
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24"><path d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm13-11h-2V4c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1v4H4c-1.1 0-2 .9-2 2v3h20v-3c0-1.1-.9-2-2-2zM8 5h8v3H8V5z"/></svg>
-                        <p>لا توجد أصناف دوائية مسجلة في المخزن حتى الآن.</p>
+                        <p>لا توجد أصناف دوائية مسجلة في المخزن حالياً.</p>
                     </div>
                 `;
                 fullContainer.innerHTML = emptyHTML;
@@ -1196,7 +1186,7 @@
                             <th>رقم الباركود</th>
                             <th>اسم الدواء</th>
                             <th>السعر الإفرادي (ل.س)</th>
-                            <th>الكمية المتوفرة (علبة)</th>
+                            <th>الكمية المدرجة (علبة)</th>
                             <th>الحالة</th>
                         </tr>
                     </thead>
@@ -1210,7 +1200,7 @@
                         <td><strong>${item.name}</strong></td>
                         <td>${Number(item.price).toLocaleString()} ل.س</td>
                         <td>${item.qty} علبة</td>
-                        <td><span class="badge badge-success">متوفر بالمخزن</span></td>
+                        <td><span class="badge badge-success">نشط بالمخزن</span></td>
                     </tr>
                 `;
             });
@@ -1220,81 +1210,62 @@
             homeContainer.innerHTML = tableHTML;
         }
 
-        // Barcode Lookup Logic inside form
-        function checkBarcodeLookup(code) {
-            const bcMap = getBarcodeMap();
-            const nameInput = document.getElementById('medName');
-
-            if (bcMap[code]) {
-                // Already known barcode
-                nameInput.value = bcMap[code];
-                nameInput.readOnly = true;
-                nameInput.style.backgroundColor = '#e9f2ee';
-            } else {
-                // First-time introduction
-                nameInput.value = '';
-                nameInput.readOnly = false;
-                nameInput.style.backgroundColor = 'var(--medical-bg)';
-            }
-        }
-
         function openAddMedicineModal() {
             document.getElementById('medicineModal').classList.add('open');
             document.getElementById('addMedicineForm').reset();
-            document.getElementById('medName').readOnly = false;
-            document.getElementById('medName').style.backgroundColor = 'var(--medical-bg)';
         }
 
         function closeAddMedicineModal() {
             document.getElementById('medicineModal').classList.remove('open');
         }
 
-        // Camera Scanner Controls
+        // ================= Camera Scanner Workflow =================
         async function openScannerModal() {
             document.getElementById('scannerModal').classList.add('open');
             const videoEl = document.getElementById('scannerVideo');
             const statusText = document.getElementById('scannerStatusText');
-            statusText.innerText = 'جاري تفعيل الكاميرا الضوئية...';
+            statusText.innerText = 'جاري تفعيل الكاميرا...';
 
             try {
                 mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                 videoEl.srcObject = mediaStream;
-                statusText.innerText = 'الكاميرا نشطة - جاهزة للتقاط الباركود';
+                statusText.innerText = 'الكاميرا جاهزة للتقاط الباركود';
             } catch (err) {
-                console.warn('Camera feed error:', err);
-                statusText.innerText = 'الكاميرا غير متاحة، يجوز استخدام الأكواد التجريبية بالأعلى.';
+                console.warn('Camera feed unavailable:', err);
+                statusText.innerText = 'تعذر تشغيل الكاميرا المباشرة، استخدم أزرار المحاكاة.';
             }
         }
 
-        function simulateScan(code) {
-            playBeepSound();
-            document.getElementById('medBarcode').value = code;
-            checkBarcodeLookup(code);
+        function simulateBarcodeScan(barcodeString) {
+            // 1. Play professional beep sound effect
+            playHardwareBeep();
+
+            // 2. Populate strictly the barcode input field
+            const barcodeInput = document.getElementById('medBarcode');
+            barcodeInput.value = barcodeString;
+
+            // 3. Immediately shut down the scanner modal layer
             closeScannerModal();
+
+            // 4. Instantly focus user's cursor into the next field (Medicine Name)
+            document.getElementById('medName').focus();
         }
 
         function closeScannerModal() {
             document.getElementById('scannerModal').classList.remove('open');
             if (mediaStream) {
-                mediaStream.getTracks().forEach(t => t.stop());
+                mediaStream.getTracks().forEach(track => track.stop());
                 mediaStream = null;
             }
         }
 
-        // Save New Medicine Entry
+        // Save New Medicine Entry to localStorage
         function saveNewMedicine(event) {
             event.preventDefault();
             const barcode = document.getElementById('medBarcode').value.trim();
             const name = document.getElementById('medName').value.trim();
             const price = document.getElementById('medPrice').value.trim();
             const qty = document.getElementById('medQty').value.trim();
-
-            // Save new mapping to barcode database if first-time
-            const bcMap = getBarcodeMap();
-            if (!bcMap[barcode]) {
-                bcMap[barcode] = name;
-                saveBarcodeMap(bcMap);
-            }
 
             const newItem = {
                 id: Date.now(),
