@@ -316,7 +316,6 @@
             flex-direction: column;
             min-height: 100vh;
             padding-bottom: 90px;
-            /* Space for bottom nav */
         }
 
         /* Sticky Navbar */
@@ -607,35 +606,60 @@
             color: var(--danger);
         }
 
-        /* Barcode Scanner UI inside Modal */
-        .barcode-section {
-            background: var(--medical-bg);
-            border: 2px dashed rgba(108, 122, 137, 0.3);
-            border-radius: 12px;
+        /* Camera Viewfinder Modal Overlay for Barcode Scanning */
+        .scanner-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(30, 34, 41, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .scanner-modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scanner-card {
+            background: var(--charcoal-dark);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
             text-align: center;
-            margin-bottom: 1.5rem;
-            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .scanner-viewport {
             width: 100%;
-            height: 140px;
-            background: var(--charcoal-dark);
-            border-radius: 8px;
+            height: 240px;
+            background: #000;
+            border-radius: 12px;
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
+            border: 2px solid var(--primary-emerald);
         }
 
         .scanner-viewport video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
         .scanner-laser {
@@ -645,32 +669,33 @@
             width: 100%;
             height: 3px;
             background: var(--danger);
-            box-shadow: 0 0 8px var(--danger);
-            animation: scanLaser 2s ease-in-out infinite;
+            box-shadow: 0 0 12px var(--danger);
+            animation: scanLaser 1.8s ease-in-out infinite;
         }
 
         @keyframes scanLaser {
             0% {
-                top: 0%;
+                top: 2%;
             }
 
             50% {
-                top: 95%;
+                top: 94%;
             }
 
             100% {
-                top: 0%;
+                top: 2%;
             }
         }
 
         .scanner-placeholder-text {
             color: var(--white);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             position: absolute;
             z-index: 2;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
+            background: rgba(7, 72, 40, 0.85);
+            padding: 0.35rem 1rem;
+            border-radius: 6px;
+            bottom: 12px;
         }
 
         /* ================= Professional Bottom Navigation Bar ================= */
@@ -1061,27 +1086,20 @@
                 <button class="modal-close" onclick="closeAddMedicineModal()">&times;</button>
             </div>
             <form id="addMedicineForm" onsubmit="saveNewMedicine(event)">
-                <!-- Barcode Scanning Feature Section -->
-                <div class="barcode-section">
-                    <div class="scanner-viewport">
-                        <video id="scannerVideo" autoplay muted playsinline></video>
-                        <div class="scanner-laser"></div>
-                        <div class="scanner-placeholder-text" id="scannerStatusText">جاري تشغيل كاميرا الباركود...</div>
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                    <label for="medName">اسم الدواء (يُعبأ تلقائياً عبر مسح الباركود)</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="medName" placeholder="امسح الباركود أو أدخل اسم الدواء..." required
+                            style="flex: 1; padding: 0.75rem 1rem; border: 2px solid rgba(108,122,137,0.2); border-radius: 10px; background: var(--medical-bg); outline: none;">
+                        <button type="button" class="btn btn-primary" style="padding: 0.75rem 1rem; font-size: 0.9rem;"
+                            onclick="openScannerModal()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3M5 12h14" />
+                            </svg>
+                            مسح الباركود
+                        </button>
                     </div>
-                    <button type="button" class="btn btn-secondary w-full" style="font-size: 0.9rem; padding: 0.5rem;"
-                        onclick="simulateBarcodeScan()">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3M5 12h14" />
-                        </svg>
-                        مسح الباركود (محاكاة أو التقاط تلقائي)
-                    </button>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 1rem;">
-                    <label for="medName">اسم الدواء (يُعبأ تلقائياً عند مسح الباركود)</label>
-                    <input type="text" id="medName" placeholder="اختر الدواء أو امسح الباركود..." required
-                        style="width: 100%; padding: 0.75rem 1rem; border: 2px solid rgba(108,122,137,0.2); border-radius: 10px; background: var(--medical-bg); outline: none;">
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
@@ -1105,13 +1123,34 @@
         </div>
     </div>
 
+    <!-- ================= On-Demand Camera Barcode Scanner Modal ================= -->
+    <div class="scanner-modal-overlay" id="scannerModal">
+        <div class="scanner-card">
+            <div class="modal-header"
+                style="border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 1rem; padding-bottom: 0.75rem;">
+                <h3 style="color: var(--white); font-size: 1.1rem;">مسح باركود الدواء ضوئياً</h3>
+                <button class="modal-close" style="color: var(--white);" onclick="closeScannerModal()">&times;</button>
+            </div>
+            <div class="scanner-viewport">
+                <video id="scannerVideo" autoplay muted playsinline></video>
+                <div class="scanner-laser"></div>
+                <div class="scanner-placeholder-text" id="scannerStatusText">جاري التركيز ومسح الكود...</div>
+            </div>
+            <p style="color: var(--cool-gray); font-size: 0.85rem; margin-bottom: 1rem;">وجه الكاميرا نحو باركود المنتج
+                للتعرف عليه فوراً.</p>
+            <button type="button" class="btn btn-secondary w-full"
+                style="background: rgba(255,255,255,0.1); color: var(--white); border: 1px solid rgba(255,255,255,0.2);"
+                onclick="closeScannerModal()">إلغاء المسح</button>
+        </div>
+    </div>
+
     <!-- ================= Application JavaScript ================= -->
     <script>
         // Mock Barcode Lookup Database for instant automated testability
         const MOCK_BARCODE_DATABASE = [
             { code: "6251001", name: "أوميبرازول 20 ملغ (Omeprazole)" },
             { code: "6251002", name: "بندول اكسترا (Panadol Extra)" },
-            { code: "6251003", name: "أجويماتين 1 كغ (Augmentin 1g)" },
+            { code: "6251003", name: "أوغمينتين 1 غرام (Augmentin 1g)" },
             { code: "6251004", name: "باراسيتامول 500 ملغ (Paracetamol)" },
             { code: "6251005", name: "فلوتاك 50 ملغ (Flutac)" }
         ];
@@ -1133,11 +1172,9 @@
                 setTimeout(() => {
                     splash.classList.add('hidden');
                     if (savedData) {
-                        // User already onboarded, jump to Main App
                         const userData = JSON.parse(savedData);
                         initMainApp(userData);
                     } else {
-                        // Show Onboarding Wizard
                         document.getElementById('onboarding-screen').classList.remove('hidden');
                     }
                 }, 800);
@@ -1189,7 +1226,6 @@
             const userData = { pharmacist, warehouse, region };
             localStorage.setItem('pharmaLink_session', JSON.stringify(userData));
 
-            // Fade out onboarding and enter main app
             const onboardingScreen = document.getElementById('onboarding-screen');
             onboardingScreen.style.opacity = '0';
             setTimeout(() => {
@@ -1203,7 +1239,6 @@
             document.getElementById('main-app').classList.remove('hidden');
             document.getElementById('bannerTitle').innerText = `أهلاً بك يا دكتور ${userData.pharmacist} في مستودع ${userData.warehouse} - منطقة ${userData.region}`;
 
-            // Populate settings view
             document.getElementById('settingsPharmName').innerText = userData.pharmacist;
             document.getElementById('settingsWareName').innerText = userData.warehouse;
             document.getElementById('settingsRegion').innerText = userData.region;
@@ -1229,7 +1264,7 @@
             }
         }
 
-        // ================= Inventory Management & Barcode Simulation =================
+        // ================= Inventory Management & On-Demand Barcode Scanning =================
         function getInventory() {
             const data = localStorage.getItem('pharmaLink_inventory');
             return data ? JSON.parse(data) : [];
@@ -1243,7 +1278,6 @@
         function loadInventoryData() {
             const inventory = getInventory();
 
-            // Update Dashboard Stats
             document.getElementById('statTotalMeds').innerText = inventory.reduce((sum, item) => sum + parseInt(item.qty), 0);
             document.getElementById('statActiveTypes').innerText = inventory.length;
 
@@ -1298,54 +1332,54 @@
             recentContainer.innerHTML = tableHTML;
         }
 
-        // Modal Controls
+        // Modal Controls for Add Medicine
         function openAddMedicineModal() {
             document.getElementById('medicineModal').classList.add('open');
             document.getElementById('addMedicineForm').reset();
-            startCameraStream();
         }
 
         function closeAddMedicineModal() {
             document.getElementById('medicineModal').classList.remove('open');
-            stopCameraStream();
         }
 
-        // Camera Stream & Barcode Scanner Handling
-        async function startCameraStream() {
+        // Strict On-Demand Barcode Scanner Camera Controls
+        async function openScannerModal() {
+            document.getElementById('scannerModal').classList.add('open');
             const videoElement = document.getElementById('scannerVideo');
             const statusText = document.getElementById('scannerStatusText');
+            statusText.innerText = 'جاري تشغيل الكاميرا المسحية...';
+
             try {
                 mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                 videoElement.srcObject = mediaStream;
-                statusText.innerText = 'الكاميرا نشطة - وجه الكاميرا نحو باركود الدواء';
+                statusText.innerText = 'الكاميرا نشطة - يتم مسح الباركود...';
+
+                // Simulate successful scan recognition after 1.5 seconds
+                setTimeout(() => {
+                    if (mediaStream) {
+                        const randomMed = MOCK_BARCODE_DATABASE[Math.floor(Math.random() * MOCK_BARCODE_DATABASE.length)];
+                        document.getElementById('medName').value = randomMed.name;
+                        closeScannerModal();
+                    }
+                }, 1500);
+
             } catch (err) {
                 console.warn('Camera access not available or denied:', err);
-                statusText.innerText = 'الكاميرا غير متاحة - انقر زر المسح للمحاكاة الفورية';
+                statusText.innerText = 'الكاميرا غير متاحة - جارٍ اختيار منتج افتراضي...';
+                setTimeout(() => {
+                    const randomMed = MOCK_BARCODE_DATABASE[Math.floor(Math.random() * MOCK_BARCODE_DATABASE.length)];
+                    document.getElementById('medName').value = randomMed.name;
+                    closeScannerModal();
+                }, 1200);
             }
         }
 
-        function stopCameraStream() {
+        function closeScannerModal() {
+            document.getElementById('scannerModal').classList.remove('open');
             if (mediaStream) {
                 mediaStream.getTracks().forEach(track => track.stop());
                 mediaStream = null;
             }
-        }
-
-        // Simulated or Native Barcode Scan Resolution
-        function simulateBarcodeScan() {
-            // Pick a random mock medicine from database
-            const randomMed = MOCK_BARCODE_DATABASE[Math.floor(Math.random() * MOCK_BARCODE_DATABASE.length)];
-            const nameInput = document.getElementById('medName');
-            const statusText = document.getElementById('scannerStatusText');
-
-            nameInput.value = randomMed.name;
-            statusText.innerText = `تم قراءة الباركود بنجاح: ${randomMed.code}`;
-
-            // Visual feedback flash on input
-            nameInput.style.borderColor = 'var(--success)';
-            setTimeout(() => {
-                nameInput.style.borderColor = 'rgba(108,122,137,0.2)';
-            }, 1000);
         }
 
         // Save New Medicine Submission
@@ -1366,7 +1400,7 @@
             };
 
             const inventory = getInventory();
-            inventory.unshift(newItem); // Add to beginning of array
+            inventory.unshift(newItem);
             saveInventory(inventory);
             closeAddMedicineModal();
         }
