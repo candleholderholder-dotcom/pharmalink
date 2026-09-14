@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - منصة سلاسل الإمداد الدوائي</title>
+    <title>PharmaLink - منصة سلاسل الإمداد الدوائي المؤسسية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -18,8 +18,8 @@
             --white: #FFFFFF;
             --danger: #E74C3C;
             --success: #2ECC71;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 14px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -38,6 +38,7 @@
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
         }
 
         h1,
@@ -45,12 +46,11 @@
         h3,
         h4,
         h5,
-        h6,
-        .bold-extra {
+        h6 {
             font-weight: 900 !important;
         }
 
-        /* --- PHASE 1: SPLASH SCREEN --- */
+        /* --- PHASE 1: CINEMATIC SPLASH SCREEN --- */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -74,8 +74,8 @@
         }
 
         .pill-svg-container {
-            width: 120px;
-            height: 60px;
+            width: 130px;
+            height: 65px;
             transform: translate3d(0, 0, 0);
             animation: scaleUpEntrance 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             opacity: 0;
@@ -94,10 +94,10 @@
         }
 
         .splash-brand {
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 900;
             display: flex;
-            gap: 4px;
+            gap: 2px;
             opacity: 0;
             transform: translate3d(0, 15px, 0);
             animation: slideUpBrand 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
@@ -117,13 +117,15 @@
 
         .brand-pharma {
             color: var(--brand-secondary);
+            font-weight: 900;
         }
 
         .brand-link {
             color: var(--brand-primary);
+            font-weight: 900;
         }
 
-        /* --- PHASE 2: ONBOARDING WIZARD --- */
+        /* --- PHASE 2: STRUCTURED ONBOARDING WIZARD --- */
         #onboarding-screen {
             position: fixed;
             top: 0;
@@ -141,15 +143,14 @@
         .wizard-card {
             background: var(--white);
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
-            padding: 40px;
+            padding: 45px;
             display: flex;
             flex-direction: column;
             gap: 30px;
-            position: relative;
-            overflow: hidden;
+            border: 1px solid #E2E8F0;
         }
 
         .wizard-progress-track {
@@ -172,15 +173,15 @@
         }
 
         .wizard-step-dot {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: var(--light-bg);
             color: var(--brand-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
+            font-weight: 900;
             position: relative;
             z-index: 2;
             transition: var(--transition);
@@ -200,7 +201,7 @@
         .wizard-step-content {
             display: none;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
             animation: fadeInStep 0.4s ease forwards;
         }
 
@@ -224,7 +225,7 @@
             font-size: 22px;
             font-weight: 900;
             color: var(--charcoal);
-            text-align: center;
+            text-align: right;
         }
 
         .role-cards-grid {
@@ -234,9 +235,9 @@
         }
 
         .role-card {
-            border: 2px solid var(--light-bg);
+            border: 2px solid #E2E8F0;
             border-radius: var(--border-radius);
-            padding: 25px 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -251,6 +252,7 @@
             border-color: var(--brand-primary);
             background: rgba(0, 128, 128, 0.03);
             transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 128, 128, 0.08);
         }
 
         .role-card svg {
@@ -285,7 +287,7 @@
             border: 2px solid #E2E8F0;
             border-radius: var(--border-radius);
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--charcoal);
             background: var(--white);
             outline: none;
@@ -346,18 +348,18 @@
         .top-navbar {
             background: var(--brand-primary);
             color: var(--white);
-            padding: 15px 30px;
+            padding: 18px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .nav-brand-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 900;
             display: flex;
             gap: 4px;
@@ -365,15 +367,17 @@
 
         .nav-brand-pharma {
             color: #E2E8F0;
+            font-weight: 900;
         }
 
         .nav-brand-link {
             color: var(--white);
+            font-weight: 900;
         }
 
         .region-badge {
             background: rgba(255, 255, 255, 0.15);
-            padding: 6px 16px;
+            padding: 6px 18px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 800;
@@ -385,7 +389,7 @@
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            padding: 30px 20px 100px 20px;
+            padding: 30px 20px 110px 20px;
         }
 
         .app-view {
@@ -418,7 +422,7 @@
             left: 0;
             width: 100%;
             background: var(--white);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
             display: flex;
             justify-content: space-around;
             padding: 12px 10px;
@@ -461,15 +465,15 @@
             transform: translateY(-2px);
         }
 
-        /* Modern Notification Banner */
+        /* Modern Notification Banner (No JavaScript Alerts) */
         #notification-banner {
             position: fixed;
-            top: 85px;
+            top: 90px;
             left: 50%;
-            transform: translateX(-50%) translateY(-100px);
+            transform: translateX(-50%) translateY(-120px);
             background: var(--brand-primary);
             color: var(--white);
-            padding: 14px 30px;
+            padding: 14px 35px;
             border-radius: var(--border-radius);
             box-shadow: 0 8px 25px rgba(0, 128, 128, 0.3);
             font-size: 15px;
@@ -541,7 +545,7 @@
         .data-table td {
             padding: 16px 20px;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 700;
             border-bottom: 1px solid #E2E8F0;
             color: var(--charcoal);
         }
@@ -573,7 +577,7 @@
         .modal-wrapper {
             background: var(--white);
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             border-radius: var(--border-radius);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             padding: 30px;
@@ -583,6 +587,7 @@
             max-height: 90vh;
             overflow-y: auto;
             animation: scaleModal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border: 1px solid #E2E8F0;
         }
 
         @keyframes scaleModal {
@@ -597,22 +602,24 @@
             }
         }
 
-        /* Scanner Container */
+        /* QR Scanner Viewfinder container */
         #reader {
             width: 100% !important;
             border-radius: var(--border-radius) !important;
             overflow: hidden;
             border: 2px solid var(--brand-primary) !important;
+            background: var(--light-bg);
         }
 
         #reader__dashboard_section_csr button {
             background: var(--brand-primary) !important;
             color: white !important;
             border: none !important;
-            padding: 8px 16px !important;
-            border-radius: 6px !important;
+            padding: 10px 20px !important;
+            border-radius: 8px !important;
             font-weight: 800 !important;
             cursor: pointer !important;
+            margin-top: 5px !important;
         }
 
         /* Profile Sheet */
@@ -672,22 +679,14 @@
             align-items: center;
         }
 
-        .align-right {
-            text-align: right;
-        }
-
-        .align-center {
-            text-align: center;
-        }
-
         .w-full {
             width: 100%;
         }
 
         .badge-status {
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 800;
         }
 
@@ -712,14 +711,15 @@
     <div id="splash-screen">
         <div class="splash-content">
             <div class="pill-svg-container">
-                <svg viewBox="0 0 120 60" width="120" height="60">
-                    <!-- Left half: Architectural Gray #6C7A89 -->
-                    <path d="M 30,0 C 13.43,0 0,13.43 0,30 C 0,46.57 13.43,60 30,60 L 60,60 L 60,0 Z" fill="#6C7A89" />
+                <svg viewBox="0 0 130 65" width="130" height="65">
+                    <!-- Left half: Elegant Architectural Gray #6C7A89 -->
+                    <path d="M 32.5,0 C 14.55,0 0,14.55 0,32.5 C 0,50.45 14.55,65 32.5,65 L 65,65 L 65,0 Z"
+                        fill="#6C7A89" />
                     <!-- Right half: Premium Peacock Teal #008080 -->
-                    <path d="M 90,0 C 106.57,0 120,13.43 120,30 C 120,46.57 106.57,60 90,60 L 60,60 L 60,0 Z"
+                    <path d="M 97.5,0 C 115.45,0 130,14.55 130,32.5 C 130,50.45 115.45,65 97.5,65 L 65,65 L 65,0 Z"
                         fill="#008080" />
-                    <!-- Center divide line for precision -->
-                    <line x1="60" y1="0" x2="60" y2="60" stroke="#F4F7F6" stroke-width="2" />
+                    <!-- Precision centerline divider -->
+                    <line x1="65" y1="0" x2="65" y2="65" stroke="#F4F7F6" stroke-width="2.5" />
                 </svg>
             </div>
             <div class="splash-brand">
@@ -728,7 +728,7 @@
         </div>
     </div>
 
-    <!-- PHASE 2: ONBOARDING WIZARD -->
+    <!-- PHASE 2: STRUCTURED ONBOARDING FORM WIZARD -->
     <div id="onboarding-screen">
         <div class="wizard-card">
             <div class="wizard-progress-track">
@@ -740,7 +740,7 @@
 
             <!-- Step 1: Role Selection -->
             <div class="wizard-step-content active" id="step-1">
-                <div class="wizard-title">اختر طبيعة حسابك في المنصة</div>
+                <div class="wizard-title">اختر طبيعة حسابك المؤسسي في المنصة</div>
                 <div class="role-cards-grid">
                     <div class="role-card" onclick="selectRole('مستودع أدوية', this)">
                         <svg viewBox="0 0 24 24">
@@ -764,7 +764,7 @@
 
             <!-- Step 2: Responsible Name -->
             <div class="wizard-step-content" id="step-2">
-                <div class="wizard-title">اسم المسؤول أو الصيدلاني</div>
+                <div class="wizard-title">اسم المسؤول أو الصيدلاني المخول</div>
                 <div class="input-group-custom">
                     <svg viewBox="0 0 24 24">
                         <path
@@ -780,13 +780,13 @@
 
             <!-- Step 3: Entity Title -->
             <div class="wizard-step-content" id="step-3">
-                <div class="wizard-title">اسم الجهة (المستودع أو الصيدلية)</div>
+                <div class="wizard-title">اسم الجهة التجارية (المستودع أو الصيدلية)</div>
                 <div class="input-group-custom">
                     <svg viewBox="0 0 24 24">
                         <path
                             d="M12,3L2,12H5V20H19V12H22L12,3M12,8A2,2 0 0,1 14,10A2,2 0 0,1 12,12A2,2 0 0,1 10,10A2,2 0 0,1 12,8Z" />
                     </svg>
-                    <input type="text" id="input-entity" class="input-custom" placeholder="أدخل اسم المنشأة...">
+                    <input type="text" id="input-entity" class="input-custom" placeholder="أدخل اسم المنشأة المعتمد...">
                 </div>
                 <div class="wizard-buttons">
                     <button class="btn-custom btn-secondary-custom" onclick="prevWizardStep(3)">السابق</button>
@@ -796,7 +796,7 @@
 
             <!-- Step 4: Region Selection -->
             <div class="wizard-step-content" id="step-4">
-                <div class="wizard-title">اختر المنطقة الجغرافية</div>
+                <div class="wizard-title">اختر المنطقة الجغرافية التشغيلية</div>
                 <div class="input-group-custom">
                     <svg viewBox="0 0 24 24">
                         <path
@@ -832,14 +832,14 @@
             <!-- ================= PHARMACY VIEWS ================= -->
             <div class="app-view" id="view-pharmacy-home">
                 <div class="card-box">
-                    <div class="card-title">قائمة الأدوية المتاحة في المستودعات</div>
+                    <div class="card-title">قائمة الأدوية المتاحة في المستودعات المركزية</div>
                     <div class="input-group-custom">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
                         </svg>
                         <input type="text" id="pharmacy-search" class="input-custom"
-                            placeholder="بحث عن دواء أو مركب..." oninput="renderPharmacyCatalog()">
+                            placeholder="بحث عن دواء أو مركب نشط..." oninput="renderPharmacyCatalog()">
                     </div>
                 </div>
                 <div class="grid-cards" id="pharmacy-catalog-grid">
@@ -849,16 +849,16 @@
 
             <div class="app-view" id="view-pharmacy-orders">
                 <div class="card-box">
-                    <div class="card-title">سجل الطلبات الحالية</div>
+                    <div class="card-title">سجل الطلبات الحالية والمتابعة اللحظية</div>
                 </div>
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>رقم الطلب</th>
-                                <th>الأصناف</th>
-                                <th>المجموع (ل.س)</th>
-                                <th>الحالة</th>
+                                <th>الأصناف المطلوبة</th>
+                                <th>المجموع الكلي (ل.س)</th>
+                                <th>حالة الاعتماد</th>
                             </tr>
                         </thead>
                         <tbody id="pharmacy-orders-tbody">
@@ -870,7 +870,7 @@
 
             <div class="app-view" id="view-pharmacy-basket">
                 <div class="card-box">
-                    <div class="card-title">سلة المشتريات والطلب الفوري</div>
+                    <div class="card-title">سلة المشتريات وإتمام الطلب الفوري</div>
                 </div>
                 <div class="table-container">
                     <table class="data-table">
@@ -879,7 +879,7 @@
                                 <th>اسم الدواء</th>
                                 <th>السعر المفرد</th>
                                 <th>الكمية</th>
-                                <th>الإجمالي</th>
+                                <th>المجموع الإجمالي</th>
                                 <th>إجراء</th>
                             </tr>
                         </thead>
@@ -890,11 +890,11 @@
                 </div>
                 <div class="card-box" style="flex-direction: row; justify-content: space-between; align-items: center;">
                     <div>
-                        <div style="font-size: 14px; color: var(--brand-secondary);">المبلغ الإجمالي الكلي:</div>
+                        <div style="font-size: 14px; color: var(--brand-secondary);">المبلغ الإجمالي النهائي:</div>
                         <div id="basket-grand-total"
-                            style="font-size: 22px; font-weight: 900; color: var(--brand-primary);">0 ل.س</div>
+                            style="font-size: 24px; font-weight: 900; color: var(--brand-primary);">0 ل.س</div>
                     </div>
-                    <button class="btn-custom btn-primary-custom" style="flex: unset; padding: 12px 30px;"
+                    <button class="btn-custom btn-primary-custom" style="flex: unset; padding: 14px 35px;"
                         onclick="checkoutBasket()">إرسال الطلب الآن</button>
                 </div>
             </div>
@@ -903,20 +903,20 @@
             <!-- ================= WAREHOUSE VIEWS ================= -->
             <div class="app-view" id="view-warehouse-home">
                 <div class="card-box">
-                    <div class="card-title">لوحة مؤشرات أداء المستودع</div>
+                    <div class="card-title">لوحة مؤشرات الأداء المالي والعمولات للمستودع</div>
                 </div>
                 <div class="grid-cards">
                     <div class="card-box">
                         <div class="profile-label">إجمالي مبيعات المستودع</div>
                         <div id="wh-total-sales"
-                            style="font-size: 28px; font-weight: 900; color: var(--brand-primary);">0 ل.س</div>
+                            style="font-size: 30px; font-weight: 900; color: var(--brand-primary);">0 ل.س</div>
                     </div>
                     <div class="card-box">
                         <div class="profile-label">عمولة منصة PharmaLink المستحقة (1% صافي)</div>
-                        <div id="wh-commission" style="font-size: 28px; font-weight: 900; color: var(--danger);">0 ل.س
+                        <div id="wh-commission" style="font-size: 30px; font-weight: 900; color: var(--danger);">0 ل.س
                         </div>
                         <button class="btn-custom btn-primary-custom"
-                            style="margin-top: 10px; font-size: 14px; padding: 10px;"
+                            style="margin-top: 12px; font-size: 14px; padding: 12px;"
                             onclick="alertCommissionInstructions()">إرسال طلب تسديد العمولات</button>
                     </div>
                 </div>
@@ -924,9 +924,9 @@
 
             <div class="app-view" id="view-warehouse-inventory">
                 <div class="card-box card-header-flex">
-                    <div class="card-title">إدارة المخزن الدوائي</div>
+                    <div class="card-title">إدارة المخزن الدوائي المركزي</div>
                     <button class="btn-custom btn-primary-custom"
-                        style="flex: unset; padding: 10px 20px; font-size: 14px;" onclick="openAddMedicineModal()">إضافة
+                        style="flex: unset; padding: 12px 24px; font-size: 14px;" onclick="openAddMedicineModal()">إضافة
                         صنف +</button>
                 </div>
                 <div class="input-group-custom">
@@ -934,7 +934,7 @@
                         <path
                             d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
                     </svg>
-                    <input type="text" id="warehouse-search" class="input-custom" placeholder="بحث في المخزن..."
+                    <input type="text" id="warehouse-search" class="input-custom" placeholder="بحث دقيق في المخزن..."
                         oninput="renderWarehouseInventory()">
                 </div>
                 <div class="table-container">
@@ -945,7 +945,7 @@
                                 <th>اسم الدواء</th>
                                 <th>السعر (ل.س)</th>
                                 <th>الكمية المتاحة</th>
-                                <th>إجراء</th>
+                                <th>إجراءات المخزن</th>
                             </tr>
                         </thead>
                         <tbody id="warehouse-inventory-tbody">
@@ -957,7 +957,7 @@
 
             <div class="app-view" id="view-warehouse-invoices">
                 <div class="card-box">
-                    <div class="card-title">إدارة الفواتير والطلبات الواردة</div>
+                    <div class="card-title">إدارة الفواتير والطلبات الواردة والتصدير</div>
                 </div>
                 <div class="table-container">
                     <table class="data-table">
@@ -965,8 +965,8 @@
                             <tr>
                                 <th>رقم الفاتورة</th>
                                 <th>الصيدلية الطالبة</th>
-                                <th>التفاصيل والمبلغ</th>
-                                <th>إجراءات الواتساب</th>
+                                <th>التفاصيل والمبلغ الإجمالي</th>
+                                <th>تصدير الواتساب المعتمد</th>
                             </tr>
                         </thead>
                         <tbody id="warehouse-invoices-tbody">
@@ -977,11 +977,12 @@
             </div>
 
 
-            <!-- ================= UNIFIED PROFILE MODULE ("أنا") ================= -->
+            <!-- ================= UNIFIED "أنا" (PROFILE REFACTOR) MODULE ================= -->
             <div class="app-view" id="view-profile">
                 <div class="card-box card-header-flex">
-                    <div class="card-title">الملف الشخصي وإعدادات الحساب</div>
-                    <button style="background: none; border: none; cursor: pointer;" onclick="toggleProfileEdit()">
+                    <div class="card-title">الملف الشخصي وإعدادات الحساب المؤسسي</div>
+                    <button style="background: none; border: none; cursor: pointer; padding: 6px;"
+                        onclick="toggleProfileEdit()" title="تعديل الحساب">
                         <svg viewBox="0 0 24 24" width="24" height="24" fill="var(--brand-primary)">
                             <path
                                 d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
@@ -991,45 +992,46 @@
 
                 <div class="profile-sheet" id="profile-display-mode">
                     <div class="profile-row">
-                        <span class="profile-label">نوع الحساب</span>
+                        <span class="profile-label">طبيعة الحساب المؤسسي</span>
                         <span class="profile-value" id="prof-role">--</span>
                     </div>
                     <div class="profile-row">
-                        <span class="profile-label">اسم المسؤول / الصيدلاني</span>
+                        <span class="profile-label">اسم المسؤول / الصيدلاني المخول</span>
                         <span class="profile-value" id="prof-name">--</span>
                     </div>
                     <div class="profile-row">
-                        <span class="profile-label">اسم الجهة</span>
+                        <span class="profile-label">اسم الجهة التجارية</span>
                         <span class="profile-value" id="prof-entity">--</span>
                     </div>
                     <div class="profile-row">
-                        <span class="profile-label">المنطقة الجغرافية</span>
+                        <span class="profile-label">المنطقة الجغرافية التشغيلية</span>
                         <span class="profile-value" id="prof-region">--</span>
                     </div>
                 </div>
 
                 <div class="profile-sheet" id="profile-edit-mode" style="display: none;">
                     <div class="flex-col">
-                        <label class="profile-label">اسم المسؤول</label>
+                        <label class="profile-label">اسم المسؤول المخول</label>
                         <input type="text" id="edit-name-input" class="input-custom">
                     </div>
                     <div class="flex-col">
-                        <label class="profile-label">اسم الجهة</label>
+                        <label class="profile-label">اسم الجهة التجارية</label>
                         <input type="text" id="edit-entity-input" class="input-custom">
                     </div>
                     <div class="flex-col">
-                        <label class="profile-label">المنطقة</label>
+                        <label class="profile-label">المنطقة الجغرافية</label>
                         <select id="edit-region-select" class="select-custom">
                             <option value="منبج وريفها">منبج وريفها</option>
                             <option value="حلب وريفها">حلب وريفها</option>
                             <option value="إدلب وريفها">إدلب وريفها</option>
                         </select>
                     </div>
-                    <button class="btn-custom btn-primary-custom" onclick="saveProfileEdits()">حفظ التعديلات</button>
+                    <button class="btn-custom btn-primary-custom" onclick="saveProfileEdits()">حفظ التعديلات
+                        المؤسسية</button>
                 </div>
 
                 <button class="btn-custom"
-                    style="background: var(--danger); color: white; width: 100%; padding: 16px; margin-top: 10px;"
+                    style="background: var(--brand-secondary); color: white; width: 100%; padding: 18px; margin-top: 10px; font-size: 16px; border-radius: var(--border-radius);"
                     onclick="logoutApp()">تسجيل الخروج من الحساب</button>
             </div>
 
@@ -1041,36 +1043,37 @@
         </nav>
     </div>
 
-    <!-- MODAL: ADD MEDICINE (WAREHOUSE) WITH QR SCANNER -->
+    <!-- MODAL: ADD MEDICINE (WAREHOUSE) WITH QR/BARCODE SCANNER -->
     <div class="modal-overlay" id="modal-add-medicine">
         <div class="modal-wrapper">
             <div class="card-header-flex">
-                <div class="card-title">إضافة صنف دواء جديد</div>
-                <button style="background: none; border: none; font-size: 20px; cursor: pointer; font-weight: 900;"
+                <div class="card-title">إضافة صنف دواء جديد للمخزن</div>
+                <button
+                    style="background: none; border: none; font-size: 22px; cursor: pointer; font-weight: 900; color: var(--charcoal);"
                     onclick="closeAddMedicineModal()">✕</button>
             </div>
 
-            <!-- QR Scanner Viewfinder -->
+            <!-- QR & Barcode Camera Viewfinder Container -->
             <div id="reader"></div>
 
             <div class="flex-col">
-                <label class="profile-label">رمز الباركود</label>
+                <label class="profile-label">رمز الباركود المعرف</label>
                 <input type="text" id="med-barcode" class="input-custom"
-                    placeholder="سيتم تعبئته تلقائياً بالمسح أو يدوياً...">
+                    placeholder="يتم التعبئة تلقائياً بالمسح الضوئي أو يدوياً...">
             </div>
             <div class="flex-col">
-                <label class="profile-label">اسم الدواء</label>
+                <label class="profile-label">اسم الدواء العلمي / التجاري</label>
                 <input type="text" id="med-name" class="input-custom" placeholder="أدخل اسم الدواء...">
             </div>
             <div class="flex-col">
-                <label class="profile-label">السعر (ل.س)</label>
+                <label class="profile-label">السعر المفرد (ل.س)</label>
                 <input type="number" id="med-price" class="input-custom" placeholder="أدخل السعر...">
             </div>
             <div class="flex-col">
-                <label class="profile-label">الكمية المتوفرة</label>
-                <input type="number" id="med-qty" class="input-custom" placeholder="أدخل الكمية...">
+                <label class="profile-label">الكمية المتوفرة بالمخزن</label>
+                <input type="number" id="med-qty" class="input-custom" placeholder="أدخل الكمية المتاحة...">
             </div>
-            <button class="btn-custom btn-primary-custom" onclick="saveNewMedicine()">حفظ وإضافة للمخزن</button>
+            <button class="btn-custom btn-primary-custom" onclick="saveNewMedicine()">حفظ وإضافة الصنف للمخزن</button>
         </div>
     </div>
 
@@ -1078,38 +1081,40 @@
         /* --- APPLICATION STATE & LOCALSTORAGE --- */
         let currentUser = JSON.parse(localStorage.getItem('pharmalink_user')) || null;
         let inventory = JSON.parse(localStorage.getItem('pharmalink_inventory')) || [
-            { barcode: '6251234567891', name: 'باراسيتامول 500 مغ', price: 4500, qty: 150 },
-            { barcode: '6259876543210', name: 'أموكسيسيلين 250 مغ', price: 12000, qty: 80 },
-            { barcode: '6254567891234', name: 'إيبوبروفين 400 مغ', price: 6500, qty: 200 }
+            { barcode: '6251234567891', name: 'باراسيتامول 500 مغ - شريط', price: 4500, qty: 150 },
+            { barcode: '6259876543210', name: 'أموكسيسيلين 250 مغ - كبسولة', price: 12000, qty: 80 },
+            { barcode: '6254567891234', name: 'إيبوبروفين 400 مغ - شراب', price: 6500, qty: 200 }
         ];
         let basket = JSON.parse(localStorage.getItem('pharmalink_basket')) || [];
         let orders = JSON.parse(localStorage.getItem('pharmalink_orders')) || [
-            { id: 'ORD-1001', entity: 'صيدلية الشفاء', items: 'باراسيتامول 500 مغ (x10)', total: 45000, status: 'مكتمل' }
+            { id: 'ORD-1001', entity: 'صيدلية الشفاء المركزية', items: 'باراسيتامول 500 مغ - شريط (x10)', total: 45000, status: 'مكتمل ومعتمد' }
         ];
 
         let selectedWizardRole = 'مستودع أدوية';
         let currentWizardStep = 1;
         let html5QrCode = null;
 
-        /* --- AUDIO SYNTHESIZER FOR SCANNER BEEP --- */
+        /* --- AUDIO SYNTHESIZER FOR HARDWARE SCANNER BEEP --- */
         function playBeepSound() {
             try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(880, ctx.currentTime);
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.setValueAtTime(0.12, ctx.currentTime);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
                 osc.start();
                 osc.stop(ctx.currentTime + 0.15);
             } catch (e) {
-                console.log('Audio Context not supported or blocked');
+                console.log('Audio Context restricted or not supported');
             }
         }
 
-        /* --- MODERN NON-BLOCKING NOTIFICATION BANNER --- */
+        /* --- MODERN NON-BLOCKING NOTIFICATION BANNER (NO ALERTS) --- */
         function showNotification(msg) {
             const banner = document.getElementById('notification-banner');
             banner.innerText = msg;
@@ -1139,7 +1144,7 @@
             }
         }
 
-        /* --- WIZARD LOGIC --- */
+        /* --- ONBOARDING WIZARD LOGIC --- */
         function selectRole(role, el) {
             selectedWizardRole = role;
             document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
@@ -1149,11 +1154,11 @@
         function nextWizardStep(step) {
             if (step === 1 && !selectedWizardRole) return;
             if (step === 2 && !document.getElementById('input-name').value.trim()) {
-                alert('يرجى إدخال اسم المسؤول');
+                alert('يرجى إدخال اسم المسؤول المخول');
                 return;
             }
             if (step === 3 && !document.getElementById('input-entity').value.trim()) {
-                alert('يرجى إدخال اسم الجهة');
+                alert('يرجى إدخال اسم الجهة التجارية');
                 return;
             }
 
@@ -1184,7 +1189,7 @@
             const region = document.getElementById('input-region').value;
 
             if (!name || !entity) {
-                alert('يرجى استكمال كافة الحقول');
+                alert('يرجى استكمال كافة الحقول المطلوبة');
                 return;
             }
 
@@ -1256,7 +1261,7 @@
             const targetNav = document.getElementById(`nav-btn-${viewId}`);
             if (targetNav) targetNav.classList.add('active');
 
-            // Render view-specific data
+            // Render view-specific data matrices
             if (viewId === 'pharmacy-home') renderPharmacyCatalog();
             if (viewId === 'pharmacy-basket') renderBasket();
             if (viewId === 'pharmacy-orders') renderPharmacyOrders();
@@ -1274,7 +1279,7 @@
             const filtered = inventory.filter(i => i.name.toLowerCase().includes(query) || i.barcode.includes(query));
 
             if (filtered.length === 0) {
-                grid.innerHTML = `<div class="card-box" style="grid-column: 1/-1; text-align: center;">لا توجد أدوية مطابقة للبحث</div>`;
+                grid.innerHTML = `<div class="card-box" style="grid-column: 1/-1; text-align: center;">لا توجد أصناف دوائية مطابقة للبحث</div>`;
                 return;
             }
 
@@ -1284,11 +1289,11 @@
                 box.innerHTML = `
                     <div class="card-title">${item.name}</div>
                     <div class="flex-row" style="justify-content: space-between;">
-                        <span class="profile-label">السعر:</span>
+                        <span class="profile-label">السعر المفرد:</span>
                         <span style="font-weight: 900; color: var(--brand-primary);">${item.price} ل.س</span>
                     </div>
                     <div class="flex-row" style="justify-content: space-between;">
-                        <span class="profile-label">المتوفر:</span>
+                        <span class="profile-label">الكمية المتاحة:</span>
                         <span style="font-weight: 800;">${item.qty} وحدة</span>
                     </div>
                     <button class="btn-custom btn-primary-custom" onclick="addToBasket('${item.barcode}')">إضافة إلى السلة</button>
@@ -1300,14 +1305,14 @@
         function addToBasket(barcode) {
             const item = inventory.find(i => i.barcode === barcode);
             if (!item || item.qty <= 0) {
-                alert('الدواء غير متوفر حالياً');
+                alert('الدواء غير متوفر في المخزن حالياً');
                 return;
             }
 
             const existing = basket.find(b => b.barcode === barcode);
             if (existing) {
                 if (existing.quantity >= item.qty) {
-                    alert('لا يمكن تجاوز الكمية المتوفرة في المخزن');
+                    alert('لا يمكن تجاوز الكمية الكلية المتوفرة في المخزن');
                     return;
                 }
                 existing.quantity += 1;
@@ -1330,7 +1335,7 @@
             let grandTotal = 0;
 
             if (basket.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--brand-secondary);">السلة فارغة حالياً</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--brand-secondary);">سلة المشتريات فارغة حالياً</td></tr>`;
                 document.getElementById('basket-grand-total').innerText = '0 ل.س';
                 return;
             }
@@ -1369,13 +1374,13 @@
                 entity: currentUser.entity,
                 items: itemsSummary,
                 total: grandTotal,
-                status: 'قيد المعالجة'
+                status: 'قيد المعالجة المركزية'
             };
 
             orders.push(newOrder);
             localStorage.setItem('pharmalink_orders', JSON.stringify(orders));
 
-            // Deduct inventory
+            // Deduct inventory quantities
             basket.forEach(b => {
                 const invItem = inventory.find(i => i.barcode === b.barcode);
                 if (invItem) invItem.qty -= b.quantity;
@@ -1385,7 +1390,7 @@
             basket = [];
             localStorage.setItem('pharmalink_basket', JSON.stringify(basket));
 
-            showNotification('تم إرسال الطلب بنجاح إلى المستودع');
+            showNotification('تم إرسال الطلب بنجاح إلى المستودع المركزي');
             switchView('pharmacy-orders');
         }
 
@@ -1396,7 +1401,7 @@
             const myOrders = orders.filter(o => o.entity === currentUser.entity || currentUser.role === 'مستودع أدوية');
 
             if (myOrders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--brand-secondary);">لا توجد طلبات سابقة</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--brand-secondary);">لا توجد طلبات سجلة مسجلة</td></tr>`;
                 return;
             }
 
@@ -1423,7 +1428,7 @@
         }
 
         function alertCommissionInstructions() {
-            alert('تعليمات تسديد العمولات (1%): يرجى تحويل المبلغ المستحق عبر شبكات الحوالات المعتمدة (الهرم / الفؤاد) لصالح حساب منصة PharmaLink المركزي، ثم إرسال إيصال التحويل عبر الدعم الفني.');
+            alert('تعليمات تسديد عمولات منصة PharmaLink (1% صافي): يرجى تحويل المبلغ المستحق عبر شبكات الحوالات المالية المعتمدة (الهرم / الفؤاد) لصالح الحساب المالي المركزي للمنصة، ثم إرسال إيصال التحويل عبر فريق الدعم التقني.');
         }
 
         function renderWarehouseInventory() {
@@ -1434,7 +1439,7 @@
             const filtered = inventory.filter(i => i.name.toLowerCase().includes(query) || i.barcode.includes(query));
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--brand-secondary);">لا توجد أصناف في المخزن</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--brand-secondary);">المخزن خالي من الأصناف المطابقة</td></tr>`;
                 return;
             }
 
@@ -1464,7 +1469,7 @@
             document.getElementById('med-price').value = '';
             document.getElementById('med-qty').value = '';
 
-            // Start QR Scanner
+            // Start QR / Barcode Scanner securely with html5-qrcode
             setTimeout(() => {
                 if (!html5QrCode) {
                     html5QrCode = new Html5Qrcode("reader");
@@ -1478,10 +1483,10 @@
                         html5QrCode.stop().catch(err => console.log(err));
                     },
                     (errorMessage) => {
-                        // scanning in progress
+                        // scanning frame loop
                     }
                 ).catch(err => {
-                    console.log("Camera start error:", err);
+                    console.log("Camera hardware initialization notice:", err);
                 });
             }, 300);
         }
@@ -1500,7 +1505,7 @@
             const qty = parseInt(document.getElementById('med-qty').value);
 
             if (!barcode || !name || isNaN(price) || isNaN(qty)) {
-                alert('يرجى تعبئة كافة حقول الصنف بدقة');
+                alert('يرجى تعبئة كافة حقول الصنف بدقة وبدون إهمال');
                 return;
             }
 
@@ -1508,7 +1513,7 @@
             localStorage.setItem('pharmalink_inventory', JSON.stringify(inventory));
             closeAddMedicineModal();
             renderWarehouseInventory();
-            showNotification('تمت إضافة الصنف إلى المخزن بنجاح');
+            showNotification('تمت إضافة الصنف الدوائي إلى المخزن بنجاح');
         }
 
         function renderWarehouseInvoices() {
@@ -1516,25 +1521,25 @@
             tbody.innerHTML = '';
 
             if (orders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--brand-secondary);">لا توجد فواتير أو طلبات واردة</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--brand-secondary);">لا توجد فواتير أو طلبات واردة حالياً</td></tr>`;
                 return;
             }
 
             orders.forEach(ord => {
                 const tr = document.createElement('tr');
-                let waText = encodeURIComponent(`مرحباً ${ord.entity}، بشأن طلبكم رقم ${ord.id} المتضمن (${ord.items}) بإجمالي ${ord.total} ل.س، تم تأكيد الطلب وهو جاهز للتسليم والشحن.`);
+                let waText = encodeURIComponent(`مرحباً ${ord.entity}، بشأن طلبكم رقم ${ord.id} المتضمن (${ord.items}) بإجمالي ${ord.total} ل.س، تم اعتماد الطلب وتجهيزه للشحن والتسليم عبر منصة PharmaLink.`);
                 tr.innerHTML = `
                     <td>${ord.id}</td>
                     <td>${ord.entity}</td>
                     <td>${ord.items} - <b>${ord.total} ل.س</b></td>
-                    <td><a href="https://wa.me/?text=${waText}" target="_blank" class="btn-custom" style="background: #25D366; color: white; padding: 6px 14px; font-size: 13px; text-decoration: none; display: inline-block;">تصدير عبر الواتساب</a></td>
+                    <td><a href="https://wa.me/?text=${waText}" target="_blank" class="btn-custom" style="background: #25D366; color: white; padding: 6px 14px; font-size: 13px; text-decoration: none; display: inline-block;">تصدير وإرسال عبر الواتساب</a></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
 
-        /* --- PROFILE MODULE ("أنا") --- */
+        /* --- UNIFIED "أنا" (PROFILE REFACTOR) MODULE --- */
         function loadProfileData() {
             document.getElementById('prof-role').innerText = currentUser.role;
             document.getElementById('prof-name').innerText = currentUser.name;
@@ -1567,7 +1572,7 @@
             document.getElementById('header-region-badge').innerText = `المنطقة: ${currentUser.region}`;
             loadProfileData();
             toggleProfileEdit();
-            showNotification('تم تحديث الملف الشخصي بنجاح');
+            showNotification('تم تحديث الملف الشخصي المؤسسي بنجاح');
         }
 
         function logoutApp() {
