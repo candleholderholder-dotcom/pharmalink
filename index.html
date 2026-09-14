@@ -3,56 +3,50 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - منصة الأدوية الطبية الذكية</title>
-    <!-- Google Fonts: Cairo (Weights 600, 700, 800, 900 for ultra-bold architectural aesthetic) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PharmaLink - Enterprise Medical & Pharmaceutical Gateway</title>
+
+    <!-- Google Fonts: Cairo (Weights: 600 Semi-Bold, 700 Bold, 800 Extra Bold, 900 Black) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Official HTML5-QRCode Scanner Library -->
+
+    <!-- External Secure HTML5-QRCode Library via CDN -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <style>
-        /* ==========================================================================
-           1. DESIGN SYSTEM & CSS VARIABLES
-           ========================================================================== */
         :root {
-            --primary-green: #074828;
-            --primary-green-hover: #05371e;
-            --primary-green-light: rgba(7, 72, 40, 0.08);
+            --brand-emerald: #0A5C36;
+            --brand-emerald-hover: #08492b;
+            --brand-emerald-light: rgba(10, 92, 54, 0.08);
+            --arch-gray: #6C7A89;
+            --arch-gray-hover: #596573;
             --charcoal-dark: #1E2229;
-            --cool-gray: #6C7A89;
-            --medical-bg: #F4F7F6;
+            --medical-canvas: #F4F7F6;
             --white: #FFFFFF;
             --border-color: #E2E8F0;
-            --danger-red: #DC2626;
-            --success-green: #16A34A;
-            --font-family: 'Cairo', sans-serif;
-            --transition-speed: 0.35s;
-            --gpu-transform: translateZ(0);
+            --shadow-subtle: 0 10px 30px -5px rgba(30, 34, 41, 0.07);
+            --shadow-card: 0 4px 20px -2px rgba(30, 34, 41, 0.05);
+            --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* ==========================================================================
-           2. RESET & BASE STYLES (GPU Accelerated & High Legibility)
-           ========================================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: var(--font-family);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            background-color: var(--medical-bg);
+            background-color: var(--medical-canvas);
             color: var(--charcoal-dark);
             min-height: 100vh;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
-            font-weight: 600;
-            /* Base text weight */
-            transform: var(--gpu-transform);
         }
 
         h1,
@@ -61,42 +55,35 @@
         h4,
         h5,
         h6 {
-            font-weight: 900;
+            font-weight: 800;
             color: var(--charcoal-dark);
         }
 
-        button,
-        input,
-        select {
-            font-family: var(--font-family);
+        /* Utility Classes */
+        .fw-600 {
+            font-weight: 600;
+        }
+
+        .fw-700 {
             font-weight: 700;
         }
 
-        /* Utility Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        .fw-800 {
+            font-weight: 800;
         }
 
-        ::-webkit-scrollbar-track {
-            background: var(--medical-bg);
+        .fw-900 {
+            font-weight: 900;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--cool-gray);
-            border-radius: 3px;
-        }
-
-        /* ==========================================================================
-           3. PHASE 1: CINEMATIC SPLASH SCREEN
-           ========================================================================== */
+        /* Splash Screen (Phase 1) */
         #splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: var(--medical-bg);
+            background-color: var(--medical-canvas);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -110,1661 +97,1527 @@
             visibility: hidden;
         }
 
-        .capsule-loader {
+        .capsule-container {
             width: 120px;
             height: 60px;
-            background: var(--white);
-            border-radius: 30px;
-            display: flex;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(7, 72, 40, 0.15);
-            animation: capsuleLevitate 2s ease-in-out infinite alternate;
-            transform: var(--gpu-transform);
+            position: relative;
+            animation: levitateAndPulse 2.5s ease-in-out infinite alternate;
+            will-change: transform;
         }
 
-        .capsule-half-left {
-            width: 50%;
-            height: 100%;
-            background-color: var(--primary-green);
-        }
-
-        .capsule-half-right {
-            width: 50%;
-            height: 100%;
-            background-color: var(--cool-gray);
-        }
-
-        @keyframes capsuleLevitate {
+        @keyframes levitateAndPulse {
             0% {
-                transform: translateY(0) scale(1);
+                transform: translateY(0px) scale(1);
             }
 
             100% {
-                transform: translateY(-12px) scale(1.03);
+                transform: translateY(-12px) scale(1.04);
             }
         }
 
-        .splash-title {
-            margin-top: 24px;
-            font-size: 28px;
+        .splash-brand-title {
+            margin-top: 28px;
+            font-size: 32px;
             font-weight: 900;
-            color: var(--primary-green);
             letter-spacing: 0.5px;
-            animation: pulseText 1.5s ease-in-out infinite alternate;
+            color: var(--charcoal-dark);
+            animation: riseUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        @keyframes pulseText {
-            0% {
-                opacity: 0.7;
-            }
-
-            100% {
+        @keyframes riseUp {
+            to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        /* ==========================================================================
-           4. PHASE 2: ARCHITECTURAL FULL-PAGE ONBOARDING SYSTEM
-           ========================================================================== */
+        /* Onboarding Layout (Phase 2) */
         #onboarding-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: var(--medical-bg);
+            background: var(--medical-canvas);
+            z-index: 8888;
             display: flex;
             flex-direction: column;
-            z-index: 8888;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            overflow-y: auto;
+            padding: 40px 20px;
         }
 
         #onboarding-container.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
+            display: none;
         }
 
-        .onboarding-header-bar {
+        .onboarding-wrapper {
+            max-width: 680px;
             width: 100%;
+            margin: auto;
             background: var(--white);
-            padding: 20px 32px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-subtle);
+            padding: 40px;
+            border: 1px solid var(--border-color);
         }
 
-        .onboarding-brand {
+        .step-indicator-bar {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            font-size: 22px;
-            font-weight: 900;
-            color: var(--primary-green);
+            margin-bottom: 35px;
+            position: relative;
         }
 
-        .onboarding-progress-wrapper {
-            width: 100%;
+        .step-indicator-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
             background: var(--border-color);
-            height: 6px;
-            border-radius: 3px;
-            overflow: hidden;
+            transform: translateY(-50%);
+            z-index: 1;
         }
 
-        .onboarding-progress-bar {
-            height: 100%;
-            background: var(--primary-green);
-            width: 25%;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .onboarding-body {
-            flex: 1;
+        .step-dot {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 3px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .onboarding-step-card {
-            background: var(--white);
-            width: 100%;
-            max-width: 600px;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(30, 34, 41, 0.08);
-            border: 1px solid var(--border-color);
-            display: none;
-            flex-direction: column;
-            gap: 24px;
-            animation: slideInStep 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            transform: var(--gpu-transform);
-        }
-
-        .onboarding-step-card.active {
-            display: flex;
-        }
-
-        @keyframes slideInStep {
-            0% {
-                opacity: 0;
-                transform: translateX(40px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .step-title {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--charcoal-dark);
-            text-align: right;
-        }
-
-        .step-subtitle {
+            font-weight: 800;
             font-size: 15px;
-            color: var(--cool-gray);
-            margin-top: -16px;
-            text-align: right;
-        }
-
-        /* Role Selection Cards */
-        .role-cards-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .role-select-card {
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            background: var(--white);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .role-select-card:hover {
-            border-color: var(--primary-green);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(7, 72, 40, 0.1);
-        }
-
-        .role-select-card.selected {
-            border-color: var(--primary-green);
-            background-color: var(--primary-green-light);
-        }
-
-        .role-select-card svg {
-            width: 54px;
-            height: 54px;
-            fill: var(--primary-green);
-        }
-
-        .role-select-card span {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--charcoal-dark);
-        }
-
-        /* Input Controls */
-        .input-group-field {
+            color: var(--arch-gray);
             position: relative;
-            display: flex;
-            align-items: center;
+            z-index: 2;
+            transition: var(--transition-smooth);
         }
 
-        .input-group-field svg {
-            position: absolute;
-            right: 18px;
-            width: 22px;
-            height: 22px;
-            fill: var(--cool-gray);
+        .step-dot.active {
+            border-color: var(--brand-emerald);
+            background: var(--brand-emerald);
+            color: var(--white);
+            box-shadow: 0 0 0 5px rgba(10, 92, 54, 0.15);
         }
 
-        .input-group-field input,
-        .input-group-field select {
-            width: 100%;
-            padding: 16px 54px 16px 20px;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--charcoal-dark);
+        .step-dot.completed {
+            border-color: var(--brand-emerald);
             background: var(--white);
-            outline: none;
-            transition: border-color 0.2s ease;
+            color: var(--brand-emerald);
         }
 
-        .input-group-field input:focus,
-        .input-group-field select:focus {
-            border-color: var(--primary-green);
-        }
-
-        /* Onboarding Action Footer */
-        .onboarding-footer-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .btn-primary-custom {
-            background-color: var(--primary-green);
-            color: var(--white);
-            border: none;
-            padding: 14px 32px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            box-shadow: 0 4px 12px rgba(7, 72, 40, 0.2);
-        }
-
-        .btn-primary-custom:hover {
-            background-color: var(--primary-green-hover);
-        }
-
-        .btn-primary-custom:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary-custom {
-            background-color: transparent;
-            color: var(--cool-gray);
-            border: 2px solid var(--border-color);
-            padding: 14px 24px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-secondary-custom:hover {
-            border-color: var(--charcoal-dark);
-            color: var(--charcoal-dark);
-        }
-
-        /* ==========================================================================
-           5. PHASE 3: MAIN APPLICATION LAYOUT & STICKY NAVBAR
-           ========================================================================== */
-        #app-main-container {
+        .onboarding-step-content {
             display: none;
-            flex-direction: column;
-            min-height: 100vh;
-            width: 100%;
+            animation: slideInFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        #app-main-container.active {
-            display: flex;
+        .onboarding-step-content.active {
+            display: block;
         }
 
-        .sticky-navbar {
-            position: sticky;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--primary-green);
-            color: var(--white);
-            padding: 16px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 7777;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-        }
-
-        .nav-brand-area {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .nav-brand-title {
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-user-badge {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-reset-data {
-            background: rgba(255, 255, 255, 0.2);
-            color: var(--white);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .btn-reset-data:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Main Workspace Content Area */
-        .main-workspace {
-            flex: 1;
-            padding: 30px;
-            max-width: 1300px;
-            width: 100%;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            padding-bottom: 100px;
-            /* Space for bottom navbar */
-        }
-
-        .app-view-panel {
-            display: none;
-            flex-direction: column;
-            gap: 24px;
-            animation: fadeInView 0.3s ease forwards;
-        }
-
-        .app-view-panel.active {
-            display: flex;
-        }
-
-        @keyframes fadeInView {
-            0% {
+        @keyframes slideInFade {
+            from {
                 opacity: 0;
-                transform: translateY(8px);
+                transform: translateY(15px);
             }
 
-            100% {
+            to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        /* Structural Module Headers */
-        .module-header-box {
-            background: var(--white);
-            padding: 24px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(30, 34, 41, 0.04);
-            border: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .module-header-title {
-            font-size: 20px;
-            font-weight: 900;
+        .step-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 8px;
             color: var(--charcoal-dark);
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
 
-        .module-header-title svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--primary-green);
+        .step-subtitle {
+            font-size: 14px;
+            color: var(--arch-gray);
+            margin-bottom: 24px;
+            font-weight: 600;
         }
 
-        /* ==========================================================================
-           6. WAREHOUSE MODULE & 1% BUSINESS MONETIZATION ANALYTICS
-           ========================================================================== */
-        .analytics-grid {
+        .role-cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .analytics-card {
-            background: var(--white);
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(30, 34, 41, 0.04);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .analytics-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 5px;
-            height: 100%;
-            background-color: var(--primary-green);
-        }
-
-        .analytics-card-title {
-            font-size: 14px;
-            color: var(--cool-gray);
-            font-weight: 700;
-        }
-
-        .analytics-card-value {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--charcoal-dark);
-        }
-
-        /* Inventory Table */
-        .data-table-container {
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(30, 34, 41, 0.04);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: right;
-        }
-
-        .data-table th {
-            background-color: var(--medical-bg);
-            color: var(--charcoal-dark);
-            padding: 16px 20px;
-            font-size: 14px;
-            font-weight: 900;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .data-table td {
-            padding: 16px 20px;
-            font-size: 14px;
-            color: var(--charcoal-dark);
-            border-bottom: 1px solid var(--border-color);
-            font-weight: 700;
-        }
-
-        .data-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .data-table tr:hover {
-            background-color: rgba(7, 72, 40, 0.02);
-        }
-
-        /* ==========================================================================
-           7. SINGLE-COLUMN VERTICAL BARCODE SCANNER & MODAL
-           ========================================================================== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(30, 34, 41, 0.6);
-            backdrop-filter: blur(4px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .vertical-modal-box {
-            background: var(--white);
-            width: 100%;
-            max-width: 520px;
+        .role-card {
+            border: 2px solid var(--border-color);
             border-radius: 16px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            background: var(--white);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            transform: var(--gpu-transform);
-            max-height: 90vh;
-            overflow-y: auto;
+            align-items: center;
+            gap: 14px;
         }
 
-        @keyframes modalPopIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.95) translateY(10px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+        .role-card:hover {
+            border-color: var(--arch-gray);
+            transform: translateY(-3px);
         }
 
-        .modal-header-bar {
-            padding: 20px 24px;
-            background: var(--medical-bg);
-            border-bottom: 1px solid var(--border-color);
+        .role-card.selected {
+            border-color: var(--brand-emerald);
+            background: var(--brand-emerald-light);
+            box-shadow: 0 8px 25px rgba(10, 92, 54, 0.1);
+        }
+
+        .role-card svg {
+            width: 52px;
+            height: 52px;
+            transition: var(--transition-smooth);
+        }
+
+        .role-card.selected svg path,
+        .role-card.selected svg rect,
+        .role-card.selected svg circle {
+            stroke: var(--brand-emerald);
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--charcoal-dark);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper svg {
+            position: absolute;
+            right: 16px;
+            width: 20px;
+            height: 20px;
+            fill: var(--arch-gray);
+        }
+
+        .input-wrapper input,
+        .input-wrapper select {
+            width: 100%;
+            padding: 14px 48px 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            background: var(--white);
+            color: var(--charcoal-dark);
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .input-wrapper input:focus,
+        .input-wrapper select:focus {
+            border-color: var(--brand-emerald);
+            box-shadow: 0 0 0 4px rgba(10, 92, 54, 0.08);
+        }
+
+        .onboarding-nav-buttons {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            margin-top: 35px;
+            gap: 15px;
         }
 
-        .modal-title-text {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--charcoal-dark);
-        }
-
-        .modal-close-btn {
-            background: none;
-            border: none;
+        .btn-primary,
+        .btn-secondary {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
+            border: none;
+            transition: var(--transition-smooth);
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s ease;
-        }
-
-        .modal-close-btn:hover {
-            background: rgba(0, 0, 0, 0.06);
-        }
-
-        .modal-close-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: var(--charcoal-dark);
-        }
-
-        .modal-body-content {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* Camera Scanner Styles */
-        .scanner-viewport-wrapper {
-            position: relative;
-            width: 100%;
-            height: 260px;
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #qr-reader {
-            width: 100% !important;
-            border: none !important;
-        }
-
-        #qr-reader video {
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        #qr-reader__dashboard {
-            padding: 8px !important;
-            font-size: 12px !important;
-        }
-
-        /* Crimson Laser Scanner Animation */
-        .laser-scanner-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: var(--danger-red);
-            box-shadow: 0 0 10px var(--danger-red), 0 0 20px var(--danger-red);
-            animation: laserScanMove 2s ease-in-out infinite alternate;
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        @keyframes laserScanMove {
-            0% {
-                top: 5%;
-            }
-
-            100% {
-                top: 95%;
-            }
-        }
-
-        .form-field-stack {
-            display: flex;
-            flex-direction: column;
             gap: 8px;
         }
 
-        .form-field-label {
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--charcoal-dark);
-        }
-
-        .form-control-input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--charcoal-dark);
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-control-input:focus {
-            border-color: var(--primary-green);
-        }
-
-        /* ==========================================================================
-           8. WHATSAPP EXPORT & INVOICING WORKSPACE
-           ========================================================================== */
-        .invoice-action-bar {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-
-        .btn-whatsapp-export {
-            background-color: #25D366;
+        .btn-primary {
+            background: var(--brand-emerald);
             color: var(--white);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background 0.2s ease, transform 0.1s ease;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 4px 15px rgba(10, 92, 54, 0.2);
+            flex: 1;
         }
 
-        .btn-whatsapp-export:hover {
-            background-color: #20ba5a;
+        .btn-primary:hover:not(:disabled) {
+            background: var(--brand-emerald-hover);
+            transform: translateY(-2px);
         }
 
-        .btn-whatsapp-export svg {
-            width: 22px;
-            height: 22px;
-            fill: var(--white);
+        .btn-primary:disabled {
+            background: var(--border-color);
+            color: var(--arch-gray);
+            cursor: not-allowed;
+            box-shadow: none;
         }
 
-        /* ==========================================================================
-           9. PHARMACY SHOPPING CART & ORDERS MODULE
-           ========================================================================== */
-        .cart-summary-box {
+        .btn-secondary {
             background: var(--white);
-            padding: 24px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
+            color: var(--arch-gray);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            border-color: var(--arch-gray);
+            color: var(--charcoal-dark);
+        }
+
+        /* Main Dashboard Layout (Phase 3) */
+        #app-dashboard {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--medical-canvas);
+        }
+
+        #app-dashboard.active {
+            display: flex;
+        }
+
+        .top-navbar {
+            background: var(--brand-emerald);
+            color: var(--white);
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(30, 34, 41, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(10, 92, 54, 0.15);
         }
 
-        .cart-grand-total {
-            font-size: 22px;
-            font-weight: 900;
-            color: var(--primary-green);
-        }
-
-        .catalog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .catalog-item-card {
-            background: var(--white);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 20px;
+        .nav-logo-area {
             display: flex;
-            flex-direction: column;
-            gap: 14px;
-            box-shadow: 0 4px 15px rgba(30, 34, 41, 0.04);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            align-items: center;
+            gap: 12px;
         }
 
-        .catalog-item-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(30, 34, 41, 0.08);
-        }
-
-        .item-card-title {
-            font-size: 18px;
+        .nav-logo-text {
+            font-size: 20px;
             font-weight: 900;
-            color: var(--charcoal-dark);
+            color: var(--white);
+            letter-spacing: 0.5px;
         }
 
-        .item-card-details {
-            font-size: 14px;
-            color: var(--cool-gray);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        .region-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .item-card-price {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--primary-green);
+        .dashboard-content-area {
+            flex: 1;
+            padding: 24px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto 80px auto;
         }
 
-        /* ==========================================================================
-           10. BOTTOM NAVIGATION BAR
-           ========================================================================== */
-        .bottom-nav-bar {
+        .tab-pane {
+            display: none;
+            animation: fadeInTab 0.3s ease forwards;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeInTab {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
+            right: 0;
             background: var(--white);
             border-top: 1px solid var(--border-color);
             display: flex;
-            justify-content: center;
-            gap: 40px;
-            padding: 12px 20px;
-            z-index: 7776;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+            justify-content: space-around;
+            padding: 10px 16px;
+            z-index: 100;
+            box-shadow: 0 -5px 25px rgba(30, 34, 41, 0.05);
         }
 
         .bottom-nav-item {
-            background: none;
-            border: none;
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
+            background: none;
+            border: none;
             cursor: pointer;
-            padding: 8px 20px;
-            border-radius: 10px;
-            transition: all 0.2s ease;
+            padding: 6px;
+            border-radius: 12px;
+            transition: var(--transition-smooth);
+            color: var(--arch-gray);
         }
 
         .bottom-nav-item svg {
             width: 24px;
             height: 24px;
-            fill: var(--cool-gray);
-            transition: fill 0.2s ease;
+            stroke: var(--arch-gray);
+            transition: var(--transition-smooth);
         }
 
         .bottom-nav-item span {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--cool-gray);
-            transition: color 0.2s ease;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .bottom-nav-item.active {
-            background-color: var(--primary-green-light);
+            color: var(--brand-emerald);
         }
 
         .bottom-nav-item.active svg {
-            fill: var(--primary-green);
+            stroke: var(--brand-emerald);
+            fill: rgba(10, 92, 54, 0.08);
         }
 
-        .bottom-nav-item.active span {
-            color: var(--primary-green);
-        }
-
-        /* Empty State */
-        .empty-state-container {
-            padding: 40px;
-            text-align: center;
-            color: var(--cool-gray);
-            font-size: 16px;
+        /* Toast Notification Banner */
+        #toast-container {
+            position: fixed;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--brand-emerald);
+            color: var(--white);
+            padding: 14px 24px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(10, 92, 54, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 14px;
             font-weight: 700;
+        }
+
+        #toast-container.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Cards, Tables & Modules Styling */
+        .card-box {
             background: var(--white);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-card);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header-flex h3 {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .search-filter-input {
+            padding: 12px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            width: 280px;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .search-filter-input:focus {
+            border-color: var(--brand-emerald);
+            box-shadow: 0 0 0 4px rgba(10, 92, 54, 0.08);
+        }
+
+        .enterprise-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .enterprise-table th,
+        .enterprise-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        .enterprise-table th {
+            font-weight: 800;
+            color: var(--arch-gray);
+            background: var(--medical-canvas);
+        }
+
+        .enterprise-table td {
+            font-weight: 600;
+            color: var(--charcoal-dark);
+        }
+
+        .enterprise-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .action-btn-sm {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-emerald-sm {
+            background: var(--brand-emerald);
+            color: var(--white);
+        }
+
+        .btn-emerald-sm:hover {
+            background: var(--brand-emerald-hover);
+        }
+
+        /* Modal Structure */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 34, 41, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeInModal 0.25s ease forwards;
+        }
+
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-card {
+            background: var(--white);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 540px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--arch-gray);
+            font-weight: 800;
+        }
+
+        /* Camera Scanner Styles */
+        #reader {
+            width: 100% !important;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--border-color) !important;
+            margin-bottom: 20px;
+            background: var(--charcoal-dark);
+        }
+
+        #reader video {
+            border-radius: 10px;
+        }
+
+        #html5-qrcode-anchor-scan-type-change {
+            display: none !important;
+        }
+
+        /* Profile & Edit Panel */
+        .profile-card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .profile-field-box {
+            background: var(--medical-canvas);
+            padding: 16px;
             border-radius: 12px;
             border: 1px solid var(--border-color);
+        }
+
+        .profile-field-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--arch-gray);
+            margin-bottom: 6px;
+        }
+
+        .profile-field-value {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--charcoal-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+
+            .role-cards-grid,
+            .profile-card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filter-input {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .section-header-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ==========================================================================
-       PHASE 1: CINEMATIC SPLASH SCREEN
-       ========================================================================== -->
+    <!-- PHASE 1: High-End Splash Screen & Custom Brand Logo -->
     <div id="splash-screen">
-        <div class="capsule-loader">
-            <div class="capsule-half-left"></div>
-            <div class="capsule-half-right"></div>
+        <div class="capsule-container">
+            <svg viewBox="0 0 120 60" width="120" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Left half: Deep Dark Emerald Green -->
+                <path d="M30 0H60V60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z" fill="#0A5C36" />
+                <!-- Right half: Medium Architectural Gray -->
+                <path d="M90 0H60V60H90C106.569 60 120 46.5685 120 30C120 13.4315 106.569 0 90 0Z" fill="#6C7A89" />
+            </svg>
         </div>
-        <div class="splash-title">PharmaLink</div>
+        <div class="splash-brand-title">PharmaLink</div>
     </div>
 
-    <!-- ==========================================================================
-       PHASE 2: ARCHITECTURAL FULL-PAGE ONBOARDING SYSTEM
-       ========================================================================== -->
+    <!-- PHASE 2: Full-Page Architectural Onboarding Layout -->
     <div id="onboarding-container" class="hidden">
-        <div class="onboarding-header-bar">
-            <div class="onboarding-brand">
-                <!-- Custom SVG Medical Cross Logo -->
-                <svg viewBox="0 0 24 24" width="28" height="28">
-                    <path fill="#074828"
-                        d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z" />
-                </svg>
-                <span>PharmaLink | التهيئة المعمارية</span>
+        <div class="onboarding-wrapper">
+            <div class="step-indicator-bar">
+                <div class="step-dot active" id="dot-1">1</div>
+                <div class="step-dot" id="dot-2">2</div>
+                <div class="step-dot" id="dot-3">3</div>
+                <div class="step-dot" id="dot-4">4</div>
             </div>
-            <div class="onboarding-progress-wrapper">
-                <div id="onboarding-progress-bar" class="onboarding-progress-bar" style="width: 25%;"></div>
-            </div>
-        </div>
 
-        <div class="onboarding-body">
-            <!-- Step 1: User Role Selection -->
-            <div id="step-1" class="onboarding-step-card active">
-                <div class="step-title">اختر نوع الحساب الأساسي</div>
-                <div class="step-subtitle">حدد طبيعة عمل جهتك الطبية للانتقال إلى مسار التشغيل المناسب</div>
+            <!-- Step 1: Role Selection -->
+            <div class="onboarding-step-content active" id="step-1">
+                <div class="step-title">اختر نوع الحساب المؤسسي</div>
+                <div class="step-subtitle">حدد طبيعة عملك في المنظومة الطبية لتخصيص الواجهة والخدمات بدقة</div>
+
                 <div class="role-cards-grid">
-                    <div class="role-select-card" onclick="selectUserRole('مستودع أدوية', this)">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z" />
+                    <div class="role-card" onclick="selectRole('warehouse', this)">
+                        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="16" width="40" height="28" rx="3" stroke="#6C7A89" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M16 16V10C16 8.34315 17.3431 7 19 7H33C34.6569 7 36 8.34315 36 10V16"
+                                stroke="#6C7A89" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M18 26H24" stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
+                            <path d="M18 34H28" stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
                         </svg>
-                        <span>مستودع أدوية</span>
+                        <span class="fw-800" style="font-size: 16px;">مستودع أدوية</span>
                     </div>
-                    <div class="role-select-card" onclick="selectUserRole('صيدلية', this)">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+
+                    <div class="role-card" onclick="selectRole('pharmacy', this)">
+                        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 22H46V44C46 45.6569 44.6569 47 43 47H9C7.34315 47 6 45.6569 6 44V22Z"
+                                stroke="#6C7A89" stroke-width="3" stroke-linejoin="round" />
+                            <path d="M16 22V14C16 9.58172 19.5817 6 24 6H28C32.4183 6 36 9.58172 36 14V22"
+                                stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
+                            <path d="M26 28V38" stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
+                            <path d="M21 33H31" stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
                         </svg>
-                        <span>صيدلية</span>
+                        <span class="fw-800" style="font-size: 16px;">صيدلية</span>
                     </div>
                 </div>
-                <div class="onboarding-footer-actions">
-                    <div></div>
-                    <button class="btn-primary-custom" onclick="nextOnboardingStep(2)">التالي</button>
+
+                <div class="onboarding-nav-buttons">
+                    <button class="btn-primary" id="btn-next-1" disabled onclick="nextStep(2)">التالي</button>
                 </div>
             </div>
 
-            <!-- Step 2: Responsible User Name -->
-            <div id="step-2" class="onboarding-step-card">
-                <div class="step-title">اسم المسؤول / الصيدلاني</div>
-                <div class="step-subtitle">أدخل الاسم الكامل للشخص المسؤول عن إدارة النظام</div>
-                <div class="input-group-field">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
-                    <input type="text" id="input-username" placeholder="مثال: د. محمد يحيى" autocomplete="off">
+            <!-- Step 2: Responsible Name -->
+            <div class="onboarding-step-content" id="step-2">
+                <div class="step-title">اسم المسؤول أو الصيدلاني</div>
+                <div class="step-subtitle">يرجى إدخال الاسم الثلاثي المعتمد للمسؤول المخول بالتصاريح</div>
+
+                <div class="input-group">
+                    <label>اسم المسؤول / الصيدلاني</label>
+                    <div class="input-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                                stroke="#6C7A89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="12" cy="7" r="4" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <input type="text" id="input-admin-name" placeholder="مثال: د. محمد يحيى"
+                            oninput="validateStep2()">
+                    </div>
                 </div>
-                <div class="onboarding-footer-actions">
-                    <button class="btn-secondary-custom" onclick="prevOnboardingStep(1)">السابق</button>
-                    <button class="btn-primary-custom" onclick="nextOnboardingStep(3)">التالي</button>
+
+                <div class="onboarding-nav-buttons">
+                    <button class="btn-secondary" onclick="prevStep(1)">السابق</button>
+                    <button class="btn-primary" id="btn-next-2" disabled onclick="nextStep(3)">التالي</button>
                 </div>
             </div>
 
             <!-- Step 3: Entity Name -->
-            <div id="step-3" class="onboarding-step-card">
+            <div class="onboarding-step-content" id="step-3">
                 <div class="step-title">اسم الجهة (المستودع أو الصيدلية)</div>
-                <div class="step-subtitle">أدخل المسمى الرسمي للجهة الطبية الخاصة بك</div>
-                <div class="input-group-field">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2v-2h8v8zm-2-6h-2v2h2v-2zm0-4h-2v2h2V9z" />
-                    </svg>
-                    <input type="text" id="input-entity" placeholder="مثال: مستودع الأمل الدوائي" autocomplete="off">
+                <div class="step-subtitle">أدخل الاسم التجاري الرسمي للكيان الطبي الخاص بك</div>
+
+                <div class="input-group">
+                    <label>اسم الجهة المعتمد</label>
+                    <div class="input-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 21H21" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M5 21V7L13 3V21" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M19 21V11L13 14" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M9 9V11" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
+                            <path d="M9 15V17" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <input type="text" id="input-entity-name"
+                            placeholder="مثال: صيدلية الأمل المركزية / مستودع ابن سينا" oninput="validateStep3()">
+                    </div>
                 </div>
-                <div class="onboarding-footer-actions">
-                    <button class="btn-secondary-custom" onclick="prevOnboardingStep(2)">السابق</button>
-                    <button class="btn-primary-custom" onclick="nextOnboardingStep(4)">التالي</button>
+
+                <div class="onboarding-nav-buttons">
+                    <button class="btn-secondary" onclick="prevStep(2)">السابق</button>
+                    <button class="btn-primary" id="btn-next-3" disabled onclick="nextStep(4)">التالي</button>
                 </div>
             </div>
 
             <!-- Step 4: Region Selection -->
-            <div id="step-4" class="onboarding-step-card">
-                <div class="step-title">اختر المنطقة الجغرافية</div>
-                <div class="step-subtitle">حدد النطاق الجغرافي لعمليات المستودع أو الصيدلية</div>
-                <div class="input-group-field">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                    </svg>
-                    <select id="input-region">
-                        <option value="" disabled selected>اختر المنطقة الجغرافية</option>
-                        <option value="منبج وريفها">منبج وريفها</option>
-                        <option value="حلب وريفها">حلب وريفها</option>
-                        <option value="إدلب وريفها">إدلب وريفها</option>
-                    </select>
+            <div class="onboarding-step-content" id="step-4">
+                <div class="step-title">تحديد النطاق الجغرافي</div>
+                <div class="step-subtitle">اختر المنطقة والريف التابع لنشاطك العملي بدقة</div>
+
+                <div class="input-group">
+                    <label>المنطقة الإدارية</label>
+                    <div class="input-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 21C16 17 20 13.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 13.4183 8 17 12 21Z"
+                                stroke="#6C7A89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="12" cy="10" r="3" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <select id="input-region" onchange="validateStep4()">
+                            <option value="" disabled selected>اختر المنطقة الإدارية...</option>
+                            <option value="منبج وريفها">منبج وريفها</option>
+                            <option value="حلب وريفها">حلب وريفها</option>
+                            <option value="إدلب وريفها">إدلب وريفها</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="onboarding-footer-actions">
-                    <button class="btn-secondary-custom" onclick="prevOnboardingStep(3)">السابق</button>
-                    <button class="btn-primary-custom" onclick="completeOnboarding()">دخول المنصة</button>
+
+                <div class="onboarding-nav-buttons">
+                    <button class="btn-secondary" onclick="prevStep(3)">السابق</button>
+                    <button class="btn-primary" id="btn-finish" disabled onclick="completeOnboarding()">دخول
+                        المنصة</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ==========================================================================
-       PHASE 3: MAIN APPLICATION CONTAINER & STICKY NAVBAR
-       ========================================================================== -->
-    <div id="app-main-container">
-        <!-- Sticky Navbar -->
-        <nav class="sticky-navbar">
-            <div class="nav-brand-area">
-                <svg viewBox="0 0 24 24" width="30" height="30">
-                    <path fill="#FFFFFF"
-                        d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z" />
+    <!-- PHASE 3: Highly Organized Enterprise Dashboard -->
+    <div id="app-dashboard">
+        <!-- Sticky Top Navbar -->
+        <header class="top-navbar">
+            <div class="nav-logo-area">
+                <svg viewBox="0 0 120 60" width="36" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30 0H60V60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z" fill="#FFFFFF" />
+                    <path d="M90 0H60V60H90C106.569 60 120 46.5685 120 30C120 13.4315 106.569 0 90 0Z" fill="#A0AEC0" />
                 </svg>
-                <span class="nav-brand-title">PharmaLink</span>
+                <div class="nav-logo-text">PharmaLink</div>
             </div>
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <div class="nav-user-badge">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="#FFFFFF">
-                        <path
-                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
-                    <span id="display-user-meta">المسؤول: </span>
-                </div>
-                <button class="btn-reset-data" onclick="resetApplicationState()">تعديل البيانات</button>
-            </div>
-        </nav>
+            <div class="region-badge" id="top-region-display">حلب وريفها</div>
+        </header>
 
-        <!-- Dynamic Main Workspace -->
-        <main class="main-workspace" id="main-workspace-content">
-            <!-- Content dynamically rendered via JS based on Role -->
+        <!-- Dynamic Content Panels -->
+        <main class="dashboard-content-area" id="dashboard-main-view">
+            <!-- Rendered dynamically depending on role -->
         </main>
 
-        <!-- Dynamic Bottom Navigation Bar -->
-        <nav class="bottom-nav-bar" id="bottom-navigation-container">
-            <!-- Dynamically populated via JS -->
+        <!-- Sticky Bottom Navigation Bar -->
+        <nav class="bottom-nav" id="bottom-navigation-bar">
+            <!-- Dynamically populated based on role -->
         </nav>
     </div>
 
-    <!-- ==========================================================================
-       SINGLE-COLUMN VERTICAL MODAL FOR BARCODE SCANNING & INVENTORY ADDITION
-       ========================================================================== -->
-    <div id="inventory-modal" class="modal-overlay">
-        <div class="vertical-modal-box">
-            <div class="modal-header-bar">
-                <span class="modal-title-text">إضافة صنف جديد للمخزن</span>
-                <button class="modal-close-btn" onclick="closeInventoryModal()">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+    <!-- Toast Notification Banner -->
+    <div id="toast-container">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6L9 17L4 12" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+        <span id="toast-message-text">تمت العملية بنجاح</span>
+    </div>
+
+    <!-- Modal for Warehouse: Add Medicine / QR Code Scanner -->
+    <div class="modal-overlay" id="warehouse-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>إضافة صنف دوائي جديد</h3>
+                <button class="close-modal-btn" onclick="closeWarehouseModal()">✕</button>
+            </div>
+
+            <!-- Barcode Scanner Viewfinder -->
+            <div id="reader"></div>
+
+            <div class="input-group">
+                <label>باركود الصنف (الرقم التسلسلي)</label>
+                <div class="input-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 7V5C4 4.44772 4.44772 4 5 4H7" stroke="#6C7A89" stroke-width="2"
+                            stroke-linecap="round" />
+                        <path d="M17 4H19C19.5523 4 20 4.44772 20 5V7" stroke="#6C7A89" stroke-width="2"
+                            stroke-linecap="round" />
+                        <path d="M20 17V19C20 19.5523 19.5523 20 19 20H17" stroke="#6C7A89" stroke-width="2"
+                            stroke-linecap="round" />
+                        <path d="M7 20H5C4.44772 20 4 19.5523 4 19V17" stroke="#6C7A89" stroke-width="2"
+                            stroke-linecap="round" />
+                        <path d="M8 8H16V16H8V8Z" stroke="#6C7A89" stroke-width="2" stroke-linejoin="round" />
                     </svg>
-                </button>
+                    <input type="text" id="modal-med-barcode" placeholder="سيتم قراءته تلقائياً عبر الكاميرا..."
+                        readonly>
+                </div>
             </div>
-            <div class="modal-body-content">
-                <!-- Live HTML5-QRCode Scanner Viewport -->
-                <div class="scanner-viewport-wrapper">
-                    <div class="laser-scanner-line"></div>
-                    <div id="qr-reader"></div>
-                </div>
 
-                <div class="form-field-stack">
-                    <label class="form-field-label">رقم الباركود (Barcode)</label>
-                    <input type="text" id="modal-input-barcode" class="form-control-input"
-                        placeholder="امسح الباركود بالكاميرا أو أدخله يدوياً">
+            <div class="input-group">
+                <label>اسم الدواء والصنف</label>
+                <div class="input-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.5 20.5H4C3.44772 20.5 3 20.0523 3 19.5V4.5C3 3.94772 3.44772 3.5 4 3.5H20C20.5523 3.5 21 3.94772 21 4.5V10.5"
+                            stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
+                        <path d="M16 15L21 20M21 15L16 20" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <input type="text" id="modal-med-name" placeholder="مثال: Augmentin 1g Tablets">
                 </div>
-
-                <div class="form-field-stack">
-                    <label class="form-field-label">اسم الدواء / الصنف</label>
-                    <input type="text" id="modal-input-drugname" class="form-control-input"
-                        placeholder="مثال: Augmentin 1g Tablets">
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="form-field-stack">
-                        <label class="form-field-label">الكمية المتاحة</label>
-                        <input type="number" id="modal-input-qty" class="form-control-input" placeholder="100" min="1">
-                    </div>
-                    <div class="form-field-stack">
-                        <label class="form-field-label">السعر للوحدة ($)</label>
-                        <input type="number" id="modal-input-price" class="form-control-input" placeholder="15.5"
-                            step="0.1" min="0">
-                    </div>
-                </div>
-
-                <button class="btn-primary-custom" style="width: 100%; margin-top: 10px;"
-                    onclick="saveInventoryItem()">حفظ وإضافة الصنف</button>
             </div>
+
+            <div class="input-group">
+                <label>السعر (ليرة سورية / دولار)</label>
+                <div class="input-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1V23" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
+                        <path
+                            d="M17 5H9.5C8.39543 5 7.5 5.89543 7.5 7C7.5 8.10457 8.39543 9 9.5 9H14.5C15.6046 9 16.5 9.89543 16.5 11C16.5 12.1046 15.6046 13 14.5 13H7"
+                            stroke="#6C7A89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <input type="number" id="modal-med-price" placeholder="مثال: 45000">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>الكمية المتاحة في المخزن</label>
+                <div class="input-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z"
+                            stroke="#6C7A89" stroke-width="2" stroke-linejoin="round" />
+                        <path d="M12 11V15" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
+                        <path d="M10 13H14" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <input type="number" id="modal-med-qty" placeholder="مثال: 250">
+                </div>
+            </div>
+
+            <button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="saveNewMedicineItem()">حفظ
+                وإضافة الصنف</button>
         </div>
     </div>
 
-    <!-- ==========================================================================
-       JAVASCRIPT ARCHITECTURE & APPLICATION LOGIC
-       ========================================================================== -->
+    <!-- Application JavaScript Engine -->
     <script>
-        // Application State Management
+        // Global Application State
         let appState = {
-            role: null,         // 'مستودع أدوية' or 'صيدلية'
-            username: '',       // User / Pharmacist name
-            entity: '',         // Entity name
-            region: '',         // Region
-            currentView: 'home',// Active view tab
-            inventory: [        // Default inventory dataset
-                { barcode: '6251001234567', name: 'Augmentin 1g Tablets', qty: 250, price: 12.5 },
-                { barcode: '6251009876543', name: 'Panadol Extra 500mg', qty: 500, price: 3.0 },
-                { barcode: '6251004567890', name: 'Ceftriaxone 1g Vial', qty: 120, price: 8.0 }
-            ],
-            cart: [],           // Shopping cart items (Pharmacy view)
-            orders: [           // Active orders array
-                { id: 'ORD-9841', entity: 'صيدلية الشفاء المركزية', items: 3, total: 145.0, status: 'قيد التجهيز' },
-                { id: 'ORD-9842', entity: 'صيدلية النور', items: 1, total: 36.0, status: 'تم الشحن' }
-            ]
+            role: null,
+            adminName: '',
+            entityName: '',
+            region: '',
+            currentTab: 0
         };
 
-        let currentOnboardingStep = 1;
-        let html5QrCodeScanner = null;
+        // Mock Database for Warehouse Inventory & Pharmacy Catalog
+        let inventoryData = [
+            { id: 'BC-98214', name: 'Panadol Extra 500mg', price: 12500, qty: 320, warehouse: 'مستودع الألفية الطبي' },
+            { id: 'BC-44129', name: 'Augmentin 1g Film-Coated', price: 48000, qty: 150, warehouse: 'مستودع الألفية الطبي' },
+            { id: 'BC-77321', name: 'Ceftriaxone 1g Vial', price: 21000, qty: 500, warehouse: 'مستودع الألفية الطبي' },
+            { id: 'BC-11928', name: 'Omeprazole 20mg Caps', price: 18500, qty: 210, warehouse: 'مستودع الألفية الطبي' },
+            { id: 'BC-66542', name: 'Paracetamol Syrup 120ml', price: 9500, qty: 85, warehouse: 'مستودع الألفية الطبي' }
+        ];
 
-        // Audio Synthesizer 'Beep' upon successful barcode detection
-        function playSuccessBeep() {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
-                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.15);
-            } catch (e) {
-                console.log('AudioContext not supported or blocked', e);
-            }
-        }
+        let cartData = [];
+        let invoicesData = [
+            { id: 'INV-8831', client: 'صيدلية النور الحديثة', date: '2026-09-14', total: '144,000 ل.س', status: 'مؤكدة ومسلّمة' },
+            { id: 'INV-8832', client: 'صيدلية الشفاء التخصصية', date: '2026-09-14', total: '210,000 ل.س', status: 'قيد الشحن والتجهيز' }
+        ];
 
-        // Initialization on DOM Content Loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedData = localStorage.getItem('pharmalink_user_state');
+        let html5QrCode = null;
+
+        // Initialization on window load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedData = localStorage.getItem('pharmaLink_user');
             if (savedData) {
-                try {
-                    const parsed = JSON.parse(savedData);
-                    appState.role = parsed.role;
-                    appState.username = parsed.username;
-                    appState.entity = parsed.entity;
-                    appState.region = parsed.region;
-                    if (parsed.inventory) appState.inventory = parsed.inventory;
-
-                    // Skip splash and onboarding, boot straight into main app
-                    setTimeout(() => {
-                        document.getElementById('splash-screen').classList.add('fade-out');
-                        setTimeout(() => {
-                            document.getElementById('splash-screen').style.display = 'none';
-                            launchMainApplication();
-                        }, 600);
-                    }, 1500);
-                    return;
-                } catch (e) {
-                    console.error('Failed to parse saved state', e);
-                }
-            }
-
-            // Normal flow: Splash screen -> Onboarding
-            setTimeout(() => {
+                const parsed = JSON.parse(savedData);
+                appState = { ...parsed };
                 document.getElementById('splash-screen').classList.add('fade-out');
                 setTimeout(() => {
                     document.getElementById('splash-screen').style.display = 'none';
-                    document.getElementById('onboarding-container').classList.remove('hidden');
+                    document.getElementById('onboarding-container').classList.add('hidden');
+                    initDashboard();
                 }, 600);
-            }, 2500);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('splash-screen').classList.add('fade-out');
+                    setTimeout(() => {
+                        document.getElementById('splash-screen').style.display = 'none';
+                        document.getElementById('onboarding-container').classList.remove('hidden');
+                    }, 600);
+                }, 2500);
+            }
         });
 
-        // Onboarding Workflow Handlers
-        function selectUserRole(role, element) {
-            appState.role = role;
-            document.querySelectorAll('.role-select-card').forEach(card => card.classList.remove('selected'));
+        // Onboarding Navigation & Validation
+        let selectedRoleType = null;
+
+        function selectRole(role, element) {
+            selectedRoleType = role;
+            document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
+            document.getElementById('btn-next-1').removeAttribute('disabled');
         }
 
-        function nextOnboardingStep(step) {
-            if (step === 2 && !appState.role) {
-                alert('الرجاء اختيار نوع الحساب أولاً');
-                return;
-            }
-            if (step === 3) {
-                const uname = document.getElementById('input-username').value.trim();
-                if (!uname) {
-                    alert('الرجاء إدخال اسم المسؤول');
-                    return;
-                }
-                appState.username = uname;
-            }
-            if (step === 4) {
-                const ent = document.getElementById('input-entity').value.trim();
-                if (!ent) {
-                    alert('الرجاء إدخال اسم الجهة');
-                    return;
-                }
-                appState.entity = ent;
-            }
-
-            currentOnboardingStep = step;
-            updateOnboardingUI();
+        function validateStep2() {
+            const val = document.getElementById('input-admin-name').value.trim();
+            document.getElementById('btn-next-2').disabled = val.length < 3;
         }
 
-        function prevOnboardingStep(step) {
-            currentOnboardingStep = step;
-            updateOnboardingUI();
+        function validateStep3() {
+            const val = document.getElementById('input-entity-name').value.trim();
+            document.getElementById('btn-next-3').disabled = val.length < 3;
         }
 
-        function updateOnboardingUI() {
+        function validateStep4() {
+            const val = document.getElementById('input-region').value;
+            document.getElementById('btn-finish').disabled = !val;
+        }
+
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.onboarding-step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+            updateStepDots(stepNumber);
+        }
+
+        function prevStep(stepNumber) {
+            document.querySelectorAll('.onboarding-step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+            updateStepDots(stepNumber);
+        }
+
+        function updateStepDots(current) {
             for (let i = 1; i <= 4; i++) {
-                const card = document.getElementById(`step-${i}`);
-                if (i === currentOnboardingStep) {
-                    card.classList.add('active');
-                } else {
-                    card.classList.remove('active');
-                }
+                const dot = document.getElementById(`dot-${i}`);
+                dot.classList.remove('active', 'completed');
+                if (i < current) dot.classList.add('completed');
+                if (i === current) dot.classList.add('active');
             }
-            const progressPct = (currentOnboardingStep / 4) * 100;
-            document.getElementById('onboarding-progress-bar').style.width = progressPct + '%';
         }
 
         function completeOnboarding() {
-            const region = document.getElementById('input-region').value;
-            if (!region) {
-                alert('الرجاء اختيار المنطقة الجغرافية');
-                return;
-            }
-            appState.region = region;
+            appState.role = selectedRoleType;
+            appState.adminName = document.getElementById('input-admin-name').value.trim();
+            appState.entityName = document.getElementById('input-entity-name').value.trim();
+            appState.region = document.getElementById('input-region').value;
+            appState.currentTab = 0;
 
-            // Save to localStorage
-            localStorage.setItem('pharmalink_user_state', JSON.stringify(appState));
+            localStorage.setItem('pharmaLink_user', JSON.stringify(appState));
 
-            // Fade out onboarding and launch main app
-            const onboardingEl = document.getElementById('onboarding-container');
-            onboardingEl.style.opacity = '0';
+            document.getElementById('onboarding-container').style.opacity = '0';
             setTimeout(() => {
-                onboardingEl.classList.add('hidden');
-                launchMainApplication();
-            }, 500);
+                document.getElementById('onboarding-container').classList.add('hidden');
+                initDashboard();
+            }, 400);
         }
 
-        // Reset Application State & Re-trigger Onboarding
-        function resetApplicationState() {
-            if (confirm('هل أنت متأكد من رغبتك في تعديل بيانات الحساب؟ سيتم إعادة ضبط التهيئة.')) {
-                localStorage.removeItem('pharmalink_user_state');
-                location.reload();
-            }
+        // Dashboard Initialization Engine
+        function initDashboard() {
+            document.getElementById('app-dashboard').classList.add('active');
+            document.getElementById('top-region-display').innerText = appState.region;
+            renderBottomNav();
+            renderTabContent(0);
         }
 
-        // Launch Main Application & Render Role-Based UI
-        function launchMainApplication() {
-            document.getElementById('display-user-meta').textContent = `المسؤول: ${appState.username} (${appState.entity})`;
-            document.getElementById('app-main-container').classList.add('active');
+        // Render Bottom Navigation
+        function renderBottomNav() {
+            const navBar = document.getElementById('bottom-navigation-bar');
+            navBar.innerHTML = '';
 
-            renderBottomNavigation();
-            switchWorkspaceView('home');
-        }
-
-        // Render Dynamic Bottom Navigation Bar based on Role
-        function renderBottomNavigation() {
-            const navContainer = document.getElementById('bottom-navigation-container');
-            navContainer.innerHTML = '';
-
-            if (appState.role === 'صيدلية') {
-                navContainer.innerHTML = `
-                    <button class="bottom-nav-item active" id="nav-btn-home" onclick="switchWorkspaceView('home')">
-                        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                        <span>الرئيسية</span>
-                    </button>
-                    <button class="bottom-nav-item" id="nav-btn-orders" onclick="switchWorkspaceView('orders')">
-                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
-                        <span>الطلبات الحالية</span>
-                    </button>
-                    <button class="bottom-nav-item" id="nav-btn-cart" onclick="switchWorkspaceView('cart')">
-                        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                        <span>السلة</span>
-                    </button>
-                `;
+            let tabs = [];
+            if (appState.role === 'pharmacy') {
+                tabs = [
+                    { name: 'الرئيسية', icon: '<path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
+                    { name: 'الطلبات الحالية', icon: '<path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V8H20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
+                    { name: 'السلة', icon: '<circle cx="9" cy="21" r="1" stroke-width="2"/><circle cx="20" cy="21" r="1" stroke-width="2"/><path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
+                    { name: 'أنا', icon: '<path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' }
+                ];
             } else {
-                // Warehouse Workflow Navigation
-                navContainer.innerHTML = `
-                    <button class="bottom-nav-item active" id="nav-btn-home" onclick="switchWorkspaceView('home')">
-                        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                        <span>الرئيسية</span>
-                    </button>
-                    <button class="bottom-nav-item" id="nav-btn-inventory" onclick="switchWorkspaceView('inventory')">
-                        <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/></svg>
-                        <span>المخزن</span>
-                    </button>
-                    <button class="bottom-nav-item" id="nav-btn-invoices" onclick="switchWorkspaceView('invoices')">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                        <span>الفواتير</span>
-                    </button>
-                `;
+                tabs = [
+                    { name: 'الرئيسية', icon: '<path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
+                    { name: 'المخزن', icon: '<path d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11V15" stroke-width="2" stroke-linecap="round"/><path d="M10 13H14" stroke-width="2" stroke-linecap="round"/>' },
+                    { name: 'الفواتير', icon: '<path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 13H8" stroke-width="2" stroke-linecap="round"/><path d="M16 17H8" stroke-width="2" stroke-linecap="round"/><path d="M10 9H8" stroke-width="2" stroke-linecap="round"/>' },
+                    { name: 'أنا', icon: '<path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' }
+                ];
             }
-        }
 
-        // Switch Views within Workspace
-        function switchWorkspaceView(viewName) {
-            appState.currentView = viewName;
-
-            // Update bottom nav active status
-            document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
-            if (viewName === 'home') document.getElementById('nav-btn-home')?.classList.add('active');
-            if (viewName === 'orders') document.getElementById('nav-btn-orders')?.classList.add('active');
-            if (viewName === 'cart') document.getElementById('nav-btn-cart')?.classList.add('active');
-            if (viewName === 'inventory') document.getElementById('nav-btn-inventory')?.classList.add('active');
-            if (viewName === 'invoices') document.getElementById('nav-btn-invoices')?.classList.add('active');
-
-            renderWorkspaceContent();
-        }
-
-        // Render Workspace Content Dynamically
-        function renderWorkspaceContent() {
-            const container = document.getElementById('main-workspace-content');
-            container.innerHTML = '';
-
-            if (appState.role === 'صيدلية') {
-                if (appState.currentView === 'home') {
-                    container.innerHTML = `
-                        <div class="module-header-box">
-                            <div class="module-header-title">
-                                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                                <span>كتالوج الأدوية المتاحة من المستودعات</span>
-                            </div>
-                        </div>
-                        <div class="catalog-grid" id="catalog-products-grid">
-                            <!-- Rendered dynamically -->
-                        </div>
-                    `;
-                    renderPharmacyCatalog();
-                } else if (appState.currentView === 'orders') {
-                    container.innerHTML = `
-                        <div class="module-header-box">
-                            <div class="module-header-title">
-                                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
-                                <span>متابعة الطلبات الحالية</span>
-                            </div>
-                        </div>
-                        <div class="data-table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>رقم الطلب</th>
-                                        <th>الجهة / المستودع</th>
-                                        <th>عدد الأصناف</th>
-                                        <th>المبلغ الإجمالي</th>
-                                        <th>الحالة</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>ORD-9841</td>
-                                        <td>مستودع الأمل الدوائي</td>
-                                        <td>3 أصناف</td>
-                                        <td>$145.00</td>
-                                        <td><span style="color: var(--success-green); font-weight: 800;">قيد التجهيز</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                } else if (appState.currentView === 'cart') {
-                    container.innerHTML = `
-                        <div class="module-header-box">
-                            <div class="module-header-title">
-                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                                <span>سلة المشتريات</span>
-                            </div>
-                            <button class="btn-secondary-custom" style="padding: 8px 16px; font-size: 14px;" onclick="clearCart()">إفراغ السلة</button>
-                        </div>
-                        <div class="data-table-container" id="cart-table-wrapper">
-                            <!-- Rendered dynamically -->
-                        </div>
-                        <div class="cart-summary-box">
-                            <div style="font-size: 16px; font-weight: 800;">إجمالي المبلغ المستحق:</div>
-                            <div class="cart-grand-total" id="cart-grand-total-val">$0.00</div>
-                        </div>
-                        <div style="display: flex; justify-content: flex-end;">
-                            <button class="btn-primary-custom" onclick="checkoutCart()">إتمام الطلب الآن</button>
-                        </div>
-                    `;
-                    renderCartTable();
-                }
-            } else {
-                // Warehouse Workflow View
-                if (appState.currentView === 'home') {
-                    // Compute Real-Time 1% Business Monetization Analytics
-                    let totalRevenue = appState.inventory.reduce((acc, item) => acc + (item.qty * item.price), 0);
-                    let platformCommission = totalRevenue * 0.01;
-
-                    container.innerHTML = `
-                        <div class="module-header-box">
-                            <div class="module-header-title">
-                                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                                <span>لوحة تحكم مستودع الأدوية - نظرة عامة</span>
-                            </div>
-                        </div>
-                        <div class="analytics-grid">
-                            <div class="analytics-card">
-                                <span class="analytics-card-title">إجمالي مبيعات المستودع (تقديري)</span>
-                                <span class="analytics-card-value">$${totalRevenue.toFixed(2)}</span>
-                            </div>
-                            <div class="analytics-card">
-                                <span class="analytics-card-title">عمولة منصة PharmaLink المستحقة (1% صافي)</span>
-                                <span class="analytics-card-value" style="color: var(--primary-green);">$${platformCommission.toFixed(2)}</span>
-                            </div>
-                            <div class="analytics-card">
-                                <span class="analytics-card-title">إجمالي الأصناف المسجلة</span>
-                                <span class="analytics-card-value">${appState.inventory.length} صنف</span>
-                            </div>
-                        </div>
-                    `;
-                } else if (appState.currentView === 'inventory') {
-                    container.innerHTML = `
-                        <div class="module-header-box">
-                            <div class="module-header-title">
-                                <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/></svg>
-                                <span>إدارة المخزن الدوائي</span>
-                            </div>
-                            <button class="btn-primary-custom" onclick="openInventoryModal()">إضافة صنف للمخزن +</button>
-                        </div>
-                        <div class="data-table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>الباركود</th>
-                                        <th>اسم الصنف / الدواء</th>
-                                        <th>الكمية</th>
-                                        <th>السعر ($)</th>
-                                        <th>الإجمالي ($)</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="warehouse-inventory-tbody">
-                                    <!-- Rendered dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                    renderWarehouseInventoryTable();
-                } else if (appState.currentView === 'invoices') {
-                    container.innerHTML = `
-                        <div class="module-header-box">
-                            <div class="module-header-title">
-                                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                                <span>سجل الفواتير والتصدير الذكي</span>
-                            </div>
-                            <div class="invoice-action-bar">
-                                <button class="btn-whatsapp-export" onclick="exportInvoiceToWhatsApp()">
-                                    <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                                    <span>تصدير وإرسال عبر الواتساب</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="data-table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>رقم الفاتورة</th>
-                                        <th>الجهة المستفيدة</th>
-                                        <th>عدد الأصناف</th>
-                                        <th>القيمة الإجمالية ($)</th>
-                                        <th>عمولة المنصة (1%)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>INV-2026-01</td>
-                                        <td>صيدلية الشفاء المركزية</td>
-                                        <td>3 أصناف</td>
-                                        <td>$145.00</td>
-                                        <td>$1.45</td>
-                                    </tr>
-                                    <tr>
-                                        <td>INV-2026-02</td>
-                                        <td>صيدلية الأمل</td>
-                                        <td>2 أصناف</td>
-                                        <td>$85.50</td>
-                                        <td>$0.85</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // Pharmacy Catalog & Cart Logic
-        function renderPharmacyCatalog() {
-            const grid = document.getElementById('catalog-products-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            appState.inventory.forEach((item, index) => {
-                grid.innerHTML += `
-                    <div class="catalog-item-card">
-                        <div class="item-card-title">${item.name}</div>
-                        <div class="item-card-details">
-                            <span>الباركود: ${item.barcode}</span>
-                            <span>الكمية المتوفرة: ${item.qty} وحدة</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-                            <span class="item-card-price">$${item.price.toFixed(2)}</span>
-                            <button class="btn-primary-custom" style="padding: 8px 16px; font-size: 14px;" onclick="addToCart(${index})">إضافة للسلة</button>
-                        </div>
-                    </div>
-                `;
+            tabs.forEach((tab, index) => {
+                const btn = document.createElement('button');
+                btn.className = `bottom-nav-item ${appState.currentTab === index ? 'active' : ''}`;
+                btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${tab.icon}</svg><span>${tab.name}</span>`;
+                btn.onclick = () => switchTab(index);
+                navBar.appendChild(btn);
             });
         }
 
-        function addToCart(index) {
-            const product = appState.inventory[index];
-            const existing = appState.cart.find(i => i.barcode === product.barcode);
+        function switchTab(index) {
+            appState.currentTab = index;
+            renderBottomNav();
+            renderTabContent(index);
+        }
+
+        // Dynamic Tab Content Engine
+        function renderTabContent(index) {
+            const container = document.getElementById('dashboard-main-view');
+            container.innerHTML = '';
+
+            if (appState.role === 'pharmacy') {
+                if (index === 0) renderPharmacyHome(container);
+                else if (index === 1) renderPharmacyOrders(container);
+                else if (index === 2) renderPharmacyCart(container);
+                else if (index === 3) renderProfileModule(container);
+            } else {
+                if (index === 0) renderWarehouseHome(container);
+                else if (index === 1) renderWarehouseInventory(container);
+                else if (index === 2) renderWarehouseInvoices(container);
+                else if (index === 3) renderProfileModule(container);
+            }
+        }
+
+        // PHARMACY VIEW MODULES
+        function renderPharmacyHome(container) {
+            container.innerHTML = `
+                <div class="card-box">
+                    <div class="section-header-flex">
+                        <h3>قائمة الأدوية المتاحة للتوريد</h3>
+                        <input type="text" class="search-filter-input" placeholder="ابحث عن دواء أو صنف..." oninput="filterInventoryCatalog(this.value)">
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="enterprise-table" id="pharmacy-catalog-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم الصنف الدوائي</th>
+                                    <th>المستودع المورد</th>
+                                    <th>السعر (ل.س)</th>
+                                    <th>الكمية المتاحة</th>
+                                    <th>الإجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="catalog-table-body">
+                                ${generateCatalogRows(inventoryData)}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateCatalogRows(data) {
+            return data.map(item => `
+                <tr>
+                    <td class="fw-800">${item.name}</td>
+                    <td>${item.warehouse}</td>
+                    <td class="fw-700">${item.price.toLocaleString()} ل.س</td>
+                    <td><span style="color: var(--brand-emerald); font-weight: 800;">${item.qty} وحدة</span></td>
+                    <td><button class="action-btn-sm btn-emerald-sm" onclick="addToCart('${item.id}')">إضافة للسلة</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function filterInventoryCatalog(query) {
+            const filtered = inventoryData.filter(i => i.name.toLowerCase().includes(query.toLowerCase()) || i.warehouse.toLowerCase().includes(query.toLowerCase()));
+            const tbody = document.getElementById('catalog-table-body');
+            if (tbody) tbody.innerHTML = generateCatalogRows(filtered);
+        }
+
+        function addToCart(itemId) {
+            const item = inventoryData.find(i => i.id === itemId);
+            if (!item) return;
+
+            const existing = cartData.find(c => c.id === itemId);
             if (existing) {
                 existing.qty += 1;
             } else {
-                appState.cart.push({ ...product, qty: 1 });
+                cartData.push({ ...item, qty: 1 });
             }
-            alert(`تم إضافة "${product.name}" إلى السلة بنجاح`);
+
+            showToast(`تمت إضافة [${item.name}] إلى السلة بنجاح`);
         }
 
-        function renderCartTable() {
-            const wrapper = document.getElementById('cart-table-wrapper');
-            if (!wrapper) return;
-
-            if (appState.cart.length === 0) {
-                wrapper.innerHTML = `<div class="empty-state-container">سلة المشتريات فارغة حالياً. تصفح كتالوج الأدوية وأضف منتجاتك.</div>`;
-                document.getElementById('cart-grand-total-val').textContent = '$0.00';
-                return;
-            }
-
-            let html = `
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>اسم الدواء</th>
-                            <th>السعر الفردي</th>
-                            <th>الكمية</th>
-                            <th>الإجمالي</th>
-                            <th>إدارة</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        function renderPharmacyOrders(container) {
+            container.innerHTML = `
+                <div class="card-box">
+                    <div class="section-header-flex">
+                        <h3>سجل الطلبات الحالية والمتابعة</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>المستودع</th>
+                                    <th>تاريخ الطلب</th>
+                                    <th>الإجمالي</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-800">ORD-5012</td>
+                                    <td>مستودع الألفية الطبي</td>
+                                    <td>2026-09-14</td>
+                                    <td class="fw-700">185,000 ل.س</td>
+                                    <td><span style="color: var(--brand-emerald); font-weight: 800;">تمت الشحن والتوصيل</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-800">ORD-5019</td>
+                                    <td>مستودع الألفية الطبي</td>
+                                    <td>2026-09-14</td>
+                                    <td class="fw-700">96,000 ل.س</td>
+                                    <td><span style="color: #D97706; font-weight: 800;">قيد التجهيز في المستودع</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             `;
-
-            let grandTotal = 0;
-            appState.cart.forEach((item, idx) => {
-                let total = item.qty * item.price;
-                grandTotal += total;
-                html += `
-                    <tr>
-                        <td>${item.name}</td>
-                        <td>$${item.price.toFixed(2)}</td>
-                        <td>${item.qty}</td>
-                        <td>$${total.toFixed(2)}</td>
-                        <td><button class="btn-secondary-custom" style="padding: 4px 10px; font-size: 12px; color: var(--danger-red); border-color: var(--danger-red);" onclick="removeFromCart(${idx})">حذف</button></td>
-                    </tr>
-                `;
-            });
-
-            html += `</tbody></table>`;
-            wrapper.innerHTML = html;
-            document.getElementById('cart-grand-total-val').textContent = `$${grandTotal.toFixed(2)}`;
         }
 
-        function removeFromCart(idx) {
-            appState.cart.splice(idx, 1);
-            renderCartTable();
+        function renderPharmacyCart(container) {
+            let grandTotal = cartData.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            container.innerHTML = `
+                <div class="card-box">
+                    <div class="section-header-flex">
+                        <h3>سلة المشتريات والطلبات الدوائية</h3>
+                        <span class="fw-800" style="color: var(--brand-emerald);">الإجمالي الكلي: ${grandTotal.toLocaleString()} ل.س</span>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم الصنف</th>
+                                    <th>السعر المفرد</th>
+                                    <th>الكمية</th>
+                                    <th>المجموع الفرعي</th>
+                                    <th>الإجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${cartData.length === 0 ? `<tr><td colspan="5" style="text-align: center; color: var(--arch-gray); padding: 30px;">السلة فارغة حالياً. تصفح الأدوية وأضف ما تحتاجه.</td></tr>` :
+                    cartData.map((item, idx) => `
+                                        <tr>
+                                            <td class="fw-800">${item.name}</td>
+                                            <td>${item.price.toLocaleString()} ل.س</td>
+                                            <td>${item.qty}</td>
+                                            <td class="fw-700">${(item.price * item.qty).toLocaleString()} ل.س</td>
+                                            <td><button class="action-btn-sm" style="background: #E53E3E; color: #FFF;" onclick="removeFromCart(${idx})">حذف</button></td>
+                                        </tr>
+                                    `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    ${cartData.length > 0 ? `
+                        <div style="margin-top: 25px; display: flex; justify-content: flex-end;">
+                            <button class="btn-primary" onclick="checkoutCart()">تأكيد وإرسال طلب الشراء</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
         }
 
-        function clearCart() {
-            appState.cart = [];
-            renderCartTable();
+        function removeFromCart(index) {
+            cartData.splice(index, 1);
+            renderTabContent(appState.currentTab);
         }
 
         function checkoutCart() {
-            if (appState.cart.length === 0) {
-                alert('السلة فارغة!');
-                return;
-            }
-            let total = appState.cart.reduce((acc, i) => acc + (i.qty * i.price), 0);
-            appState.orders.unshift({
-                id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
-                entity: appState.entity,
-                items: appState.cart.length,
-                total: total,
-                status: 'قيد التجهيز'
-            });
-            alert('تم إرسال الطلب بنجاح إلى المستودع!');
-            appState.cart = [];
-            switchWorkspaceView('orders');
+            showToast('تم إرسال الطلب بنجاح إلى المستودع المعني');
+            cartData = [];
+            renderTabContent(appState.currentTab);
         }
 
-        // Warehouse Inventory & Modal Controls
-        function renderWarehouseInventoryTable() {
+        // WAREHOUSE VIEW MODULES
+        function renderWarehouseHome(container) {
+            container.innerHTML = `
+                <div class="card-box" style="text-align: center; padding: 40px;">
+                    <h2 style="font-size: 24px; margin-bottom: 12px;">مرحباً بك في لوحة تحكم المستودع المركزي</h2>
+                    <p style="color: var(--arch-gray); margin-bottom: 24px;">قم بإدارة المخزون، وتتبع الأصناف الدوائية، وإصدار الفواتير الفورية عبر الواتساب بدقة عالية.</p>
+                    <button class="btn-primary" onclick="switchTab(1)">انتقل إلى إدارة المخزن الآن</button>
+                </div>
+            `;
+        }
+
+        function renderWarehouseInventory(container) {
+            container.innerHTML = `
+                <div class="card-box">
+                    <div class="section-header-flex">
+                        <h3>إدارة المخزون والأصناف الطبية</h3>
+                        <button class="btn-primary" style="padding: 10px 20px;" onclick="openWarehouseModal()">إضافة صنف +</button>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" class="search-filter-input" placeholder="بحث سريع في المخزن..." oninput="filterWarehouseInventory(this.value)">
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الباركود</th>
+                                    <th>اسم الصنف</th>
+                                    <th>السعر (ل.س)</th>
+                                    <th>الكمية المتاحة</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="warehouse-inventory-tbody">
+                                ${generateWarehouseRows(inventoryData)}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateWarehouseRows(data) {
+            return data.map(item => `
+                <tr>
+                    <td class="fw-700" style="color: var(--arch-gray);">${item.id}</td>
+                    <td class="fw-800">${item.name}</td>
+                    <td class="fw-700">${item.price.toLocaleString()} ل.س</td>
+                    <td class="fw-800" style="color: var(--brand-emerald);">${item.qty} وحدة</td>
+                    <td><span style="color: var(--brand-emerald); font-weight: 800;">متوفر</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function filterWarehouseInventory(query) {
+            const filtered = inventoryData.filter(i => i.name.toLowerCase().includes(query.toLowerCase()) || i.id.toLowerCase().includes(query.toLowerCase()));
             const tbody = document.getElementById('warehouse-inventory-tbody');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-
-            appState.inventory.forEach(item => {
-                let totalVal = item.qty * item.price;
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${item.barcode}</td>
-                        <td>${item.name}</td>
-                        <td>${item.qty}</td>
-                        <td>$${item.price.toFixed(2)}</td>
-                        <td>$${totalVal.toFixed(2)}</td>
-                    </tr>
-                `;
-            });
+            if (tbody) tbody.innerHTML = generateWarehouseRows(filtered);
         }
 
-        function openInventoryModal() {
-            document.getElementById('inventory-modal').classList.add('active');
-            // Initialize HTML5-QRCode scanner
-            setTimeout(() => {
-                if (!html5QrCodeScanner) {
-                    html5QrCodeScanner = new Html5Qrcode("qr-reader");
-                }
-                html5QrCodeScanner.start(
+        function renderWarehouseInvoices(container) {
+            container.innerHTML = `
+                <div class="card-box">
+                    <div class="section-header-flex">
+                        <h3>سجل الفواتير والمعاملات المالية</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الفاتورة</th>
+                                    <th>الجهة المستفيدة</th>
+                                    <th>التاريخ</th>
+                                    <th>القيمة الإجمالية</th>
+                                    <th>الإجراءات السريعة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${invoicesData.map(inv => `
+                                    <tr>
+                                        <td class="fw-800">${inv.id}</td>
+                                        <td>${inv.client}</td>
+                                        <td>${inv.date}</td>
+                                        <td class="fw-700">${inv.total}</td>
+                                        <td>
+                                            <button class="action-btn-sm btn-emerald-sm" onclick="sendInvoiceWhatsApp('${inv.id}', '${inv.client}', '${inv.total}')">تصدير وإرسال عبر الواتساب</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function sendInvoiceWhatsApp(id, client, total) {
+            const text = encodeURIComponent(`*فاتورة رسمية صادر من ${appState.entityName}*\n\nرقم الفاتورة: ${id}\nالجهة المستفيدة: ${client}\nالإجمالي الصافي: ${total}\nالنطاق الإداري: ${appState.region}\n\nشكراً لتعاملكم مع PharmaLink.`);
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        // UNIFIED "أنا" (PROFILE REFACTOR) MODULE
+        function renderProfileModule(container) {
+            container.innerHTML = `
+                <div class="card-box">
+                    <div class="section-header-flex">
+                        <h3>ملف الحساب والبيانات المؤسسية</h3>
+                        <button class="action-btn-sm btn-emerald-sm" id="profile-edit-toggle-btn" onclick="toggleProfileEdit()">تعديل البيانات (قلم)</button>
+                    </div>
+
+                    <div id="profile-view-mode" class="profile-card-grid">
+                        <div class="profile-field-box">
+                            <div class="profile-field-label">نوع الحساب</div>
+                            <div class="profile-field-value">${appState.role === 'warehouse' ? 'مستودع أدوية' : 'صيدلية'}</div>
+                        </div>
+                        <div class="profile-field-box">
+                            <div class="profile-field-label">اسم المسؤول / الصيدلاني</div>
+                            <div class="profile-field-value" id="val-admin-name">${appState.adminName}</div>
+                        </div>
+                        <div class="profile-field-box">
+                            <div class="profile-field-label">اسم الجهة الرسمية</div>
+                            <div class="profile-field-value" id="val-entity-name">${appState.entityName}</div>
+                        </div>
+                        <div class="profile-field-box">
+                            <div class="profile-field-label">النطاق الإداري</div>
+                            <div class="profile-field-value" id="val-region">${appState.region}</div>
+                        </div>
+                    </div>
+
+                    <div id="profile-edit-mode" style="display: none; margin-top: 15px;">
+                        <div class="input-group">
+                            <label>اسم المسؤول / الصيدلاني</label>
+                            <input type="text" id="edit-admin-name" class="search-filter-input" style="width: 100%;" value="${appState.adminName}">
+                        </div>
+                        <div class="input-group">
+                            <label>اسم الجهة</label>
+                            <input type="text" id="edit-entity-name" class="search-filter-input" style="width: 100%;" value="${appState.entityName}">
+                        </div>
+                        <div class="input-group">
+                            <label>النطاق الإداري</label>
+                            <select id="edit-region" class="search-filter-input" style="width: 100%;">
+                                <option value="منبج وريفها" ${appState.region === 'منبج وريفها' ? 'selected' : ''}>منبج وريفها</option>
+                                <option value="حلب وريفها" ${appState.region === 'حلب وريفها' ? 'selected' : ''}>حلب وريفها</option>
+                                <option value="إدلب وريفها" ${appState.region === 'إدلب وريفها' ? 'selected' : ''}>إدلب وريفها</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" style="margin-top: 10px;" onclick="saveProfileChanges()">حفظ التعديلات</button>
+                    </div>
+
+                    <div style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 25px;">
+                        <button class="btn-secondary" style="width: 100%; border-color: #E53E3E; color: #E53E3E;" onclick="logoutApp()">تسجيل الخروج من الحساب</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        let isEditingProfile = false;
+        function toggleProfileEdit() {
+            isEditingProfile = !isEditingProfile;
+            document.getElementById('profile-view-mode').style.display = isEditingProfile ? 'none' : 'grid';
+            document.getElementById('profile-edit-mode').style.display = isEditingProfile ? 'block' : 'none';
+            document.getElementById('profile-edit-toggle-btn').innerText = isEditingProfile ? 'إلغاء التعديل' : 'تعديل البيانات (قلم)';
+        }
+
+        function saveProfileChanges() {
+            appState.adminName = document.getElementById('edit-admin-name').value.trim();
+            appState.entityName = document.getElementById('edit-entity-name').value.trim();
+            appState.region = document.getElementById('edit-region').value;
+
+            localStorage.setItem('pharmaLink_user', JSON.stringify(appState));
+            document.getElementById('top-region-display').innerText = appState.region;
+            showToast('تم تحديث بيانات الملف الشخصي بنجاح');
+            renderTabContent(3);
+        }
+
+        function logoutApp() {
+            localStorage.removeItem('pharmaLink_user');
+            window.location.reload();
+        }
+
+        // Warehouse Modal & Camera QR Code Scanner Integration
+        function openWarehouseModal() {
+            document.getElementById('warehouse-modal').classList.add('active');
+            startQrScanner();
+        }
+
+        function closeWarehouseModal() {
+            document.getElementById('warehouse-modal').classList.remove('active');
+            stopQrScanner();
+        }
+
+        function startQrScanner() {
+            try {
+                html5QrCode = new Html5Qrcode("reader");
+                html5QrCode.start(
                     { facingMode: "environment" },
-                    { fps: 10, qrbox: { width: 220, height: 120 } },
+                    { fps: 10, qrbox: { width: 250, height: 150 } },
                     (decodedText, decodedResult) => {
-                        // Success callback
-                        playSuccessBeep();
-                        document.getElementById('modal-input-barcode').value = decodedText;
+                        // Hardware code captured successfully
+                        document.getElementById('modal-med-barcode').value = decodedText;
+                        playBeepSound();
+                        stopQrScanner();
                     },
                     (errorMessage) => {
-                        // Scan error / scanning frame
+                        // Scanning ongoing silently
                     }
                 ).catch(err => {
-                    console.log("Camera start error or permission denied", err);
+                    console.warn("Camera stream initialization notice:", err);
                 });
-            }, 300);
-        }
-
-        function closeInventoryModal() {
-            if (html5QrCodeScanner) {
-                html5QrCodeScanner.stop().catch(err => console.log(err));
+            } catch (e) {
+                console.error("QR Scanner error:", e);
             }
-            document.getElementById('inventory-modal').classList.remove('active');
-            // Clear inputs
-            document.getElementById('modal-input-barcode').value = '';
-            document.getElementById('modal-input-drugname').value = '';
-            document.getElementById('modal-input-qty').value = '';
-            document.getElementById('modal-input-price').value = '';
         }
 
-        function saveInventoryItem() {
-            const barcode = document.getElementById('modal-input-barcode').value.trim();
-            const name = document.getElementById('modal-input-drugname').value.trim();
-            const qty = parseInt(document.getElementById('modal-input-qty').value);
-            const price = parseFloat(document.getElementById('modal-input-price').value);
+        function stopQrScanner() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode.clear();
+                }).catch(err => {
+                    console.log("Scanner stop notice:", err);
+                });
+            }
+        }
 
-            if (!barcode || !name || isNaN(qty) || isNaN(price)) {
-                alert('الرجاء تعبئة كافة الحقول بشكل صحيح');
+        function playBeepSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = 880;
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.15);
+            } catch (e) {
+                // Audio context policy fallback
+            }
+        }
+
+        function saveNewMedicineItem() {
+            const barcode = document.getElementById('modal-med-barcode').value || `BC-${Math.floor(10000 + Math.random() * 90000)}`;
+            const name = document.getElementById('modal-med-name').value.trim();
+            const price = parseFloat(document.getElementById('modal-med-price').value) || 0;
+            const qty = parseInt(document.getElementById('modal-med-qty').value) || 0;
+
+            if (!name || price <= 0 || qty <= 0) {
+                alert('يرجى إدخال كافة بيانات الصنف الصحيحة بدقة.');
                 return;
             }
 
-            appState.inventory.push({ barcode, name, qty, price });
-            localStorage.setItem('pharmalink_user_state', JSON.stringify(appState));
-
-            closeInventoryModal();
-            renderWarehouseInventoryTable();
-            alert('تم إضافة الصنف بنجاح إلى المخزن!');
-        }
-
-        // Advanced WhatsApp Export & Invoicing
-        function exportInvoiceToWhatsApp() {
-            let invoiceText = `*فاتورة رسمية صادر من منصة PharmaLink*%0A`;
-            invoiceText += `--------------------------------%0A`;
-            invoiceText += `المستودع: *${appState.entity}*%0A`;
-            invoiceText += `المسؤول: ${appState.username}%0A`;
-            invoiceText += `المنطقة: ${appState.region}%0A`;
-            invoiceText += `--------------------------------%0A`;
-            invoiceText += `*تفاصيل الأصناف والمبيعات:*%0A`;
-
-            let totalSum = 0;
-            appState.inventory.forEach((item, index) => {
-                let lineTotal = item.qty * item.price;
-                totalSum += lineTotal;
-                invoiceText += `${index + 1}. ${item.name} | كمية: ${item.qty} | سعر: $${item.price} | الإجمالي: $${lineTotal.toFixed(2)}%0A`;
+            inventoryData.unshift({
+                id: barcode,
+                name: name,
+                price: price,
+                qty: qty,
+                warehouse: appState.entityName
             });
 
-            let platformCommission = totalSum * 0.01;
-            invoiceText += `--------------------------------%0A`;
-            invoiceText += `*الإجمالي الكلي:* $${totalSum.toFixed(2)}%0A`;
-            invoiceText += `*عمولة منصة PharmaLink (1%):* $${platformCommission.toFixed(2)}%0A`;
-            invoiceText += `تم إصدار الفاتورة إلكترونياً عبر منصة PharmaLink الطبية الذكية.`;
+            closeWarehouseModal();
+            showToast(`تمت إضافة الصنف [${name}] بنجاح إلى المخزن`);
+            renderTabContent(appState.currentTab);
+        }
 
-            // Open WhatsApp with structured plain-text invoice
-            const whatsappUrl = `https://wa.me/?text=${invoiceText}`;
-            window.open(whatsappUrl, '_blank');
+        // Automated Toast Notification Banner Engine
+        function showToast(message) {
+            const toast = document.getElementById('toast-container');
+            document.getElementById('toast-message-text').innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
         }
     </script>
 </body>
