@@ -75,17 +75,22 @@
         }
 
         .pill-svg-container {
-            width: 130px;
-            height: 65px;
-            transform: translate3d(0, 0, 0);
-            animation: scaleUpEntrance 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            width: 140px;
+            height: 70px;
+            transform: translate3d(0, 30px, 0) scale(0.3);
+            animation: upgradedCinematicEntrance 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             opacity: 0;
         }
 
-        @keyframes scaleUpEntrance {
+        @keyframes upgradedCinematicEntrance {
             0% {
-                transform: translate3d(0, 20px, 0) scale(0.7);
+                transform: translate3d(0, 40px, 0) scale(0.3);
                 opacity: 0;
+            }
+
+            60% {
+                transform: translate3d(0, -10px, 0) scale(1.1);
+                opacity: 1;
             }
 
             100% {
@@ -95,18 +100,18 @@
         }
 
         .splash-brand {
-            font-size: 38px;
+            font-size: 40px;
             font-weight: 900;
             display: flex;
             gap: 2px;
             opacity: 0;
-            transform: translate3d(0, 15px, 0);
+            transform: translate3d(0, 20px, 0);
             animation: slideUpBrand 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
         }
 
         @keyframes slideUpBrand {
             0% {
-                transform: translate3d(0, 15px, 0);
+                transform: translate3d(0, 20px, 0);
                 opacity: 0;
             }
 
@@ -367,7 +372,10 @@
         }
 
         .nav-brand-pharma {
-            color: #E2E8F0;
+            color: var(--brand-secondary);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 8px;
+            border-radius: 6px;
             font-weight: 900;
         }
 
@@ -466,12 +474,12 @@
             transform: translateY(-2px);
         }
 
-        /* Modern Notification Banner */
-        #notification-banner {
+        /* Temporary Bottom Toast Notification Banner */
+        #toast-banner {
             position: fixed;
-            top: 90px;
+            bottom: 90px;
             left: 50%;
-            transform: translateX(-50%) translateY(-120px);
+            transform: translateX(-50%) translateY(120px);
             background: var(--brand-primary);
             color: var(--white);
             padding: 14px 35px;
@@ -485,7 +493,7 @@
             text-align: center;
         }
 
-        #notification-banner.show {
+        #toast-banner.show {
             transform: translateX(-50%) translateY(0);
         }
 
@@ -578,7 +586,7 @@
         .modal-wrapper {
             background: var(--white);
             width: 100%;
-            max-width: 520px;
+            max-width: 540px;
             border-radius: var(--border-radius);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             padding: 30px;
@@ -603,7 +611,14 @@
             }
         }
 
-        /* QR Scanner Viewfinder container */
+        /* Camera Viewfinder container */
+        #reader-container {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
         #reader {
             width: 100% !important;
             border-radius: var(--border-radius) !important;
@@ -660,18 +675,10 @@
         }
 
         /* Utility classes */
-        .text-primary {
-            color: var(--brand-primary);
-        }
-
-        .text-secondary {
-            color: var(--brand-secondary);
-        }
-
         .flex-col {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .flex-row {
@@ -695,29 +702,23 @@
             background: rgba(46, 204, 113, 0.15);
             color: var(--success);
         }
-
-        .badge-primary {
-            background: rgba(0, 128, 128, 0.15);
-            color: var(--brand-primary);
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- NOTIFICATION BANNER -->
-    <div id="notification-banner">تمت الإضافة بنجاح</div>
+    <!-- TEMPORARY BOTTOM TOAST NOTIFICATION -->
+    <div id="toast-banner">تمت الإضافة بنجاح</div>
 
     <!-- PHASE 1: CINEMATIC SPLASH SCREEN -->
     <div id="splash-screen">
         <div class="splash-content">
             <div class="pill-svg-container">
-                <svg viewBox="0 0 130 65" width="130" height="65">
-                    <path d="M 32.5,0 C 14.55,0 0,14.55 0,32.5 C 0,50.45 14.55,65 32.5,65 L 65,65 L 65,0 Z"
-                        fill="#6C7A89" />
-                    <path d="M 97.5,0 C 115.45,0 130,14.55 130,32.5 C 130,50.45 115.45,65 97.5,65 L 65,65 L 65,0 Z"
+                <svg viewBox="0 0 140 70" width="140" height="70">
+                    <path d="M 35,0 C 15.67,0 0,15.67 0,35 C 0,54.33 15.67,70 35,70 L 70,70 L 70,0 Z" fill="#6C7A89" />
+                    <path d="M 105,0 C 124.33,0 140,15.67 140,35 C 140,54.33 124.33,70 105,70 L 70,70 L 70,0 Z"
                         fill="#008080" />
-                    <line x1="65" y1="0" x2="65" y2="65" stroke="#F4F7F6" stroke-width="2.5" />
+                    <line x1="70" y1="0" x2="70" y2="70" stroke="#F4F7F6" stroke-width="3" />
                 </svg>
             </div>
             <div class="splash-brand">
@@ -1046,7 +1047,7 @@
         </nav>
     </div>
 
-    <!-- MODAL: ADD MEDICINE (WAREHOUSE) WITH QR/BARCODE SCANNER -->
+    <!-- MODAL: ADD MEDICINE (WAREHOUSE) WITH HARDWARE QR/BARCODE SCANNER -->
     <div class="modal-overlay" id="modal-add-medicine">
         <div class="modal-wrapper">
             <div class="card-header-flex">
@@ -1056,27 +1057,37 @@
                     onclick="closeAddMedicineModal()">✕</button>
             </div>
 
-            <!-- QR & Barcode Camera Viewfinder Container -->
-            <div id="reader"></div>
+            <!-- Prominent elongated horizontal rectangle button to start camera -->
+            <button class="btn-custom btn-primary-custom" id="btn-start-camera"
+                style="width: 100%; padding: 16px; font-size: 16px; border-radius: var(--border-radius);"
+                onclick="startBarcodeScanner()">تشغيل الكاميرا وقراءة الباركود</button>
+
+            <!-- On-demand camera viewfinder container -->
+            <div id="reader-container">
+                <div id="reader"></div>
+                <button class="btn-custom" style="background: var(--danger); color: white; padding: 10px;"
+                    onclick="stopBarcodeScanner()">إيقاف الكاميرا</button>
+            </div>
 
             <div class="flex-col">
-                <label class="profile-label">رمز الباركود المعرف</label>
-                <input type="text" id="med-barcode" class="input-custom"
-                    placeholder="يتم التعبئة تلقائياً بالمسح الضوئي أو يدوياً...">
+                <label class="profile-label">رقم الباركود</label>
+                <input type="text" id="med-barcode" class="input-custom" readonly
+                    placeholder="سيتم تعبئته تلقائياً عند مسح الباركود...">
             </div>
             <div class="flex-col">
-                <label class="profile-label">اسم الدواء العلمي / التجاري</label>
-                <input type="text" id="med-name" class="input-custom" placeholder="أدخل اسم الدواء...">
+                <label class="profile-label">اسم الدواء العلمي والتجاري</label>
+                <input type="text" id="med-name" class="input-custom" placeholder="أدخل اسم الدواء بدقة...">
             </div>
             <div class="flex-col">
-                <label class="profile-label">السعر المفرد (ل.س)</label>
-                <input type="number" id="med-price" class="input-custom" placeholder="أدخل السعر...">
+                <label class="profile-label">السعر الإفرادي للمبيع (ل.س)</label>
+                <input type="number" id="med-price" class="input-custom" placeholder="أدخل السعر الإفرادي...">
             </div>
             <div class="flex-col">
-                <label class="profile-label">الكمية المتوفرة بالمخزن</label>
-                <input type="number" id="med-qty" class="input-custom" placeholder="أدخل الكمية المتاحة...">
+                <label class="profile-label">الكمية المدرجة</label>
+                <input type="number" id="med-qty" class="input-custom" placeholder="أدخل الكمية المتوفرة...">
             </div>
-            <button class="btn-custom btn-primary-custom" onclick="saveNewMedicine()">حفظ وإضافة الصنف للمخزن</button>
+            <button class="btn-custom btn-primary-custom" onclick="saveNewMedicine()"
+                style="margin-top: 10px; padding: 16px;">حفظ الصنف في المخزن</button>
         </div>
     </div>
 
@@ -1097,7 +1108,7 @@
         let currentWizardStep = 1;
         let html5QrCode = null;
 
-        /* --- AUDIO SYNTHESIZERS FOR MICRO-CLICKS & BEEP --- */
+        /* --- AUDIO SYNTHESIZERS FOR MICRO-CLICKS & BEEPS --- */
         function playMicroClickTone() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1127,7 +1138,7 @@
                 const gain = ctx.createGain();
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(880, ctx.currentTime);
-                gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
                 osc.start();
@@ -1137,13 +1148,13 @@
             }
         }
 
-        /* --- MODERN NON-BLOCKING NOTIFICATION BANNER --- */
-        function showNotification(msg) {
-            const banner = document.getElementById('notification-banner');
-            banner.innerText = msg;
-            banner.classList.add('show');
+        /* --- TEMPORARY BOTTOM TOAST NOTIFICATION --- */
+        function showToast(msg) {
+            const toast = document.getElementById('toast-banner');
+            toast.innerText = msg;
+            toast.classList.add('show');
             setTimeout(() => {
-                banner.classList.remove('show');
+                toast.classList.remove('show');
             }, 2000);
         }
 
@@ -1349,7 +1360,7 @@
 
             localStorage.setItem('pharmalink_basket', JSON.stringify(basket));
             playMicroClickTone();
-            showNotification(`تمت إضافة ${item.name} إلى السلة بنجاح`);
+            showToast(`تمت إضافة ${item.name} إلى السلة بنجاح`);
         }
 
         function renderBasket() {
@@ -1412,7 +1423,7 @@
             basket = [];
             localStorage.setItem('pharmalink_basket', JSON.stringify(basket));
 
-            showNotification('تم إرسال الطلب بنجاح إلى المستودع المركزي');
+            showToast('تم إرسال الطلب بنجاح إلى المستودع المركزي');
             switchView('pharmacy-orders');
         }
 
@@ -1423,7 +1434,7 @@
             const myOrders = orders.filter(o => o.entity === currentUser.entity || currentUser.role === 'مستودع أدوية');
 
             if (myOrders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--brand-secondary);">لا توجد طلبات سجلة مسجلة</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--brand-secondary);">لا توجد طلبات مسجلة</td></tr>`;
                 return;
             }
 
@@ -1500,7 +1511,7 @@
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "المخزن الدوائي");
             XLSX.writeFile(workbook, "PharmaLink_Inventory.xlsx");
-            showNotification('تم تصدير ملف المخزن بنجاح بصيغة إكسيل');
+            showToast('تم تصدير ملف المخزن بنجاح بصيغة إكسيل');
         }
 
         function openAddMedicineModal() {
@@ -1509,32 +1520,52 @@
             document.getElementById('med-name').value = '';
             document.getElementById('med-price').value = '';
             document.getElementById('med-qty').value = '';
-
-            setTimeout(() => {
-                if (!html5QrCode) {
-                    html5QrCode = new Html5Qrcode("reader");
-                }
-                html5QrCode.start(
-                    { facingMode: "environment" },
-                    { fps: 10, qrbox: { width: 250, height: 150 } },
-                    (decodedText) => {
-                        playBeepSound();
-                        document.getElementById('med-barcode').value = decodedText;
-                        html5QrCode.stop().catch(err => console.log(err));
-                    },
-                    (errorMessage) => {
-                        // scanning frame loop
-                    }
-                ).catch(err => {
-                    console.log("Camera hardware initialization notice:", err);
-                });
-            }, 300);
+            document.getElementById('reader-container').style.display = 'none';
+            document.getElementById('btn-start-camera').style.display = 'block';
         }
 
         function closeAddMedicineModal() {
             document.getElementById('modal-add-medicine').classList.remove('active');
+            stopBarcodeScanner();
+        }
+
+        function startBarcodeScanner() {
+            document.getElementById('btn-start-camera').style.display = 'none';
+            document.getElementById('reader-container').style.display = 'flex';
+
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("reader");
+            }
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                { fps: 15, qrbox: { width: 260, height: 160 } },
+                (decodedText) => {
+                    playBeepSound();
+                    document.getElementById('med-barcode').value = decodedText;
+                    stopBarcodeScanner();
+                    showToast('تم قراءة الباركود بنجاح وإغلاق الكاميرا');
+                },
+                (errorMessage) => {
+                    // Scanning frames continuously
+                }
+            ).catch(err => {
+                console.log("Camera hardware initialization error:", err);
+                alert('تعذر تشغيل كاميرا الجهاز. تأكد من منح الأذونات اللازمة.');
+                document.getElementById('btn-start-camera').style.display = 'block';
+                document.getElementById('reader-container').style.display = 'none';
+            });
+        }
+
+        function stopBarcodeScanner() {
             if (html5QrCode && html5QrCode.isScanning) {
-                html5QrCode.stop().catch(err => console.log(err));
+                html5QrCode.stop().then(() => {
+                    document.getElementById('reader-container').style.display = 'none';
+                    document.getElementById('btn-start-camera').style.display = 'block';
+                }).catch(err => console.log(err));
+            } else {
+                document.getElementById('reader-container').style.display = 'none';
+                document.getElementById('btn-start-camera').style.display = 'block';
             }
         }
 
@@ -1553,7 +1584,7 @@
             localStorage.setItem('pharmalink_inventory', JSON.stringify(inventory));
             closeAddMedicineModal();
             renderWarehouseInventory();
-            showNotification('تمت إضافة الصنف الدوائي إلى المخزن بنجاح');
+            showToast('تمت إضافة الصنف الدوائي إلى المخزن بنجاح');
         }
 
         function renderWarehouseInvoices() {
@@ -1612,7 +1643,7 @@
             document.getElementById('header-region-badge').innerText = `المنطقة: ${currentUser.region}`;
             loadProfileData();
             toggleProfileEdit();
-            showNotification('تم تحديث الملف الشخصي المؤسسي بنجاح');
+            showToast('تم تحديث الملف الشخصي المؤسسي بنجاح');
         }
 
         function logoutApp() {
