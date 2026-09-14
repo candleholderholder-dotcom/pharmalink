@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - منصة إدارة الأدوية الذكية</title>
+    <title>PharmaLink - منصة الأدوية المركزية</title>
     <!-- Google Fonts: Cairo with heavy weight focus -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
@@ -78,9 +78,10 @@
             animation: laserScan 2s infinite ease-in-out;
         }
 
-        /* Smooth wizard slide transitions */
-        .wizard-step {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Hardware-accelerated sliding animation for onboarding steps */
+        .wizard-step-pane {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            will-change: transform, opacity;
         }
 
         /* Splash screen animations */
@@ -139,137 +140,160 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- PHASE 2: MULTI-STEP ONBOARDING WIZARD      -->
+    <!-- PHASE 2: OVERHAULED ELEGANT ONBOARDING     -->
     <!-- ========================================== -->
-    <div id="onboardingModal"
-        class="fixed inset-0 z-40 bg-charcoal/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div
-            class="bg-white rounded-2xl shadow-2xl w-full max-w-xl border-t-4 border-brand overflow-hidden wizard-step transform scale-100">
-            <!-- Wizard Header & Timeline -->
-            <div class="px-8 pt-8 pb-4 border-b border-gray-100">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-extrabold text-brand bg-brand/10 px-3 py-1 rounded-full">إعداد الحساب
-                        التعريفي</span>
-                    <div class="flex items-center gap-1 text-sm text-slateGray font-bold">
-                        <span>خطوة</span>
-                        <span id="currentStepNum" class="text-brand font-black">1</span>
-                        <span>من 4</span>
-                    </div>
+    <div id="onboardingScreen" class="fixed inset-0 z-40 bg-medicalBg flex flex-col lg:flex-row overflow-hidden hidden">
+        <!-- Left Hero / Brand Architectural Pane -->
+        <div class="lg:w-5/12 bg-brand text-white p-8 lg:p-16 flex flex-col justify-between relative overflow-hidden">
+            <div class="relative z-10 space-y-6">
+                <div
+                    class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/20">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
                 </div>
-                <!-- Dynamic Step Indicator Timeline -->
-                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                    <div id="wizardProgressBar" class="bg-brand h-full transition-all duration-300" style="width: 25%;">
-                    </div>
-                </div>
-                <h2 class="text-2xl font-black text-charcoal mt-4">مرحباً بك في منصة PharmaLink</h2>
+                <h1 class="text-3xl lg:text-5xl font-black tracking-tight leading-tight">PharmaLink</h1>
+                <p class="text-white/80 font-bold text-lg leading-relaxed">المنصة الهندسية المتكاملة لربط المستودعات
+                    الطبية بالصيدليات بشفافية وكفاءة فائقة.</p>
             </div>
-
-            <!-- Wizard Body -->
-            <div class="p-8">
-                <!-- STEP 1: Role Selection -->
-                <div id="step1" class="wizard-pane space-y-6">
-                    <label class="block text-lg font-extrabold text-charcoal mb-4">اختر طبيعة عمل الجهة:</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <button type="button" onclick="selectRole('مستودع أدوية')"
-                            class="role-card border-2 border-gray-200 hover:border-brand p-6 rounded-xl text-center transition-all group focus:outline-none">
-                            <div
-                                class="w-14 h-14 bg-medicalBg rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-brand/10 text-brand">
-                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                </svg>
-                            </div>
-                            <span class="text-lg font-extrabold text-charcoal group-hover:text-brand">مستودع
-                                أدوية</span>
-                        </button>
-                        <button type="button" onclick="selectRole('صيدلية')"
-                            class="role-card border-2 border-gray-200 hover:border-brand p-6 rounded-xl text-center transition-all group focus:outline-none">
-                            <div
-                                class="w-14 h-14 bg-medicalBg rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-brand/10 text-brand">
-                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg>
-                            </div>
-                            <span class="text-lg font-extrabold text-charcoal group-hover:text-brand">صيدلية</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- STEP 2: Responsible Name -->
-                <div id="step2" class="wizard-pane space-y-4 hidden">
-                    <label class="block text-lg font-extrabold text-charcoal">اسم المسؤول / الصيدلاني:</label>
-                    <div class="relative">
-                        <span
-                            class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slateGray">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </span>
-                        <input type="text" id="wizardName" oninput="validateStep(2)" placeholder="أدخل اسمك الثلاثي..."
-                            class="w-full pr-12 pl-4 py-3.5 bg-medicalBg border border-gray-200 rounded-xl focus:outline-none focus:border-brand text-charcoal font-bold">
-                    </div>
-                </div>
-
-                <!-- STEP 3: Entity Name -->
-                <div id="step3" class="wizard-pane space-y-4 hidden">
-                    <label class="block text-lg font-extrabold text-charcoal">اسم الجهة (المستودع أو الصيدلية):</label>
-                    <div class="relative">
-                        <span
-                            class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slateGray">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
-                        </span>
-                        <input type="text" id="wizardEntity" oninput="validateStep(3)"
-                            placeholder="أدخل اسم الصيدلية أو المستودع..."
-                            class="w-full pr-12 pl-4 py-3.5 bg-medicalBg border border-gray-200 rounded-xl focus:outline-none focus:border-brand text-charcoal font-bold">
-                    </div>
-                </div>
-
-                <!-- STEP 4: Region Selection -->
-                <div id="step4" class="wizard-pane space-y-4 hidden">
-                    <label class="block text-lg font-extrabold text-charcoal">المنطقة الجغرافية (نطاق التغطية):</label>
-                    <div class="relative">
-                        <span
-                            class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slateGray">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                        </span>
-                        <select id="wizardRegion" onchange="validateStep(4)"
-                            class="w-full pr-12 pl-4 py-3.5 bg-medicalBg border border-gray-200 rounded-xl focus:outline-none focus:border-brand text-charcoal font-bold appearance-none">
-                            <option value="" disabled selected>اختر المنطقة...</option>
-                            <option value="منبج وريفها">منبج وريفها</option>
-                            <option value="حلب وريفها">حلب وريفها</option>
-                            <option value="إدلب وريفها">إدلب وريفها</option>
-                        </select>
-                    </div>
-                </div>
+            <!-- Abstract Medical Watermark SVG -->
+            <div class="absolute -bottom-16 -left-16 opacity-10 pointer-events-none">
+                <svg class="w-96 h-96" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                </svg>
             </div>
+        </div>
 
-            <!-- Wizard Footer Actions -->
-            <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-                <button id="wizardBackBtn" onclick="prevWizardStep()"
-                    class="px-6 py-2.5 rounded-xl border border-gray-300 text-slateGray font-bold hover:bg-gray-100 transition-all hidden">رجوع</button>
-                <div class="mr-auto">
-                    <button id="wizardNextBtn" onclick="nextWizardStep()" disabled
-                        class="px-8 py-2.5 bg-brand text-white rounded-xl font-bold shadow-lg shadow-brand/20 hover:bg-brand-light transition-all disabled:opacity-50 disabled:cursor-not-allowed">التالي</button>
+        <!-- Right Interactive Wizard Workspace -->
+        <div class="lg:w-7/12 flex flex-col justify-between p-8 lg:p-16 bg-white overflow-y-auto">
+            <div class="max-w-xl w-full mx-auto space-y-8 my-auto">
+                <!-- Visual Step Progress Indicator -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-brand bg-brand/10 px-3 py-1 rounded-full">إعداد الحساب
+                            التعريفي</span>
+                        <div class="flex items-center gap-1 text-sm text-slateGray font-bold">
+                            <span>خطوة</span>
+                            <span id="onboardStepNum" class="text-brand font-black">1</span>
+                            <span>من 4</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                        <div id="onboardProgressBar" class="bg-brand h-full transition-all duration-300"
+                            style="width: 25%;"></div>
+                    </div>
+                </div>
+
+                <!-- Wizard Step Panes -->
+                <div class="relative overflow-hidden min-h-[300px]">
+                    <!-- Step 1: Role Selection -->
+                    <div id="onboardStep1" class="wizard-step-pane space-y-6">
+                        <h2 class="text-2xl font-black text-charcoal">اختر طبيعة عمل الجهة:</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button type="button" onclick="selectOnboardRole('مستودع أدوية')"
+                                class="onboard-role-card border-2 border-gray-200 hover:border-brand p-6 rounded-2xl text-center transition-all group focus:outline-none">
+                                <div
+                                    class="w-14 h-14 bg-medicalBg rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-brand/10 text-brand">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                    </svg>
+                                </div>
+                                <span class="text-lg font-extrabold text-charcoal group-hover:text-brand">مستودع
+                                    أدوية</span>
+                            </button>
+                            <button type="button" onclick="selectOnboardRole('صيدلية')"
+                                class="onboard-role-card border-2 border-gray-200 hover:border-brand p-6 rounded-2xl text-center transition-all group focus:outline-none">
+                                <div
+                                    class="w-14 h-14 bg-medicalBg rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-brand/10 text-brand">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    </svg>
+                                </div>
+                                <span class="text-lg font-extrabold text-charcoal group-hover:text-brand">صيدلية</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Responsible Name -->
+                    <div id="onboardStep2" class="wizard-step-pane space-y-4 hidden">
+                        <h2 class="text-2xl font-black text-charcoal">اسم المسؤول / الصيدلاني:</h2>
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slateGray">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </span>
+                            <input type="text" id="onboardName" oninput="validateOnboardStep(2)"
+                                placeholder="أدخل اسمك الثلاثي..."
+                                class="w-full pr-12 pl-4 py-4 bg-medicalBg border border-gray-200 rounded-2xl focus:outline-none focus:border-brand text-charcoal font-bold">
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Entity Name -->
+                    <div id="onboardStep3" class="wizard-step-pane space-y-4 hidden">
+                        <h2 class="text-2xl font-black text-charcoal">اسم الجهة (المستودع أو الصيدلية):</h2>
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slateGray">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </span>
+                            <input type="text" id="onboardEntity" oninput="validateOnboardStep(3)"
+                                placeholder="أدخل اسم الصيدلية أو المستودع..."
+                                class="w-full pr-12 pl-4 py-4 bg-medicalBg border border-gray-200 rounded-2xl focus:outline-none focus:border-brand text-charcoal font-bold">
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Region Selection -->
+                    <div id="onboardStep4" class="wizard-step-pane space-y-4 hidden">
+                        <h2 class="text-2xl font-black text-charcoal">المنطقة الجغرافية (نطاق التغطية):</h2>
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slateGray">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </span>
+                            <select id="onboardRegion" onchange="validateOnboardStep(4)"
+                                class="w-full pr-12 pl-4 py-4 bg-medicalBg border border-gray-200 rounded-2xl focus:outline-none focus:border-brand text-charcoal font-bold appearance-none">
+                                <option value="" disabled selected>اختر المنطقة...</option>
+                                <option value="منبج وريفها">منبج وريفها</option>
+                                <option value="حلب وريفها">حلب وريفها</option>
+                                <option value="إدلب وريفها">إدلب وريفها</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center justify-between pt-6 border-t border-gray-100">
+                    <button id="onboardBackBtn" onclick="prevOnboardStep()"
+                        class="px-6 py-3 rounded-2xl border border-gray-300 text-slateGray font-bold hover:bg-gray-100 transition-all hidden">رجوع</button>
+                    <div class="mr-auto">
+                        <button id="onboardNextBtn" onclick="nextOnboardStep()" disabled
+                            class="px-8 py-3 bg-brand text-white rounded-2xl font-bold shadow-lg shadow-brand/20 hover:bg-brand-light transition-all disabled:opacity-50 disabled:cursor-not-allowed">التالي</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- PHASE 3: MAIN APPLICATION WORKSPACE        -->
+    <!-- PHASE 3: MAIN APPLICATION DASHBOARD        -->
     <!-- ========================================== -->
     <div id="mainApp" class="flex-1 flex flex-col hidden">
-        <!-- Top Navbar -->
+        <!-- Sticky Top Navbar -->
         <header class="bg-brand text-white border-b border-brand-dark sticky top-0 z-30 shadow-md">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -499,7 +523,7 @@
             </section>
         </main>
 
-        <!-- Professional Bottom Navigation Bar (Strictly 4 key modules) -->
+        <!-- Professional Bottom Navigation Bar -->
         <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30 shadow-lg">
             <div class="max-w-md mx-auto px-4 h-20 flex items-center justify-around">
                 <button onclick="switchTab('dashboard')"
@@ -692,7 +716,7 @@
     <!-- ========================================== -->
     <script>
         // State Management variables
-        let currentWizardStep = 1;
+        let currentOnboardStep = 1;
         let profileData = JSON.parse(localStorage.getItem('pharmalink_profile')) || null;
         let inventoryData = JSON.parse(localStorage.getItem('pharmalink_inventory')) || [];
         let ordersData = JSON.parse(localStorage.getItem('pharmalink_orders')) || [];
@@ -707,83 +731,90 @@
                 setTimeout(() => splash.remove(), 700);
 
                 if (!profileData) {
-                    document.getElementById('onboardingModal').classList.remove('hidden');
-                    updateWizardView();
+                    document.getElementById('onboardingScreen').classList.remove('hidden');
+                    updateOnboardView();
                 } else {
                     launchApp();
                 }
             }, 2500); // 2.5 seconds splash display
         });
 
-        // Wizard Logic
-        function selectRole(role) {
+        // Onboarding Wizard Logic
+        function selectOnboardRole(role) {
             selectedRoleValue = role;
-            document.querySelectorAll('.role-card').forEach(card => {
+            document.querySelectorAll('.onboard-role-card').forEach(card => {
                 card.classList.remove('border-brand', 'bg-brand/5');
             });
             event.currentTarget.classList.add('border-brand', 'bg-brand/5');
-            document.getElementById('wizardNextBtn').removeAttribute('disabled');
+            document.getElementById('onboardNextBtn').removeAttribute('disabled');
         }
 
-        function validateStep(step) {
-            const nextBtn = document.getElementById('wizardNextBtn');
+        function validateOnboardStep(step) {
+            const nextBtn = document.getElementById('onboardNextBtn');
             if (step === 2) {
-                const val = document.getElementById('wizardName').value.trim();
+                const val = document.getElementById('onboardName').value.trim();
                 if (val.length > 1) nextBtn.removeAttribute('disabled');
                 else nextBtn.setAttribute('disabled', 'true');
             } else if (step === 3) {
-                const val = document.getElementById('wizardEntity').value.trim();
+                const val = document.getElementById('onboardEntity').value.trim();
                 if (val.length > 1) nextBtn.removeAttribute('disabled');
                 else nextBtn.setAttribute('disabled', 'true');
             } else if (step === 4) {
-                const val = document.getElementById('wizardRegion').value;
+                const val = document.getElementById('onboardRegion').value;
                 if (val) nextBtn.removeAttribute('disabled');
                 else nextBtn.setAttribute('disabled', 'true');
             }
         }
 
-        function nextWizardStep() {
-            if (currentWizardStep === 1 && !selectedRoleValue) return;
-            if (currentWizardStep === 2 && !document.getElementById('wizardName').value.trim()) return;
-            if (currentWizardStep === 3 && !document.getElementById('wizardEntity').value.trim()) return;
+        function nextOnboardStep() {
+            if (currentOnboardStep === 1 && !selectedRoleValue) return;
+            if (currentOnboardStep === 2 && !document.getElementById('onboardName').value.trim()) return;
+            if (currentOnboardStep === 3 && !document.getElementById('onboardEntity').value.trim()) return;
 
-            if (currentWizardStep < 4) {
-                currentWizardStep++;
-                updateWizardView();
+            if (currentOnboardStep < 4) {
+                currentOnboardStep++;
+                updateOnboardView();
             } else {
                 profileData = {
                     role: selectedRoleValue,
-                    name: document.getElementById('wizardName').value.trim(),
-                    entity: document.getElementById('wizardEntity').value.trim(),
-                    region: document.getElementById('wizardRegion').value
+                    name: document.getElementById('onboardName').value.trim(),
+                    entity: document.getElementById('onboardEntity').value.trim(),
+                    region: document.getElementById('onboardRegion').value
                 };
                 localStorage.setItem('pharmalink_profile', JSON.stringify(profileData));
-                document.getElementById('onboardingModal').classList.add('hidden');
+                document.getElementById('onboardingScreen').classList.add('hidden');
                 launchApp();
             }
         }
 
-        function prevWizardStep() {
-            if (currentWizardStep > 1) {
-                currentWizardStep--;
-                updateWizardView();
+        function prevOnboardStep() {
+            if (currentOnboardStep > 1) {
+                currentOnboardStep--;
+                updateOnboardView();
             }
         }
 
-        function updateWizardView() {
-            document.getElementById('currentStepNum').innerText = currentWizardStep;
-            document.getElementById('wizardProgressBar').style.width = (currentWizardStep * 25) + '%';
+        function updateOnboardView() {
+            document.getElementById('onboardStepNum').innerText = currentOnboardStep;
+            document.getElementById('onboardProgressBar').style.width = (currentOnboardStep * 25) + '%';
 
             for (let i = 1; i <= 4; i++) {
-                const pane = document.getElementById(`step${i}`);
-                if (i === currentWizardStep) pane.classList.remove('hidden');
-                else pane.classList.add('hidden');
+                const pane = document.getElementById(`onboardStep${i}`);
+                if (i === currentOnboardStep) {
+                    pane.classList.remove('hidden');
+                    pane.style.transform = 'translate3d(0, 0, 0)';
+                    pane.style.opacity = '1';
+                } else {
+                    pane.classList.add('hidden');
+                    pane.style.transform = 'translate3d(20px, 0, 0)';
+                    pane.style.opacity = '0';
+                }
             }
 
-            const backBtn = document.getElementById('wizardBackBtn');
-            const nextBtn = document.getElementById('wizardNextBtn');
+            const backBtn = document.getElementById('onboardBackBtn');
+            const nextBtn = document.getElementById('onboardNextBtn');
 
-            if (currentWizardStep === 1) {
+            if (currentOnboardStep === 1) {
                 backBtn.classList.add('hidden');
                 if (!selectedRoleValue) nextBtn.setAttribute('disabled', 'true');
                 else nextBtn.removeAttribute('disabled');
@@ -791,7 +822,7 @@
             } else {
                 backBtn.classList.remove('hidden');
                 nextBtn.removeAttribute('disabled');
-                if (currentWizardStep === 4) {
+                if (currentOnboardStep === 4) {
                     nextBtn.innerText = 'دخول المنصة';
                 } else {
                     nextBtn.innerText = 'التالي';
