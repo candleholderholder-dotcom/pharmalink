@@ -3,31 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PharmaLink - Enterprise Medical & Pharmaceutical Gateway</title>
-
-    <!-- Google Fonts: Cairo (Weights: 600 Semi-Bold, 700 Bold, 800 Extra Bold, 900 Black) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaLink - منصة الأدوية المركزية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- External Secure HTML5-QRCode Library via CDN -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
     <style>
         :root {
-            --brand-emerald: #0A5C36;
-            --brand-emerald-hover: #08492b;
-            --brand-emerald-light: rgba(10, 92, 54, 0.08);
-            --arch-gray: #6C7A89;
-            --arch-gray-hover: #596573;
-            --charcoal-dark: #1E2229;
-            --medical-canvas: #F4F7F6;
+            --emerald-core: #0A5C36;
+            --emerald-dark: #074828;
+            --architectural-gray: #6C7A89;
+            --charcoal-text: #1E2229;
+            --medical-bg: #F4F7F6;
             --white: #FFFFFF;
-            --border-color: #E2E8F0;
-            --shadow-subtle: 0 10px 30px -5px rgba(30, 34, 41, 0.07);
-            --shadow-card: 0 4px 20px -2px rgba(30, 34, 41, 0.05);
-            --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            --border-gray: #DDE3E9;
+            --danger-red: #C0392B;
+            --success-green: #27AE60;
         }
 
         * {
@@ -36,17 +28,15 @@
             padding: 0;
             font-family: 'Cairo', sans-serif;
             font-weight: 600;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            background-color: var(--medical-canvas);
-            color: var(--charcoal-dark);
+            background-color: var(--medical-bg);
+            color: var(--charcoal-text);
             min-height: 100vh;
-            overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         h1,
@@ -54,357 +44,224 @@
         h3,
         h4,
         h5,
-        h6 {
-            font-weight: 800;
-            color: var(--charcoal-dark);
-        }
-
-        /* Utility Classes */
-        .fw-600 {
-            font-weight: 600;
-        }
-
-        .fw-700 {
-            font-weight: 700;
-        }
-
-        .fw-800 {
-            font-weight: 800;
-        }
-
-        .fw-900 {
+        h6,
+        .extra-bold {
             font-weight: 900;
         }
 
-        /* Splash Screen (Phase 1) */
+        /* Splash Screen */
         #splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: var(--medical-canvas);
+            background-color: var(--medical-bg);
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             z-index: 9999;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-
-        #splash-screen.fade-out {
-            opacity: 0;
-            visibility: hidden;
+            transition: opacity 0.6s ease;
         }
 
         .capsule-container {
-            width: 120px;
-            height: 60px;
-            position: relative;
-            animation: levitateAndPulse 2.5s ease-in-out infinite alternate;
-            will-change: transform;
+            animation: pulse-breathing 2s infinite ease-in-out;
+            margin-bottom: 24px;
         }
 
-        @keyframes levitateAndPulse {
+        .splash-title {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--charcoal-text);
+            letter-spacing: 1px;
+        }
+
+        @keyframes pulse-breathing {
             0% {
-                transform: translateY(0px) scale(1);
+                transform: scale(1);
+                opacity: 0.9;
+            }
+
+            50% {
+                transform: scale(1.06);
+                opacity: 1;
+                filter: drop-shadow(0 0 12px rgba(10, 92, 54, 0.3));
             }
 
             100% {
-                transform: translateY(-12px) scale(1.04);
+                transform: scale(1);
+                opacity: 0.9;
             }
         }
 
-        .splash-brand-title {
-            margin-top: 28px;
-            font-size: 32px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            color: var(--charcoal-dark);
-            animation: riseUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes riseUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Onboarding Layout (Phase 2) */
-        #onboarding-container {
+        /* Onboarding Screen */
+        #onboarding-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: var(--medical-canvas);
-            z-index: 8888;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            padding: 40px 20px;
-        }
-
-        #onboarding-container.hidden {
+            background-color: var(--medical-bg);
             display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 8888;
+            overflow-y: auto;
+            padding: 20px;
         }
 
-        .onboarding-wrapper {
-            max-width: 680px;
-            width: 100%;
-            margin: auto;
+        .onboarding-card {
             background: var(--white);
-            border-radius: 20px;
-            box-shadow: var(--shadow-subtle);
+            width: 100%;
+            max-width: 520px;
             padding: 40px;
-            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(30, 34, 41, 0.08);
+            border: 1px solid var(--border-gray);
         }
 
-        .step-indicator-bar {
+        .step-tracker {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             position: relative;
-        }
-
-        .step-indicator-bar::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--border-color);
-            transform: translateY(-50%);
-            z-index: 1;
         }
 
         .step-dot {
-            width: 38px;
-            height: 38px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: var(--white);
-            border: 3px solid var(--border-color);
+            background: var(--border-gray);
+            color: var(--architectural-gray);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 15px;
-            color: var(--arch-gray);
-            position: relative;
+            font-size: 14px;
             z-index: 2;
-            transition: var(--transition-smooth);
+            transition: all 0.3s ease;
         }
 
         .step-dot.active {
-            border-color: var(--brand-emerald);
-            background: var(--brand-emerald);
+            background: var(--emerald-core);
             color: var(--white);
-            box-shadow: 0 0 0 5px rgba(10, 92, 54, 0.15);
+            box-shadow: 0 0 0 4px rgba(10, 92, 54, 0.15);
         }
 
         .step-dot.completed {
-            border-color: var(--brand-emerald);
-            background: var(--white);
-            color: var(--brand-emerald);
+            background: var(--success-green);
+            color: var(--white);
         }
 
-        .onboarding-step-content {
-            display: none;
-            animation: slideInFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .step-line {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            left: 20px;
+            height: 3px;
+            background: var(--border-gray);
+            z-index: 1;
         }
 
-        .onboarding-step-content.active {
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
             display: block;
-        }
-
-        @keyframes slideInFade {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .step-title {
-            font-size: 22px;
+            font-size: 15px;
             font-weight: 800;
             margin-bottom: 8px;
-            color: var(--charcoal-dark);
+            color: var(--charcoal-text);
         }
 
-        .step-subtitle {
-            font-size: 14px;
-            color: var(--arch-gray);
-            margin-bottom: 24px;
-            font-weight: 600;
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-gray);
+            border-radius: 10px;
+            font-size: 15px;
+            background: var(--white);
+            color: var(--charcoal-text);
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        .role-cards-grid {
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--emerald-core);
+        }
+
+        .role-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .role-card {
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
+            border: 2px solid var(--border-gray);
+            border-radius: 12px;
+            padding: 24px 16px;
             text-align: center;
             cursor: pointer;
-            transition: var(--transition-smooth);
+            transition: all 0.2s ease;
             background: var(--white);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
         }
 
         .role-card:hover {
-            border-color: var(--arch-gray);
-            transform: translateY(-3px);
+            border-color: var(--emerald-core);
         }
 
         .role-card.selected {
-            border-color: var(--brand-emerald);
-            background: var(--brand-emerald-light);
-            box-shadow: 0 8px 25px rgba(10, 92, 54, 0.1);
+            border-color: var(--emerald-core);
+            background: rgba(10, 92, 54, 0.04);
         }
 
-        .role-card svg {
-            width: 52px;
-            height: 52px;
-            transition: var(--transition-smooth);
-        }
-
-        .role-card.selected svg path,
-        .role-card.selected svg rect,
-        .role-card.selected svg circle {
-            stroke: var(--brand-emerald);
-        }
-
-        .input-group {
-            margin-bottom: 22px;
-            position: relative;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--charcoal-dark);
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-wrapper svg {
-            position: absolute;
-            right: 16px;
-            width: 20px;
-            height: 20px;
-            fill: var(--arch-gray);
-        }
-
-        .input-wrapper input,
-        .input-wrapper select {
-            width: 100%;
-            padding: 14px 48px 14px 16px;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            background: var(--white);
-            color: var(--charcoal-dark);
-            outline: none;
-            transition: var(--transition-smooth);
-        }
-
-        .input-wrapper input:focus,
-        .input-wrapper select:focus {
-            border-color: var(--brand-emerald);
-            box-shadow: 0 0 0 4px rgba(10, 92, 54, 0.08);
-        }
-
-        .onboarding-nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 35px;
-            gap: 15px;
-        }
-
-        .btn-primary,
-        .btn-secondary {
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-size: 15px;
+        .role-card h4 {
+            margin-top: 12px;
+            font-size: 16px;
             font-weight: 800;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition-smooth);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         .btn-primary {
-            background: var(--brand-emerald);
+            width: 100%;
+            padding: 14px;
+            background: var(--emerald-core);
             color: var(--white);
-            box-shadow: 0 4px 15px rgba(10, 92, 54, 0.2);
-            flex: 1;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .btn-primary:hover:not(:disabled) {
-            background: var(--brand-emerald-hover);
-            transform: translateY(-2px);
-        }
-
-        .btn-primary:disabled {
-            background: var(--border-color);
-            color: var(--arch-gray);
-            cursor: not-allowed;
-            box-shadow: none;
+        .btn-primary:hover {
+            background: var(--emerald-dark);
         }
 
         .btn-secondary {
-            background: var(--white);
-            color: var(--arch-gray);
-            border: 2px solid var(--border-color);
+            background: var(--architectural-gray);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 800;
+            cursor: pointer;
         }
 
-        .btn-secondary:hover:not(:disabled) {
-            border-color: var(--arch-gray);
-            color: var(--charcoal-dark);
-        }
-
-        /* Main Dashboard Layout (Phase 3) */
-        #app-dashboard {
+        /* App Layout */
+        #app-container {
             display: none;
             flex-direction: column;
             min-height: 100vh;
-            background: var(--medical-canvas);
-        }
-
-        #app-dashboard.active {
-            display: flex;
         }
 
         .top-navbar {
-            background: var(--brand-emerald);
+            background: var(--emerald-core);
             color: var(--white);
             padding: 16px 24px;
             display: flex;
@@ -413,267 +270,231 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(10, 92, 54, 0.15);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-logo-text {
-            font-size: 20px;
+        .navbar-brand {
+            font-size: 22px;
             font-weight: 900;
-            color: var(--white);
             letter-spacing: 0.5px;
         }
 
-        .region-badge {
+        .navbar-region {
             background: rgba(255, 255, 255, 0.15);
             padding: 6px 14px;
-            border-radius: 30px;
+            border-radius: 20px;
             font-size: 13px;
-            font-weight: 700;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 800;
         }
 
-        .dashboard-content-area {
+        .main-content {
             flex: 1;
             padding: 24px;
             max-width: 1200px;
             width: 100%;
-            margin: 0 auto 80px auto;
+            margin: 0 auto;
+            padding-bottom: 90px;
         }
 
-        .tab-pane {
+        .view-section {
             display: none;
-            animation: fadeInTab 0.3s ease forwards;
         }
 
-        .tab-pane.active {
+        .view-section.active {
             display: block;
         }
 
-        @keyframes fadeInTab {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Bottom Navigation Bar */
+        /* Bottom Navbar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
-            right: 0;
+            width: 100%;
             background: var(--white);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 16px;
+            border-top: 1px solid var(--border-gray);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            height: 70px;
             z-index: 100;
-            box-shadow: 0 -5px 25px rgba(30, 34, 41, 0.05);
+            box-shadow: 0 -4px 20px rgba(30, 34, 41, 0.05);
         }
 
-        .bottom-nav-item {
-            flex: 1;
+        .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
             background: none;
             border: none;
             cursor: pointer;
-            padding: 6px;
-            border-radius: 12px;
-            transition: var(--transition-smooth);
-            color: var(--arch-gray);
+            color: var(--architectural-gray);
+            transition: color 0.2s;
         }
 
-        .bottom-nav-item svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--arch-gray);
-            transition: var(--transition-smooth);
+        .nav-item.active {
+            color: var(--emerald-core);
         }
 
-        .bottom-nav-item span {
-            font-size: 12px;
-            font-weight: 700;
+        .nav-item span {
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 4px;
         }
 
-        .bottom-nav-item.active {
-            color: var(--brand-emerald);
-        }
-
-        .bottom-nav-item.active svg {
-            stroke: var(--brand-emerald);
-            fill: rgba(10, 92, 54, 0.08);
-        }
-
-        /* Toast Notification Banner */
+        /* Toast Notification */
         #toast-container {
             position: fixed;
-            top: 85px;
+            bottom: 90px;
             left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            background: var(--brand-emerald);
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--emerald-dark);
             color: var(--white);
-            padding: 14px 24px;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(10, 92, 54, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 800;
             font-size: 14px;
-            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: toast-fade 2s forwards;
+            pointer-events: auto;
         }
 
-        #toast-container.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
+        @keyframes toast-fade {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            15% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            85% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
         }
 
-        /* Cards, Tables & Modules Styling */
-        .card-box {
+        /* UI Components & Tables */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .data-card {
             background: var(--white);
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-card);
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .section-header-flex {
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-gray);
+            box-shadow: 0 2px 8px rgba(30, 34, 41, 0.03);
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
         }
 
-        .section-header-flex h3 {
+        .data-card h3 {
             font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: var(--charcoal-text);
+        }
+
+        .data-card p {
+            color: var(--architectural-gray);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 800;
         }
 
-        .search-filter-input {
-            padding: 12px 18px;
-            border: 2px solid var(--border-color);
+        .badge-success {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success-green);
+        }
+
+        .badge-danger {
+            background: rgba(192, 57, 43, 0.1);
+            color: var(--danger-red);
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--white);
             border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            width: 280px;
-            outline: none;
-            transition: var(--transition-smooth);
+            border: 1px solid var(--border-gray);
+            margin-top: 20px;
         }
 
-        .search-filter-input:focus {
-            border-color: var(--brand-emerald);
-            box-shadow: 0 0 0 4px rgba(10, 92, 54, 0.08);
-        }
-
-        .enterprise-table {
+        table {
             width: 100%;
             border-collapse: collapse;
             text-align: right;
-            margin-top: 10px;
         }
 
-        .enterprise-table th,
-        .enterprise-table td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border-color);
+        th,
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-gray);
             font-size: 14px;
         }
 
-        .enterprise-table th {
-            font-weight: 800;
-            color: var(--arch-gray);
-            background: var(--medical-canvas);
+        th {
+            background: var(--medical-bg);
+            font-weight: 900;
+            color: var(--charcoal-text);
         }
 
-        .enterprise-table td {
-            font-weight: 600;
-            color: var(--charcoal-dark);
-        }
-
-        .enterprise-table tr:last-child td {
+        tr:last-child td {
             border-bottom: none;
         }
 
-        .action-btn-sm {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition-smooth);
-        }
-
-        .btn-emerald-sm {
-            background: var(--brand-emerald);
-            color: var(--white);
-        }
-
-        .btn-emerald-sm:hover {
-            background: var(--brand-emerald-hover);
-        }
-
-        /* Modal Structure */
+        /* Modals */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(30, 34, 41, 0.5);
+            width: 100vw;
+            height: 100vh;
+            background: rgba(30, 34, 41, 0.6);
             backdrop-filter: blur(4px);
             display: none;
-            align-items: center;
             justify-content: center;
-            z-index: 1000;
+            align-items: center;
+            z-index: 999;
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-            animation: fadeInModal 0.25s ease forwards;
-        }
-
-        @keyframes fadeInModal {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .modal-card {
+        .modal-box {
             background: var(--white);
-            border-radius: 20px;
             width: 100%;
-            max-width: 540px;
+            max-width: 480px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
             max-height: 90vh;
             overflow-y: auto;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--border-color);
         }
 
         .modal-header {
@@ -683,889 +504,766 @@
             margin-bottom: 20px;
         }
 
-        .close-modal-btn {
-            background: none;
-            border: none;
+        .modal-header h3 {
             font-size: 20px;
-            cursor: pointer;
-            color: var(--arch-gray);
-            font-weight: 800;
+            font-weight: 900;
         }
 
-        /* Camera Scanner Styles */
+        .close-modal {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--architectural-gray);
+        }
+
+        /* Camera Viewfinder */
         #reader {
             width: 100% !important;
-            border-radius: 12px;
+            border: 2px solid var(--border-gray) !important;
+            border-radius: 10px !important;
             overflow: hidden;
-            border: 2px solid var(--border-color) !important;
-            margin-bottom: 20px;
-            background: var(--charcoal-dark);
+            margin-bottom: 15px;
+            background: var(--medical-bg);
         }
 
         #reader video {
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
-        #html5-qrcode-anchor-scan-type-change {
-            display: none !important;
+        /* Header Actions & Profile */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        /* Profile & Edit Panel */
-        .profile-card-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 900;
         }
 
-        .profile-field-box {
-            background: var(--medical-canvas);
-            padding: 16px;
+        .profile-container {
+            background: var(--white);
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            padding: 30px;
+            border: 1px solid var(--border-gray);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .profile-field-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--arch-gray);
-            margin-bottom: 6px;
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-gray);
         }
 
-        .profile-field-value {
-            font-size: 16px;
+        .profile-row:last-child {
+            border-bottom: none;
+        }
+
+        .profile-label {
             font-weight: 800;
-            color: var(--charcoal-dark);
+            color: var(--architectural-gray);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-
-            .role-cards-grid,
-            .profile-card-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .search-filter-input {
-                width: 100%;
-                margin-top: 10px;
-            }
-
-            .section-header-flex {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
+        .profile-value {
+            font-weight: 900;
+            color: var(--charcoal-text);
         }
     </style>
 </head>
 
 <body>
 
-    <!-- PHASE 1: High-End Splash Screen & Custom Brand Logo -->
+    <!-- Phase 1: Cinematic Splash Screen -->
     <div id="splash-screen">
         <div class="capsule-container">
-            <svg viewBox="0 0 120 60" width="120" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Left half: Deep Dark Emerald Green -->
-                <path d="M30 0H60V60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z" fill="#0A5C36" />
-                <!-- Right half: Medium Architectural Gray -->
-                <path d="M90 0H60V60H90C106.569 60 120 46.5685 120 30C120 13.4315 106.569 0 90 0Z" fill="#6C7A89" />
+            <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M30 0H90C106.569 0 120 13.4315 120 30C120 46.5685 106.569 60 90 60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z"
+                    fill="#0A5C36" />
+                <path d="M60 0H90C106.569 0 120 13.4315 120 30C120 46.5685 106.569 60 90 60H60V0Z" fill="#6C7A89" />
             </svg>
         </div>
-        <div class="splash-brand-title">PharmaLink</div>
+        <div class="splash-title">PharmaLink</div>
     </div>
 
-    <!-- PHASE 2: Full-Page Architectural Onboarding Layout -->
-    <div id="onboarding-container" class="hidden">
-        <div class="onboarding-wrapper">
-            <div class="step-indicator-bar">
+    <!-- Phase 2: Full-Screen Structured Onboarding Setup -->
+    <div id="onboarding-screen">
+        <div class="onboarding-card">
+            <div class="step-tracker">
+                <div class="step-line"></div>
                 <div class="step-dot active" id="dot-1">1</div>
                 <div class="step-dot" id="dot-2">2</div>
                 <div class="step-dot" id="dot-3">3</div>
                 <div class="step-dot" id="dot-4">4</div>
             </div>
 
-            <!-- Step 1: Role Selection -->
-            <div class="onboarding-step-content active" id="step-1">
-                <div class="step-title">اختر نوع الحساب المؤسسي</div>
-                <div class="step-subtitle">حدد طبيعة عملك في المنظومة الطبية لتخصيص الواجهة والخدمات بدقة</div>
-
-                <div class="role-cards-grid">
-                    <div class="role-card" onclick="selectRole('warehouse', this)">
-                        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="6" y="16" width="40" height="28" rx="3" stroke="#6C7A89" stroke-width="3"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M16 16V10C16 8.34315 17.3431 7 19 7H33C34.6569 7 36 8.34315 36 10V16"
-                                stroke="#6C7A89" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M18 26H24" stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
-                            <path d="M18 34H28" stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
-                        </svg>
-                        <span class="fw-800" style="font-size: 16px;">مستودع أدوية</span>
+            <form id="onboarding-form" onsubmit="handleOnboardingSubmit(event)">
+                <!-- Step 1 -->
+                <div class="onboarding-step" id="step-1-content">
+                    <h3 style="margin-bottom: 20px; font-size: 20px;">اختر صفة الحساب</h3>
+                    <div class="role-grid">
+                        <div class="role-card" onclick="selectRole('warehouse', this)">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0A5C36"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                </path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            <h4>مستودع أدوية</h4>
+                        </div>
+                        <div class="role-card" onclick="selectRole('pharmacy', this)">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0A5C36"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                <line x1="12" y1="6" x2="12" y2="9"></line>
+                                <line x1="10.5" y1="7.5" x2="13.5" y2="7.5"></line>
+                            </svg>
+                            <h4>صيدلية</h4>
+                        </div>
                     </div>
-
-                    <div class="role-card" onclick="selectRole('pharmacy', this)">
-                        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 22H46V44C46 45.6569 44.6569 47 43 47H9C7.34315 47 6 45.6569 6 44V22Z"
-                                stroke="#6C7A89" stroke-width="3" stroke-linejoin="round" />
-                            <path d="M16 22V14C16 9.58172 19.5817 6 24 6H28C32.4183 6 36 9.58172 36 14V22"
-                                stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
-                            <path d="M26 28V38" stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
-                            <path d="M21 33H31" stroke="#6C7A89" stroke-width="3" stroke-linecap="round" />
-                        </svg>
-                        <span class="fw-800" style="font-size: 16px;">صيدلية</span>
-                    </div>
+                    <button type="button" class="btn-primary" onclick="nextStep(2)">التالي</button>
                 </div>
 
-                <div class="onboarding-nav-buttons">
-                    <button class="btn-primary" id="btn-next-1" disabled onclick="nextStep(2)">التالي</button>
-                </div>
-            </div>
-
-            <!-- Step 2: Responsible Name -->
-            <div class="onboarding-step-content" id="step-2">
-                <div class="step-title">اسم المسؤول أو الصيدلاني</div>
-                <div class="step-subtitle">يرجى إدخال الاسم الثلاثي المعتمد للمسؤول المخول بالتصاريح</div>
-
-                <div class="input-group">
-                    <label>اسم المسؤول / الصيدلاني</label>
-                    <div class="input-wrapper">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
-                                stroke="#6C7A89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle cx="12" cy="7" r="4" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                        <input type="text" id="input-admin-name" placeholder="مثال: د. محمد يحيى"
-                            oninput="validateStep2()">
+                <!-- Step 2 -->
+                <div class="onboarding-step" id="step-2-content" style="display: none;">
+                    <h3 style="margin-bottom: 20px; font-size: 20px;">اسم المسؤول أو الصيدلاني</h3>
+                    <div class="form-group">
+                        <label class="form-label">الاسم الكامل</label>
+                        <div style="position: relative;">
+                            <svg style="position: absolute; right: 14px; top: 15px;" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input type="text" id="input-name" class="form-input" style="padding-right: 44px;"
+                                placeholder="أدخل اسم المسؤول" required>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn-secondary" onclick="prevStep(1)">السابق</button>
+                        <button type="button" class="btn-primary" onclick="nextStep(3)">التالي</button>
                     </div>
                 </div>
 
-                <div class="onboarding-nav-buttons">
-                    <button class="btn-secondary" onclick="prevStep(1)">السابق</button>
-                    <button class="btn-primary" id="btn-next-2" disabled onclick="nextStep(3)">التالي</button>
-                </div>
-            </div>
-
-            <!-- Step 3: Entity Name -->
-            <div class="onboarding-step-content" id="step-3">
-                <div class="step-title">اسم الجهة (المستودع أو الصيدلية)</div>
-                <div class="step-subtitle">أدخل الاسم التجاري الرسمي للكيان الطبي الخاص بك</div>
-
-                <div class="input-group">
-                    <label>اسم الجهة المعتمد</label>
-                    <div class="input-wrapper">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 21H21" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M5 21V7L13 3V21" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M19 21V11L13 14" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M9 9V11" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
-                            <path d="M9 15V17" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                        <input type="text" id="input-entity-name"
-                            placeholder="مثال: صيدلية الأمل المركزية / مستودع ابن سينا" oninput="validateStep3()">
+                <!-- Step 3 -->
+                <div class="onboarding-step" id="step-3-content" style="display: none;">
+                    <h3 style="margin-bottom: 20px; font-size: 20px;">اسم الجهة (المستودع أو الصيدلية)</h3>
+                    <div class="form-group">
+                        <label class="form-label">اسم الجهة التجارية</label>
+                        <div style="position: relative;">
+                            <svg style="position: absolute; right: 14px; top: 15px;" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                                <line x1="9" y1="22" x2="9" y2="12"></line>
+                                <line x1="15" y1="22" x2="15" y2="12"></line>
+                                <line x1="12" y1="6" x2="12" y2="6.01"></line>
+                            </svg>
+                            <input type="text" id="input-entity" class="form-input" style="padding-right: 44px;"
+                                placeholder="أدخل اسم الجهة" required>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn-secondary" onclick="prevStep(2)">السابق</button>
+                        <button type="button" class="btn-primary" onclick="nextStep(4)">التالي</button>
                     </div>
                 </div>
 
-                <div class="onboarding-nav-buttons">
-                    <button class="btn-secondary" onclick="prevStep(2)">السابق</button>
-                    <button class="btn-primary" id="btn-next-3" disabled onclick="nextStep(4)">التالي</button>
-                </div>
-            </div>
-
-            <!-- Step 4: Region Selection -->
-            <div class="onboarding-step-content" id="step-4">
-                <div class="step-title">تحديد النطاق الجغرافي</div>
-                <div class="step-subtitle">اختر المنطقة والريف التابع لنشاطك العملي بدقة</div>
-
-                <div class="input-group">
-                    <label>المنطقة الإدارية</label>
-                    <div class="input-wrapper">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M12 21C16 17 20 13.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 13.4183 8 17 12 21Z"
-                                stroke="#6C7A89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle cx="12" cy="10" r="3" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                        <select id="input-region" onchange="validateStep4()">
-                            <option value="" disabled selected>اختر المنطقة الإدارية...</option>
+                <!-- Step 4 -->
+                <div class="onboarding-step" id="step-4-content" style="display: none;">
+                    <h3 style="margin-bottom: 20px; font-size: 20px;">اختر المنطقة الإدارية</h3>
+                    <div class="form-group">
+                        <label class="form-label">النطاق الجغرافي</label>
+                        <select id="input-region" class="form-select" required>
                             <option value="منبج وريفها">منبج وريفها</option>
                             <option value="حلب وريفها">حلب وريفها</option>
                             <option value="إدلب وريفها">إدلب وريفها</option>
                         </select>
                     </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn-secondary" onclick="prevStep(3)">السابق</button>
+                        <button type="submit" class="btn-primary">دخول المنصة</button>
+                    </div>
                 </div>
-
-                <div class="onboarding-nav-buttons">
-                    <button class="btn-secondary" onclick="prevStep(3)">السابق</button>
-                    <button class="btn-primary" id="btn-finish" disabled onclick="completeOnboarding()">دخول
-                        المنصة</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
-    <!-- PHASE 3: Highly Organized Enterprise Dashboard -->
-    <div id="app-dashboard">
+    <!-- Phase 3: Grid-Aligned Symmetric Dashboard & Application Frame -->
+    <div id="app-container">
         <!-- Sticky Top Navbar -->
         <header class="top-navbar">
-            <div class="nav-logo-area">
-                <svg viewBox="0 0 120 60" width="36" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M30 0H60V60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z" fill="#FFFFFF" />
-                    <path d="M90 0H60V60H90C106.569 60 120 46.5685 120 30C120 13.4315 106.569 0 90 0Z" fill="#A0AEC0" />
-                </svg>
-                <div class="nav-logo-text">PharmaLink</div>
-            </div>
-            <div class="region-badge" id="top-region-display">حلب وريفها</div>
+            <div class="navbar-brand">PharmaLink</div>
+            <div class="navbar-region" id="nav-region-tag">منبج وريفها</div>
         </header>
 
-        <!-- Dynamic Content Panels -->
-        <main class="dashboard-content-area" id="dashboard-main-view">
-            <!-- Rendered dynamically depending on role -->
+        <!-- Main Workspace -->
+        <main class="main-content" id="main-content-area">
+            <!-- Dynamic Views injected here -->
         </main>
 
-        <!-- Sticky Bottom Navigation Bar -->
-        <nav class="bottom-nav" id="bottom-navigation-bar">
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav" id="bottom-nav-bar">
             <!-- Dynamically populated based on role -->
         </nav>
     </div>
 
-    <!-- Toast Notification Banner -->
-    <div id="toast-container">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 6L9 17L4 12" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-        </svg>
-        <span id="toast-message-text">تمت العملية بنجاح</span>
-    </div>
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
 
-    <!-- Modal for Warehouse: Add Medicine / QR Code Scanner -->
-    <div class="modal-overlay" id="warehouse-modal">
-        <div class="modal-card">
+    <!-- Add Inventory Modal (Warehouse) -->
+    <div class="modal-overlay" id="inventory-modal">
+        <div class="modal-box">
             <div class="modal-header">
-                <h3>إضافة صنف دوائي جديد</h3>
-                <button class="close-modal-btn" onclick="closeWarehouseModal()">✕</button>
+                <h3>إضافة صنف دواء جديد</h3>
+                <button class="close-modal" onclick="closeInventoryModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
 
-            <!-- Barcode Scanner Viewfinder -->
             <div id="reader"></div>
 
-            <div class="input-group">
-                <label>باركود الصنف (الرقم التسلسلي)</label>
-                <div class="input-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 7V5C4 4.44772 4.44772 4 5 4H7" stroke="#6C7A89" stroke-width="2"
-                            stroke-linecap="round" />
-                        <path d="M17 4H19C19.5523 4 20 4.44772 20 5V7" stroke="#6C7A89" stroke-width="2"
-                            stroke-linecap="round" />
-                        <path d="M20 17V19C20 19.5523 19.5523 20 19 20H17" stroke="#6C7A89" stroke-width="2"
-                            stroke-linecap="round" />
-                        <path d="M7 20H5C4.44772 20 4 19.5523 4 19V17" stroke="#6C7A89" stroke-width="2"
-                            stroke-linecap="round" />
-                        <path d="M8 8H16V16H8V8Z" stroke="#6C7A89" stroke-width="2" stroke-linejoin="round" />
-                    </svg>
-                    <input type="text" id="modal-med-barcode" placeholder="سيتم قراءته تلقائياً عبر الكاميرا..."
-                        readonly>
+            <form onsubmit="handleSaveInventoryItem(event)">
+                <div class="form-group">
+                    <label class="form-label">الباركود</label>
+                    <input type="text" id="inv-barcode" class="form-input"
+                        placeholder="مسح الباركود بالكاميرا أو إدخال يدوي" required>
                 </div>
-            </div>
-
-            <div class="input-group">
-                <label>اسم الدواء والصنف</label>
-                <div class="input-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M10.5 20.5H4C3.44772 20.5 3 20.0523 3 19.5V4.5C3 3.94772 3.44772 3.5 4 3.5H20C20.5523 3.5 21 3.94772 21 4.5V10.5"
-                            stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
-                        <path d="M16 15L21 20M21 15L16 20" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                    <input type="text" id="modal-med-name" placeholder="مثال: Augmentin 1g Tablets">
+                <div class="form-group">
+                    <label class="form-label">اسم الصنف الدوائي</label>
+                    <input type="text" id="inv-name" class="form-input" placeholder="أدخل اسم الدواء والتركيز" required>
                 </div>
-            </div>
-
-            <div class="input-group">
-                <label>السعر (ليرة سورية / دولار)</label>
-                <div class="input-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 1V23" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
-                        <path
-                            d="M17 5H9.5C8.39543 5 7.5 5.89543 7.5 7C7.5 8.10457 8.39543 9 9.5 9H14.5C15.6046 9 16.5 9.89543 16.5 11C16.5 12.1046 15.6046 13 14.5 13H7"
-                            stroke="#6C7A89" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <input type="number" id="modal-med-price" placeholder="مثال: 45000">
+                <div class="form-group">
+                    <label class="form-label">السعر (ليرة سورية)</label>
+                    <input type="number" id="inv-price" class="form-input" placeholder="0.00" required>
                 </div>
-            </div>
-
-            <div class="input-group">
-                <label>الكمية المتاحة في المخزن</label>
-                <div class="input-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z"
-                            stroke="#6C7A89" stroke-width="2" stroke-linejoin="round" />
-                        <path d="M12 11V15" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
-                        <path d="M10 13H14" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                    <input type="number" id="modal-med-qty" placeholder="مثال: 250">
+                <div class="form-group">
+                    <label class="form-label">الكمية المتوفرة</label>
+                    <input type="number" id="inv-qty" class="form-input" placeholder="0" required>
                 </div>
-            </div>
-
-            <button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="saveNewMedicineItem()">حفظ
-                وإضافة الصنف</button>
+                <button type="submit" class="btn-primary">حفظ في المخزن</button>
+            </form>
         </div>
     </div>
 
-    <!-- Application JavaScript Engine -->
     <script>
-        // Global Application State
+        // State Management
         let appState = {
-            role: null,
-            adminName: '',
-            entityName: '',
-            region: '',
-            currentTab: 0
+            role: null, // 'pharmacy' or 'warehouse'
+            name: '',
+            entity: '',
+            region: 'منبج وريفها'
         };
 
-        // Mock Database for Warehouse Inventory & Pharmacy Catalog
-        let inventoryData = [
-            { id: 'BC-98214', name: 'Panadol Extra 500mg', price: 12500, qty: 320, warehouse: 'مستودع الألفية الطبي' },
-            { id: 'BC-44129', name: 'Augmentin 1g Film-Coated', price: 48000, qty: 150, warehouse: 'مستودع الألفية الطبي' },
-            { id: 'BC-77321', name: 'Ceftriaxone 1g Vial', price: 21000, qty: 500, warehouse: 'مستودع الألفية الطبي' },
-            { id: 'BC-11928', name: 'Omeprazole 20mg Caps', price: 18500, qty: 210, warehouse: 'مستودع الألفية الطبي' },
-            { id: 'BC-66542', name: 'Paracetamol Syrup 120ml', price: 9500, qty: 85, warehouse: 'مستودع الألفية الطبي' }
+        // Mock Database Storage
+        let inventoryData = JSON.parse(localStorage.getItem('pharmalink_inventory')) || [
+            { id: 1, barcode: '625100123456', name: 'باراسيتامول 500 مغ', price: 7500, qty: 120 },
+            { id: 2, barcode: '625100654321', name: 'أموكسيسيلين 250 مغ', price: 14000, qty: 45 },
+            { id: 3, barcode: '625100987654', name: 'إيبوبروفين 400 مغ', price: 9500, qty: 80 }
         ];
 
-        let cartData = [];
-        let invoicesData = [
-            { id: 'INV-8831', client: 'صيدلية النور الحديثة', date: '2026-09-14', total: '144,000 ل.س', status: 'مؤكدة ومسلّمة' },
-            { id: 'INV-8832', client: 'صيدلية الشفاء التخصصية', date: '2026-09-14', total: '210,000 ل.س', status: 'قيد الشحن والتجهيز' }
+        let ordersData = JSON.parse(localStorage.getItem('pharmalink_orders')) || [
+            { id: 101, pharmacy: 'صيدلية النور', items: 'باراسيتامول 500 مغ (2)', total: 15000, status: 'قيد التنفيذ' }
         ];
 
+        let basketData = JSON.parse(localStorage.getItem('pharmalink_basket')) || [];
+        let invoicesData = JSON.parse(localStorage.getItem('pharmalink_invoices')) || [
+            { id: 501, client: 'صيدلية الشفاء', total: 34000, date: '2026-09-14' }
+        ];
+
+        let activeTab = 0;
         let html5QrCode = null;
 
-        // Initialization on window load
+        // Initialization & Splash Screen Flow
         window.addEventListener('DOMContentLoaded', () => {
-            const savedData = localStorage.getItem('pharmaLink_user');
-            if (savedData) {
-                const parsed = JSON.parse(savedData);
-                appState = { ...parsed };
-                document.getElementById('splash-screen').classList.add('fade-out');
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
                 setTimeout(() => {
-                    document.getElementById('splash-screen').style.display = 'none';
-                    document.getElementById('onboarding-container').classList.add('hidden');
-                    initDashboard();
+                    splash.style.display = 'none';
+                    checkExistingSession();
                 }, 600);
-            } else {
-                setTimeout(() => {
-                    document.getElementById('splash-screen').classList.add('fade-out');
-                    setTimeout(() => {
-                        document.getElementById('splash-screen').style.display = 'none';
-                        document.getElementById('onboarding-container').classList.remove('hidden');
-                    }, 600);
-                }, 2500);
-            }
+            }, 2500);
         });
 
-        // Onboarding Navigation & Validation
-        let selectedRoleType = null;
+        function checkExistingSession() {
+            const savedUser = localStorage.getItem('pharmalink_user');
+            if (savedUser) {
+                appState = JSON.parse(savedUser);
+                startApplication();
+            } else {
+                document.getElementById('onboarding-screen').style.display = 'flex';
+            }
+        }
 
+        // Onboarding Logic
+        let selectedRoleType = null;
         function selectRole(role, element) {
             selectedRoleType = role;
             document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
-            document.getElementById('btn-next-1').removeAttribute('disabled');
         }
 
-        function validateStep2() {
-            const val = document.getElementById('input-admin-name').value.trim();
-            document.getElementById('btn-next-2').disabled = val.length < 3;
-        }
+        function nextStep(step) {
+            if (step === 2 && !selectedRoleType) {
+                showToast('يرجى اختيار صفة الحساب أولاً');
+                return;
+            }
+            if (step === 3 && !document.getElementById('input-name').value.trim()) {
+                showToast('يرجى إدخال اسم المسؤول');
+                return;
+            }
+            if (step === 4 && !document.getElementById('input-entity').value.trim()) {
+                showToast('يرجى إدخال اسم الجهة');
+                return;
+            }
 
-        function validateStep3() {
-            const val = document.getElementById('input-entity-name').value.trim();
-            document.getElementById('btn-next-3').disabled = val.length < 3;
-        }
+            document.querySelectorAll('.onboarding-step').forEach(s => s.style.display = 'none');
+            document.getElementById(`step-${step}-content`).style.display = 'block';
 
-        function validateStep4() {
-            const val = document.getElementById('input-region').value;
-            document.getElementById('btn-finish').disabled = !val;
-        }
-
-        function nextStep(stepNumber) {
-            document.querySelectorAll('.onboarding-step-content').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
-            updateStepDots(stepNumber);
-        }
-
-        function prevStep(stepNumber) {
-            document.querySelectorAll('.onboarding-step-content').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
-            updateStepDots(stepNumber);
-        }
-
-        function updateStepDots(current) {
             for (let i = 1; i <= 4; i++) {
                 const dot = document.getElementById(`dot-${i}`);
                 dot.classList.remove('active', 'completed');
-                if (i < current) dot.classList.add('completed');
-                if (i === current) dot.classList.add('active');
+                if (i < step) dot.classList.add('completed');
+                else if (i === step) dot.classList.add('active');
             }
         }
 
-        function completeOnboarding() {
+        function prevStep(step) {
+            document.querySelectorAll('.onboarding-step').forEach(s => s.style.display = 'none');
+            document.getElementById(`step-${step}-content`).style.display = 'block';
+
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                dot.classList.remove('active', 'completed');
+                if (i < step) dot.classList.add('completed');
+                else if (i === step) dot.classList.add('active');
+            }
+        }
+
+        function handleOnboardingSubmit(e) {
+            e.preventDefault();
             appState.role = selectedRoleType;
-            appState.adminName = document.getElementById('input-admin-name').value.trim();
-            appState.entityName = document.getElementById('input-entity-name').value.trim();
+            appState.name = document.getElementById('input-name').value.trim();
+            appState.entity = document.getElementById('input-entity').value.trim();
             appState.region = document.getElementById('input-region').value;
-            appState.currentTab = 0;
 
-            localStorage.setItem('pharmaLink_user', JSON.stringify(appState));
-
-            document.getElementById('onboarding-container').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('onboarding-container').classList.add('hidden');
-                initDashboard();
-            }, 400);
+            localStorage.setItem('pharmalink_user', JSON.stringify(appState));
+            document.getElementById('onboarding-screen').style.display = 'none';
+            startApplication();
         }
 
-        // Dashboard Initialization Engine
-        function initDashboard() {
-            document.getElementById('app-dashboard').classList.add('active');
-            document.getElementById('top-region-display').innerText = appState.region;
+        // Core App Routing & Execution
+        function startApplication() {
+            document.getElementById('app-container').style.display = 'flex';
+            document.getElementById('nav-region-tag').innerText = appState.region;
             renderBottomNav();
-            renderTabContent(0);
+            switchTab(0);
         }
 
-        // Render Bottom Navigation
         function renderBottomNav() {
-            const navBar = document.getElementById('bottom-navigation-bar');
+            const navBar = document.getElementById('bottom-nav-bar');
             navBar.innerHTML = '';
 
             let tabs = [];
             if (appState.role === 'pharmacy') {
                 tabs = [
-                    { name: 'الرئيسية', icon: '<path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
-                    { name: 'الطلبات الحالية', icon: '<path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V8H20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
-                    { name: 'السلة', icon: '<circle cx="9" cy="21" r="1" stroke-width="2"/><circle cx="20" cy="21" r="1" stroke-width="2"/><path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
-                    { name: 'أنا', icon: '<path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' }
+                    { name: 'الرئيسية', icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>' },
+                    { name: 'الطلبات الحالية', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>' },
+                    { name: 'السلة', icon: '<circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>' },
+                    { name: 'أنا', icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>' }
                 ];
             } else {
                 tabs = [
-                    { name: 'الرئيسية', icon: '<path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
-                    { name: 'المخزن', icon: '<path d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 11V15" stroke-width="2" stroke-linecap="round"/><path d="M10 13H14" stroke-width="2" stroke-linecap="round"/>' },
-                    { name: 'الفواتير', icon: '<path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 13H8" stroke-width="2" stroke-linecap="round"/><path d="M16 17H8" stroke-width="2" stroke-linecap="round"/><path d="M10 9H8" stroke-width="2" stroke-linecap="round"/>' },
-                    { name: 'أنا', icon: '<path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' }
+                    { name: 'الرئيسية', icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>' },
+                    { name: 'المخزن', icon: '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>' },
+                    { name: 'الفواتير', icon: '<line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>' },
+                    { name: 'أنا', icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>' }
                 ];
             }
 
             tabs.forEach((tab, index) => {
                 const btn = document.createElement('button');
-                btn.className = `bottom-nav-item ${appState.currentTab === index ? 'active' : ''}`;
-                btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${tab.icon}</svg><span>${tab.name}</span>`;
+                btn.className = `nav-item ${index === activeTab ? 'active' : ''}`;
                 btn.onclick = () => switchTab(index);
+                btn.innerHTML = `
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${tab.icon}</svg>
+                    <span>${tab.name}</span>
+                `;
                 navBar.appendChild(btn);
             });
         }
 
         function switchTab(index) {
-            appState.currentTab = index;
-            renderBottomNav();
-            renderTabContent(index);
+            activeTab = index;
+            document.querySelectorAll('.nav-item').forEach((el, idx) => {
+                if (idx === index) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+
+            renderActiveView();
         }
 
-        // Dynamic Tab Content Engine
-        function renderTabContent(index) {
-            const container = document.getElementById('dashboard-main-view');
+        function renderActiveView() {
+            const container = document.getElementById('main-content-area');
             container.innerHTML = '';
 
             if (appState.role === 'pharmacy') {
-                if (index === 0) renderPharmacyHome(container);
-                else if (index === 1) renderPharmacyOrders(container);
-                else if (index === 2) renderPharmacyCart(container);
-                else if (index === 3) renderProfileModule(container);
+                if (activeTab === 0) renderPharmacyHome(container);
+                else if (activeTab === 1) renderPharmacyOrders(container);
+                else if (activeTab === 2) renderPharmacyBasket(container);
+                else if (activeTab === 3) renderProfileView(container);
             } else {
-                if (index === 0) renderWarehouseHome(container);
-                else if (index === 1) renderWarehouseInventory(container);
-                else if (index === 2) renderWarehouseInvoices(container);
-                else if (index === 3) renderProfileModule(container);
+                if (activeTab === 0) renderWarehouseHome(container);
+                else if (activeTab === 1) renderWarehouseInventory(container);
+                else if (activeTab === 2) renderWarehouseInvoices(container);
+                else if (activeTab === 3) renderProfileView(container);
             }
         }
 
-        // PHARMACY VIEW MODULES
+        // View Renderers - Pharmacy
         function renderPharmacyHome(container) {
             container.innerHTML = `
-                <div class="card-box">
-                    <div class="section-header-flex">
-                        <h3>قائمة الأدوية المتاحة للتوريد</h3>
-                        <input type="text" class="search-filter-input" placeholder="ابحث عن دواء أو صنف..." oninput="filterInventoryCatalog(this.value)">
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <table class="enterprise-table" id="pharmacy-catalog-table">
-                            <thead>
-                                <tr>
-                                    <th>اسم الصنف الدوائي</th>
-                                    <th>المستودع المورد</th>
-                                    <th>السعر (ل.س)</th>
-                                    <th>الكمية المتاحة</th>
-                                    <th>الإجراء</th>
-                                </tr>
-                            </thead>
-                            <tbody id="catalog-table-body">
-                                ${generateCatalogRows(inventoryData)}
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="section-header">
+                    <h2>قائمة الأدوية المتاحة في السوق</h2>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="بحث عن دواء أو مادة فعالة..." oninput="filterInventory(this.value)">
+                </div>
+                <div class="card-grid" id="pharmacy-catalog-grid">
+                    ${inventoryData.map(item => `
+                        <div class="data-card">
+                            <div>
+                                <h3>${item.name}</h3>
+                                <p>السعر: ${item.price} ل.س</p>
+                                <p>الكمية المتاحة: ${item.qty}</p>
+                            </div>
+                            <button class="btn-primary" style="margin-top: 15px;" onclick="addToBasket(${item.id})">إضافة إلى السلة</button>
+                        </div>
+                    `).join('')}
                 </div>
             `;
         }
 
-        function generateCatalogRows(data) {
-            return data.map(item => `
-                <tr>
-                    <td class="fw-800">${item.name}</td>
-                    <td>${item.warehouse}</td>
-                    <td class="fw-700">${item.price.toLocaleString()} ل.س</td>
-                    <td><span style="color: var(--brand-emerald); font-weight: 800;">${item.qty} وحدة</span></td>
-                    <td><button class="action-btn-sm btn-emerald-sm" onclick="addToCart('${item.id}')">إضافة للسلة</button></td>
-                </tr>
-            `).join('');
-        }
-
-        function filterInventoryCatalog(query) {
-            const filtered = inventoryData.filter(i => i.name.toLowerCase().includes(query.toLowerCase()) || i.warehouse.toLowerCase().includes(query.toLowerCase()));
-            const tbody = document.getElementById('catalog-table-body');
-            if (tbody) tbody.innerHTML = generateCatalogRows(filtered);
-        }
-
-        function addToCart(itemId) {
-            const item = inventoryData.find(i => i.id === itemId);
+        function addToBasket(id) {
+            const item = inventoryData.find(i => i.id === id);
             if (!item) return;
 
-            const existing = cartData.find(c => c.id === itemId);
+            const existing = basketData.find(b => b.id === id);
             if (existing) {
                 existing.qty += 1;
             } else {
-                cartData.push({ ...item, qty: 1 });
+                basketData.push({ ...item, qty: 1 });
             }
 
-            showToast(`تمت إضافة [${item.name}] إلى السلة بنجاح`);
+            localStorage.setItem('pharmalink_basket', JSON.stringify(basketData));
+            showToast(`تمت إضافة ${item.name} إلى السلة بنجاح`);
         }
 
         function renderPharmacyOrders(container) {
             container.innerHTML = `
-                <div class="card-box">
-                    <div class="section-header-flex">
-                        <h3>سجل الطلبات الحالية والمتابعة</h3>
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <table class="enterprise-table">
-                            <thead>
+                <div class="section-header">
+                    <h2>الطلبات الحالية</h2>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>الأصناف المطلوبة</th>
+                                <th>الإجمالي</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${ordersData.map(o => `
                                 <tr>
-                                    <th>رقم الطلب</th>
-                                    <th>المستودع</th>
-                                    <th>تاريخ الطلب</th>
-                                    <th>الإجمالي</th>
-                                    <th>الحالة</th>
+                                    <td>#${o.id}</td>
+                                    <td>${o.items}</td>
+                                    <td>${o.total} ل.س</td>
+                                    <td><span class="badge badge-success">${o.status}</span></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="fw-800">ORD-5012</td>
-                                    <td>مستودع الألفية الطبي</td>
-                                    <td>2026-09-14</td>
-                                    <td class="fw-700">185,000 ل.س</td>
-                                    <td><span style="color: var(--brand-emerald); font-weight: 800;">تمت الشحن والتوصيل</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-800">ORD-5019</td>
-                                    <td>مستودع الألفية الطبي</td>
-                                    <td>2026-09-14</td>
-                                    <td class="fw-700">96,000 ل.س</td>
-                                    <td><span style="color: #D97706; font-weight: 800;">قيد التجهيز في المستودع</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                            `).join('')}
+                        </tbody>
+                    </table>
                 </div>
             `;
         }
 
-        function renderPharmacyCart(container) {
-            let grandTotal = cartData.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
+        function renderPharmacyBasket(container) {
+            const grandTotal = basketData.reduce((sum, item) => sum + (item.price * item.qty), 0);
             container.innerHTML = `
-                <div class="card-box">
-                    <div class="section-header-flex">
-                        <h3>سلة المشتريات والطلبات الدوائية</h3>
-                        <span class="fw-800" style="color: var(--brand-emerald);">الإجمالي الكلي: ${grandTotal.toLocaleString()} ل.س</span>
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <table class="enterprise-table">
-                            <thead>
-                                <tr>
-                                    <th>اسم الصنف</th>
-                                    <th>السعر المفرد</th>
-                                    <th>الكمية</th>
-                                    <th>المجموع الفرعي</th>
-                                    <th>الإجراء</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${cartData.length === 0 ? `<tr><td colspan="5" style="text-align: center; color: var(--arch-gray); padding: 30px;">السلة فارغة حالياً. تصفح الأدوية وأضف ما تحتاجه.</td></tr>` :
-                    cartData.map((item, idx) => `
-                                        <tr>
-                                            <td class="fw-800">${item.name}</td>
-                                            <td>${item.price.toLocaleString()} ل.س</td>
-                                            <td>${item.qty}</td>
-                                            <td class="fw-700">${(item.price * item.qty).toLocaleString()} ل.س</td>
-                                            <td><button class="action-btn-sm" style="background: #E53E3E; color: #FFF;" onclick="removeFromCart(${idx})">حذف</button></td>
-                                        </tr>
-                                    `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                    ${cartData.length > 0 ? `
-                        <div style="margin-top: 25px; display: flex; justify-content: flex-end;">
-                            <button class="btn-primary" onclick="checkoutCart()">تأكيد وإرسال طلب الشراء</button>
-                        </div>
-                    ` : ''}
+                <div class="section-header">
+                    <h2>سلة الطلبات المركزية</h2>
                 </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اسم الصنف</th>
+                                <th>السعر الفردي</th>
+                                <th>الكمية</th>
+                                <th>المجموع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${basketData.length === 0 ? `<tr><td colspan="4" style="text-align: center; color: var(--architectural-gray);">السلة فارغة حالياً</td></tr>` :
+                    basketData.map(item => `
+                                    <tr>
+                                        <td>${item.name}</td>
+                                        <td>${item.price} ل.س</td>
+                                        <td>${item.qty}</td>
+                                        <td>${item.price * item.qty} ل.س</td>
+                                    </tr>
+                                `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                ${basketData.length > 0 ? `
+                    <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 20px; border-radius: 12px; border: 1px solid var(--border-gray);">
+                        <h3 style="font-size: 18px;">المجموع الكلي: ${grandTotal} ل.س</h3>
+                        <button class="btn-primary" style="width: auto; padding: 12px 30px;" onclick="checkoutBasket()">تأكيد وإرسال الطلب</button>
+                    </div>
+                ` : ''}
             `;
         }
 
-        function removeFromCart(index) {
-            cartData.splice(index, 1);
-            renderTabContent(appState.currentTab);
+        function checkoutBasket() {
+            if (basketData.length === 0) return;
+            const newOrder = {
+                id: Math.floor(100 + Math.random() * 900),
+                pharmacy: appState.entity,
+                items: basketData.map(i => `${i.name} (${i.qty})`).join(', '),
+                total: basketData.reduce((sum, i) => sum + (i.price * i.qty), 0),
+                status: 'قيد المعالجة'
+            };
+            ordersData.push(newOrder);
+            localStorage.setItem('pharmalink_orders', JSON.stringify(ordersData));
+            basketData = [];
+            localStorage.setItem('pharmalink_basket', JSON.stringify(basketData));
+            showToast('تم إرسال الطلب بنجاح إلى المستودعات المركزية');
+            switchTab(1);
         }
 
-        function checkoutCart() {
-            showToast('تم إرسال الطلب بنجاح إلى المستودع المعني');
-            cartData = [];
-            renderTabContent(appState.currentTab);
-        }
-
-        // WAREHOUSE VIEW MODULES
+        // View Renderers - Warehouse
         function renderWarehouseHome(container) {
             container.innerHTML = `
-                <div class="card-box" style="text-align: center; padding: 40px;">
-                    <h2 style="font-size: 24px; margin-bottom: 12px;">مرحباً بك في لوحة تحكم المستودع المركزي</h2>
-                    <p style="color: var(--arch-gray); margin-bottom: 24px;">قم بإدارة المخزون، وتتبع الأصناف الدوائية، وإصدار الفواتير الفورية عبر الواتساب بدقة عالية.</p>
-                    <button class="btn-primary" onclick="switchTab(1)">انتقل إلى إدارة المخزن الآن</button>
+                <div class="section-header">
+                    <h2>لوحة تحكم المستودع المركزي</h2>
+                </div>
+                <div class="card-grid">
+                    <div class="data-card">
+                        <h3>إجمالي الأصناف</h3>
+                        <p style="font-size: 24px; font-weight: 900; color: var(--emerald-core);">${inventoryData.length}</p>
+                    </div>
+                    <div class="data-card">
+                        <h3>الطلبات الواردة</h3>
+                        <p style="font-size: 24px; font-weight: 900; color: var(--emerald-core);">${ordersData.length}</p>
+                    </div>
                 </div>
             `;
         }
 
         function renderWarehouseInventory(container) {
             container.innerHTML = `
-                <div class="card-box">
-                    <div class="section-header-flex">
-                        <h3>إدارة المخزون والأصناف الطبية</h3>
-                        <button class="btn-primary" style="padding: 10px 20px;" onclick="openWarehouseModal()">إضافة صنف +</button>
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <input type="text" class="search-filter-input" placeholder="بحث سريع في المخزن..." oninput="filterWarehouseInventory(this.value)">
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <table class="enterprise-table">
-                            <thead>
+                <div class="section-header">
+                    <h2>إدارة المخزن المركزي</h2>
+                    <button class="btn-primary" style="width: auto; padding: 10px 20px;" onclick="openInventoryModal()">إضافة صنف +</button>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الباركود</th>
+                                <th>اسم الصنف</th>
+                                <th>السعر</th>
+                                <th>الكمية</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${inventoryData.map(item => `
                                 <tr>
-                                    <th>رقم الباركود</th>
-                                    <th>اسم الصنف</th>
-                                    <th>السعر (ل.س)</th>
-                                    <th>الكمية المتاحة</th>
-                                    <th>الحالة</th>
+                                    <td>${item.barcode}</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.price} ل.س</td>
+                                    <td>${item.qty}</td>
                                 </tr>
-                            </thead>
-                            <tbody id="warehouse-inventory-tbody">
-                                ${generateWarehouseRows(inventoryData)}
-                            </tbody>
-                        </table>
-                    </div>
+                            `).join('')}
+                        </tbody>
+                    </table>
                 </div>
             `;
-        }
-
-        function generateWarehouseRows(data) {
-            return data.map(item => `
-                <tr>
-                    <td class="fw-700" style="color: var(--arch-gray);">${item.id}</td>
-                    <td class="fw-800">${item.name}</td>
-                    <td class="fw-700">${item.price.toLocaleString()} ل.س</td>
-                    <td class="fw-800" style="color: var(--brand-emerald);">${item.qty} وحدة</td>
-                    <td><span style="color: var(--brand-emerald); font-weight: 800;">متوفر</span></td>
-                </tr>
-            `).join('');
-        }
-
-        function filterWarehouseInventory(query) {
-            const filtered = inventoryData.filter(i => i.name.toLowerCase().includes(query.toLowerCase()) || i.id.toLowerCase().includes(query.toLowerCase()));
-            const tbody = document.getElementById('warehouse-inventory-tbody');
-            if (tbody) tbody.innerHTML = generateWarehouseRows(filtered);
         }
 
         function renderWarehouseInvoices(container) {
             container.innerHTML = `
-                <div class="card-box">
-                    <div class="section-header-flex">
-                        <h3>سجل الفواتير والمعاملات المالية</h3>
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <table class="enterprise-table">
-                            <thead>
+                <div class="section-header">
+                    <h2>إدارة الفواتير والتقارير</h2>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>رقم الفاتورة</th>
+                                <th>الجهة العميل</th>
+                                <th>المبلغ الإجمالي</th>
+                                <th>التاريخ</th>
+                                <th>الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${invoicesData.map(inv => `
                                 <tr>
-                                    <th>رقم الفاتورة</th>
-                                    <th>الجهة المستفيدة</th>
-                                    <th>التاريخ</th>
-                                    <th>القيمة الإجمالية</th>
-                                    <th>الإجراءات السريعة</th>
+                                    <td>#${inv.id}</td>
+                                    <td>${inv.client}</td>
+                                    <td>${inv.total} ل.س</td>
+                                    <td>${inv.date}</td>
+                                    <td><button class="btn-primary" style="padding: 6px 12px; font-size: 13px; width: auto;" onclick="sendInvoiceWhatsApp(${inv.id})">تصدير وإرسال عبر الواتساب</button></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                ${invoicesData.map(inv => `
-                                    <tr>
-                                        <td class="fw-800">${inv.id}</td>
-                                        <td>${inv.client}</td>
-                                        <td>${inv.date}</td>
-                                        <td class="fw-700">${inv.total}</td>
-                                        <td>
-                                            <button class="action-btn-sm btn-emerald-sm" onclick="sendInvoiceWhatsApp('${inv.id}', '${inv.client}', '${inv.total}')">تصدير وإرسال عبر الواتساب</button>
-                                        </td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
+                            `).join('')}
+                        </tbody>
+                    </table>
                 </div>
             `;
         }
 
-        function sendInvoiceWhatsApp(id, client, total) {
-            const text = encodeURIComponent(`*فاتورة رسمية صادر من ${appState.entityName}*\n\nرقم الفاتورة: ${id}\nالجهة المستفيدة: ${client}\nالإجمالي الصافي: ${total}\nالنطاق الإداري: ${appState.region}\n\nشكراً لتعاملكم مع PharmaLink.`);
-            window.open(`https://wa.me/?text=${text}`, '_blank');
+        function sendInvoiceWhatsApp(id) {
+            const inv = invoicesData.find(i => i.id === id);
+            if (!inv) return;
+            const message = encodeURIComponent(`فاتورة صادرة من ${appState.entity} رقم #${inv.id}\nالمبلغ الإجمالي: ${inv.total} ليرة سورية\nالتاريخ: ${inv.date}\nشكراً لتعاملكم مع PharmaLink.`);
+            window.open(`https://wa.me/?text=${message}`, '_blank');
         }
 
-        // UNIFIED "أنا" (PROFILE REFACTOR) MODULE
-        function renderProfileModule(container) {
+        // Unified "أنا" Profile Module
+        function renderProfileView(container) {
             container.innerHTML = `
-                <div class="card-box">
-                    <div class="section-header-flex">
-                        <h3>ملف الحساب والبيانات المؤسسية</h3>
-                        <button class="action-btn-sm btn-emerald-sm" id="profile-edit-toggle-btn" onclick="toggleProfileEdit()">تعديل البيانات (قلم)</button>
+                <div class="section-header">
+                    <h2>الملف الشخصي وإعدادات الحساب</h2>
+                </div>
+                <div class="profile-container">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+                        <button class="btn-secondary" style="background: none; border: 1px solid var(--border-gray); color: var(--charcoal-text); display: flex; align-items: center; gap: 6px;" onclick="toggleEditProfile()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            تعديل البيانات
+                        </button>
+                    </div>
+                    <div id="profile-display-mode">
+                        <div class="profile-row">
+                            <span class="profile-label">صفة الحساب</span>
+                            <span class="profile-value">${appState.role === 'warehouse' ? 'مستودع أدوية' : 'صيدلية'}</span>
+                        </div>
+                        <div class="profile-row">
+                            <span class="profile-label">اسم المسؤول</span>
+                            <span class="profile-value">${appState.name}</span>
+                        </div>
+                        <div class="profile-row">
+                            <span class="profile-label">اسم الجهة</span>
+                            <span class="profile-value">${appState.entity}</span>
+                        </div>
+                        <div class="profile-row">
+                            <span class="profile-label">المنطقة الإدارية</span>
+                            <span class="profile-value">${appState.region}</span>
+                        </div>
                     </div>
 
-                    <div id="profile-view-mode" class="profile-card-grid">
-                        <div class="profile-field-box">
-                            <div class="profile-field-label">نوع الحساب</div>
-                            <div class="profile-field-value">${appState.role === 'warehouse' ? 'مستودع أدوية' : 'صيدلية'}</div>
+                    <div id="profile-edit-mode" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">اسم المسؤول</label>
+                            <input type="text" id="edit-name" class="form-input" value="${appState.name}">
                         </div>
-                        <div class="profile-field-box">
-                            <div class="profile-field-label">اسم المسؤول / الصيدلاني</div>
-                            <div class="profile-field-value" id="val-admin-name">${appState.adminName}</div>
+                        <div class="form-group">
+                            <label class="form-label">اسم الجهة</label>
+                            <input type="text" id="edit-entity" class="form-input" value="${appState.entity}">
                         </div>
-                        <div class="profile-field-box">
-                            <div class="profile-field-label">اسم الجهة الرسمية</div>
-                            <div class="profile-field-value" id="val-entity-name">${appState.entityName}</div>
-                        </div>
-                        <div class="profile-field-box">
-                            <div class="profile-field-label">النطاق الإداري</div>
-                            <div class="profile-field-value" id="val-region">${appState.region}</div>
-                        </div>
-                    </div>
-
-                    <div id="profile-edit-mode" style="display: none; margin-top: 15px;">
-                        <div class="input-group">
-                            <label>اسم المسؤول / الصيدلاني</label>
-                            <input type="text" id="edit-admin-name" class="search-filter-input" style="width: 100%;" value="${appState.adminName}">
-                        </div>
-                        <div class="input-group">
-                            <label>اسم الجهة</label>
-                            <input type="text" id="edit-entity-name" class="search-filter-input" style="width: 100%;" value="${appState.entityName}">
-                        </div>
-                        <div class="input-group">
-                            <label>النطاق الإداري</label>
-                            <select id="edit-region" class="search-filter-input" style="width: 100%;">
+                        <div class="form-group">
+                            <label class="form-label">المنطقة الإدارية</label>
+                            <select id="edit-region" class="form-select">
                                 <option value="منبج وريفها" ${appState.region === 'منبج وريفها' ? 'selected' : ''}>منبج وريفها</option>
                                 <option value="حلب وريفها" ${appState.region === 'حلب وريفها' ? 'selected' : ''}>حلب وريفها</option>
                                 <option value="إدلب وريفها" ${appState.region === 'إدلب وريفها' ? 'selected' : ''}>إدلب وريفها</option>
                             </select>
                         </div>
-                        <button class="btn-primary" style="margin-top: 10px;" onclick="saveProfileChanges()">حفظ التعديلات</button>
+                        <button class="btn-primary" onclick="saveProfileEdits()">حفظ التعديلات</button>
                     </div>
 
-                    <div style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 25px;">
-                        <button class="btn-secondary" style="width: 100%; border-color: #E53E3E; color: #E53E3E;" onclick="logoutApp()">تسجيل الخروج من الحساب</button>
+                    <div style="margin-top: 30px;">
+                        <button class="btn-primary" style="background-color: var(--danger-red);" onclick="logoutAccount()">تسجيل الخروج من الحساب</button>
                     </div>
                 </div>
             `;
         }
 
-        let isEditingProfile = false;
-        function toggleProfileEdit() {
-            isEditingProfile = !isEditingProfile;
-            document.getElementById('profile-view-mode').style.display = isEditingProfile ? 'none' : 'grid';
-            document.getElementById('profile-edit-mode').style.display = isEditingProfile ? 'block' : 'none';
-            document.getElementById('profile-edit-toggle-btn').innerText = isEditingProfile ? 'إلغاء التعديل' : 'تعديل البيانات (قلم)';
-        }
-
-        function saveProfileChanges() {
-            appState.adminName = document.getElementById('edit-admin-name').value.trim();
-            appState.entityName = document.getElementById('edit-entity-name').value.trim();
-            appState.region = document.getElementById('edit-region').value;
-
-            localStorage.setItem('pharmaLink_user', JSON.stringify(appState));
-            document.getElementById('top-region-display').innerText = appState.region;
-            showToast('تم تحديث بيانات الملف الشخصي بنجاح');
-            renderTabContent(3);
-        }
-
-        function logoutApp() {
-            localStorage.removeItem('pharmaLink_user');
-            window.location.reload();
-        }
-
-        // Warehouse Modal & Camera QR Code Scanner Integration
-        function openWarehouseModal() {
-            document.getElementById('warehouse-modal').classList.add('active');
-            startQrScanner();
-        }
-
-        function closeWarehouseModal() {
-            document.getElementById('warehouse-modal').classList.remove('active');
-            stopQrScanner();
-        }
-
-        function startQrScanner() {
-            try {
-                html5QrCode = new Html5Qrcode("reader");
-                html5QrCode.start(
-                    { facingMode: "environment" },
-                    { fps: 10, qrbox: { width: 250, height: 150 } },
-                    (decodedText, decodedResult) => {
-                        // Hardware code captured successfully
-                        document.getElementById('modal-med-barcode').value = decodedText;
-                        playBeepSound();
-                        stopQrScanner();
-                    },
-                    (errorMessage) => {
-                        // Scanning ongoing silently
-                    }
-                ).catch(err => {
-                    console.warn("Camera stream initialization notice:", err);
-                });
-            } catch (e) {
-                console.error("QR Scanner error:", e);
+        function toggleEditProfile() {
+            const displayMode = document.getElementById('profile-display-mode');
+            const editMode = document.getElementById('profile-edit-mode');
+            if (displayMode.style.display === 'none') {
+                displayMode.style.display = 'block';
+                editMode.style.display = 'none';
+            } else {
+                displayMode.style.display = 'none';
+                editMode.style.display = 'block';
             }
         }
 
+        function saveProfileEdits() {
+            appState.name = document.getElementById('edit-name').value.trim();
+            appState.entity = document.getElementById('edit-entity').value.trim();
+            appState.region = document.getElementById('edit-region').value;
+            localStorage.setItem('pharmalink_user', JSON.stringify(appState));
+            document.getElementById('nav-region-tag').innerText = appState.region;
+            showToast('تم تحديث البيانات بنجاح');
+            renderProfileView(document.getElementById('main-content-area'));
+        }
+
+        function logoutAccount() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        // Inventory Modal & QR Scanner Logic
+        function openInventoryModal() {
+            document.getElementById('inventory-modal').style.display = 'flex';
+            initQrScanner();
+        }
+
+        function closeInventoryModal() {
+            document.getElementById('inventory-modal').style.display = 'none';
+            stopQrScanner();
+        }
+
+        function initQrScanner() {
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("reader");
+            }
+            html5QrCode.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: { width: 250, height: 150 } },
+                (decodedText) => {
+                    document.getElementById('inv-barcode').value = decodedText;
+                    playBeepSound();
+                    stopQrScanner();
+                },
+                (errorMessage) => { }
+            ).catch(err => {
+                console.warn("Camera initialization error or permission denied.", err);
+            });
+        }
+
         function stopQrScanner() {
-            if (html5QrCode) {
-                html5QrCode.stop().then(() => {
-                    html5QrCode.clear();
-                }).catch(err => {
-                    console.log("Scanner stop notice:", err);
-                });
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().catch(err => console.error("Failed to stop scanner", err));
             }
         }
 
@@ -1575,49 +1273,56 @@
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.value = 880;
+                osc.frequency.setValueAtTime(800, ctx.currentTime);
                 gain.gain.setValueAtTime(0.1, ctx.currentTime);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
                 osc.start();
                 osc.stop(ctx.currentTime + 0.15);
             } catch (e) {
-                // Audio context policy fallback
+                console.warn("AudioContext not supported or blocked");
             }
         }
 
-        function saveNewMedicineItem() {
-            const barcode = document.getElementById('modal-med-barcode').value || `BC-${Math.floor(10000 + Math.random() * 90000)}`;
-            const name = document.getElementById('modal-med-name').value.trim();
-            const price = parseFloat(document.getElementById('modal-med-price').value) || 0;
-            const qty = parseInt(document.getElementById('modal-med-qty').value) || 0;
+        function handleSaveInventoryItem(e) {
+            e.preventDefault();
+            const barcode = document.getElementById('inv-barcode').value.trim();
+            const name = document.getElementById('inv-name').value.trim();
+            const price = parseFloat(document.getElementById('inv-price').value);
+            const qty = parseInt(document.getElementById('inv-qty').value);
 
-            if (!name || price <= 0 || qty <= 0) {
-                alert('يرجى إدخال كافة بيانات الصنف الصحيحة بدقة.');
-                return;
-            }
-
-            inventoryData.unshift({
-                id: barcode,
-                name: name,
-                price: price,
-                qty: qty,
-                warehouse: appState.entityName
-            });
-
-            closeWarehouseModal();
-            showToast(`تمت إضافة الصنف [${name}] بنجاح إلى المخزن`);
-            renderTabContent(appState.currentTab);
+            inventoryData.push({ id: Date.now(), barcode, name, price, qty });
+            localStorage.setItem('pharmalink_inventory', JSON.stringify(inventoryData));
+            closeInventoryModal();
+            showToast('تمت إضافة الصنف بنجاح إلى المخزن');
+            renderWarehouseInventory(document.getElementById('main-content-area'));
         }
 
-        // Automated Toast Notification Banner Engine
+        function filterInventory(query) {
+            const grid = document.getElementById('pharmacy-catalog-grid');
+            if (!grid) return;
+            const filtered = inventoryData.filter(i => i.name.toLowerCase().includes(query.toLowerCase()) || i.barcode.includes(query));
+            grid.innerHTML = filtered.map(item => `
+                <div class="data-card">
+                    <div>
+                        <h3>${item.name}</h3>
+                        <p>السعر: ${item.price} ل.س</p>
+                        <p>الكمية المتاحة: ${item.qty}</p>
+                    </div>
+                    <button class="btn-primary" style="margin-top: 15px;" onclick="addToBasket(${item.id})">إضافة إلى السلة</button>
+                </div>
+            `).join('');
+        }
+
         function showToast(message) {
-            const toast = document.getElementById('toast-container');
-            document.getElementById('toast-message-text').innerText = message;
-            toast.classList.add('show');
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = message;
+            container.appendChild(toast);
             setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
+                toast.remove();
+            }, 2000);
         }
     </script>
 </body>
