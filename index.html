@@ -1131,9 +1131,12 @@
                         <h4>إجمالي مبيعات المستودع</h4>
                         <div class="analytics-value">${totalSales.toLocaleString()} ل.س</div>
                     </div>
-                    <div class="analytics-card">
-                        <h4>عمولة منصة PharmaLink المستحقة (1% صافي)</h4>
-                        <div class="analytics-value" style="color: var(--success-green);">${commission.toLocaleString()} ل.س</div>
+                    <div class="analytics-card" style="position: relative;">
+                        <div>
+                            <h4>عمولة منصة PharmaLink المستحقة (1% صافي)</h4>
+                            <div class="analytics-value" style="color: var(--success-green);">${commission.toLocaleString()} ل.س</div>
+                        </div>
+                        <button class="btn-primary" style="margin-top: 16px; font-size: 13px; padding: 10px;" onclick="requestCommissionSettlement()">إرسال طلب تسديد العمولات</button>
                     </div>
                 </div>
                 <div class="card-grid">
@@ -1147,6 +1150,10 @@
                     </div>
                 </div>
             `;
+        }
+
+        function requestCommissionSettlement() {
+            showToast('تم إرسال طلب تسديد العمولات. يرجى التحويل عبر شبكات الحوالات المعتمدة (الهرم / الفؤاد)');
         }
 
         function renderWarehouseInventory(container) {
@@ -1272,7 +1279,7 @@
                     </div>
 
                     <div style="margin-top: 30px;">
-                        <button class="btn-primary" style="background-color: var(--danger-red);" onclick="logoutAccount()">تسجيل الخروج من الحساب</button>
+                        <button class="btn-primary" style="background-color: var(--architectural-gray);" onclick="logoutAccount()">تسجيل الخروج من الحساب</button>
                     </div>
                 </div>
             `;
