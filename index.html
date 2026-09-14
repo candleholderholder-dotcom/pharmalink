@@ -51,6 +51,53 @@
             font-weight: 900 !important;
         }
 
+        /* --- SLIDE DOWN TOP TOAST NOTIFICATION --- */
+        #top-slide-toast {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--brand-primary);
+            color: var(--white);
+            padding: 16px 45px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.3);
+            font-size: 16px;
+            font-weight: 900;
+            z-index: 99999;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top: none;
+        }
+
+        #top-slide-toast.show {
+            top: 0;
+        }
+
+        /* --- TEMPORARY BOTTOM TOAST NOTIFICATION --- */
+        #toast-banner {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: var(--brand-primary);
+            color: var(--white);
+            padding: 14px 35px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.3);
+            font-size: 15px;
+            font-weight: 800;
+            z-index: 1000;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            text-align: center;
+        }
+
+        #toast-banner.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
         /* --- PHASE 1: CINEMATIC SPLASH SCREEN --- */
         #splash-screen {
             position: fixed;
@@ -474,29 +521,6 @@
             transform: translateY(-2px);
         }
 
-        /* Temporary Bottom Toast Notification Banner */
-        #toast-banner {
-            position: fixed;
-            bottom: 90px;
-            left: 50%;
-            transform: translateX(-50%) translateY(120px);
-            background: var(--brand-primary);
-            color: var(--white);
-            padding: 14px 35px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.3);
-            font-size: 15px;
-            font-weight: 800;
-            z-index: 1000;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            text-align: center;
-        }
-
-        #toast-banner.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
         /* Grid Layouts & Cards */
         .grid-cards {
             display: grid;
@@ -706,6 +730,9 @@
 </head>
 
 <body>
+
+    <!-- SLIDE DOWN TOP TOAST NOTIFICATION -->
+    <div id="top-slide-toast">تم قراءة الكود بنجاح</div>
 
     <!-- TEMPORARY BOTTOM TOAST NOTIFICATION -->
     <div id="toast-banner">تمت الإضافة بنجاح</div>
@@ -1148,7 +1175,15 @@
             }
         }
 
-        /* --- TEMPORARY BOTTOM TOAST NOTIFICATION --- */
+        /* --- TOAST NOTIFICATIONS --- */
+        function showTopSlideToast() {
+            const toast = document.getElementById('top-slide-toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 1000);
+        }
+
         function showToast(msg) {
             const toast = document.getElementById('toast-banner');
             toast.innerText = msg;
@@ -1544,7 +1579,7 @@
                     playBeepSound();
                     document.getElementById('med-barcode').value = decodedText;
                     stopBarcodeScanner();
-                    showToast('تم قراءة الباركود بنجاح وإغلاق الكاميرا');
+                    showTopSlideToast();
                 },
                 (errorMessage) => {
                     // Scanning frames continuously
