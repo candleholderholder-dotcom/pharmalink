@@ -49,7 +49,7 @@
             font-weight: 900;
         }
 
-        /* Splash Screen & Cinematic Entrance */
+        /* Phase 1: Cinematic Splash Screen */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -62,7 +62,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cinematic-entrance {
@@ -87,7 +87,7 @@
 
         .capsule-container {
             margin-bottom: 24px;
-            filter: drop-shadow(0 4px 12px rgba(0, 128, 128, 0.2));
+            filter: drop-shadow(0 6px 16px rgba(0, 128, 128, 0.2));
         }
 
         .splash-title-wrapper {
@@ -95,6 +95,19 @@
             font-weight: 900;
             letter-spacing: 0.5px;
             display: flex;
+            animation: title-slide-up 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes title-slide-up {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 15px, 0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
         }
 
         .brand-pharma {
@@ -105,7 +118,7 @@
             color: var(--peacock-teal);
         }
 
-        /* Onboarding Screen */
+        /* Phase 2: Full-Screen Structured Onboarding Form Wizard */
         #onboarding-screen {
             position: fixed;
             top: 0;
@@ -124,30 +137,32 @@
         .onboarding-card {
             background: var(--white);
             width: 100%;
-            max-width: 520px;
+            max-width: 540px;
             padding: 40px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(30, 34, 41, 0.08);
             border: 1px solid var(--border-gray);
+            position: relative;
+            overflow: hidden;
         }
 
         .step-tracker {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             position: relative;
         }
 
         .step-dot {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: var(--border-gray);
             color: var(--architectural-gray);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
+            font-weight: 900;
             font-size: 14px;
             z-index: 2;
             transition: all 0.3s ease;
@@ -166,7 +181,7 @@
 
         .step-line {
             position: absolute;
-            top: 16px;
+            top: 17px;
             right: 20px;
             left: 20px;
             height: 3px;
@@ -174,15 +189,19 @@
             z-index: 1;
         }
 
+        .onboarding-step {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .form-label {
             display: block;
             font-size: 15px;
-            font-weight: 800;
-            margin-bottom: 8px;
+            font-weight: 900;
+            margin-bottom: 10px;
             color: var(--charcoal-text);
         }
 
@@ -197,6 +216,7 @@
             color: var(--charcoal-text);
             outline: none;
             transition: border-color 0.2s;
+            font-weight: 700;
         }
 
         .form-input:focus,
@@ -208,7 +228,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .role-card {
@@ -233,7 +253,7 @@
         .role-card h4 {
             margin-top: 12px;
             font-size: 16px;
-            font-weight: 800;
+            font-weight: 900;
         }
 
         .btn-primary {
@@ -244,7 +264,7 @@
             border: none;
             border-radius: 10px;
             font-size: 16px;
-            font-weight: 800;
+            font-weight: 900;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -257,13 +277,18 @@
             background: var(--architectural-gray);
             color: var(--white);
             border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 800;
+            border-radius: 10px;
+            padding: 14px 24px;
+            font-weight: 900;
             cursor: pointer;
+            transition: background 0.2s;
         }
 
-        /* App Layout */
+        .btn-secondary:hover {
+            background: #5A6573;
+        }
+
+        /* Phase 3: Grid-Aligned Symmetric Dashboard & Application Layout */
         #app-container {
             display: none;
             flex-direction: column;
@@ -273,23 +298,23 @@
         .top-navbar {
             background: var(--peacock-teal);
             color: var(--white);
-            padding: 16px 24px;
+            padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .navbar-brand {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 900;
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
         }
 
         .navbar-region {
@@ -297,24 +322,16 @@
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 13px;
-            font-weight: 800;
+            font-weight: 900;
         }
 
         .main-content {
             flex: 1;
-            padding: 24px;
+            padding: 28px;
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            padding-bottom: 90px;
-        }
-
-        .view-section {
-            display: none;
-        }
-
-        .view-section.active {
-            display: block;
+            padding-bottom: 95px;
         }
 
         /* Bottom Navbar */
@@ -327,7 +344,7 @@
             border-top: 1px solid var(--border-gray);
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            height: 70px;
+            height: 72px;
             z-index: 100;
             box-shadow: 0 -4px 20px rgba(30, 34, 41, 0.05);
         }
@@ -350,11 +367,11 @@
 
         .nav-item span {
             font-size: 13px;
-            font-weight: 800;
+            font-weight: 900;
             margin-top: 4px;
         }
 
-        /* Toast Notification */
+        /* Modern Slide-In Notification Banner */
         #toast-container {
             position: fixed;
             bottom: 90px;
@@ -368,50 +385,51 @@
         }
 
         .toast {
-            background: var(--peacock-dark);
+            background: var(--peacock-teal);
             color: var(--white);
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 800;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 900;
             font-size: 14px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            animation: toast-slide-fade 2s forwards;
+            box-shadow: 0 6px 20px rgba(0, 128, 128, 0.25);
+            animation: toast-slide-fade 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             pointer-events: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         @keyframes toast-slide-fade {
             0% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(25px) scale(0.95);
             }
 
             15% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
 
             85% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
 
             100% {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-10px) scale(0.95);
             }
         }
 
         /* Analytics Panel & Components */
         .analytics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 24px;
         }
 
         .analytics-card {
             background: var(--white);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 24px;
             border: 1px solid var(--border-gray);
             box-shadow: 0 2px 8px rgba(30, 34, 41, 0.03);
@@ -423,12 +441,12 @@
         .analytics-card h4 {
             font-size: 14px;
             color: var(--architectural-gray);
-            font-weight: 800;
+            font-weight: 900;
             margin-bottom: 8px;
         }
 
         .analytics-value {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 900;
             color: var(--peacock-teal);
         }
@@ -442,8 +460,8 @@
 
         .data-card {
             background: var(--white);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 24px;
             border: 1px solid var(--border-gray);
             box-shadow: 0 2px 8px rgba(30, 34, 41, 0.03);
             display: flex;
@@ -461,15 +479,16 @@
         .data-card p {
             color: var(--architectural-gray);
             font-size: 14px;
+            font-weight: 700;
             margin-bottom: 12px;
         }
 
         .badge {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
             font-size: 12px;
-            font-weight: 800;
+            font-weight: 900;
         }
 
         .badge-success {
@@ -486,9 +505,10 @@
             width: 100%;
             overflow-x: auto;
             background: var(--white);
-            border-radius: 12px;
+            border-radius: 14px;
             border: 1px solid var(--border-gray);
             margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(30, 34, 41, 0.03);
         }
 
         table {
@@ -499,7 +519,7 @@
 
         th,
         td {
-            padding: 14px 20px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--border-gray);
             font-size: 14px;
         }
@@ -508,6 +528,10 @@
             background: var(--medical-bg);
             font-weight: 900;
             color: var(--charcoal-text);
+        }
+
+        td {
+            font-weight: 700;
         }
 
         tr:last-child td {
@@ -533,7 +557,7 @@
         .modal-box {
             background: var(--white);
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             padding: 30px;
             border-radius: 16px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
@@ -564,21 +588,21 @@
         #reader {
             width: 100% !important;
             border: 2px solid var(--border-gray) !important;
-            border-radius: 10px !important;
+            border-radius: 12px !important;
             overflow: hidden;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             background: var(--medical-bg);
         }
 
         #reader video {
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .section-header h2 {
@@ -588,17 +612,18 @@
 
         .profile-container {
             background: var(--white);
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 14px;
+            padding: 32px;
             border: 1px solid var(--border-gray);
             max-width: 600px;
             margin: 0 auto;
+            box-shadow: 0 2px 8px rgba(30, 34, 41, 0.03);
         }
 
         .profile-row {
             display: flex;
             justify-content: space-between;
-            padding: 14px 0;
+            padding: 16px 0;
             border-bottom: 1px solid var(--border-gray);
         }
 
@@ -607,7 +632,7 @@
         }
 
         .profile-label {
-            font-weight: 800;
+            font-weight: 900;
             color: var(--architectural-gray);
         }
 
@@ -637,7 +662,7 @@
         </div>
     </div>
 
-    <!-- Phase 2: Full-Screen Structured Onboarding Setup -->
+    <!-- Phase 2: Full-Screen Structured Onboarding Form Wizard -->
     <div id="onboarding-screen">
         <div class="onboarding-card">
             <div class="step-tracker">
@@ -649,12 +674,12 @@
             </div>
 
             <form id="onboarding-form" onsubmit="handleOnboardingSubmit(event)">
-                <!-- Step 1 -->
+                <!-- Step 1: Role Selection -->
                 <div class="onboarding-step" id="step-1-content">
-                    <h3 style="margin-bottom: 20px; font-size: 20px;">اختر صفة الحساب</h3>
+                    <h3 style="margin-bottom: 24px; font-size: 20px;">اختر صفة الحساب</h3>
                     <div class="role-grid">
                         <div class="role-card" onclick="selectRole('warehouse', this)">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#008080"
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#008080"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path
                                     d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
@@ -665,7 +690,7 @@
                             <h4>مستودع أدوية</h4>
                         </div>
                         <div class="role-card" onclick="selectRole('pharmacy', this)">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#008080"
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#008080"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -678,11 +703,11 @@
                     <button type="button" class="btn-primary" onclick="nextStep(2)">التالي</button>
                 </div>
 
-                <!-- Step 2 -->
+                <!-- Step 2: Responsible Name -->
                 <div class="onboarding-step" id="step-2-content" style="display: none;">
-                    <h3 style="margin-bottom: 20px; font-size: 20px;">اسم المسؤول أو الصيدلاني</h3>
+                    <h3 style="margin-bottom: 24px; font-size: 20px;">اسم المسؤول / الصيدلاني</h3>
                     <div class="form-group">
-                        <label class="form-label">الاسم الكامل</label>
+                        <label class="form-label">الاسم الكامل للمسؤول</label>
                         <div style="position: relative;">
                             <svg style="position: absolute; right: 14px; top: 15px;" width="20" height="20"
                                 viewBox="0 0 24 24" fill="none" stroke="#6C7A89" stroke-width="2" stroke-linecap="round"
@@ -690,19 +715,19 @@
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                            <input type="text" id="input-name" class="form-input" style="padding-right: 44px;"
+                            <input type="text" id="input-name" class="form-input" style="padding-right: 46px;"
                                 placeholder="أدخل اسم المسؤول" required>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; gap: 12px;">
                         <button type="button" class="btn-secondary" onclick="prevStep(1)">السابق</button>
                         <button type="button" class="btn-primary" onclick="nextStep(3)">التالي</button>
                     </div>
                 </div>
 
-                <!-- Step 3 -->
+                <!-- Step 3: Entity Name -->
                 <div class="onboarding-step" id="step-3-content" style="display: none;">
-                    <h3 style="margin-bottom: 20px; font-size: 20px;">اسم الجهة (المستودع أو الصيدلية)</h3>
+                    <h3 style="margin-bottom: 24px; font-size: 20px;">اسم الجهة (المستودع أو الصيدلية)</h3>
                     <div class="form-group">
                         <label class="form-label">اسم الجهة التجارية</label>
                         <div style="position: relative;">
@@ -714,28 +739,36 @@
                                 <line x1="15" y1="22" x2="15" y2="12"></line>
                                 <line x1="12" y1="6" x2="12" y2="6.01"></line>
                             </svg>
-                            <input type="text" id="input-entity" class="form-input" style="padding-right: 44px;"
-                                placeholder="أدخل اسم الجهة" required>
+                            <input type="text" id="input-entity" class="form-input" style="padding-right: 46px;"
+                                placeholder="أدخل اسم المستودع أو الصيدلية" required>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; gap: 12px;">
                         <button type="button" class="btn-secondary" onclick="prevStep(2)">السابق</button>
                         <button type="button" class="btn-primary" onclick="nextStep(4)">التالي</button>
                     </div>
                 </div>
 
-                <!-- Step 4 -->
+                <!-- Step 4: Region Selection -->
                 <div class="onboarding-step" id="step-4-content" style="display: none;">
-                    <h3 style="margin-bottom: 20px; font-size: 20px;">اختر المنطقة الإدارية</h3>
+                    <h3 style="margin-bottom: 24px; font-size: 20px;">اختر المنطقة الجغرافية</h3>
                     <div class="form-group">
-                        <label class="form-label">النطاق الجغرافي</label>
-                        <select id="input-region" class="form-select" required>
-                            <option value="منبج وريفها">منبج وريفها</option>
-                            <option value="حلب وريفها">حلب وريفها</option>
-                            <option value="إدلب وريفها">إدلب وريفها</option>
-                        </select>
+                        <label class="form-label">النطاق الإداري</label>
+                        <div style="position: relative;">
+                            <svg style="position: absolute; right: 14px; top: 15px; z-index: 2; pointer-events: none;"
+                                width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6C7A89" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <select id="input-region" class="form-select" style="padding-right: 46px;" required>
+                                <option value="منبج وريفها">منبج وريفها</option>
+                                <option value="حلب وريفها">حلب وريفها</option>
+                                <option value="إدلب وريفها">إدلب وريفها</option>
+                            </select>
+                        </div>
                     </div>
-                    <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; gap: 12px;">
                         <button type="button" class="btn-secondary" onclick="prevStep(3)">السابق</button>
                         <button type="submit" class="btn-primary">دخول المنصة</button>
                     </div>
@@ -858,7 +891,7 @@
             }
         }
 
-        // Onboarding Logic
+        // Onboarding Wizard Logic
         let selectedRoleType = null;
         function selectRole(role, element) {
             selectedRoleType = role;
@@ -1082,7 +1115,7 @@
                     </table>
                 </div>
                 ${basketData.length > 0 ? `
-                    <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 20px; border-radius: 12px; border: 1px solid var(--border-gray);">
+                    <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 20px; border-radius: 14px; border: 1px solid var(--border-gray);">
                         <h3 style="font-size: 18px;">المجموع الكلي: ${grandTotal} ل.س</h3>
                         <button class="btn-primary" style="width: auto; padding: 12px 30px;" onclick="checkoutBasket()">تأكيد وإرسال الطلب</button>
                     </div>
@@ -1102,7 +1135,6 @@
             ordersData.push(newOrder);
             localStorage.setItem('pharmalink_orders', JSON.stringify(ordersData));
 
-            // Also record invoice automatically
             invoicesData.push({
                 id: Math.floor(500 + Math.random() * 500),
                 client: appState.entity,
@@ -1136,17 +1168,17 @@
                             <h4>عمولة منصة PharmaLink المستحقة (1% صافي)</h4>
                             <div class="analytics-value" style="color: var(--success-green);">${commission.toLocaleString()} ل.س</div>
                         </div>
-                        <button class="btn-primary" style="margin-top: 16px; font-size: 13px; padding: 10px;" onclick="requestCommissionSettlement()">إرسال طلب تسديد العمولات</button>
+                        <button class="btn-primary" style="margin-top: 16px; font-size: 13px; padding: 12px;" onclick="requestCommissionSettlement()">إرسال طلب تسديد العمولات</button>
                     </div>
                 </div>
                 <div class="card-grid">
                     <div class="data-card">
                         <h3>إجمالي الأصناف</h3>
-                        <p style="font-size: 24px; font-weight: 900; color: var(--peacock-teal);">${inventoryData.length}</p>
+                        <p style="font-size: 26px; font-weight: 900; color: var(--peacock-teal);">${inventoryData.length}</p>
                     </div>
                     <div class="data-card">
                         <h3>الطلبات الواردة</h3>
-                        <p style="font-size: 24px; font-weight: 900; color: var(--peacock-teal);">${ordersData.length}</p>
+                        <p style="font-size: 26px; font-weight: 900; color: var(--peacock-teal);">${ordersData.length}</p>
                     </div>
                 </div>
             `;
@@ -1160,7 +1192,7 @@
             container.innerHTML = `
                 <div class="section-header">
                     <h2>إدارة المخزن المركزي</h2>
-                    <button class="btn-primary" style="width: auto; padding: 10px 20px;" onclick="openInventoryModal()">إضافة صنف +</button>
+                    <button class="btn-primary" style="width: auto; padding: 12px 24px;" onclick="openInventoryModal()">إضافة صنف +</button>
                 </div>
                 <div class="table-responsive">
                     <table>
@@ -1210,7 +1242,7 @@
                                     <td>${inv.client}</td>
                                     <td>${inv.total} ل.س</td>
                                     <td>${inv.date}</td>
-                                    <td><button class="btn-primary" style="padding: 6px 12px; font-size: 13px; width: auto;" onclick="sendInvoiceWhatsApp(${inv.id})">تصدير وإرسال عبر الواتساب</button></td>
+                                    <td><button class="btn-primary" style="padding: 8px 16px; font-size: 13px; width: auto;" onclick="sendInvoiceWhatsApp(${inv.id})">تصدير وإرسال عبر الواتساب</button></td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -1233,8 +1265,8 @@
                     <h2>الملف الشخصي وإعدادات الحساب</h2>
                 </div>
                 <div class="profile-container">
-                    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-                        <button class="btn-secondary" style="background: none; border: 1px solid var(--border-gray); color: var(--charcoal-text); display: flex; align-items: center; gap: 6px;" onclick="toggleEditProfile()">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                        <button class="btn-secondary" style="background: none; border: 1px solid var(--border-gray); color: var(--charcoal-text); display: flex; align-items: center; gap: 8px; padding: 10px 16px;" onclick="toggleEditProfile()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                             تعديل البيانات
                         </button>
@@ -1253,7 +1285,7 @@
                             <span class="profile-value">${appState.entity}</span>
                         </div>
                         <div class="profile-row">
-                            <span class="profile-label">المنطقة الإدارية</span>
+                            <span class="profile-label">المنطقة الجغرافية</span>
                             <span class="profile-value">${appState.region}</span>
                         </div>
                     </div>
@@ -1268,7 +1300,7 @@
                             <input type="text" id="edit-entity" class="form-input" value="${appState.entity}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">المنطقة الإدارية</label>
+                            <label class="form-label">المنطقة الجغرافية</label>
                             <select id="edit-region" class="form-select">
                                 <option value="منبج وريفها" ${appState.region === 'منبج وريفها' ? 'selected' : ''}>منبج وريفها</option>
                                 <option value="حلب وريفها" ${appState.region === 'حلب وريفها' ? 'selected' : ''}>حلب وريفها</option>
@@ -1278,7 +1310,7 @@
                         <button class="btn-primary" onclick="saveProfileEdits()">حفظ التعديلات</button>
                     </div>
 
-                    <div style="margin-top: 30px;">
+                    <div style="margin-top: 35px;">
                         <button class="btn-primary" style="background-color: var(--architectural-gray);" onclick="logoutAccount()">تسجيل الخروج من الحساب</button>
                     </div>
                 </div>
