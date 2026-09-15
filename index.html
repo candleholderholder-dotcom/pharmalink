@@ -377,7 +377,6 @@
             gap: 10px;
         }
 
-        /* Top Selling Drugs Progress Bars */
         .progress-bar-item {
             margin-bottom: 14px;
         }
@@ -406,7 +405,6 @@
             transition: width 0.8s cubic-bezier(0.1, 0.8, 0.3, 1);
         }
 
-        /* Top Pharmacies Spreadsheet Table */
         .mini-table {
             width: 100%;
             border-collapse: collapse;
@@ -435,9 +433,9 @@
         .rating-matrix-badge {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             background: rgba(0, 128, 128, 0.06);
-            padding: 8px 14px;
+            padding: 10px 16px;
             border-radius: 8px;
             margin-bottom: 20px;
             border: 1px solid rgba(0, 128, 128, 0.15);
@@ -466,6 +464,54 @@
         .btn-fraud-report:hover {
             background: var(--danger);
             color: var(--white);
+        }
+
+        /* --- Cham Cash Payment Dialog UI --- */
+        .cham-cash-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .cham-code-box {
+            background: var(--bg-canvas);
+            border: 2px dashed var(--primary-teal);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 900;
+            font-size: 17px;
+            color: var(--primary-teal);
+            letter-spacing: 0.5px;
+        }
+
+        .recipient-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #FAFAFA;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border: 1px solid #EFEFEF;
+        }
+
+        .recipient-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .verified-badge-svg {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .data-table-container {
@@ -540,6 +586,8 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .modal-card {
@@ -601,6 +649,7 @@
     <div id="dashboard-screen">
         <div class="top-navbar">
             <div style="display: flex; align-items: center; gap: 10px;">
+                <!-- Corporate Health & Branding SVG -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="7" width="20" height="10" rx="5" ry="5" fill="rgba(255,255,255,0.15)" />
@@ -610,6 +659,7 @@
             </div>
             <div id="nav-region-badge"
                 style="font-size: 14px; background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 6px; display: flex; align-items: center; gap: 8px; font-weight: 800;">
+                <!-- Geographical Location Pin SVG -->
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -687,13 +737,56 @@
         </div>
     </div>
 
+    <!-- Cham Cash Commission Payment Modal -->
+    <div class="modal-overlay" id="cham-cash-modal">
+        <div class="modal-card cham-cash-card">
+            <h3 style="font-weight: 900; color: var(--primary-teal); display: flex; align-items: center; gap: 8px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2" ry="2" />
+                    <line x1="2" y1="10" x2="22" y2="10" />
+                </svg>
+                تسديد عمولة المنصة عبر شام كاش
+            </h3>
+
+            <div class="cham-code-box">
+                كود حساب شام كاش: <span style="font-family: monospace; font-size: 19px;">CHAM-9082-SY</span>
+            </div>
+
+            <div class="recipient-row">
+                <span style="font-size: 13px; color: var(--secondary-gray); font-weight: 800;">المستلم الرسمي:</span>
+                <div class="recipient-info">
+                    <span class="verified-badge-svg" title="حساب رسمي موثق">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#008080" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </span>
+                    <span>محمد يحيى جمال</span>
+                </div>
+            </div>
+
+            <p style="font-size: 13px; color: var(--secondary-gray); font-weight: 600; line-height: 1.5;">
+                يرجى تحويل قيمة العمولة عبر التطبيق إلى الحساب أعلاه، ثم الضغط على زر "تم الدفع" أدناه لتأكيد الطلب
+                وتحديث حالة الحساب ومسح القيود الإدارية المؤقتة.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
+                <button type="button" class="btn-primary-custom" onclick="confirmChamCashPayment()">تم الدفع</button>
+                <button type="button" class="btn-primary-custom" style="background: var(--secondary-gray);"
+                    onclick="closeChamCashModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification Banner -->
     <div class="toast-banner" id="global-toast">تمت العملية بنجاح</div>
 
     <script>
         let appState = JSON.parse(localStorage.getItem('pharmalink_user')) || null;
         let currentWizardStep = 1;
-        let wizardData = { role: '', name: '', entity: '', region: 'منبج وريفها' };
+        let wizardData = { role: '', name: '', entity: '', region: 'حلب وريفها' };
         let activeTab = 'home';
 
         let warehouseInventory = JSON.parse(localStorage.getItem('pharmalink_inventory')) || [
@@ -704,10 +797,8 @@
             { id: '890777888999', name: 'فيتامين سي فوار - C-Max', price: 4500, qty: 600 }
         ];
 
-        // Anti-fraud blacklisted pharmacies array
         let blacklistedPharmacies = JSON.parse(localStorage.getItem('pharmalink_blacklist')) || [];
 
-        // Pending warehouse orders with anti-fraud tracking
         let warehouseOrders = [
             { id: 'ORD-901', pharmacyId: 'PH-SYN-501', pharmacyName: 'صيدلية الشفاء المركزية', drug: 'أوجمنتين 1 كجم', total: '45,000 ل.س ($35)' },
             { id: 'ORD-902', pharmacyId: 'PH-SYN-502', pharmacyName: 'صيدلية النور الحديثة', drug: 'باراسيتامول 500 ملغ', total: '17,500 ل.س ($14)' },
@@ -787,8 +878,8 @@
                     <h3 style="margin-bottom: 20px; font-weight: 900;">النطاق الجغرافي المستهدف</h3>
                     <div class="form-group">
                         <select class="form-control" onchange="wizardData.region = this.value">
-                            <option value="منبج وريفها" ${wizardData.region === 'منبج وريفها' ? 'selected' : ''}>منبج وريفها</option>
                             <option value="حلب وريفها" ${wizardData.region === 'حلب وريفها' ? 'selected' : ''}>حلب وريفها</option>
+                            <option value="منبج وريفها" ${wizardData.region === 'منبج وريفها' ? 'selected' : ''}>منبج وريفها</option>
                             <option value="إدلب وريفها" ${wizardData.region === 'إدلب وريفها' ? 'selected' : ''}>إدلب وريفها</option>
                         </select>
                     </div>
@@ -890,7 +981,6 @@
                 </div>
 
                 <div class="analytics-dual-container">
-                    <!-- Left Column: أكثر الأصناف مبيعاً (Top 5 Drugs Progress Bars) -->
                     <div class="analytics-panel">
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -915,7 +1005,6 @@
                         </div>
                     </div>
 
-                    <!-- Right Column: أكثر الصيدليات نشاطاً (Top 3 Ordering Pharmacies Spreadsheet) -->
                     <div class="analytics-panel">
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -994,11 +1083,15 @@
 
         function openFraudModal(pharmacyId) {
             document.getElementById('fraud-target-pharmacy-id').value = pharmacyId;
-            document.getElementById('fraud-modal').style.display = 'flex';
+            const modal = document.getElementById('fraud-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.style.opacity = '1'; }, 10);
         }
 
         function closeFraudModal() {
-            document.getElementById('fraud-modal').style.display = 'none';
+            const modal = document.getElementById('fraud-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
         function executeBlacklistPharmacy() {
@@ -1017,7 +1110,6 @@
             container.innerHTML = `
                 <h2 style="font-weight: 900; margin-bottom: 20px;">المستودعات الطبية المعتمدة في ${appState.region}</h2>
                 
-                <!-- Upgrade #10: Rating, Verification & Anti-Fraud System Badge Matrix -->
                 <div class="rating-matrix-badge">
                     <div style="display: flex; gap: 4px;">
                         <svg class="star-svg" width="16" height="16" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1161,12 +1253,16 @@
         }
 
         function openWarehouseModal() {
-            document.getElementById('warehouse-modal').style.display = 'flex';
+            const modal = document.getElementById('warehouse-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.style.opacity = '1'; }, 10);
         }
 
         document.getElementById('close-modal-btn').addEventListener('click', () => {
             stopCameraStream();
-            document.getElementById('warehouse-modal').style.display = 'none';
+            const modal = document.getElementById('warehouse-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
         });
 
         document.getElementById('start-camera-btn').addEventListener('click', () => {
@@ -1232,7 +1328,9 @@
             warehouseInventory.push({ id, name, price, qty });
             localStorage.setItem('pharmalink_inventory', JSON.stringify(warehouseInventory));
 
-            document.getElementById('warehouse-modal').style.display = 'none';
+            const modal = document.getElementById('warehouse-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
             stopCameraStream();
 
             document.getElementById('modal-barcode').value = '';
@@ -1245,15 +1343,40 @@
             showToast('تمت إضافة الصنف إلى المخزن بنجاح');
         });
 
+        /* --- Cham Cash Payment Modal Script Logic --- */
+        function triggerCommissionPay() {
+            const modal = document.getElementById('cham-cash-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => { modal.style.opacity = '1'; }, 10);
+            }
+        }
+
+        function closeChamCashModal() {
+            const modal = document.getElementById('cham-cash-modal');
+            if (modal) {
+                modal.style.opacity = '0';
+                setTimeout(() => { modal.style.display = 'none'; }, 300);
+            }
+        }
+
+        function confirmChamCashPayment() {
+            closeChamCashModal();
+            let paymentLogs = JSON.parse(localStorage.getItem('pharmalink_payments')) || [];
+            paymentLogs.push({ date: new Date().toISOString(), status: 'Pending Verification', amount: 'Commission' });
+            localStorage.setItem('pharmalink_payments', JSON.stringify(paymentLogs));
+
+            if (typeof renderActiveTabContent === 'function') {
+                renderActiveTabContent();
+            }
+            showToast('تم إرسال تأكيد الدفع بنجاح، بانتظار مطابقة الإيصال الإداري ومسح القيود');
+        }
+
         function showToast(msg) {
             const toast = document.getElementById('global-toast');
             toast.innerText = msg;
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
-        }
-
-        function triggerCommissionPay() {
-            alert('يرجى تحويل مبلغ العمولة المستحق عبر قنوات الحوالات المحلية المعتمدة (الهرم أو الفؤاد) وإرفاق رقم الإيصال لتأكيد وتفعيل الحساب.');
         }
 
         function exportStockExcel() {
