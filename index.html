@@ -352,6 +352,122 @@
             color: var(--text-dark);
         }
 
+        /* --- Upgrade #9 Styling: 2-Column Analytics Subsection --- */
+        .analytics-dual-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .analytics-panel {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .analytics-panel h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Top Selling Drugs Progress Bars */
+        .progress-bar-item {
+            margin-bottom: 14px;
+        }
+
+        .progress-bar-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 10px;
+            background: var(--bg-canvas);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary-teal);
+            border-radius: 5px;
+            transition: width 0.8s cubic-bezier(0.1, 0.8, 0.3, 1);
+        }
+
+        /* Top Pharmacies Spreadsheet Table */
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .mini-table th,
+        .mini-table td {
+            padding: 10px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .mini-table th {
+            background: var(--bg-canvas);
+            color: var(--secondary-gray);
+            font-weight: 800;
+            border-bottom: 2px solid #E0E0E0;
+        }
+
+        .mini-table tr:not(:last-child) td {
+            border-bottom: 1px solid #F1F1F1;
+        }
+
+        /* --- Upgrade #10 Styling: Anti-Fraud & Rating Elements --- */
+        .rating-matrix-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 128, 128, 0.06);
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 128, 128, 0.15);
+        }
+
+        .star-svg {
+            fill: #F1C40F;
+            stroke: #D4AC0D;
+        }
+
+        .btn-fraud-report {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-fraud-report:hover {
+            background: var(--danger);
+            color: var(--white);
+        }
+
         .data-table-container {
             background: var(--white);
             border-radius: 10px;
@@ -459,9 +575,7 @@
                     <path
                         d="M 30,0 L 90,0 A 30,30 0 0,1 120,30 A 30,30 0 0,1 90,60 L 30,60 A 30,30 0 0,1 0,30 A 30,30 0 0,1 30,0 Z"
                         fill="none" />
-                    <!-- Left Half: Architectural Gray -->
                     <path d="M 30,0 L 60,0 L 60,60 L 30,60 A 30,30 0 0,1 0,30 A 30,30 0 0,1 30,0 Z" fill="#6C7A89" />
-                    <!-- Right Half: Peacock Teal -->
                     <path d="M 60,0 L 90,0 A 30,30 0 0,1 120,30 A 30,30 0 0,1 90,60 L 60,60 Z" fill="#008080" />
                 </svg>
             </div>
@@ -480,16 +594,13 @@
             <div class="wizard-step-dot" id="dot-3">3</div>
             <div class="wizard-step-dot" id="dot-4">4</div>
         </div>
-
         <div id="wizard-step-content"></div>
     </div>
 
     <!-- Phase 3: Dashboard Screen -->
     <div id="dashboard-screen">
-        <!-- Top Navbar with Corporate Branding & Region Location Pin SVGs -->
         <div class="top-navbar">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <!-- Corporate Medical Capsule & Network Hub SVG Branding Icon -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="7" width="20" height="10" rx="5" ry="5" fill="rgba(255,255,255,0.15)" />
@@ -499,7 +610,6 @@
             </div>
             <div id="nav-region-badge"
                 style="font-size: 14px; background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 6px; display: flex; align-items: center; gap: 8px; font-weight: 800;">
-                <!-- Geographic Location Pin SVG Icon -->
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -518,7 +628,6 @@
     <div class="modal-overlay" id="warehouse-modal">
         <div class="modal-card">
             <h3 style="font-weight: 900; color: var(--primary-teal);">إضافة صنف جديد للمخزن</h3>
-
             <div class="form-group" style="margin-bottom:0;">
                 <label>تشغيل الكاميرا وقراءة الباركود</label>
                 <button type="button" class="btn-primary-custom" id="start-camera-btn"
@@ -526,7 +635,6 @@
                     الباركود</button>
                 <div id="reader"></div>
             </div>
-
             <div class="form-group">
                 <label>رقم الباركود</label>
                 <input type="text" id="modal-barcode" class="form-control" readonly
@@ -544,11 +652,37 @@
                 <label>الكمية المدرجة</label>
                 <input type="number" id="modal-drug-qty" class="form-control" placeholder="0">
             </div>
-
             <div style="display: flex; gap: 10px; margin-top: 10px;">
                 <button type="button" class="btn-primary-custom" id="save-drug-btn">حفظ وإضافة</button>
                 <button type="button" class="btn-primary-custom" id="close-modal-btn"
                     style="background: var(--secondary-gray);">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Anti-Fraud Confirmation Dialog Modal -->
+    <div class="modal-overlay" id="fraud-modal">
+        <div class="modal-card">
+            <h3 style="font-weight: 900; color: var(--danger); display: flex; align-items: center; gap: 8px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                تأكيد بلاغ الاحتيال والحظر
+            </h3>
+            <p style="font-weight: 600; font-size: 14px; color: var(--text-dark);">
+                هل أنت متأكد من رغبتك في إبلاغ النظام عن هذا الطلب كطلب وهمي وحظر هذه الصيدلية نهائياً من مستودعك؟ لن
+                تستطيع الصيدلية إجراء أي طلبات مستقبلاً.
+            </p>
+            <input type="hidden" id="fraud-target-pharmacy-id">
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button type="button" class="btn-primary-custom" style="background: var(--danger);"
+                    onclick="executeBlacklistPharmacy()">تأكيد الحظر والإبلاغ</button>
+                <button type="button" class="btn-primary-custom" style="background: var(--secondary-gray);"
+                    onclick="closeFraudModal()">إلغاء</button>
             </div>
         </div>
     </div>
@@ -564,7 +698,20 @@
 
         let warehouseInventory = JSON.parse(localStorage.getItem('pharmalink_inventory')) || [
             { id: '890123456789', name: 'أوجمنتين 1 كجم - Augmentin', price: 15000, qty: 120 },
-            { id: '890987654321', name: 'باراسيتامول 500 ملغ - Panadol', price: 3500, qty: 450 }
+            { id: '890987654321', name: 'باراسيتامول 500 ملغ - Panadol', price: 3500, qty: 450 },
+            { id: '890555444333', name: 'أوميبرازول 20 ملغ - Omeprazole', price: 8200, qty: 300 },
+            { id: '890111222333', name: 'سيفوتكس 1غ - Cefotaxime', price: 12500, qty: 180 },
+            { id: '890777888999', name: 'فيتامين سي فوار - C-Max', price: 4500, qty: 600 }
+        ];
+
+        // Anti-fraud blacklisted pharmacies array
+        let blacklistedPharmacies = JSON.parse(localStorage.getItem('pharmalink_blacklist')) || [];
+
+        // Pending warehouse orders with anti-fraud tracking
+        let warehouseOrders = [
+            { id: 'ORD-901', pharmacyId: 'PH-SYN-501', pharmacyName: 'صيدلية الشفاء المركزية', drug: 'أوجمنتين 1 كجم', total: '45,000 ل.س ($35)' },
+            { id: 'ORD-902', pharmacyId: 'PH-SYN-502', pharmacyName: 'صيدلية النور الحديثة', drug: 'باراسيتامول 500 ملغ', total: '17,500 ل.س ($14)' },
+            { id: 'ORD-903', pharmacyId: 'PH-SYN-503', pharmacyName: 'صيدلية ابن سينا', drug: 'أوميبرازول 20 ملغ', total: '24,600 ل.س ($19)' }
         ];
 
         let cartItems = [];
@@ -602,14 +749,12 @@
                 container.innerHTML = `
                     <h3 style="margin-bottom: 20px; font-weight: 900; text-align: center;">اختر نوع الحساب في المنصة</h3>
                     <div class="role-cards">
-                        <!-- مستودع أدوية: مبنى متجر/مستودع تجاري ضخم ونظيف (Bulk Distribution Hub Center) -->
                         <div class="role-card ${wizardData.role === 'warehouse' ? 'selected' : ''}" onclick="selectRole('warehouse')">
                             <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="${wizardData.role === 'warehouse' ? '#008080' : '#6C7A89'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 21h18M3 7l9-4 9 4M4 10v11M20 10v11M8 14h8M8 18h8"/>
                             </svg>
                             <div>مستودع أدوية</div>
                         </div>
-                        <!-- صيدلية: واجهة صيدلية متخصصة مع الصليب الطبي المعتمد (Pharmacy Storefront Clinical Cross) -->
                         <div class="role-card ${wizardData.role === 'pharmacy' ? 'selected' : ''}" onclick="selectRole('pharmacy')">
                             <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="${wizardData.role === 'pharmacy' ? '#008080' : '#6C7A89'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -690,16 +835,16 @@
             const navBar = document.getElementById('bottom-navigation-bar');
             if (appState.role === 'pharmacy') {
                 navBar.innerHTML = `
-                    <div class="nav-item ${activeTab === 'home' ? 'active' : ''}" onclick="switchTab('home')">الرئيسية</div>
+                    <div class="nav-item ${activeTab === 'home' ? 'active' : ''}" onclick="switchTab('home')">الرئيسية والمستودعات</div>
                     <div class="nav-item ${activeTab === 'orders' ? 'active' : ''}" onclick="switchTab('orders')">الطلبات الحالية</div>
                     <div class="nav-item ${activeTab === 'cart' ? 'active' : ''}" onclick="switchTab('cart')">السلة</div>
                     <div class="nav-item ${activeTab === 'profile' ? 'active' : ''}" onclick="switchTab('profile')">أنا</div>
                 `;
             } else {
                 navBar.innerHTML = `
-                    <div class="nav-item ${activeTab === 'home' ? 'active' : ''}" onclick="switchTab('home')">الرئيسية</div>
+                    <div class="nav-item ${activeTab === 'home' ? 'active' : ''}" onclick="switchTab('home')">الرئيسية والتحليلات</div>
                     <div class="nav-item ${activeTab === 'warehouse' ? 'active' : ''}" onclick="switchTab('warehouse')">المخزن</div>
-                    <div class="nav-item ${activeTab === 'invoices' ? 'active' : ''}" onclick="switchTab('invoices')">الفواتير</div>
+                    <div class="nav-item ${activeTab === 'orders' ? 'active' : ''}" onclick="switchTab('orders')">الطلبات الحالية</div>
                     <div class="nav-item ${activeTab === 'profile' ? 'active' : ''}" onclick="switchTab('profile')">أنا</div>
                 `;
             }
@@ -714,24 +859,25 @@
         function renderActiveTabContent() {
             const container = document.getElementById('main-view-container');
             if (appState.role === 'warehouse') {
-                if (activeTab === 'home') renderWarehouseHome(container);
+                if (activeTab === 'home') renderWarehouseHomeAnalytics(container);
                 else if (activeTab === 'warehouse') renderWarehouseStock(container);
-                else if (activeTab === 'invoices') renderWarehouseInvoices(container);
+                else if (activeTab === 'orders') renderWarehouseOrdersTab(container);
                 else if (activeTab === 'profile') renderProfileView(container);
             } else {
-                if (activeTab === 'home') renderPharmacyHome(container);
+                if (activeTab === 'home') renderPharmacyHomeFeed(container);
                 else if (activeTab === 'orders') renderPharmacyOrders(container);
                 else if (activeTab === 'cart') renderPharmacyCart(container);
                 else if (activeTab === 'profile') renderProfileView(container);
             }
         }
 
-        function renderWarehouseHome(container) {
+        /* --- Upgrade #9: Warehouse Sales Analytics Dashboard Implementation --- */
+        function renderWarehouseHomeAnalytics(container) {
             let totalRevenue = warehouseInventory.reduce((acc, item) => acc + (item.price * item.qty), 0);
             let commission = totalRevenue * 0.01;
 
             container.innerHTML = `
-                <div class="analytics-grid">
+                <div class="analytics-grid" style="margin-bottom: 25px;">
                     <div class="metric-card">
                         <h4>إجمالي مبيعات المستودع</h4>
                         <div class="value">${totalRevenue.toLocaleString()} ل.س</div>
@@ -741,6 +887,169 @@
                         <div class="value" style="color: var(--primary-teal);">${commission.toLocaleString()} ل.س</div>
                         <button class="btn-primary-custom" style="margin-top: 15px; font-size: 13px; padding: 8px;" onclick="triggerCommissionPay()">إرسال طلب تسديد العمولات</button>
                     </div>
+                </div>
+
+                <div class="analytics-dual-container">
+                    <!-- Left Column: أكثر الأصناف مبيعاً (Top 5 Drugs Progress Bars) -->
+                    <div class="analytics-panel">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            أكثر الأصناف مبيعاً
+                        </h3>
+                        <div>
+                            ${warehouseInventory.slice(0, 5).map((item, idx) => {
+                let percentages = [92, 78, 65, 50, 40];
+                let pct = percentages[idx] || 50;
+                return `
+                                    <div class="progress-bar-item">
+                                        <div class="progress-bar-info">
+                                            <span>${item.name}</span>
+                                            <span>${item.qty} وحدة</span>
+                                        </div>
+                                        <div class="progress-bar-track">
+                                            <div class="progress-bar-fill" style="width: ${pct}%;"></div>
+                                        </div>
+                                    </div>
+                                `;
+            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Right Column: أكثر الصيدليات نشاطاً (Top 3 Ordering Pharmacies Spreadsheet) -->
+                    <div class="analytics-panel">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            أكثر الصيدليات نشاطاً
+                        </h3>
+                        <table class="mini-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم الصيدلية</th>
+                                    <th>حجم الفواتير الشهرية</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>صيدلية الشفاء المركزية</td>
+                                    <td style="font-weight: 800; color: var(--primary-teal);">1,850$ (4,620,000 ل.س)</td>
+                                </tr>
+                                <tr>
+                                    <td>صيدلية النور الحديثة</td>
+                                    <td style="font-weight: 800; color: var(--primary-teal);">1,420$ (3,550,000 ل.س)</td>
+                                </tr>
+                                <tr>
+                                    <td>صيدلية ابن سينا</td>
+                                    <td style="font-weight: 800; color: var(--primary-teal);">980$ (2,450,000 ل.س)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* --- Upgrade #10: Anti-Fraud & Rating Implementation in Warehouse Orders Tab --- */
+        function renderWarehouseOrdersTab(container) {
+            container.innerHTML = `
+                <h2 style="font-weight: 900; margin-bottom: 20px;">الطلبات الواردة وإدارة مكافحة الاحتيال</h2>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>اسم الصيدلية الطالبة</th>
+                                <th>الصنف المطلوب</th>
+                                <th>القيمة الإجمالية</th>
+                                <th>إجراءات مكافحة الاحتيال</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${warehouseOrders.length === 0 ? `<tr><td colspan="5" style="text-align:center; padding:20px;">لا توجد طلبات معلقة</td></tr>` : warehouseOrders.map(ord => {
+                let isBlacklisted = blacklistedPharmacies.includes(ord.pharmacyId);
+                return `
+                                    <tr>
+                                        <td>${ord.id}</td>
+                                        <td>
+                                            ${ord.pharmacyName}
+                                            ${isBlacklisted ? '<span style="color: var(--danger); font-size: 11px; margin-right: 6px; font-weight: 800;">[محظور / مبلّغ عنه]</span>' : ''}
+                                        </td>
+                                        <td>${ord.drug}</td>
+                                        <td>${ord.total}</td>
+                                        <td>
+                                            ${isBlacklisted ? '<span style="color: var(--secondary-gray); font-size: 12px; font-weight: 800;">تم الحظر مسبقاً</span>' : `
+                                                <button class="btn-fraud-report" onclick="openFraudModal('${ord.pharmacyId}')">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                                    إبلاغ عن طلب وهمي / حظر الصيدلية
+                                                </button>
+                                            `}
+                                        </td>
+                                    </tr>
+                                `;
+            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function openFraudModal(pharmacyId) {
+            document.getElementById('fraud-target-pharmacy-id').value = pharmacyId;
+            document.getElementById('fraud-modal').style.display = 'flex';
+        }
+
+        function closeFraudModal() {
+            document.getElementById('fraud-modal').style.display = 'none';
+        }
+
+        function executeBlacklistPharmacy() {
+            let pId = document.getElementById('fraud-target-pharmacy-id').value;
+            if (pId && !blacklistedPharmacies.includes(pId)) {
+                blacklistedPharmacies.push(pId);
+                localStorage.setItem('pharmalink_blacklist', JSON.stringify(blacklistedPharmacies));
+            }
+            closeFraudModal();
+            renderActiveTabContent();
+            showToast('تم حظر الصيدلية وإضافة الهوية إلى القائمة السوداء بنجاح');
+        }
+
+        /* --- Pharmacy View: Rating & Verification Matrix Feed --- */
+        function renderPharmacyHomeFeed(container) {
+            container.innerHTML = `
+                <h2 style="font-weight: 900; margin-bottom: 20px;">المستودعات الطبية المعتمدة في ${appState.region}</h2>
+                
+                <!-- Upgrade #10: Rating, Verification & Anti-Fraud System Badge Matrix -->
+                <div class="rating-matrix-badge">
+                    <div style="display: flex; gap: 4px;">
+                        <svg class="star-svg" width="16" height="16" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg class="star-svg" width="16" height="16" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg class="star-svg" width="16" height="16" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg class="star-svg" width="16" height="16" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#E0E0E0" stroke="#BDC3C7"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <span style="font-weight: 800; font-size: 13px; color: var(--primary-teal);">مؤشر الموثوقية اللوجستية: 4.8/5.0 (سرعة عالية، دقة تطابق الأسعار بنسبة 99%)</span>
+                </div>
+
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اسم الدواء</th>
+                                <th>السعر</th>
+                                <th>الكمية المتوفرة</th>
+                                <th>إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${warehouseInventory.map(item => `
+                                <tr>
+                                    <td>${item.name}</td>
+                                    <td>${item.price.toLocaleString()} ل.س</td>
+                                    <td>${item.qty}</td>
+                                    <td><button class="btn-primary-custom" style="width: auto; padding: 6px 12px; font-size: 13px;" onclick="addToCart('${item.name}', ${item.price})">إضافة للسلة</button></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
                 </div>
             `;
         }
@@ -788,44 +1097,6 @@
         function filterStockTable(query) {
             const filtered = warehouseInventory.filter(item => item.name.toLowerCase().includes(query.toLowerCase()) || item.id.includes(query));
             document.getElementById('stock-table-body').innerHTML = renderStockRows(filtered);
-        }
-
-        function renderWarehouseInvoices(container) {
-            container.innerHTML = `
-                <h2 style="font-weight: 900; margin-bottom: 20px;">إدارة الفواتير والتقارير</h2>
-                <div class="data-table-container" style="padding: 30px; text-align: center;">
-                    <p style="margin-bottom: 20px; font-weight: 800; color: var(--secondary-gray);">اضغط أدناه لتصدير الفواتير الحالية وإرسالها مباشرة عبر تطبيق واتساب لعملائك أو سائقي التوصيل.</p>
-                    <button class="btn-primary-custom" style="max-width: 350px; margin: 0 auto; background: #25D366;" onclick="sendWhatsAppInvoice()">تصدير وإرسال عبر الواتساب</button>
-                </div>
-            `;
-        }
-
-        function renderPharmacyHome(container) {
-            container.innerHTML = `
-                <h2 style="font-weight: 900; margin-bottom: 20px;">الأدوية المتاحة في المستودعات (طلب فوري)</h2>
-                <div class="data-table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>اسم الدواء</th>
-                                <th>السعر</th>
-                                <th>الكمية المتوفرة</th>
-                                <th>إجراء</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${warehouseInventory.map(item => `
-                                <tr>
-                                    <td>${item.name}</td>
-                                    <td>${item.price.toLocaleString()} ل.س</td>
-                                    <td>${item.qty}</td>
-                                    <td><button class="btn-primary-custom" style="width: auto; padding: 6px 12px; font-size: 13px;" onclick="addToCart('${item.name}', ${item.price})">إضافة للسلة</button></td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
         }
 
         function renderPharmacyOrders(container) {
@@ -990,11 +1261,6 @@
             let wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Inventory");
             XLSX.writeFile(wb, "PharmaLink_Stock.xlsx");
-        }
-
-        function sendWhatsAppInvoice() {
-            let text = encodeURIComponent("مرحباً، إليكم ملخص فواتير وحركات منصة PharmaLink الطبية.");
-            window.open(`https://wa.me/?text=${text}`, '_blank');
         }
     </script>
 </body>
