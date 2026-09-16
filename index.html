@@ -147,14 +147,7 @@
             font-weight: 900;
             letter-spacing: 0.5px;
             text-align: center;
-        }
-
-        .splash-title span.pharmacy {
-            color: var(--arch-gray);
-        }
-
-        .splash-title span.link {
-            color: var(--primary-teal);
+            color: var(--charcoal-dark);
         }
 
         .splash-subtitle {
@@ -170,7 +163,7 @@
         }
 
         .splash-subtitle span.sub-core {
-            color: #009688;
+            color: var(--primary-teal);
             font-weight: 800;
         }
 
@@ -363,6 +356,8 @@
             background: var(--white);
             outline: none;
             transition: var(--transition-smooth);
+            direction: rtl;
+            text-align: right;
         }
 
         .form-input:focus {
@@ -815,9 +810,7 @@
             </div>
             <div class="pill-shadow"></div>
         </div>
-        <div class="splash-title">
-            <span class="pharmacy">Pharma</span><span class="link">Link</span>
-        </div>
+        <div class="splash-title">PharmaLink</div>
         <div class="splash-subtitle">
             <span class="sub-gray">A Subsidiary of Millennium</span> <span class="sub-core">Core</span>
         </div>
@@ -838,7 +831,7 @@
             <div id="onboarding-form">
                 <!-- Step 1: Identity Selection -->
                 <div class="wizard-step-content active" data-content="1">
-                    <div class="step-title">اختر الهوية التجارية للمنشأة</div>
+                    <div class="step-title">اختر صفتك في المنصة</div>
                     <div class="identity-grid">
                         <div class="identity-option" data-value="warehouse" id="option-warehouse">
                             <svg viewBox="0 0 24 24">
@@ -849,10 +842,10 @@
                                 <path d="M12 9.5v3M10.5 11h3" stroke="#FFFFFF" stroke-width="1.5"
                                     stroke-linecap="round" />
                             </svg>
-                            <span>مستودع أدوية لوجستي</span>
+                            <span>مستودع أدوية</span>
                         </div>
                         <div class="identity-option" data-value="pharmacy" id="option-pharmacy">
-                            <svg viewBox="0 0 24 24">
+                            <svg viewBox="0 0 24 24" style="transform: rotate(-45deg);">
                                 <path d="M6 3h12a3 3 0 0 1 3 3v6H3V6a3 3 0 0 1 3-3z" fill="#008080" />
                                 <path d="M3 15h18v3a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-3z" fill="#6C7A89" />
                                 <path d="M7 10.5h10" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" />
@@ -863,45 +856,45 @@
                     <input type="hidden" id="facility-type" value="">
                 </div>
 
-                <!-- Step 2: Responsible Officer -->
+                <!-- Step 2: Phone Number -->
                 <div class="wizard-step-content" data-content="2">
-                    <div class="step-title">اسم المسؤول أو الصيدلاني الكلي</div>
+                    <div class="step-title">رقم الهاتف</div>
                     <div class="form-group">
-                        <label class="form-label" for="officer-name">الاسم الثلاثي المعتمد</label>
+                        <label class="form-label" for="phone-number">رقم الاتصال المعتمد</label>
                         <div class="input-with-icon">
                             <svg viewBox="0 0 24 24">
                                 <path
-                                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                    d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                             </svg>
-                            <input type="text" id="officer-name" class="form-input" placeholder="مثال: د. محمد يحيى">
+                            <input type="tel" id="phone-number" class="form-input" placeholder="اكتب رقم الهاتف هنا...">
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 3: Facility Name -->
+                <!-- Step 3: Polymorphic Facility Name -->
                 <div class="wizard-step-content" data-content="3">
-                    <div class="step-title">اسم المنشأة التجارية</div>
+                    <div class="step-title" id="step3-title">اسم المنشأة الرسمية</div>
                     <div class="form-group">
-                        <label class="form-label" for="facility-name-input">اسم المستودع أو الصيدلية الرسمية</label>
+                        <label class="form-label" id="step3-label">اسم المنشأة</label>
                         <div class="input-with-icon">
                             <svg viewBox="0 0 24 24">
                                 <path
                                     d="M12 3L2 12h3v8h14v-8h3L12 3zm0 3.7c1.48 0 2.7 1.22 2.7 2.7s-1.22 2.7-2.7 2.7-2.7-1.22-2.7-2.7 1.22-2.7 2.7-2.7zM6 18v-1.5c0-1.1 2-2 3-2s3 .9 3 2V18H6zm12 0h-4v-1.5c0-.66-.27-1.27-.72-1.72 1.34-.33 3.72-1.28 4.72-2.78V18z" />
                             </svg>
                             <input type="text" id="facility-name-input" class="form-input"
-                                placeholder="مثال: مستودع النخبة الدوائي">
+                                placeholder="اكتب الاسم الرسمي هنا...">
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 4: Local Geographic Scope -->
+                <!-- Step 4: Geographic Scope -->
                 <div class="wizard-step-content" data-content="4">
-                    <div class="step-title">النطاق الجغرافي المحلي في شمال سوريا</div>
+                    <div class="step-title">اختر منطقك</div>
                     <div class="form-group">
-                        <label class="form-label">اختر الإقليم التشغيلي</label>
+                        <label class="form-label">النطاق الجغرافي</label>
                         <div class="custom-select-wrapper" id="custom-select-wrapper">
                             <div class="custom-select" id="custom-select-trigger-box">
-                                <span id="selected-region-text">اختر الإقليم...</span>
+                                <span id="selected-region-text">اختر المنطقة...</span>
                                 <div class="custom-select-trigger">
                                     <svg viewBox="0 0 24 24">
                                         <path d="M7 10l5 5 5-5z" />
@@ -1077,16 +1070,29 @@
                 }
             }
 
-            // Identity selection listeners
+            // Identity selection listeners with Polymorphic Field updates
             const optWarehouse = document.getElementById('option-warehouse');
             const optPharmacy = document.getElementById('option-pharmacy');
             const facilityTypeInput = document.getElementById('facility-type');
+            const step3Title = document.getElementById('step3-title');
+            const step3Label = document.getElementById('step3-label');
+
+            function updatePolymorphicLabels(type) {
+                if (type === 'warehouse') {
+                    step3Title.innerText = 'اسم المستودع الرسمي';
+                    step3Label.innerText = 'اسم المستودع';
+                } else if (type === 'pharmacy') {
+                    step3Title.innerText = 'اسم الصيدلية الرسمية';
+                    step3Label.innerText = 'اسم الصيدلية';
+                }
+            }
 
             optWarehouse.addEventListener('click', (e) => {
                 e.stopPropagation();
                 facilityTypeInput.value = 'warehouse';
                 optWarehouse.classList.add('selected');
                 optPharmacy.classList.remove('selected');
+                updatePolymorphicLabels('warehouse');
             });
 
             optPharmacy.addEventListener('click', (e) => {
@@ -1094,9 +1100,10 @@
                 facilityTypeInput.value = 'pharmacy';
                 optPharmacy.classList.add('selected');
                 optWarehouse.classList.remove('selected');
+                updatePolymorphicLabels('pharmacy');
             });
 
-            // Custom Dropdown Handling
+            // Custom Dropdown Handling with Event Propagation Fix
             const customSelectBox = document.getElementById('custom-select-trigger-box');
             const regionTextSpan = document.getElementById('selected-region-text');
             const geographicScopeInput = document.getElementById('geographic-scope');
@@ -1120,18 +1127,18 @@
                 customSelectBox.classList.remove('open');
             });
 
-            // Wizard Step Navigation
+            // Wizard Step Navigation State Machine
             const btnNext = document.getElementById('btn-next');
             const btnPrev = document.getElementById('btn-prev');
 
             btnNext.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (currentStep === 1 && !facilityTypeInput.value) {
-                    alert('يرجى اختيار الهوية التجارية للمنشأة للمتابعة.');
+                    alert('يرجى اختيار صفتك في المنصة للمتابعة.');
                     return;
                 }
-                if (currentStep === 2 && !document.getElementById('officer-name').value.trim()) {
-                    alert('يرجى إدخال اسم المسؤول أو الصيدلاني الكلي.');
+                if (currentStep === 2 && !document.getElementById('phone-number').value.trim()) {
+                    alert('يرجى إدخال رقم الهاتف.');
                     return;
                 }
                 if (currentStep === 3 && !document.getElementById('facility-name-input').value.trim()) {
@@ -1139,7 +1146,7 @@
                     return;
                 }
                 if (currentStep === 4 && !geographicScopeInput.value) {
-                    alert('يرجى اختيار النطاق الجغرافي المحلي.');
+                    alert('يرجى اختيار المنطقة.');
                     return;
                 }
 
@@ -1187,7 +1194,7 @@
                 }
 
                 if (currentStep === totalSteps) {
-                    btnNext.innerText = 'إنشاء الحساب وتفعيل النظام';
+                    btnNext.innerText = 'تسجيل الدخول';
                     btnNext.className = 'btn btn-submit';
                 } else {
                     btnNext.innerHTML = 'التالي <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>';
@@ -1198,7 +1205,7 @@
             function completeOnboardingProcess() {
                 const formData = {
                     type: facilityTypeInput.value,
-                    officer: document.getElementById('officer-name').value.trim(),
+                    phone: document.getElementById('phone-number').value.trim(),
                     facility: document.getElementById('facility-name-input').value.trim(),
                     scope: geographicScopeInput.value,
                     token: 'pk_live_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -1226,7 +1233,7 @@
                 document.getElementById('client-dashboard').style.display = 'flex';
             }
 
-            // Logout Handler
+            // Logout Handler State Machine Reset
             document.getElementById('btn-logout').addEventListener('click', (e) => {
                 e.stopPropagation();
                 localStorage.removeItem('pharmalink_token');
