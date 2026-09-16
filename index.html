@@ -4,21 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - منصة التوريد الدوائي الرقمية</title>
+    <title>PharmaLink - منصة التوريد الدوائي الذكية</title>
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- HTML5 QR Code Scanner Library CDN -->
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         :root {
             --primary: #008080;
             --secondary: #6C7A89;
-            --text-dark: #1E2229;
+            --text-main: #1E2229;
             --bg-canvas: #F4F7F6;
-            --badge: #1DA1F2;
-            --danger: #D9534F;
-            --disabled: #CBD5E1;
+            --badge-blue: #1DA1F2;
+            --alert-red: #D9534F;
+            --border-color: #CBD5E1;
             --white: #FFFFFF;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         * {
@@ -26,122 +30,132 @@
             margin: 0;
             padding: 0;
             font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-canvas);
-            color: var(--text-dark);
+            color: var(--text-main);
             min-height: 100vh;
-            overflow-x: hidden;
             display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
             flex-direction: column;
         }
 
-        /* Cinematic Splash Screen */
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .font-black {
+            font-weight: 900;
+        }
+
+        /* PHASE 1: Cinematic Splash Screen */
         #splash-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
             background-color: var(--bg-canvas);
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
             transition: opacity 0.6s ease, visibility 0.6s ease;
         }
 
-        #splash-screen.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .capsule-container {
-            position: relative;
-            width: 140px;
-            height: 70px;
-            animation: capsuleLevitate 2.5s infinite alternate ease-in-out;
-        }
-
-        .capsule-pill {
-            width: 140px;
-            height: 70px;
-            border-radius: 35px;
+        .splash-capsule-container {
             display: flex;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 128, 128, 0.2);
-            transform: scale3d(0.1, 0.1, 1);
-            animation: capsulePopIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            flex-direction: column;
+            align-items: center;
+            animation: capsuleLevitate 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        .pill-left {
-            width: 50%;
-            background-color: var(--secondary);
+        .splash-pill {
+            width: 140px;
+            height: 70px;
+            filter: drop-shadow(0 15px 25px rgba(0, 128, 128, 0.25));
         }
 
-        .pill-right {
-            width: 50%;
-            background-color: var(--primary);
-        }
-
-        .capsule-shadow {
-            width: 100px;
+        .splash-shadow {
+            width: 80px;
             height: 12px;
-            background: rgba(0, 0, 0, 0.12);
+            background: rgba(30, 34, 41, 0.15);
             border-radius: 50%;
-            margin-top: 25px;
-            filter: blur(4px);
-            animation: shadowPulse 2.5s infinite alternate ease-in-out;
+            margin-top: 24px;
+            animation: shadowPulse 2.5s ease-in-out infinite;
         }
 
         .splash-brand {
-            margin-top: 25px;
-            font-size: 2rem;
+            margin-top: 20px;
+            font-size: 2.2rem;
             font-weight: 900;
             color: var(--primary);
             letter-spacing: 1px;
             opacity: 0;
-            animation: fadeInText 0.8s ease 0.5s forwards;
-        }
-
-        @keyframes capsulePopIn {
-            0% {
-                transform: scale3d(0.1, 0.1, 1);
-                filter: blur(10px);
-            }
-
-            70% {
-                transform: scale3d(1.08, 1.08, 1);
-                filter: blur(0);
-            }
-
-            100% {
-                transform: scale3d(1, 1, 1);
-                filter: blur(0);
-            }
+            animation: fadeInText 1s ease 0.8s forwards;
         }
 
         @keyframes capsuleLevitate {
             0% {
-                transform: translateY(0);
+                transform: scale3d(0.1, 0.1, 1) translateY(60px);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale3d(1.08, 1.08, 1) translateY(-10px);
+                opacity: 1;
             }
 
             100% {
-                transform: translateY(-12px);
+                transform: scale3d(1, 1, 1) translateY(0);
+                opacity: 1;
             }
         }
 
         @keyframes shadowPulse {
-            0% {
+
+            0%,
+            100% {
                 transform: scale(1);
-                opacity: 0.8;
+                opacity: 0.15;
             }
 
-            100% {
-                transform: scale(0.75);
-                opacity: 0.4;
+            50% {
+                transform: scale(0.6);
+                opacity: 0.08;
             }
         }
 
@@ -152,37 +166,43 @@
             }
         }
 
-        /* Onboarding Wizard View */
+        /* PHASE 2: Onboarding Wizard */
         #onboarding-container {
-            display: none;
-            width: 100%;
-            max-width: 540px;
-            margin: auto;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-canvas);
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
+            overflow-y: auto;
         }
 
         .wizard-card {
             background: var(--white);
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            padding: 35px;
-            position: relative;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(0, 128, 128, 0.1);
         }
 
         .wizard-header {
+            margin-bottom: 24px;
             text-align: center;
-            margin-bottom: 25px;
         }
 
-        .wizard-header h2 {
+        .wizard-title {
             font-size: 1.6rem;
-            font-weight: 900;
-            color: var(--primary);
+            font-weight: 800;
+            color: var(--text-main);
             margin-bottom: 8px;
         }
 
-        .wizard-header p {
-            font-size: 0.9rem;
+        .wizard-subtitle {
+            font-size: 0.95rem;
             color: var(--secondary);
             font-weight: 600;
         }
@@ -190,9 +210,9 @@
         .timeline-bar {
             width: 100%;
             height: 6px;
-            background: var(--bg-canvas);
+            background: #E2E8F0;
             border-radius: 3px;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
             overflow: hidden;
         }
 
@@ -203,16 +223,16 @@
             transition: width 0.4s ease;
         }
 
-        .wizard-step-content {
+        .step-content {
             display: none;
         }
 
-        .wizard-step-content.active {
+        .step-content.active {
             display: block;
-            animation: fadeIn 0.4s ease;
+            animation: fadeInStep 0.4s ease;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeInStep {
             from {
                 opacity: 0;
                 transform: translateY(10px);
@@ -228,165 +248,140 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
         .role-card {
-            border: 2px solid var(--bg-canvas);
+            border: 2px solid var(--border-color);
             border-radius: 16px;
-            padding: 20px 15px;
+            padding: 24px 16px;
             text-align: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             background: var(--white);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            gap: 12px;
         }
 
         .role-card:hover {
             border-color: var(--primary);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
 
         .role-card.selected {
             border-color: var(--primary);
             background: rgba(0, 128, 128, 0.04);
-            box-shadow: 0 5px 15px rgba(0, 128, 128, 0.1);
         }
 
         .role-card svg {
-            width: 75px;
-            height: 75px;
-            margin-bottom: 12px;
+            width: 90px;
+            height: 90px;
         }
 
         .role-card span {
             font-weight: 800;
-            font-size: 0.95s;
-            color: var(--text-dark);
+            font-size: 1.1rem;
+            color: var(--text-main);
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
             font-weight: 700;
-            font-size: 0.9rem;
             margin-bottom: 8px;
-            color: var(--text-dark);
+            color: var(--text-main);
+            font-size: 0.95rem;
         }
 
-        .form-control {
+        .form-input,
+        .form-select {
             width: 100%;
-            padding: 14px 18px;
-            border: 2px solid var(--bg-canvas);
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
             border-radius: 12px;
             font-size: 1rem;
-            color: var(--text-dark);
             outline: none;
-            transition: var(--transition);
-            background: var(--bg-canvas);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
+            transition: border-color 0.2s;
             background: var(--white);
+            color: var(--text-main);
+            font-weight: 600;
         }
 
-        .location-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .location-option {
-            border: 2px solid var(--bg-canvas);
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            background: var(--bg-canvas);
-            text-align: right;
-        }
-
-        .location-option:hover {
-            border-color: var(--secondary);
-        }
-
-        .location-option.selected {
+        .form-input:focus,
+        .form-select:focus {
             border-color: var(--primary);
-            background: rgba(0, 128, 128, 0.04);
-            color: var(--primary);
         }
 
-        .wizard-footer {
+        .wizard-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 30px;
+            margin-top: 32px;
         }
 
         .btn {
             padding: 12px 28px;
             border-radius: 12px;
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 1rem;
             cursor: pointer;
             border: none;
-            transition: var(--transition);
+            transition: all 0.2s;
         }
 
         .btn-primary {
-            background-color: var(--primary);
+            background: var(--primary);
             color: var(--white);
         }
 
         .btn-primary:hover:not(:disabled) {
             opacity: 0.9;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
-        .btn:disabled {
-            background-color: var(--disabled) !important;
+        .btn-primary:disabled {
+            background: #CBD5E1;
             cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
         }
 
         .btn-secondary {
-            background-color: transparent;
+            background: transparent;
             color: var(--secondary);
+            border: 2px solid var(--border-color);
         }
 
-        /* Main App Interface */
-        #app-container {
-            display: none;
+        .btn-secondary:hover {
+            border-color: var(--secondary);
+        }
+
+        /* PHASE 3: Main Dashboard Layout */
+        #main-app {
+            display: flex;
             flex-direction: column;
             min-height: 100vh;
-            width: 100%;
         }
 
         .top-navbar {
-            background-color: var(--primary);
+            background: var(--primary);
             color: var(--white);
-            padding: 15px 25px;
+            padding: 16px 24px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            justify-content: space-between;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 500;
+            box-shadow: var(--shadow-sm);
         }
 
-        .nav-brand {
-            font-size: 1.3rem;
+        .nav-logo {
+            font-size: 1.4rem;
             font-weight: 900;
             letter-spacing: 0.5px;
         }
@@ -402,22 +397,22 @@
             font-weight: 700;
         }
 
-        .main-content {
+        .main-content-area {
             flex: 1;
-            padding: 25px;
+            padding: 24px;
             padding-bottom: 100px;
             max-width: 900px;
             width: 100%;
             margin: 0 auto;
         }
 
-        .tab-content {
+        .view-section {
             display: none;
         }
 
-        .tab-content.active {
+        .view-section.active {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeInStep 0.3s ease;
         }
 
         /* Bottom Navigation Strip */
@@ -425,283 +420,288 @@
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
+            right: 0;
             background: var(--white);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
             padding: 10px 0;
-            z-index: 100;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 600;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             background: none;
             border: none;
             cursor: pointer;
             color: var(--secondary);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 700;
-            transition: var(--transition);
+            transition: color 0.2s;
             flex: 1;
         }
 
         .nav-item svg {
             width: 24px;
             height: 24px;
-            transition: var(--transition);
+            fill: currentColor;
         }
 
         .nav-item.active {
             color: var(--primary);
         }
 
-        .nav-item.active svg {
-            transform: scale(1.1);
-        }
-
-        /* UI Components & Cards */
-        .card {
+        /* Components & Cards */
+        .card-box {
             background: var(--white);
             border-radius: 16px;
             padding: 20px;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-sm);
             margin-bottom: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
         }
 
-        .search-box {
+        .search-box-container {
             position: relative;
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
-        .search-box input {
+        .search-input {
             width: 100%;
-            padding: 16px 20px 16px 50px;
-            border: 2px solid var(--bg-canvas);
+            padding: 14px 16px 14px 48px;
+            border: 2px solid var(--border-color);
             border-radius: 14px;
             font-size: 1rem;
             font-weight: 600;
-            background: var(--white);
-            box-shadow: var(--shadow);
             outline: none;
-            transition: var(--transition);
+            background: var(--white);
+            color: var(--text-main);
         }
 
-        .search-box input:focus {
+        .search-input:focus {
             border-color: var(--primary);
         }
 
-        .search-box svg {
+        .search-icon-abs {
             position: absolute;
-            left: 18px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             color: var(--secondary);
         }
 
         .medicine-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 16px;
         }
 
         .medicine-card {
             background: var(--white);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: var(--shadow);
+            border-radius: 14px;
+            padding: 18px;
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            transition: var(--transition);
+            gap: 12px;
+            transition: transform 0.2s;
         }
 
         .medicine-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
         }
 
-        .medicine-title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 6px;
-        }
-
-        .medicine-active-ing {
-            font-size: 0.82rem;
-            color: var(--secondary);
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .medicine-meta {
+        .med-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            padding-top: 12px;
-            border-top: 1px solid var(--bg-canvas);
+            align-items: flex-start;
         }
 
-        .medicine-price {
-            font-weight: 900;
-            color: var(--primary);
+        .med-name {
             font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
         }
 
-        .badge {
-            background: rgba(29, 161, 242, 0.1);
-            color: var(--badge);
+        .med-price {
+            background: rgba(0, 128, 128, 0.1);
+            color: var(--primary);
             padding: 4px 10px;
             border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 0.9rem;
         }
 
-        .btn-sm {
-            padding: 8px 16px;
-            border-radius: 10px;
+        .med-details {
             font-size: 0.85rem;
-            font-weight: 700;
+            color: var(--secondary);
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        /* Deficit Portal Styling */
+        .med-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        /* Deficit Portal ("يلزمني دواء") */
         .deficit-form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
         }
 
         /* Warehouse Inventory & Scanner */
-        .scanner-container {
-            width: 100%;
-            max-width: 400px;
-            margin: 15px auto;
-            border-radius: 12px;
-            overflow: hidden;
-            display: none;
-        }
-
-        /* Wallet & Commission Styling */
-        .wallet-card {
-            background: linear-gradient(135deg, var(--primary) 0%, #005555 100%);
-            color: var(--white);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-            margin-bottom: 25px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .wallet-balance {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin: 10px 0 20px 0;
-        }
-
-        .wallet-details {
-            display: flex;
-            gap: 20px;
-            font-size: 0.9rem;
-            opacity: 0.9;
-            font-weight: 600;
-        }
-
-        /* Modal Overlays */
-        .modal-overlay {
+        .scanner-modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            display: none;
+            inset: 0;
+            background: rgba(30, 34, 41, 0.85);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-card {
+        .scanner-card {
             background: var(--white);
-            border-radius: 20px;
-            padding: 30px;
             width: 100%;
             max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            position: relative;
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
         }
 
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: var(--primary);
-            margin-bottom: 12px;
+        #reader {
+            width: 100% !important;
+            border-radius: 12px;
+            overflow: hidden;
+            border: none !important;
         }
 
-        .modal-desc {
+        /* Wallet & Commission Hub */
+        .wallet-card {
+            background: linear-gradient(135deg, #008080 0%, #005959 100%);
+            color: var(--white);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 24px;
+        }
+
+        .wallet-balance-title {
             font-size: 0.9rem;
-            color: var(--secondary);
-            font-weight: 600;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            opacity: 0.85;
+            font-weight: 700;
+            margin-bottom: 6px;
         }
 
-        .sham-cash-qr-holder {
-            width: 240px;
-            height: 240px;
-            margin: 0 auto 20px auto;
-            border: 2px dashed var(--secondary);
-            border-radius: 14px;
+        .wallet-balance-amount {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+
+        .wallet-details-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 14px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .btn-sham-cash {
+            background: var(--white);
+            color: var(--primary);
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-sham-cash:hover {
+            background: #F8FAFC;
+            transform: translateY(-1px);
+        }
+
+        /* Sham Cash QR Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 34, 41, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 9500;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--bg-canvas);
+            padding: 20px;
+        }
+
+        .sham-modal-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 28px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sham-cash-qr-holder {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
+            background: #F8FAFC;
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
+            position: relative;
         }
 
         .sham-cash-qr-holder img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            padding: 10px;
         }
 
-        /* Orders list & Cart */
-        .cart-item,
-        .order-item {
+        .broadcast-request-card {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 16px;
+            border-right: 4px solid var(--primary);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 14px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--bg-canvas);
-        }
-
-        .cart-item:last-child,
-        .order-item:last-child {
-            border-bottom: none;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--secondary);
-            font-weight: 700;
+            flex-direction: column;
+            gap: 8px;
         }
     </style>
 </head>
@@ -710,48 +710,49 @@
 
     <!-- PHASE 1: Cinematic Splash Screen -->
     <div id="splash-screen">
-        <div class="capsule-container">
-            <div class="capsule-pill">
-                <div class="pill-left"></div>
-                <div class="pill-right"></div>
-            </div>
+        <div class="splash-capsule-container">
+            <svg class="splash-pill" viewBox="0 0 140 70" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 35 0 L 105 0 A 35 35 0 0 1 105 70 L 35 70 A 35 35 0 0 1 35 0 Z" fill="#6C7A89" />
+                <path d="M 105 0 L 35 0 A 35 35 0 0 0 35 70 L 105 70 A 35 35 0 0 0 105 0 Z" fill="#008080" />
+            </svg>
+            <div class="splash-shadow"></div>
         </div>
-        <div class="capsule-shadow"></div>
         <div class="splash-brand">PharmaLink</div>
     </div>
 
-    <!-- PHASE 2: Full-Page Multi-Step Onboarding Wizard -->
-    <div id="onboarding-container">
+    <!-- PHASE 2: Multi-Step Onboarding Wizard -->
+    <div id="onboarding-container" class="hidden">
         <div class="wizard-card">
             <div class="wizard-header">
-                <h2>الانطلاقة الرقمية لشركتك</h2>
-                <p id="wizard-subtitle">أكمل الخطوات التالية لإعداد حسابك المهمني</p>
+                <div class="wizard-title" id="wizard-step-title">اختر طبيعة حسابك المهني</div>
+                <div class="wizard-subtitle" id="wizard-step-subtitle">الخطوة 1 من 4</div>
             </div>
-
             <div class="timeline-bar">
                 <div class="timeline-progress" id="wizard-progress"></div>
             </div>
 
             <!-- Step 1: Role Selection -->
-            <div class="wizard-step-content active" data-step="1">
+            <div class="step-content active" id="step-1">
                 <div class="role-grid">
-                    <div class="role-card" onclick="PharmaLinkApp.selectRole('warehouse')" id="role-warehouse">
-                        <svg viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="150" cy="100" r="70" stroke="#6C7A89" stroke-width="10" fill="none"
-                                class="role-shield" />
-                            <path d="M135 85h30v30h-30z" fill="#6C7A89" class="role-cross" />
-                            <path d="M142 70h16v60h-16z" fill="#6C7A89" class="role-cross" />
-                            <path d="M70 120h120v40H70z" fill="#6C7A89" class="role-truck" />
-                            <circle cx="95" cy="165" r="12" fill="#1E2229" />
-                            <circle cx="175" cy="165" r="12" fill="#1E2229" />
+                    <div class="role-card" data-role="warehouse" onclick="selectRole('warehouse')">
+                        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="150" cy="100" r="75" fill="none" stroke="#CBD5E1" stroke-width="8"
+                                id="wh-shield" />
+                            <path d="M135 70 h30 v20 h20 v30 h-20 v20 h-30 v-20 h-20 v-30 h20 z" fill="#6C7A89"
+                                id="wh-cross" />
+                            <path d="M80 120 h140 v40 h-140 z" fill="#6C7A89" id="wh-truck" />
+                            <circle cx="110" cy="165" r="14" fill="#1E2229" />
+                            <circle cx="190" cy="165" r="14" fill="#1E2229" />
                         </svg>
                         <span>مستودع أدوية</span>
                     </div>
-                    <div class="role-card" onclick="PharmaLinkApp.selectRole('pharmacy')" id="role-pharmacy">
-                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g transform="rotate(45 50 50)">
-                                <rect x="20" y="35" width="60" height="30" rx="15" fill="#6C7A89" class="pill-half-1" />
-                                <path d="M50 35h15a15 15 0 010 30H50V35z" fill="#008080" class="pill-half-2" />
+                    <div class="role-card" data-role="pharmacy" onclick="selectRole('pharmacy')">
+                        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(150, 100) rotate(45)">
+                                <path d="M -50 -25 L 0 -25 A 25 25 0 0 1 0 25 L -50 25 A 25 25 0 0 1 -50 -25 Z"
+                                    fill="#6C7A89" id="ph-left" />
+                                <path d="M 0 -25 L 50 -25 A 25 25 0 0 1 50 25 L 0 25 A 25 25 0 0 1 0 -25 Z"
+                                    fill="#008080" id="ph-right" />
                             </g>
                         </svg>
                         <span>صيدلية</span>
@@ -760,560 +761,866 @@
             </div>
 
             <!-- Step 2: Responsible Person Name -->
-            <div class="wizard-step-content" data-step="2">
+            <div class="step-content" id="step-2">
                 <div class="form-group">
-                    <label>اسم المسؤول أو المدير الفني</label>
-                    <input type="text" id="input-resp-name" class="form-control"
-                        placeholder="أدخل اسمك الكريم الثلاثي..." oninput="PharmaLinkApp.validateStep()">
+                    <label class="form-label">اسم المسؤول المباشر (الصيدلاني / المدير)</label>
+                    <input type="text" class="form-input" id="input-resp-name" placeholder="أدخل الاسم الثلاثي..."
+                        oninput="validateStep()">
                 </div>
             </div>
 
             <!-- Step 3: Entity Profile Name -->
-            <div class="wizard-step-content" data-step="3">
+            <div class="step-content" id="step-3">
                 <div class="form-group">
-                    <label>اسم الكيان التجاري (المستودع أو الصيدلية)</label>
-                    <input type="text" id="input-entity-name" class="form-control"
-                        placeholder="مثال: مستودع النخبة الدوائي..." oninput="PharmaLinkApp.validateStep()">
+                    <label class="form-label" id="entity-name-label">اسم المنشأة التجارية</label>
+                    <input type="text" class="form-input" id="input-entity-name"
+                        placeholder="أدخل اسم الصيدلية أو المستودع..." oninput="validateStep()">
                 </div>
             </div>
 
             <!-- Step 4: Geographic Location -->
-            <div class="wizard-step-content" data-step="4">
-                <label style="display:block; font-weight:700; margin-bottom:12px;">اختر النطاق الجغرافي التشغيلي</label>
-                <div class="location-options">
-                    <div class="location-option" onclick="PharmaLinkApp.selectLocation('منبج وريفها')"
-                        data-loc="منبج وريفها">منبج وريفها</div>
-                    <div class="location-option" onclick="PharmaLinkApp.selectLocation('حلب وريفها')"
-                        data-loc="حلب وريفها">حلب وريفها</div>
-                    <div class="location-option" onclick="PharmaLinkApp.selectLocation('إدلب وريفها')"
-                        data-loc="إدلب وريفها">إدلب وريفها</div>
+            <div class="step-content" id="step-4">
+                <div class="form-group">
+                    <label class="form-label">النطاق الجغرافي للعمليات</label>
+                    <select class="form-select" id="input-geo-region" onchange="validateStep()">
+                        <option value="">-- اختر المنطقة الجغرافية --</option>
+                        <option value="منبج وريفها">منبج وريفها</option>
+                        <option value="حلب وريفها">حلب وريفها</option>
+                        <option value="إدلب وريفها">إدلب وريفها</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="wizard-footer">
-                <button type="button" class="btn btn-secondary" id="wizard-back-btn" onclick="PharmaLinkApp.prevStep()"
-                    style="visibility: hidden;">السابق</button>
-                <button type="button" class="btn btn-primary" id="wizard-next-btn" onclick="PharmaLinkApp.nextStep()"
-                    disabled>التالي</button>
+            <div class="wizard-actions">
+                <button class="btn btn-secondary hidden" id="wizard-prev-btn" onclick="prevWizardStep()">السابق</button>
+                <button class="btn btn-primary" id="wizard-next-btn" disabled onclick="nextWizardStep()">التالي</button>
             </div>
         </div>
     </div>
 
-    <!-- PHASE 3: Main App Interface -->
-    <div id="app-container">
+    <!-- PHASE 3: Main Dashboard Layout -->
+    <div id="main-app" class="hidden">
         <header class="top-navbar">
-            <div class="nav-brand">PharmaLink</div>
-            <div class="nav-location">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
+            <div class="nav-logo">PharmaLink</div>
+            <div class="nav-location" id="nav-location-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                 </svg>
-                <span id="nav-location-text">حلب وريفها</span>
+                <span id="display-geo-region">حلب وريفها</span>
             </div>
         </header>
 
-        <main class="main-content" id="main-content-area">
-            <!-- Dynamic Route Views Injected Here -->
-        </main>
+        <!-- ROUTE A: Pharmacy Account View -->
+        <div id="route-pharmacy" class="view-section">
+            <div class="main-content-area">
+                <!-- Tab 1: Pharmacy Home -->
+                <div class="pharmacy-tab-content active" id="pharmacy-tab-home">
+                    <div class="search-box-container">
+                        <svg class="search-icon-abs" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" class="search-input" id="pharmacy-search-input"
+                            placeholder="ابحث عن نقص دوائي، بدائل علاجية، أو مواد فعالة..."
+                            oninput="handlePharmacySearch()">
+                    </div>
+                    <div class="medicine-grid" id="pharmacy-medicine-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
 
-        <!-- Dynamic Bottom Navigation Strip -->
-        <nav class="bottom-nav" id="bottom-nav-strip">
-            <!-- Injected via JS based on role -->
-        </nav>
-    </div>
+                <!-- Tab 2: Deficit Request Portal ("يلزمني دواء") -->
+                <div class="pharmacy-tab-content hidden" id="pharmacy-tab-deficit">
+                    <div class="card-box">
+                        <h3 class="wizard-title" style="font-size: 1.2rem; margin-bottom: 6px;">طلب تأمين نقص دوائي عاجل
+                        </h3>
+                        <p class="wizard-subtitle" style="margin-bottom: 20px;">أدخل اسم الدواء المفقود وسنقوم بتوجيه
+                            طلبك فوراً لمستودعات منطقتك.</p>
+                        <div class="deficit-form">
+                            <div class="form-group">
+                                <label class="form-label">اسم الدواء أو المادة الفعالة المطلوبة</label>
+                                <input type="text" class="form-input" id="deficit-med-name"
+                                    placeholder="مثال: Augmentin 1g Vial...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">الكمية المطلوبة</label>
+                                <input type="number" class="form-input" id="deficit-med-qty"
+                                    placeholder="عدد العبوات...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">ملاحظات إضافية (اختياري)</label>
+                                <input type="text" class="form-input" id="deficit-med-notes"
+                                    placeholder="الشركة المصنعة المفضلة، البدائل المقبولة...">
+                            </div>
+                            <button class="btn btn-primary" onclick="submitDeficitRequest()">إرسال الطلب لمستودعات
+                                المنطقة</button>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Sham Cash QR Modal Overlay -->
-    <div class="modal-overlay" id="sham-cash-modal">
-        <div class="modal-card">
-            <div class="modal-title">الدفع الآمن عبر شام كاش (Sham Cash)</div>
-            <div class="modal-desc">قم بمسح رمز الاستجابة السريعة أدناه باستخدام تطبيق شام كاش لإتمام سداد عمولة المنصة
-                المستحقة بكل سهولة وأمان.</div>
-            <div class="sham-cash-qr-holder">
-                <!-- Raw physical Sham Cash QR Code provided by user -->
-                <img src="WhatsApp Image 2026-09-15 at 8.45.05 PM.jpeg" alt="Sham Cash QR Code">
+                <!-- Tab 3: Cart View -->
+                <div class="pharmacy-tab-content hidden" id="pharmacy-tab-cart">
+                    <div class="card-box">
+                        <h3 class="wizard-title" style="font-size: 1.2rem; margin-bottom: 16px;">سلة الطلبات الدوائية
+                        </h3>
+                        <div id="cart-items-container">
+                            <p style="color: var(--secondary); text-align: center; padding: 20px;">السلة فارغة حالياً.
+                            </p>
+                        </div>
+                        <div id="cart-summary-section" class="hidden"
+                            style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                            <div
+                                style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; margin-bottom: 16px;">
+                                <span>المجموع الكلي:</span>
+                                <span id="cart-total-amount">0 ل.س</span>
+                            </div>
+                            <button class="btn btn-primary w-full" onclick="checkoutOrder()">إتمام وتأكيد الطلب</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Profile View -->
+                <div class="pharmacy-tab-content hidden" id="pharmacy-tab-profile">
+                    <div class="card-box">
+                        <h3 class="wizard-title" style="font-size: 1.2rem; margin-bottom: 16px;">الملف الشخصي للصيدلية
+                        </h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px; font-weight: 600;">
+                            <div><strong>المسؤول:</strong> <span id="profile-resp-name">-</span></div>
+                            <div><strong>المنشأة:</strong> <span id="profile-entity-name">-</span></div>
+                            <div><strong>النطاق الجغرافي:</strong> <span id="profile-geo-region">-</span></div>
+                            <div><strong>نوع الحساب:</strong> صيدلية معتمدة</div>
+                        </div>
+                        <button class="btn btn-secondary"
+                            style="margin-top: 20px; color: var(--alert-red); border-color: var(--alert-red);"
+                            onclick="resetAccountSession()">إعادة تعيين الحساب</button>
+                    </div>
+                </div>
             </div>
-            <button class="btn btn-primary" style="width:100%;" onclick="PharmaLinkApp.closeShamCashModal()">إغلاق
-                النافذة</button>
+
+            <!-- Pharmacy Bottom Navigation Strip -->
+            <nav class="bottom-nav">
+                <button class="nav-item active" onclick="switchPharmacyTab(0)">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                    <span>الرئيسية</span>
+                </button>
+                <button class="nav-item" onclick="switchPharmacyTab(1)">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                    </svg>
+                    <span>يلزمني دواء</span>
+                </button>
+                <button class="nav-item" onclick="switchPharmacyTab(2)">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                    </svg>
+                    <span>السلة</span>
+                </button>
+                <button class="nav-item" onclick="switchPharmacyTab(3)">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                    </svg>
+                    <span>أنا</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- ROUTE B: Warehouse Account View -->
+        <div id="route-warehouse" class="view-section">
+            <div class="main-content-area">
+                <!-- Tab 1: Warehouse Inventory ("مخزون المستودع") -->
+                <div class="warehouse-tab-content active" id="warehouse-tab-inventory">
+                    <div class="card-box" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 class="wizard-title" style="font-size: 1.1rem; margin-bottom: 4px;">إدارة المخزون
+                                والباركود</h3>
+                            <p class="wizard-subtitle">أضف الأدوية الجديدة عبر مسح الباركود بالكاميرا فوراً.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openBarcodeScannerModal()">مسح باركود الدواء عبر
+                            الكاميرا</button>
+                    </div>
+                    <div class="card-box">
+                        <h3 class="wizard-title" style="font-size: 1.1rem; margin-bottom: 16px;">قائمة الأدوية المسجلة
+                            بالمستودع</h3>
+                        <div class="medicine-grid" id="warehouse-inventory-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Incoming Orders ("الطلبات الواردة") -->
+                <div class="warehouse-tab-content hidden" id="warehouse-tab-orders">
+                    <div class="card-box">
+                        <h3 class="wizard-title" style="font-size: 1.1rem; margin-bottom: 16px;">الطلبات الواردة من
+                            الصيدليات</h3>
+                        <div id="warehouse-incoming-orders">
+                            <p style="color: var(--secondary); text-align: center; padding: 20px;">لا توجد طلبات واردة
+                                حالياً.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Shared Broadcast Deficits ("الطلبات العاجلة المشتركة") -->
+                <div class="warehouse-tab-content hidden" id="warehouse-tab-broadcast">
+                    <div class="card-box">
+                        <h3 class="wizard-title" style="font-size: 1.1rem; margin-bottom: 8px;">الطلبات العاجلة المشتركة
+                            (نواقص الصيدليات)</h3>
+                        <p class="wizard-subtitle" style="margin-bottom: 16px;">نواقص الأدوية المطلوبة في نطاقك
+                            الجغرافي.</p>
+                        <div id="warehouse-broadcast-list">
+                            <p style="color: var(--secondary); text-align: center; padding: 20px;">لا توجد نواقص معلنة
+                                حالياً في منطقتك.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Wallet & Commission Hub ("الحساب والعمولة") -->
+                <div class="warehouse-tab-content hidden" id="warehouse-tab-wallet">
+                    <div class="wallet-card">
+                        <div class="wallet-balance-title">محفظة عمولة المنصة (1% مستحقة)</div>
+                        <div class="wallet-balance-amount" id="wallet-commission-amount">0 ل.س</div>
+                        <div class="wallet-details-row">
+                            <span>إجمالي المبيعات الإجمالية المسجلة:</span>
+                            <span id="wallet-gross-sales">0 ل.س</span>
+                        </div>
+                        <button class="btn-sham-cash" onclick="openShamCashModal()">دفع عمولة المنصة</button>
+                    </div>
+                    <div class="card-box">
+                        <h3 class="wizard-title" style="font-size: 1.1rem; margin-bottom: 12px;">تفاصيل الحساب المؤسسي
+                        </h3>
+                        <div style="display: flex; flex-direction: column; gap: 10px; font-weight: 600;">
+                            <div><strong>مدير المستودع:</strong> <span id="wh-profile-resp">-</span></div>
+                            <div><strong>اسم المستودع:</strong> <span id="wh-profile-entity">-</span></div>
+                            <div><strong>المنطقة:</strong> <span id="wh-profile-geo">-</span></div>
+                        </div>
+                        <button class="btn btn-secondary"
+                            style="margin-top: 20px; color: var(--alert-red); border-color: var(--alert-red);"
+                            onclick="resetAccountSession()">إعادة تعيين الحساب</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warehouse Bottom Navigation Strip -->
+            <nav class="bottom-nav">
+                <button class="nav-item active" onclick="switchWarehouseTab(0)">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zM7 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
+                    </svg>
+                    <span>مخزون المستودع</span>
+                </button>
+                <button class="nav-item" onclick="switchWarehouseTab(1)">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                    </svg>
+                    <span>الطلبات الواردة</span>
+                </button>
+                <button class="nav-item" onclick="switchWarehouseTab(2)">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                    </svg>
+                    <span>الطلبات العاجلة</span>
+                </button>
+                <button class="nav-item" onclick="switchWarehouseTab(3)">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+                    </svg>
+                    <span>الحساب والعمولة</span>
+                </button>
+            </nav>
         </div>
     </div>
 
+    <!-- Barcode Scanner Modal Container -->
+    <div id="scanner-modal-overlay" class="scanner-modal hidden">
+        <div class="scanner-card">
+            <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main);">مسح باركود الدواء</div>
+            <div id="reader"></div>
+            <button class="btn btn-secondary w-full" onclick="closeBarcodeScannerModal()">إغلاق الكاميرا</button>
+        </div>
+    </div>
+
+    <!-- Sham Cash QR Modal Container -->
+    <div id="sham-modal-overlay" class="modal-overlay hidden">
+        <div class="sham-modal-card">
+            <div style="font-weight: 900; font-size: 1.2rem; color: var(--primary);">الدفع الآمن عبر شام كاش (Sham Cash)
+            </div>
+            <p style="font-size: 0.85rem; color: var(--secondary); font-weight: 600;">قم بمسح رمز الاستجابة السريع أدناه
+                عبر تطبيق شام كاش لإتمام سداد عمولة المنصة المستحقة.</p>
+            <div class="sham-cash-qr-holder">
+                <!-- SVG Sham Cash QR Code Mock representation -->
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                    <rect width="100" height="100" fill="#FFFFFF" />
+                    <rect x="10" y="10" width="25" height="25" fill="#1E2229" />
+                    <rect x="15" y="15" width="15" height="15" fill="#FFFFFF" />
+                    <rect x="18" y="18" width="9" height="9" fill="#1E2229" />
+                    <rect x="65" y="10" width="25" height="25" fill="#1E2229" />
+                    <rect x="70" y="15" width="15" height="15" fill="#FFFFFF" />
+                    <rect x="73" y="18" width="9" height="9" fill="#1E2229" />
+                    <rect x="10" y="65" width="25" height="25" fill="#1E2229" />
+                    <rect x="15" y="70" width="15" height="15" fill="#FFFFFF" />
+                    <rect x="18" y="73" width="9" height="9" fill="#1E2229" />
+                    <rect x="42" y="15" width="12" height="12" fill="#1E2229" />
+                    <rect x="42" y="42" width="16" height="16" fill="#008080" />
+                    <rect x="65" y="45" width="10" height="10" fill="#1E2229" />
+                    <rect x="40" y="70" width="12" height="12" fill="#1E2229" />
+                    <rect x="70" y="70" width="20" height="20" fill="#1E2229" />
+                </svg>
+            </div>
+            <button class="btn btn-primary w-full" onclick="closeShamCashModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT STATE ENGINE & APPLICATION LOGIC -->
     <script>
-        // Master State Engine & Application Controller
+        // Global State Engine
         const PharmaLinkApp = {
-            state: {
-                step: 1,
-                role: null,
-                respName: '',
+            profile: {
+                role: null, // 'pharmacy' or 'warehouse'
+                responsibleName: '',
                 entityName: '',
-                location: '',
-                activeTab: 0,
-                cart: [],
-                medicines: [
-                    { id: 1, name: 'باراسيتامول 500 مغ', activeIng: 'Paracetamol', price: 15000, warehouse: 'مستودع الشفاء', region: 'حلب وريفها', alternatives: ['بانادول', 'أدول'] },
-                    { id: 2, name: 'أموكسيسيلين 500 مغ', activeIng: 'Amoxicillin', price: 35000, warehouse: 'مستودع الكندي', region: 'حلب وريفها', alternatives: ['أوجمينتن', 'موكلافين'] },
-                    { id: 3, name: 'إيبوبروفين 400 مغ', activeIng: 'Ibuprofen', price: 18000, warehouse: 'مستودع الشفاء', region: 'منبج وريفها', alternatives: ['بروفين', 'نوروفين'] },
-                    { id: 4, name: 'سيفوتكس 1غ', activeIng: 'Cefotaxime', price: 45000, warehouse: 'مستودع ريف حلب', region: 'حلب وريفها', alternatives: ['سيفوران'] },
-                    { id: 5, name: 'كومتركس أقراص', activeIng: 'Paracetamol + Chlorphenamine', price: 22000, warehouse: 'مستودع الفارابي', region: 'إدلب وريفها', alternatives: ['رينوبروجين'] }
-                ],
-                deficits: [
-                    { id: 1, pharmacy: 'صيدلية النور', medicine: 'إنسولين مكسارد', region: 'حلب وريفها', time: 'منذ 15 دقيقة' },
-                    { id: 2, pharmacy: 'صيدلية الرازي', medicine: 'قطرة عيون توبرادكس', region: 'حلب وريفها', time: 'منذ ساعة' }
-                ],
-                orders: [
-                    { id: 'ORD-9021', items: [{ name: 'باراسيتامول 500 مغ', qty: 10, price: 15000 }], total: 150000, status: 'مكتمل' },
-                    { id: 'ORD-9022', items: [{ name: 'أموكسيسيلين 500 مغ', qty: 5, price: 35000 }], total: 175000, status: 'قيد التوصيل' }
-                ],
-                grossSales: 4500000,
-                html5QrCode: null
+                geoRegion: ''
             },
+            medicines: [
+                { id: 1, name: 'Augmentin 1g Vial', activeIngredient: 'Amoxicillin / Clavulanate', price: 14500, warehouse: 'مستودع الألفا الدوائي', region: 'حلب وريفها', alternatives: ['Amoclan 1g', 'Clavumox 1g'] },
+                { id: 2, name: 'Paracetamol 500mg', activeIngredient: 'Paracetamol', price: 3200, warehouse: 'مستودع ابن سينا', region: 'حلب وريفها', alternatives: ['Panadol', 'Paramol'] },
+                { id: 3, name: 'Ceftriaxone 1g', activeIngredient: 'Ceftriaxone Sodium', price: 9800, warehouse: 'مستودع الشفاء', region: 'منبج وريفها', alternatives: ['Rocephin', 'Cefaxone'] },
+                { id: 4, name: 'Omeprazole 20mg', activeIngredient: 'Omeprazole', price: 6500, warehouse: 'مستودع حلب المركزي', region: 'حلب وريفها', alternatives: ['Losec', 'Gastracid'] },
+                { id: 5, name: 'Metformin 850mg', activeIngredient: 'Metformin HCl', price: 5100, warehouse: 'مستودع الرازي', region: 'إدلب وريفها', alternatives: ['Glucophage', 'Diaformin'] }
+            ],
+            cart: [],
+            deficitRequests: [],
+            ordersHistory: [],
+            grossSales: 0,
+            activeUiView: 'splash'
+        };
 
-            init() {
-                // Simulate Cinematic Splash Screen delay (2.5s)
+        // Audio Chirp for Barcode Scanner Success (Web Audio API)
+        function playBarcodeChirp() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Note 1: 1000Hz for 80ms
+                const osc1 = audioCtx.createOscillator();
+                const gain1 = audioCtx.createGain();
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(1000, audioCtx.currentTime);
+                gain1.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+
+                osc1.connect(gain1);
+                gain1.connect(audioCtx.destination);
+                osc1.start();
+                osc1.stop(audioCtx.currentTime + 0.08);
+
+                // Note 2: 1500Hz for 60ms (Delayed by 90ms)
                 setTimeout(() => {
-                    const splash = document.getElementById('splash-screen');
-                    splash.classList.add('fade-out');
-                    setTimeout(() => splash.style.display = 'none', 600);
-                    this.checkLocalStorage();
-                }, 2500);
-            },
+                    const osc2 = audioCtx.createOscillator();
+                    const gain2 = audioCtx.createGain();
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(1500, audioCtx.currentTime);
+                    gain2.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
 
-            checkLocalStorage() {
-                const savedToken = localStorage.getItem('pharmalink_token');
-                if (savedToken) {
-                    const data = JSON.parse(savedToken);
-                    this.state.role = data.role;
-                    this.state.respName = data.respName;
-                    this.state.entityName = data.entityName;
-                    this.state.location = data.location;
-                    this.bootApp();
-                } else {
-                    document.getElementById('onboarding-container').style.display = 'block';
-                }
-            },
+                    osc2.connect(gain2);
+                    gain2.connect(audioCtx.destination);
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 0.06);
+                }, 90);
+            } catch (e) {
+                console.log('Audio Context suppressed or not allowed by browser policy', e);
+            }
+        }
 
-            selectRole(role) {
-                this.state.role = role;
-                document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
-                document.getElementById(`role-${role}`).classList.add('selected');
+        // Initialization & Splash Transition
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.classList.add('hidden');
+                    checkExistingProfile();
+                }, 600);
+            }, 2500);
+        });
 
-                // Dynamic CSS filling logic update for role cards
-                if (role === 'warehouse') {
-                    document.querySelector('.role-shield').style.stroke = '#008080';
-                    document.querySelectorAll('.role-cross').forEach(el => el.style.fill = '#008080');
-                    document.querySelector('.role-truck').style.fill = '#008080';
-                    document.querySelector('#role-pharmacy .pill-half-1').style.fill = '#6C7A89';
-                    document.querySelector('#role-pharmacy .pill-half-2').style.fill = '#008080';
-                } else {
-                    document.querySelector('#role-warehouse .role-shield').style.stroke = '#6C7A89';
-                    document.querySelectorAll('#role-warehouse .role-cross').forEach(el => el.style.fill = '#6C7A89');
-                    document.querySelector('#role-warehouse .role-truck').style.fill = '#6C7A89';
-                    document.querySelector('#role-pharmacy .pill-half-1').style.fill = '#008080';
-                    document.querySelector('#role-pharmacy .pill-half-2').style.fill = '#6C7A89';
-                }
-
-                this.validateStep();
-            },
-
-            selectLocation(loc) {
-                this.state.location = loc;
-                document.querySelectorAll('.location-option').forEach(o => o.classList.remove('selected'));
-                event.target.classList.add('selected');
-                this.validateStep();
-            },
-
-            validateStep() {
-                const btn = document.getElementById('wizard-next-btn');
-                let valid = false;
-                if (this.state.step === 1 && this.state.role) valid = true;
-                if (this.state.step === 2 && document.getElementById('input-resp-name').value.trim().length > 2) valid = true;
-                if (this.state.step === 3 && document.getElementById('input-entity-name').value.trim().length > 2) valid = true;
-                if (this.state.step === 4 && this.state.location) valid = true;
-
-                btn.disabled = !valid;
-            },
-
-            nextStep() {
-                if (this.state.step === 2) {
-                    this.state.respName = document.getElementById('input-resp-name').value.trim();
-                }
-                if (this.state.step === 3) {
-                    this.state.entityName = document.getElementById('input-entity-name').value.trim();
-                }
-
-                if (this.state.step < 4) {
-                    this.state.step++;
-                    this.renderWizardStep();
-                } else {
-                    // Save to localStorage & boot app
-                    localStorage.setItem('pharmalink_token', JSON.stringify({
-                        role: this.state.role,
-                        respName: this.state.respName,
-                        entityName: this.state.entityName,
-                        location: this.state.location
-                    }));
-                    document.getElementById('onboarding-container').style.display = 'none';
-                    this.bootApp();
-                }
-            },
-
-            prevStep() {
-                if (this.state.step > 1) {
-                    this.state.step--;
-                    this.renderWizardStep();
-                }
-            },
-
-            renderWizardStep() {
-                document.querySelectorAll('.wizard-step-content').forEach(el => el.classList.remove('active'));
-                document.querySelector(`.wizard-step-content[data-step="${this.state.step}"]`).classList.add('active');
-
-                document.getElementById('wizard-progress').style.width = `${(this.state.step / 4) * 100}%`;
-                document.getElementById('wizard-back-btn').style.visibility = this.state.step === 1 ? 'hidden' : 'visible';
-
-                const nextBtn = document.getElementById('wizard-next-btn');
-                nextBtn.innerText = this.state.step === 4 ? 'بدء العمل المنصة' : 'التالي';
-                this.validateStep();
-            },
-
-            bootApp() {
-                document.getElementById('app-container').style.display = 'flex';
-                document.getElementById('nav-location-text').innerText = this.state.location;
-                this.renderBottomNav();
-                this.switchTab(0);
-            },
-
-            renderBottomNav() {
-                const strip = document.getElementById('bottom-nav-strip');
-                let html = '';
-                if (this.state.role === 'pharmacy') {
-                    const tabs = ['الرئيسية', 'يلزمني دواء', 'السلة', 'أنا'];
-                    const icons = [
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>',
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>'
-                    ];
-                    tabs.forEach((t, i) => {
-                        html += `<button class="nav-item ${this.state.activeTab === i ? 'active' : ''}" onclick="PharmaLinkApp.switchTab(${i})">${icons[i]}<span>${t}</span></button>`;
-                    });
-                } else {
-                    const tabs = ['مخزون المستودع', 'الطلبات الواردة', 'الطلبات العاجلة', 'الحساب والعمولة'];
-                    const icons = [
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>',
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>'
-                    ];
-                    tabs.forEach((t, i) => {
-                        html += `<button class="nav-item ${this.state.activeTab === i ? 'active' : ''}" onclick="PharmaLinkApp.switchTab(${i})">${icons[i]}<span>${t}</span></button>`;
-                    });
-                }
-                strip.innerHTML = html;
-            },
-
-            switchTab(index) {
-                this.state.activeTab = index;
-                this.renderBottomNav();
-                const container = document.getElementById('main-content-area');
-                let html = '';
-
-                if (this.state.role === 'pharmacy') {
-                    if (index === 0) {
-                        // Pharmacy Home Tab: Real-time search engine & alternatives
-                        html = `
-                            <div class="search-box">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                <input type="text" id="medicine-search-input" placeholder="ابحث عن اسم الدواء أو المادة الفعالة..." oninput="PharmaLinkApp.filterMedicines(this.value)">
-                            </div>
-                            <div class="medicine-grid" id="medicine-results-grid">
-                                ${this.renderMedicineCards(this.state.medicines)}
-                            </div>
-                        `;
-                    } else if (index === 1) {
-                        // "يلزمني دواء" Deficit Request Portal
-                        html = `
-                            <div class="card">
-                                <h3 style="margin-bottom:15px; color:var(--primary); font-weight:900;">بوابة النقص الدوائي ("يلزمني دواء")</h3>
-                                <p style="color:var(--secondary); font-size:0.9rem; margin-bottom:20px; font-weight:600;">أدخل اسم الدواء المفقود وسيقوم النظام بتوجيه الطلب حصرياً لمستودعات منطقتك (${this.state.location}).</p>
-                                <div class="deficit-form">
-                                    <input type="text" id="deficit-med-name" class="form-control" placeholder="اسم الدواء أو التركيبة المطلوبة...">
-                                    <button class="btn btn-primary" onclick="PharmaLinkApp.submitDeficit()">إرسال طلب النقص العاجل</button>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <h4 style="margin-bottom:12px; font-weight:800;">طلبات النقص السابقة</h4>
-                                <div id="deficits-list">
-                                    ${this.state.deficits.map(d => `<div class="cart-item"><div><strong>${d.medicine}</strong><br><small style="color:var(--secondary);">${d.pharmacy} - ${d.region}</small></div><span class="badge">${d.time}</span></div>`).join('')}
-                                </div>
-                            </div>
-                        `;
-                    } else if (index === 2) {
-                        // Modern Basket Logic
-                        html = `
-                            <div class="card">
-                                <h3 style="margin-bottom:20px; color:var(--primary); font-weight:900;">سلة الطلبات الحالية</h3>
-                                <div id="cart-items-container">
-                                    ${this.state.cart.length === 0 ? '<div class="empty-state">السلة فارغة حالياً</div>' : this.state.cart.map((item, idx) => `
-                                        <div class="cart-item">
-                                            <div><strong>${item.name}</strong><br><span style="color:var(--primary); font-weight:700;">${item.price} ل.س × ${item.qty}</span></div>
-                                            <button class="btn btn-secondary" style="color:var(--danger); padding:4px 8px;" onclick="PharmaLinkApp.removeFromCart(${idx})">حذف</button>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                                ${this.state.cart.length > 0 ? `<div style="margin-top:20px; padding-top:15px; border-top:2px solid var(--bg-canvas); display:flex; justify-content:space-between; align-items:center;"><strong>الإجمالي:</strong><strong style="color:var(--primary); font-size:1.2rem;">${this.state.cart.reduce((sum, i) => sum + (i.price * i.qty), 0)} ل.س</strong></div><button class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="PharmaLinkApp.checkoutOrder()">تثبيت وإرسال الطلب</button>` : ''}
-                            </div>
-                        `;
-                    } else if (index === 3) {
-                        // Profile Tab
-                        html = `
-                            <div class="card" style="text-align:center;">
-                                <div style="width:80px; height:80px; background:rgba(0,128,128,0.1); color:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:900; margin:0 auto 15px auto;">${this.state.entityName.charAt(0)}</div>
-                                <h2 style="font-weight:900; margin-bottom:5px;">${this.state.entityName}</h2>
-                                <p style="color:var(--secondary); font-weight:600; margin-bottom:20px;">المسؤول: ${this.state.respName} | النطاق: ${this.state.location}</p>
-                                <button class="btn btn-secondary" style="color:var(--danger); border:1px solid var(--danger);" onclick="localStorage.clear(); location.reload();">تسجيل الخروج</button>
-                            </div>
-                        `;
-                    }
-                } else {
-                    // WAREHOUSE ROUTES
-                    if (index === 0) {
-                        // Warehouse Inventory Tab ("مخزون المستودع") & Barcode Scanner
-                        html = `
-                            <div class="card">
-                                <h3 style="margin-bottom:15px; color:var(--primary); font-weight:900;">إدارة مخزون المستودع</h3>
-                                <div style="background:var(--bg-canvas); padding:20px; border-radius:14px; margin-bottom:20px;">
-                                    <h4 style="margin-bottom:12px; font-weight:800;">إضافة دواء جديد</h4>
-                                    <div class="form-group">
-                                        <input type="text" id="new-med-barcode" class="form-control" placeholder="قم بمسح الباركود أو إدخاله يدوياً..." style="margin-bottom:10px;">
-                                        <button class="btn btn-secondary" style="width:100%; border:2px dashed var(--primary); color:var(--primary); margin-bottom:15px;" onclick="PharmaLinkApp.startBarcodeScanner()">مسح باركود الدواء عبر الكاميرا</button>
-                                        <div id="reader" class="scanner-container"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" id="new-med-name" class="form-control" placeholder="اسم الدواء التجاري..." style="margin-bottom:10px;">
-                                        <input type="text" id="new-med-active" class="form-control" placeholder="المادة الفعالة..." style="margin-bottom:10px;">
-                                        <input type="number" id="new-med-price" class="form-control" placeholder="السعر (ل.س)..." style="margin-bottom:15px;">
-                                        <button class="btn btn-primary" style="width:100%;" onclick="PharmaLinkApp.addNewMedicine()">حفظ وإضافة للمخزون</button>
-                                    </div>
-                                </div>
-                                <h4 style="margin-bottom:12px; font-weight:800;">الأدوية المسجلة حالياً</h4>
-                                <div class="medicine-grid">
-                                    ${this.renderMedicineCards(this.state.medicines.filter(m => m.region === this.state.location))}
-                                </div>
-                            </div>
-                        `;
-                    } else if (index === 1) {
-                        // Incoming Orders
-                        html = `
-                            <div class="card">
-                                <h3 style="margin-bottom:20px; color:var(--primary); font-weight:900;">الطلبات الواردة من الصيدليات</h3>
-                                ${this.state.orders.map(o => `
-                                    <div class="order-item">
-                                        <div><strong>رقم الطلب: ${o.id}</strong><br><span style="color:var(--secondary); font-size:0.85rem;">المبلغ: ${o.total} ل.س</span></div>
-                                        <span class="badge" style="background:rgba(0,128,128,0.1); color:var(--primary);">${o.status}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
-                    } else if (index === 2) {
-                        // "الطلبات العاجلة المشتركة" Tab
-                        html = `
-                            <div class="card">
-                                <h3 style="margin-bottom:15px; color:var(--primary); font-weight:900;">الطلبات العاجلة المشتركة في نطاقك (${this.state.location})</h3>
-                                <p style="color:var(--secondary); font-size:0.9rem; margin-bottom:20px; font-weight:600;">هذه الطلبات تم بثها من صيدليات قريبة تبحث عن نواقص دوائية فورية.</p>
-                                <div>
-                                    ${this.state.deficits.map(d => `
-                                        <div class="cart-item">
-                                            <div><strong>طلب مفقود: ${d.medicine}</strong><br><small style="color:var(--secondary);">${d.pharmacy} - ${d.time}</small></div>
-                                            <button class="btn btn-primary btn-sm" onclick="alert('تم إرسال توفر الدواء للصيدلية بنجاح!')">توفر لدي</button>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `;
-                    } else if (index === 3) {
-                        // CRITICAL MONETIZATION & SHAM CASH WALLET HUB
-                        const commission = this.state.grossSales * 0.01;
-                        html = `
-                            <div class="wallet-card">
-                                <div style="font-size:0.9rem; font-weight:700; opacity:0.9;">محفظة عمولة المنصة</div>
-                                <div class="wallet-balance">${commission.toLocaleString()} ل.س</div>
-                                <div class="wallet-details">
-                                    <div>إجمالي المبيعات الإجمالية: ${this.state.grossSales.toLocaleString()} ل.س</div>
-                                    <div>نسبة العمولة: 1%</div>
-                                </div>
-                            </div>
-                            <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                                <div>
-                                    <h4 style="font-weight:900; margin-bottom:4px;">تسوية عمولة المنصة</h4>
-                                    <p style="color:var(--secondary); font-size:0.85rem; font-weight:600;">سداد العمولة المستحقة فورياً عبر بوابة شام كاش المعتمدة.</p>
-                                </div>
-                                <button class="btn btn-primary" onclick="PharmaLinkApp.openShamCashModal()">دفع عمولة المنصة</button>
-                            </div>
-                        `;
-                    }
-                }
-
-                container.innerHTML = html;
-            },
-
-            renderMedicineCards(meds) {
-                if (meds.length === 0) return '<div class="empty-state">لا توجد أدوية مطابقة للبحث</div>';
-                return meds.map(m => `
-                    <div class="medicine-card">
-                        <div>
-                            <div class="medicine-title">${m.name}</div>
-                            <div class="medicine-active-ing">المادة الفعالة: ${m.activeIng}</div>
-                            <div style="font-size:0.8rem; color:var(--secondary); margin-bottom:8px;">المستودع: ${m.warehouse}</div>
-                            <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
-                                ${m.alternatives.map(a => `<span class="badge">بديل: ${a}</span>`).join('')}
-                            </div>
-                        </div>
-                        <div class="medicine-meta">
-                            <span class="medicine-price">${m.price.toLocaleString()} ل.س</span>
-                            ${this.state.role === 'pharmacy' ? `<button class="btn btn-primary btn-sm" onclick="PharmaLinkApp.addToCart(${m.id})">إضافة للسلة</button>` : ''}
-                        </div>
-                    </div>
-                `).join('');
-            },
-
-            filterMedicines(query) {
-                const filtered = this.state.medicines.filter(m => m.name.toLowerCase().includes(query.toLowerCase()) || m.activeIng.toLowerCase().includes(query.toLowerCase()));
-                document.getElementById('medicine-results-grid').innerHTML = this.renderMedicineCards(filtered);
-            },
-
-            addToCart(medId) {
-                const med = this.state.medicines.find(m => m.id === medId);
-                const existing = this.state.cart.find(item => item.id === medId);
-                if (existing) {
-                    existing.qty++;
-                } else {
-                    this.state.cart.push({ ...med, qty: 1 });
-                }
-                alert(`تمت إضافة "${med.name}" إلى السلة بنجاح.`);
-            },
-
-            removeFromCart(idx) {
-                this.state.cart.splice(idx, 1);
-                this.switchTab(2);
-            },
-
-            checkoutOrder() {
-                alert('تم إرسال طلبك بنجاح إلى المستودعات المعنية!');
-                this.state.cart = [];
-                this.switchTab(0);
-            },
-
-            submitDeficit() {
-                const val = document.getElementById('deficit-med-name').value.trim();
-                if (!val) return;
-                this.state.deficits.unshift({
-                    id: Date.now(),
-                    pharmacy: this.state.entityName,
-                    medicine: val,
-                    region: this.state.location,
-                    time: 'الآن'
-                });
-                document.getElementById('deficit-med-name').value = '';
-                alert('تم نشر طلب النقص الدوائي في نطاقك الجغرافي بنجاح.');
-                this.switchTab(1);
-            },
-
-            addNewMedicine() {
-                const name = document.getElementById('new-med-name').value.trim();
-                const active = document.getElementById('new-med-active').value.trim();
-                const price = parseFloat(document.getElementById('new-med-price').value);
-                if (!name || !price) {
-                    alert('يرجى تعبئة الحقول الأساسية للدواء.');
-                    return;
-                }
-                this.state.medicines.push({
-                    id: Date.now(),
-                    name,
-                    activeIng: active || 'غير مصنف',
-                    price,
-                    warehouse: this.state.entityName,
-                    region: this.state.location,
-                    alternatives: []
-                });
-                alert('تمت إضافة الدواء بنجاح إلى مخزون المستودع.');
-                this.switchTab(0);
-            },
-
-            // Web Audio API sequential retail audio chirp
-            playBarcodeChirp() {
+        function checkExistingProfile() {
+            const saved = localStorage.getItem('pharmalink_profile');
+            if (saved) {
                 try {
-                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-                    // Note 1: 1000Hz for 80ms
-                    const osc1 = ctx.createOscillator();
-                    const gain1 = ctx.createGain();
-                    osc1.type = 'sine';
-                    osc1.frequency.value = 1000;
-                    gain1.gain.setValueAtTime(0.15, ctx.currentTime);
-                    gain1.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
-
-                    osc1.connect(gain1);
-                    gain1.connect(ctx.destination);
-                    osc1.start();
-                    osc1.stop(ctx.currentTime + 0.08);
-
-                    // Note 2: 1500Hz for 60ms (starting after Note 1)
-                    setTimeout(() => {
-                        const osc2 = ctx.createOscillator();
-                        const gain2 = ctx.createGain();
-                        osc2.type = 'sine';
-                        osc2.frequency.value = 1500;
-                        gain2.gain.setValueAtTime(0.15, ctx.currentTime);
-                        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.06);
-
-                        osc2.connect(gain2);
-                        gain2.connect(ctx.destination);
-                        osc2.start();
-                        osc2.stop(ctx.currentTime + 0.06);
-                    }, 90);
+                    PharmaLinkApp.profile = JSON.parse(saved);
+                    launchMainApplication();
                 } catch (e) {
-                    console.log('Audio Context suppressed by browser policy', e);
+                    startOnboardingWizard();
                 }
-            },
+            } else {
+                startOnboardingWizard();
+            }
+        }
 
-            startBarcodeScanner() {
-                const container = document.getElementById('reader');
-                container.style.display = 'block';
+        // Onboarding Wizard Logic
+        let currentWizardStep = 1;
 
-                const html5QrCode = new Html5Qrcode("reader");
-                this.state.html5QrCode = html5QrCode;
+        function startOnboardingWizard() {
+            document.getElementById('onboarding-container').classList.remove('hidden');
+            updateWizardUI();
+        }
 
+        function selectRole(role) {
+            PharmaLinkApp.profile.role = role;
+            document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+            document.querySelector(`[data-role="${role}"]`).classList.add('selected');
+
+            // Dynamic styling of role card icons based on active state
+            if (role === 'warehouse') {
+                document.getElementById('wh-shield').setAttribute('stroke', '#008080');
+                document.getElementById('wh-cross').setAttribute('fill', '#008080');
+                document.getElementById('wh-truck').setAttribute('fill', '#008080');
+            } else {
+                document.getElementById('wh-shield').setAttribute('stroke', '#CBD5E1');
+                document.getElementById('wh-cross').setAttribute('fill', '#6C7A89');
+                document.getElementById('wh-truck').setAttribute('fill', '#6C7A89');
+            }
+            validateStep();
+        }
+
+        function validateStep() {
+            const nextBtn = document.getElementById('wizard-next-btn');
+            let isValid = false;
+
+            if (currentWizardStep === 1) {
+                isValid = PharmaLinkApp.profile.role !== null;
+            } else if (currentWizardStep === 2) {
+                const val = document.getElementById('input-resp-name').value.trim();
+                isValid = val.length >= 3;
+                PharmaLinkApp.profile.responsibleName = val;
+            } else if (currentWizardStep === 3) {
+                const val = document.getElementById('input-entity-name').value.trim();
+                isValid = val.length >= 3;
+                PharmaLinkApp.profile.entityName = val;
+            } else if (currentWizardStep === 4) {
+                const val = document.getElementById('input-geo-region').value;
+                isValid = val !== '';
+                PharmaLinkApp.profile.geoRegion = val;
+            }
+
+            nextBtn.disabled = !isValid;
+        }
+
+        function nextWizardStep() {
+            if (currentWizardStep < 4) {
+                currentWizardStep++;
+                updateWizardUI();
+            } else {
+                // Complete Onboarding
+                localStorage.setItem('pharmalink_profile', JSON.stringify(PharmaLinkApp.profile));
+                document.getElementById('onboarding-container').classList.add('hidden');
+                launchMainApplication();
+            }
+        }
+
+        function prevWizardStep() {
+            if (currentWizardStep > 1) {
+                currentWizardStep--;
+                updateWizardUI();
+            }
+        }
+
+        function updateWizardUI() {
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${currentWizardStep}`).classList.add('active');
+
+            document.getElementById('wizard-progress').style.width = `${(currentWizardStep / 4) * 100}%`;
+
+            const titles = [
+                "اختر طبيعة حسابك المهني",
+                "من هو المسؤول المباشر عن المنشأة؟",
+                PharmaLinkApp.profile.role === 'warehouse' ? "ما هو اسم مستودع الأدوية؟" : "ما هو اسم الصيدلية؟",
+                "حدد نطاقك الجغرافي للعمليات"
+            ];
+            document.getElementById('wizard-step-title').innerText = titles[currentWizardStep - 1];
+            document.getElementById('wizard-step-subtitle').innerText = `الخطوة ${currentWizardStep} من 4`;
+
+            const prevBtn = document.getElementById('wizard-prev-btn');
+            if (currentWizardStep === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+
+            if (currentWizardStep === 3 && PharmaLinkApp.profile.role === 'warehouse') {
+                document.getElementById('entity-name-label').innerText = "اسم مستودع الأدوية";
+                document.getElementById('input-entity-name').placeholder = "أدخل اسم المستودع التجاري...";
+            } else if (currentWizardStep === 3) {
+                document.getElementById('entity-name-label').innerText = "اسم الصيدلية";
+                document.getElementById('input-entity-name').placeholder = "أدخل اسم الصيدلية...";
+            }
+
+            validateStep();
+        }
+
+        // Launch Main Application
+        function launchMainApplication() {
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('display-geo-region').innerText = PharmaLinkApp.profile.geoRegion;
+
+            if (PharmaLinkApp.profile.role === 'pharmacy') {
+                document.getElementById('route-pharmacy').classList.add('active');
+                renderPharmacyMedicines();
+                populatePharmacyProfile();
+            } else {
+                document.getElementById('route-warehouse').classList.add('active');
+                renderWarehouseInventory();
+                populateWarehouseProfile();
+                updateWalletDisplay();
+            }
+        }
+
+        function resetAccountSession() {
+            localStorage.removeItem('pharmalink_profile');
+            location.reload();
+        }
+
+        // ROUTE A: Pharmacy Logic
+        function switchPharmacyTab(index) {
+            const tabs = document.querySelectorAll('.pharmacy-tab-content');
+            const navItems = document.querySelectorAll('#route-pharmacy .bottom-nav .nav-item');
+
+            tabs.forEach((t, i) => {
+                if (i === index) t.classList.remove('hidden');
+                else t.classList.add('hidden');
+            });
+
+            navItems.forEach((n, i) => {
+                if (i === index) n.classList.add('active');
+                else n.classList.remove('active');
+            });
+
+            if (index === 2) renderCartItems();
+        }
+
+        function renderPharmacyMedicines(filter = '') {
+            const container = document.getElementById('pharmacy-medicine-list');
+            container.innerHTML = '';
+
+            const filtered = PharmaLinkApp.medicines.filter(m =>
+                m.name.toLowerCase().includes(filter.toLowerCase()) ||
+                m.activeIngredient.toLowerCase().includes(filter.toLowerCase()) ||
+                m.alternatives.some(alt => alt.toLowerCase().includes(filter.toLowerCase()))
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary); text-align: center; padding: 20px;">لا توجد نتائج مطابقة لبحثك.</p>';
+                return;
+            }
+
+            filtered.forEach(med => {
+                const card = document.createElement('div');
+                card.className = 'medicine-card';
+                card.innerHTML = `
+                    <div class="med-header">
+                        <div class="med-name">${med.name}</div>
+                        <div class="med-price">${med.price.toLocaleString()} ل.س</div>
+                    </div>
+                    <div class="med-details">
+                        <div>المادة الفعالة: ${med.activeIngredient}</div>
+                        <div>المستودع المورد: ${med.warehouse} (${med.region})</div>
+                        <div>البدائل المتاحة: ${med.alternatives.join(', ')}</div>
+                    </div>
+                    <div class="med-actions">
+                        <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.85rem;" onclick="addToCart(${med.id})">إضافة للسلة</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function handlePharmacySearch() {
+            const query = document.getElementById('pharmacy-search-input').value;
+            renderPharmacyMedicines(query);
+        }
+
+        function addToCart(medId) {
+            const med = PharmaLinkApp.medicines.find(m => m.id === medId);
+            if (!med) return;
+
+            const existing = PharmaLinkApp.cart.find(item => item.id === medId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                PharmaLinkApp.cart.push({ ...med, qty: 1 });
+            }
+            alert(`تمت إضافة "${med.name}" إلى السلة بنجاح.`);
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items-container');
+            const summarySec = document.getElementById('cart-summary-section');
+
+            if (PharmaLinkApp.cart.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary); text-align: center; padding: 20px;">السلة فارغة حالياً.</p>';
+                summarySec.classList.add('hidden');
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+
+            PharmaLinkApp.cart.forEach((item, index) => {
+                total += (item.price * item.qty);
+                const itemEl = document.createElement('div');
+                itemEl.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); font-weight: 600;";
+                itemEl.innerHTML = `
+                    <div>
+                        <div style="font-weight: 800;">${item.name}</div>
+                        <div style="font-size: 0.85rem; color: var(--secondary);">السعر: ${item.price.toLocaleString()} ل.س | الكمية: ${item.qty}</div>
+                    </div>
+                    <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem; color: var(--alert-red); border-color: var(--alert-red);" onclick="removeFromCart(${index})">حذف</button>
+                `;
+                container.appendChild(itemEl);
+            });
+
+            document.getElementById('cart-total-amount').innerText = `${total.toLocaleString()} ل.س`;
+            summarySec.classList.remove('hidden');
+        }
+
+        function removeFromCart(index) {
+            PharmaLinkApp.cart.splice(index, 1);
+            renderCartItems();
+        }
+
+        function checkoutOrder() {
+            let total = PharmaLinkApp.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            PharmaLinkApp.grossSales += total;
+
+            const order = {
+                id: Date.now(),
+                pharmacy: PharmaLinkApp.profile.entityName,
+                region: PharmaLinkApp.profile.geoRegion,
+                items: [...PharmaLinkApp.cart],
+                total: total,
+                date: new Date().toLocaleDateString('ar-SY')
+            };
+
+            PharmaLinkApp.ordersHistory.push(order);
+            PharmaLinkApp.cart = [];
+
+            alert('تم تأكيد الطلب وإرساله بنجاح إلى المستودعات المعنية!');
+            switchPharmacyTab(0);
+        }
+
+        function submitDeficitRequest() {
+            const medName = document.getElementById('deficit-med-name').value.trim();
+            const qty = document.getElementById('deficit-med-qty').value.trim();
+            const notes = document.getElementById('deficit-med-notes').value.trim();
+
+            if (!medName || !qty) {
+                alert('يرجى إدخال اسم الدواء والكمية المطلوبة على الأقل.');
+                return;
+            }
+
+            const request = {
+                id: Date.now(),
+                pharmacy: PharmaLinkApp.profile.entityName,
+                region: PharmaLinkApp.profile.geoRegion,
+                medName: medName,
+                qty: qty,
+                notes: notes,
+                date: new Date().toLocaleDateString('ar-SY')
+            };
+
+            PharmaLinkApp.deficitRequests.push(request);
+            alert('تم بث طلب النقص الدوائي بنجاح إلى جميع مستودعات ' + PharmaLinkApp.profile.geoRegion);
+
+            document.getElementById('deficit-med-name').value = '';
+            document.getElementById('deficit-med-qty').value = '';
+            document.getElementById('deficit-med-notes').value = '';
+            switchPharmacyTab(0);
+        }
+
+        function populatePharmacyProfile() {
+            document.getElementById('profile-resp-name').innerText = PharmaLinkApp.profile.responsibleName;
+            document.getElementById('profile-entity-name').innerText = PharmaLinkApp.profile.entityName;
+            document.getElementById('profile-geo-region').innerText = PharmaLinkApp.profile.geoRegion;
+        }
+
+        // ROUTE B: Warehouse Logic
+        function switchWarehouseTab(index) {
+            const tabs = document.querySelectorAll('.warehouse-tab-content');
+            const navItems = document.querySelectorAll('#route-warehouse .bottom-nav .nav-item');
+
+            tabs.forEach((t, i) => {
+                if (i === index) t.classList.remove('hidden');
+                else t.classList.add('hidden');
+            });
+
+            navItems.forEach((n, i) => {
+                if (i === index) n.classList.add('active');
+                else n.classList.remove('active');
+            });
+
+            if (index === 1) renderWarehouseOrders();
+            if (index === 2) renderWarehouseBroadcasts();
+            if (index === 3) updateWalletDisplay();
+        }
+
+        function renderWarehouseInventory() {
+            const container = document.getElementById('warehouse-inventory-list');
+            container.innerHTML = '';
+
+            const items = PharmaLinkApp.medicines.filter(m => m.region === PharmaLinkApp.profile.geoRegion);
+            if (items.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary); text-align: center; padding: 20px;">لا توجد أدوية مسجلة في مخزونك الحالي.</p>';
+                return;
+            }
+
+            items.forEach(med => {
+                const card = document.createElement('div');
+                card.className = 'medicine-card';
+                card.innerHTML = `
+                    <div class="med-header">
+                        <div class="med-name">${med.name}</div>
+                        <div class="med-price">${med.price.toLocaleString()} ل.س</div>
+                    </div>
+                    <div class="med-details">
+                        <div>المادة الفعالة: ${med.activeIngredient}</div>
+                        <div>البدائل: ${med.alternatives.join(', ')}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        let html5QrCode = null;
+
+        function openBarcodeScannerModal() {
+            document.getElementById('scanner-modal-overlay').classList.remove('hidden');
+
+            setTimeout(() => {
+                html5QrCode = new Html5Qrcode("reader");
                 html5QrCode.start(
                     { facingMode: "environment" },
                     { fps: 10, qrbox: { width: 250, height: 150 } },
                     (decodedText, decodedResult) => {
-                        // Successful scan
-                        this.playBarcodeChirp();
-                        document.getElementById('new-med-barcode').value = decodedText;
+                        // Success scan callback
+                        playBarcodeChirp();
                         html5QrCode.stop().then(() => {
-                            container.style.display = 'none';
-                        }).catch(err => console.log(err));
+                            document.getElementById('scanner-modal-overlay').classList.add('hidden');
+                            handleScannedBarcodeResult(decodedText);
+                        }).catch(err => console.error(err));
                     },
                     (errorMessage) => {
-                        // scanning scanning...
+                        // Scanning frame error - ignored during live search
                     }
                 ).catch(err => {
-                    alert('تعذر الوصول إلى كاميرا الجهاز. يرجى التحقق من الأذونات.');
-                    container.style.display = 'none';
+                    alert('تعذر تشغيل كاميرا الجهاز. يجدر التأكد من صلاحيات المتصفح.');
+                    closeBarcodeScannerModal();
                 });
-            },
+            }, 300);
+        }
 
-            openShamCashModal() {
-                document.getElementById('sham-cash-modal').classList.add('active');
-            },
-
-            closeShamCashModal() {
-                document.getElementById('sham-cash-modal').classList.remove('active');
+        function closeBarcodeScannerModal() {
+            if (html5QrCode) {
+                html5QrCode.stop().catch(e => { });
             }
-        };
+            document.getElementById('scanner-modal-overlay').classList.add('hidden');
+        }
 
-        // Initialize application on window load
-        window.onload = () => PharmaLinkApp.init();
+        function handleScannedBarcodeResult(code) {
+            const newMedName = `دواء مسجل بباركود: ${code}`;
+            const newMed = {
+                id: Date.now(),
+                name: newMedName,
+                activeIngredient: 'مادة فعالة قياسية',
+                price: 10000,
+                warehouse: PharmaLinkApp.profile.entityName,
+                region: PharmaLinkApp.profile.geoRegion,
+                alternatives: ['بديل عام قياسي']
+            };
+            PharmaLinkApp.medicines.push(newMed);
+            renderWarehouseInventory();
+            alert(`تم مسح الباركود بنجاح وإضافة الدواء الجديد إلى المخزون! (الرمز: ${code})`);
+        }
+
+        function renderWarehouseOrders() {
+            const container = document.getElementById('warehouse-incoming-orders');
+            container.innerHTML = '';
+
+            const regionalOrders = PharmaLinkApp.ordersHistory.filter(o => o.region === PharmaLinkApp.profile.geoRegion);
+            if (regionalOrders.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary); text-align: center; padding: 20px;">لا توجد طلبات واردة حالياً في منطقتك.</p>';
+                return;
+            }
+
+            regionalOrders.forEach(ord => {
+                const card = document.createElement('div');
+                card.className = 'medicine-card';
+                let itemsList = ord.items.map(i => `${i.name} (×${i.qty})`).join(', ');
+                card.innerHTML = `
+                    <div class="med-header">
+                        <div class="med-name">طلب من الصيدلية: ${ord.pharmacy}</div>
+                        <div class="med-price">${ord.total.toLocaleString()} ل.س</div>
+                    </div>
+                    <div class="med-details">
+                        <div>المواد المطلوبة: ${itemsList}</div>
+                        <div>تاريخ الطلب: ${ord.date}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderWarehouseBroadcasts() {
+            const container = document.getElementById('warehouse-broadcast-list');
+            container.innerHTML = '';
+
+            const regionalBroadcasts = PharmaLinkApp.deficitRequests.filter(r => r.region === PharmaLinkApp.profile.geoRegion);
+            if (regionalBroadcasts.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary); text-align: center; padding: 20px;">لا توجد نواقص معلنة حالياً في نطاقك الجغرافي.</p>';
+                return;
+            }
+
+            regionalBroadcasts.forEach(req => {
+                const card = document.createElement('div');
+                card.className = 'broadcast-request-card';
+                card.innerHTML = `
+                    <div style="font-weight: 800; color: var(--text-main);">الصيدلية: ${req.pharmacy}</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: var(--primary);">الدواء المطلوب: ${req.medName} (الكمية: ${req.qty})</div>
+                    <div style="font-size: 0.85rem; color: var(--secondary);">ملاحظات: ${req.notes || 'لا توجد ملاحظات'} | التاريخ: ${req.date}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateWalletDisplay() {
+            const gross = PharmaLinkApp.grossSales;
+            const commission = gross * 0.01;
+            document.getElementById('wallet-gross-sales').innerText = `${gross.toLocaleString()} ل.س`;
+            document.getElementById('wallet-commission-amount').innerText = `${commission.toLocaleString()} ل.س`;
+        }
+
+        function populateWarehouseProfile() {
+            document.getElementById('wh-profile-resp').innerText = PharmaLinkApp.profile.responsibleName;
+            document.getElementById('wh-profile-entity').innerText = PharmaLinkApp.profile.entityName;
+            document.getElementById('wh-profile-geo').innerText = PharmaLinkApp.profile.geoRegion;
+        }
+
+        function openShamCashModal() {
+            document.getElementById('sham-modal-overlay').classList.remove('hidden');
+        }
+
+        function closeShamCashModal() {
+            document.getElementById('sham-modal-overlay').classList.add('hidden');
+        }
     </script>
 </body>
 
