@@ -4,20 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - منصة توزيع الأدوية</title>
+    <title>PharmaLink - نظام توزيع الأدوية في شمال سوريا</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         :root {
-            --primary: #008080;
-            --primary-dark: #006666;
-            --gray-structural: #6C7A89;
-            --charcoal: #1E2229;
-            --bg-light: #F4F7F6;
+            --primary-teal: #008080;
+            --primary-teal-hover: #006666;
+            --arch-gray: #6C7A89;
+            --charcoal-dark: #1E2229;
+            --medical-gray: #F4F7F6;
             --trust-blue: #1DA1F2;
             --admin-red: #D9534F;
             --white: #FFFFFF;
             --border-color: #E2E8F0;
+            --shadow-subtle: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -29,306 +34,350 @@
         }
 
         body {
-            background-color: var(--bg-light);
-            color: var(--charcoal);
+            background-color: var(--medical-gray);
+            color: var(--charcoal-dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
         }
 
-        /* --- شاشة الانطلاق السينمائية --- */
+        /* Utility Classes for GPU Acceleration */
+        .gpu-accelerated {
+            transform: translate3d(0, 0, 0);
+            will-change: transform, opacity;
+        }
+
+        /* Splash Screen */
         #splash-screen {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--bg-light);
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            will-change: transform, opacity;
-            animation: splashFadeOut 0.5s ease 2.5s forwards;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
         }
 
-        .capsule-container {
-            width: 90px;
-            height: 90px;
+        #splash-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .splash-logo-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            animation: capsuleFloat 2s ease-in-out infinite alternate;
-            will-change: transform;
+            animation: pulseSplash 2s infinite ease-in-out;
         }
 
-        .splash-title {
-            font-size: 2rem;
+        @keyframes pulseSplash {
+
+            0%,
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+
+            50% {
+                transform: scale3d(1.03, 1.03, 1);
+            }
+        }
+
+        .subsidiary-text {
+            margin-top: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .subsidiary-text span.gray {
+            color: var(--arch-gray);
+        }
+
+        .subsidiary-text span.teal {
+            color: var(--primary-teal);
             font-weight: 900;
-            color: var(--charcoal);
-            margin-top: 20px;
-            letter-spacing: -0.5px;
         }
 
-        .splash-subtitle {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-top: 6px;
-        }
-
-        .splash-subtitle span:first-child {
-            color: var(--gray-structural);
-        }
-
-        .splash-subtitle span:last-child {
-            color: var(--primary);
-            font-weight: 800;
-        }
-
-        @keyframes capsuleFloat {
-            0% {
-                transform: scale3d(0.9, 0.9, 1) translateY(0);
-            }
-
-            100% {
-                transform: scale3d(1, 1, 1) translateY(-12px);
-            }
-        }
-
-        @keyframes splashFadeOut {
-            0% {
-                opacity: 1;
-                visibility: visible;
-            }
-
-            100% {
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-            }
-        }
-
-        /* --- الهيكل العام والتخطيط --- */
+        /* Layout Structure */
         .app-container {
             width: 100%;
-            max-width: 520px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            will-change: transform;
         }
 
-        .card {
+        /* Header / Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 24px;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--charcoal-dark);
+        }
+
+        .brand-title span {
+            color: var(--primary-teal);
+        }
+
+        /* Wizard Onboarding Styles */
+        .wizard-card {
             background: var(--white);
             border-radius: 20px;
-            padding: 32px 28px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
-            position: relative;
+            box-shadow: var(--shadow-subtle);
+            padding: 40px;
+            max-width: 650px;
+            width: 100%;
+            margin: 40px auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- شريط التقدم الديناميكي بشارات الـ SVG --- */
+        /* Dynamic Checkmark Progress Tracker */
         .progress-tracker {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
+            margin-bottom: 40px;
             position: relative;
         }
 
         .progress-tracker::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 10px;
-            right: 10px;
+            top: 20px;
+            right: 15%;
+            left: 15%;
             height: 3px;
             background: var(--border-color);
-            transform: translateY(-50%);
             z-index: 1;
         }
 
         .progress-step {
-            width: 36px;
-            height: 36px;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-indicator {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: var(--white);
             border: 2px solid var(--border-color);
+            color: var(--arch-gray);
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: 800;
-            font-size: 0.9rem;
-            color: var(--gray-structural);
-            position: relative;
-            z-index: 2;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, background-color, border-color;
+            font-size: 16px;
+            transition: var(--transition-smooth);
         }
 
-        .progress-step.active {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: scale3d(1.1, 1.1, 1);
+        .progress-step.active .step-indicator {
+            border-color: var(--primary-teal);
+            background: var(--white);
+            color: var(--primary-teal);
+            box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1);
         }
 
-        .progress-step.completed {
-            background: var(--primary);
-            border-color: var(--primary);
+        .progress-step.completed .step-indicator {
+            background: var(--primary-teal);
+            border-color: var(--primary-teal);
             color: var(--white);
         }
 
-        /* --- خطوات المعالج (Wizards) --- */
-        .step-content {
+        .step-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--arch-gray);
+        }
+
+        .progress-step.active .step-label,
+        .progress-step.completed .step-label {
+            color: var(--charcoal-dark);
+        }
+
+        /* Step Content */
+        .wizard-step-content {
             display: none;
-            will-change: transform, opacity;
+            animation: fadeIn 0.4s ease forwards;
         }
 
-        .step-content.active-step {
-            display: block;
-            animation: fadeInStep 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        .wizard-step-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
-        @keyframes fadeInStep {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translate3d(0, 10px, 0);
+                transform: translateY(10px);
             }
 
             to {
                 opacity: 1;
-                transform: translate3d(0, 0, 0);
+                transform: translateY(0);
             }
         }
 
         .step-title {
-            font-size: 1.4rem;
+            font-size: 24px;
             font-weight: 900;
-            color: var(--charcoal);
+            color: var(--charcoal-dark);
+            text-align: center;
             margin-bottom: 8px;
-            text-align: right;
         }
 
-        .step-desc {
-            font-size: 0.9rem;
-            color: var(--gray-structural);
-            margin-bottom: 24px;
-            text-align: right;
-            font-weight: 600;
+        .step-subtitle {
+            font-size: 14px;
+            color: var(--arch-gray);
+            text-align: center;
+            margin-bottom: 16px;
         }
 
-        /* --- بطاقات الاختيار المتناظرة (الخطوة 1) --- */
-        .role-grid {
+        /* Cards Selection (Step 1) */
+        .role-cards-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 24px;
+            gap: 20px;
         }
 
         .role-card {
             border: 2px solid var(--border-color);
-            border-radius: 14px;
-            padding: 24px 16px;
+            border-radius: 16px;
+            padding: 30px 20px;
             text-align: center;
             cursor: pointer;
+            transition: var(--transition-smooth);
             background: var(--white);
-            transition: all 0.2s ease;
-            will-change: transform, border-color, background-color;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
         }
 
         .role-card:hover {
-            border-color: var(--primary);
-            transform: translate3d(0, -3px, 0);
+            border-color: var(--primary-teal);
+            transform: translateY(-2px);
         }
 
         .role-card.selected {
-            border-color: var(--primary);
-            background: rgba(0, 128, 128, 0.04);
+            border-color: var(--primary-teal);
+            background: rgba(0, 128, 128, 0.03);
         }
 
-        .role-card svg {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 12px;
-            fill: var(--primary);
-        }
-
-        .role-card span {
-            display: block;
+        .role-card h3 {
+            font-size: 18px;
             font-weight: 800;
-            font-size: 0.95rem;
-            color: var(--charcoal);
+            color: var(--charcoal-dark);
         }
 
-        /* --- حقول الإدخال النظيفة --- */
+        /* Form Inputs & Custom Dropdown */
         .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             position: relative;
-            margin-bottom: 24px;
         }
 
-        .input-field {
-            width: 100%;
-            padding: 14px 16px 14px 48px;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--charcoal);
-            background: var(--white);
-            outline: none;
-            transition: border-color 0.2s ease;
-            direction: rtl;
+        .input-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--charcoal-dark);
         }
 
-        .input-field:focus {
-            border-color: var(--primary);
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
         }
 
         .input-icon {
             position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            fill: var(--gray-structural);
+            right: 16px;
+            color: var(--arch-gray);
             pointer-events: none;
+            display: flex;
+            align-items: center;
         }
 
-        /* --- القائمة المنسدلة المعزولة وآلية الإصلاح الحصري (الخطوة 4) --- */
+        .form-control {
+            width: 100%;
+            padding: 14px 20px;
+            padding-right: 48px;
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--charcoal-dark);
+            transition: var(--transition-smooth);
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.08);
+        }
+
+        /* Dropdown Bug Fix & Isolation */
         .custom-dropdown {
             position: relative;
             width: 100%;
             user-select: none;
-            margin-bottom: 24px;
         }
 
-        .dropdown-select-box {
+        .dropdown-trigger {
             width: 100%;
-            padding: 14px 16px;
+            padding: 14px 20px;
+            padding-right: 48px;
+            background: var(--white);
             border: 2px solid var(--border-color);
             border-radius: 12px;
-            background: var(--white);
-            font-size: 1rem;
+            font-size: 15px;
             font-weight: 600;
-            color: var(--charcoal);
+            color: var(--arch-gray);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: border-color 0.2s ease;
+            transition: var(--transition-smooth);
         }
 
-        .dropdown-select-box.active {
-            border-color: var(--primary);
+        .dropdown-trigger.has-value {
+            color: var(--charcoal-dark);
+            border-color: var(--primary-teal);
         }
 
-        .dropdown-options-container {
+        .dropdown-menu {
             position: absolute;
             top: calc(100% + 6px);
             left: 0;
@@ -336,697 +385,764 @@
             background: var(--white);
             border: 2px solid var(--border-color);
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--shadow-subtle);
             display: none;
             z-index: 100;
             overflow: hidden;
+            animation: dropFade 0.2s ease forwards;
         }
 
-        .dropdown-options-container.open {
+        .dropdown-menu.open {
             display: block;
-            animation: fadeInStep 0.2s ease forwards;
         }
 
-        .dropdown-option {
-            padding: 12px 16px;
-            font-size: 0.95rem;
+        @keyframes dropFade {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            padding: 14px 20px;
+            font-size: 15px;
             font-weight: 600;
-            color: var(--charcoal);
+            color: var(--charcoal-dark);
             cursor: pointer;
-            transition: background 0.15s ease;
-            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s ease;
+            border-bottom: 1px solid var(--medical-gray);
         }
 
-        .dropdown-option:last-child {
+        .dropdown-item:last-child {
             border-bottom: none;
         }
 
-        .dropdown-option:hover {
-            background: var(--bg-light);
-            color: var(--primary);
+        .dropdown-item:hover {
+            background: rgba(0, 128, 128, 0.06);
+            color: var(--primary-teal);
         }
 
-        /* --- أزرار التحكم بالمعالج --- */
+        /* Wizard Navigation Buttons */
         .wizard-actions {
             display: flex;
-            gap: 12px;
-            margin-top: 10px;
+            gap: 16px;
+            margin-top: 16px;
         }
 
         .btn {
-            flex: 1;
-            padding: 14px;
+            padding: 14px 28px;
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 15px;
             font-weight: 800;
             cursor: pointer;
+            transition: var(--transition-smooth);
             border: none;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            will-change: transform;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 8px;
         }
 
-        .btn:active {
-            transform: scale3d(0.97, 0.97, 1);
-        }
-
         .btn-primary {
-            background: var(--primary);
+            background: var(--primary-teal);
             color: var(--white);
+            flex: 1;
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
+            background: var(--primary-teal-hover);
+            box-shadow: 0 4px 12px rgba(0, 128, 128, 0.25);
         }
 
         .btn-secondary {
-            background: var(--bg-light);
-            color: var(--gray-structural);
+            background: var(--medical-gray);
+            color: var(--arch-gray);
             border: 2px solid var(--border-color);
         }
 
         .btn-secondary:hover {
             background: var(--border-color);
-            color: var(--charcoal);
+            color: var(--charcoal-dark);
         }
 
-        /* --- لوحة التحكم (المرحلة الثالثة) --- */
-        #dashboard-view {
+        /* Dashboard Application Container */
+        #dashboard-app {
             display: none;
-            width: 100%;
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
-            flex: 1;
             flex-direction: column;
+            gap: 24px;
+            width: 100%;
+        }
+
+        #dashboard-app.active {
+            display: flex;
         }
 
         .dashboard-header {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-
-        .brand-logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .medical-cross-svg {
-            width: 32px;
-            height: 32px;
-            fill: var(--primary);
-        }
-
-        .app-name-tag {
-            font-weight: 900;
-            font-size: 1.25rem;
-            color: var(--charcoal);
-        }
-
-        .profile-badge-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .profile-info {
-            text-align: left;
-        }
-
-        .profile-name {
-            font-weight: 800;
-            font-size: 0.9rem;
-            color: var(--charcoal);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            justify-content: flex-end;
-        }
-
-        .verified-badge {
-            width: 16px;
-            height: 16px;
-            fill: var(--trust-blue);
-        }
-
-        .profile-region {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--gray-structural);
-        }
-
-        .btn-logout {
-            background: rgba(217, 83, 79, 0.1);
-            color: var(--admin-red);
-            border: 1px solid rgba(217, 83, 79, 0.3);
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-logout:hover {
-            background: var(--admin-red);
-            color: var(--white);
-        }
-
-        .dashboard-banner {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--white);
+            padding: 20px 24px;
             border-radius: 16px;
-            padding: 24px;
-            color: var(--white);
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0, 128, 128, 0.15);
+            box-shadow: var(--shadow-card);
         }
 
-        .dashboard-banner h2 {
-            font-size: 1.5rem;
+        .user-welcome-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 128, 128, 0.1);
+            color: var(--primary-teal);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-weight: 900;
-            margin-bottom: 6px;
+            font-size: 20px;
         }
 
-        .dashboard-banner p {
-            font-size: 0.9rem;
-            opacity: 0.9;
+        .user-meta h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--charcoal-dark);
+        }
+
+        .user-meta p {
+            font-size: 13px;
             font-weight: 600;
+            color: var(--arch-gray);
         }
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
         }
 
-        .dash-card {
+        .stat-card {
             background: var(--white);
+            padding: 24px;
             border-radius: 16px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            box-shadow: var(--shadow-card);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 12px;
+            border-right: 4px solid var(--primary-teal);
         }
 
-        .dash-card-title {
-            font-size: 0.9rem;
+        .stat-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--arch-gray);
+        }
+
+        .stat-card-value {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--charcoal-dark);
+        }
+
+        .dashboard-panel {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-card);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--medical-gray);
+            padding-bottom: 16px;
+        }
+
+        .panel-title-bar h3 {
+            font-size: 18px;
             font-weight: 800;
-            color: var(--gray-structural);
-            margin-bottom: 12px;
+            color: var(--charcoal-dark);
+        }
+
+        /* Interactive Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        .data-table th {
+            background: var(--medical-gray);
+            padding: 14px 16px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--arch-gray);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--charcoal-dark);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(0, 128, 128, 0.02);
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: rgba(0, 128, 128, 0.1);
+            color: var(--primary-teal);
+        }
+
+        .badge-warning {
+            background: rgba(217, 83, 79, 0.1);
+            color: var(--admin-red);
+        }
+
+        /* Action Buttons */
+        .btn-danger {
+            background: var(--admin-red);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #c9302c;
+        }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            background: var(--charcoal-dark);
+            color: var(--white);
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: var(--shadow-subtle);
+            animation: slideInToast 0.3s ease forwards;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
-        .dash-card-value {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: var(--charcoal);
-            margin-bottom: 16px;
+        @keyframes slideInToast {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
-        .scanner-container {
-            width: 100%;
-            background: var(--charcoal);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 10px;
-            display: none;
-        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .role-cards-grid {
+                grid-template-columns: 1fr;
+            }
 
-        #reader {
-            width: 100% !important;
-            border: none !important;
-        }
+            .wizard-card {
+                padding: 24px;
+                margin: 20px auto;
+            }
 
-        #reader__dashboard_section_csr button {
-            background: var(--primary) !important;
-            color: white !important;
-            border-radius: 8px !important;
-            padding: 6px 12px !important;
-            font-family: 'Cairo', sans-serif !important;
-            font-weight: 700 !important;
-            border: none !important;
-        }
-
-        /* رسائل الخطأ والتنبيهات */
-        .error-msg {
-            color: var(--admin-red);
-            font-size: 0.8rem;
-            font-weight: 800;
-            margin-top: 6px;
-            text-align: right;
-            display: none;
+            header {
+                padding: 12px 16px;
+            }
         }
     </style>
 </head>
 
-<body>
+<body class="gpu-accelerated">
 
-    <!-- شاشة الانطلاق السينمائية -->
+    <!-- Splash Screen with Perfect Critical SVG Capsule -->
     <div id="splash-screen">
-        <div class="capsule-container">
-            <svg viewBox="0 0 100 100" width="85" height="85">
-                <path
-                    d="M50 10 A40 40 0 0 0 10 50 L10 50 A40 40 0 0 0 50 90 L50 90 A40 40 0 0 0 90 50 L90 50 A40 40 0 0 0 50 10 Z"
-                    fill="#6C7A89" />
-                <path d="M50 10 A40 40 0 0 1 90 50 L90 50 A40 40 0 0 1 50 90 L50 90 Z" fill="#008080" />
+        <div class="splash-logo-container">
+            <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Left Half: Structural Gray #6C7A89 with Perfectly Rounded Ends -->
+                <path d="M30 0H60V60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z" fill="#6C7A89" />
+                <!-- Right Half: Peacock Teal #008080 with Perfectly Rounded Ends -->
+                <path d="M90 0H60V60H90C106.569 60 120 46.5685 120 30C120 13.4315 106.569 0 90 0Z" fill="#008080" />
+                <!-- Central Dividing Line / Polish Element -->
+                <rect x="58" y="0" width="4" height="60" fill="#FFFFFF" opacity="0.3" />
             </svg>
-        </div>
-        <div class="splash-title">PharmaLink</div>
-        <div class="splash-subtitle">
-            <span>A Subsidiary of </span>
-            <span>Millennium Core</span>
-        </div>
-    </div>
-
-    <!-- المعالج المتعدد الخطوات -->
-    <div class="app-container" id="onboarding-container">
-        <div class="card">
-
-            <!-- شريط التقدم الديناميكي -->
-            <div class="progress-tracker">
-                <div class="progress-step active" id="p-step-1">1</div>
-                <div class="progress-step" id="p-step-2">2</div>
-                <div class="progress-step" id="p-step-3">3</div>
-                <div class="progress-step" id="p-step-4">4</div>
+            <div style="font-size: 28px; font-weight: 900; color: #1E2229; margin-top: 16px;">Pharma<span>Link</span>
             </div>
-
-            <!-- الخطوة 1: اختيار الصفة -->
-            <div class="step-content active-step" id="step-1">
-                <div class="step-title">اختر صفتك في المنصة</div>
-                <div class="step-desc">حدد نوع المنشأة الطبية التابعة لك للانتقال للنظام المالي واللوجستي</div>
-
-                <div class="role-grid">
-                    <div class="role-card" onclick="selectRole('warehouse', this)">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zM18 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
-                        </svg>
-                        <span>مستودع أدوية</span>
-                    </div>
-                    <div class="role-card" onclick="selectRole('pharmacy', this)">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z" />
-                        </svg>
-                        <span>صيدلية مرخصة</span>
-                    </div>
-                </div>
-                <div class="error-msg" id="err-step-1">الرجاء اختيار الصفة المهنية للمتابعة</div>
-
-                <div class="wizard-actions">
-                    <button class="btn btn-primary" onclick="nextStep(1)">المتابعة</button>
-                </div>
+            <div class="subsidiary-text">
+                <span class="gray">A Subsidiary of Millennium</span> <span class="teal">Core</span>
             </div>
-
-            <!-- الخطوة 2: رقم الهاتف -->
-            <div class="step-content" id="step-2">
-                <div class="step-title">رقم الهاتف الرسمي</div>
-                <div class="step-desc">أدخل رقم الهاتف المعتمد للتواصل وتلقي إشعارات الشحن والطلبيات الطبية</div>
-
-                <div class="input-group">
-                    <input type="tel" id="phone-input" class="input-field" placeholder="اكتب رقم الهاتف هنا...">
-                    <svg class="input-icon" viewBox="0 0 24 24">
-                        <path
-                            d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-                    </svg>
-                </div>
-                <div class="error-msg" id="err-step-2">الرجاء إدخال رقم الهاتف بشكل صحيح</div>
-
-                <div class="wizard-actions">
-                    <button class="btn btn-secondary" onclick="prevStep(2)">السابق</button>
-                    <button class="btn btn-primary" onclick="nextStep(2)">المتابعة</button>
-                </div>
-            </div>
-
-            <!-- الخطوة 3: التسمية التكيفية الذكية -->
-            <div class="step-content" id="step-3">
-                <div class="step-title" id="step3-title-label">اسم المنشأة الرسمية</div>
-                <div class="step-desc" id="step3-desc-label">أدخل الاسم الرسمي المعتمد للمنشأة بدقة لتأكيد الترخيص</div>
-
-                <div class="input-group">
-                    <input type="text" id="entity-name-input" class="input-field"
-                        placeholder="اكتب الاسم الرسمي هنا...">
-                    <svg class="input-icon" viewBox="0 0 24 24">
-                        <path
-                            d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2v-2h8v8zm-2-6h-2v2h2v-2zm0-4h-2v2h2V9z" />
-                    </svg>
-                </div>
-                <div class="error-msg" id="err-step-3">الرجاء إدخال الاسم المعتمد للمنشأة</div>
-
-                <div class="wizard-actions">
-                    <button class="btn btn-secondary" onclick="prevStep(3)">السابق</button>
-                    <button class="btn btn-primary" onclick="nextStep(3)">المتابعة</button>
-                </div>
-            </div>
-
-            <!-- الخطوة 4: المنطقة وجلسة الدخول -->
-            <div class="step-content" id="step-4">
-                <div class="step-title">اختر منطقتك الجغرافية</div>
-                <div class="step-desc">حدد نطاق العمليات والتوزيع اللوجستي في شمال سوريا</div>
-
-                <!-- القائمة المنسدلة المعزولة بعيداً عن أي تداخل -->
-                <div class="custom-dropdown" id="region-dropdown">
-                    <div class="dropdown-select-box" id="dropdown-box" onclick="toggleDropdown(event)">
-                        <span id="selected-region-text">اختر المنطقة الجغرافية...</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gray-structural)">
-                            <path d="M7 10l5 5 5-5z" />
-                        </svg>
-                    </div>
-                    <div class="dropdown-options-container" id="dropdown-options">
-                        <div class="dropdown-option" onclick="selectRegion('منبج وريفها', event)">منبج وريفها</div>
-                        <div class="dropdown-option" onclick="selectRegion('حلب وريفها', event)">حلب وريفها</div>
-                        <div class="dropdown-option" onclick="selectRegion('إدلب وريفها', event)">إدلب وريفها</div>
-                    </div>
-                </div>
-                <div class="error-msg" id="err-step-4">الرجاء اختيار المنطقة الجغرافية للبدء</div>
-
-                <div class="wizard-actions">
-                    <button class="btn btn-secondary" onclick="prevStep(4)">السابق</button>
-                    <button class="btn btn-primary" onclick="completeLogin()">تسجيل الدخول</button>
-                </div>
-            </div>
-
         </div>
     </div>
 
-    <!-- لوحة التحكم (المرحلة الثالثة) -->
-    <div id="dashboard-view">
-        <header class="dashboard-header">
-            <div class="brand-logo-area">
-                <svg class="medical-cross-svg" viewBox="0 0 24 24">
-                    <path
-                        d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z" />
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="brand-header">
+                <svg width="36" height="36" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30 0H60V60H30C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0Z" fill="#6C7A89" />
+                    <path d="M90 0H60V60H90C106.569 60 120 46.5685 120 30C120 13.4315 106.569 0 90 0Z" fill="#008080" />
                 </svg>
-                <span class="app-name-tag">PharmaLink</span>
+                <h1 class="brand-title">Pharma<span>Link</span></h1>
             </div>
-            <div class="profile-badge-area">
-                <div class="profile-info">
-                    <div class="profile-name">
-                        <span id="db-profile-name">اسم المنشأة</span>
-                        <svg class="verified-badge" viewBox="0 0 24 24">
-                            <path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                        </svg>
-                    </div>
-                    <div class="profile-region" id="db-profile-region">المنطقة</div>
-                </div>
-                <button class="btn-logout" onclick="logoutSystem()">تسجيل الخروج</button>
+            <div style="font-size: 13px; font-weight: 700; color: var(--arch-gray);">شبكة توزيع الأدوية - شمال سوريا
             </div>
         </header>
 
-        <section class="dashboard-banner">
-            <h2 id="banner-greeting">أهلاً بك، بيك</h2>
-            <p>نظام التوزيع الذكي والموحد المعتمد في شمال سوريا - موصول بشبكة ضمان الشام كاش.</p>
-        </section>
-
-        <div class="dashboard-grid">
-            <div class="dash-card">
-                <div>
-                    <div class="dash-card-title">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--primary)">
-                            <path
-                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-                        </svg>
-                        إدارة المخزون والباركود
-                    </div>
-                    <div class="dash-card-value">ماسح الصلاحية الفوري</div>
+        <!-- Onboarding Wizard Card -->
+        <div id="onboarding-wizard" class="wizard-card">
+            <!-- Dynamic Checkmark Progress Tracker -->
+            <div class="progress-tracker">
+                <div class="progress-step active" id="p-step-1">
+                    <div class="step-indicator">1</div>
+                    <span class="step-label">الصفة</span>
                 </div>
-                <button class="btn btn-primary" onclick="toggleScanner()" id="scanner-toggle-btn">تشغيل الماسح
-                    الضوئي</button>
-                <div class="scanner-container" id="scanner-wrapper">
-                    <div id="reader"></div>
+                <div class="progress-step" id="p-step-2">
+                    <div class="step-indicator">2</div>
+                    <span class="step-label">الهاتف</span>
+                </div>
+                <div class="progress-step" id="p-step-3">
+                    <div class="step-indicator">3</div>
+                    <span class="step-label">الاسم الرسمي</span>
+                </div>
+                <div class="progress-step" id="p-step-4">
+                    <div class="step-indicator">4</div>
+                    <span class="step-label">المنطقة</span>
                 </div>
             </div>
 
-            <div class="dash-card">
-                <div>
-                    <div class="dash-card-title">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--primary)">
+            <!-- Step 1: Role Selection -->
+            <div class="wizard-step-content active" data-step="1">
+                <h2 class="step-title">اختر صفتك في المنصة</h2>
+                <p class="step-subtitle">حدد نوع الكيان الطبي الخاص بك للانضمام إلى شبكة التوزيع المعتمدة</p>
+                <div class="role-cards-grid">
+                    <div class="role-card" data-role="warehouse" onclick="selectRole('warehouse')">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#008080" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <path
-                                d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
-                        بوابة الشام كاش (Sham Cash)
+                        <h3>مستودع أدوية</h3>
                     </div>
-                    <div class="dash-card-value" style="color: var(--primary);">0.00 ليرة تركية</div>
+                    <div class="role-card" data-role="pharmacy" onclick="selectRole('pharmacy')">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#008080" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <h3>صيدلية مرخصة</h3>
+                    </div>
                 </div>
-                <button class="btn btn-secondary" style="border-color: var(--primary); color: var(--primary);"
-                    onclick="alert('تم ربط حساب ضمان الشام كاش بنجاح.')">عرض سجل الحركات</button>
+                <div class="wizard-actions">
+                    <button type="button" class="btn btn-primary" onclick="nextStep(1)">المتابعة</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Phone Number -->
+            <div class="wizard-step-content" data-step="2">
+                <h2 class="step-title">رقم الهاتف</h2>
+                <p class="step-subtitle">أدخل رقم الهاتف المعتمد للتواصل وتلقي إشعارات التوزيع</p>
+                <div class="input-group">
+                    <label class="input-label">رقم الهاتف</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                </path>
+                            </svg>
+                        </span>
+                        <input type="tel" id="input-phone" class="form-control" placeholder="اكتب رقم الهاتف هنا...">
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)">السابق</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(2)">المتابعة</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Official Name (Dynamic Label) -->
+            <div class="wizard-step-content" data-step="3">
+                <h2 class="step-title" id="step3-title-heading">الاسم الرسمي</h2>
+                <p class="step-subtitle" id="step3-subtitle-text">أدخل التسمية الرسمية للكيان الطبي المعتمد في السجلات
+                </p>
+                <div class="input-group">
+                    <label class="input-label" id="step3-input-label">الاسم الرسمي</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </span>
+                        <input type="text" id="input-official-name" class="form-control"
+                            placeholder="اكتب الاسم الرسمي هنا...">
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(3)">السابق</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(3)">المتابعة</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Region Selection (Isolated Dropdown Bug Fix) -->
+            <div class="wizard-step-content" data-step="4">
+                <h2 class="step-title">اختر منطقتك</h2>
+                <p class="step-subtitle">حدد منطقة التغطية الجغرافية لعمليات التوزيع والطلب</p>
+                <div class="input-group">
+                    <label class="input-label">المنطقة الجغرافية</label>
+                    <div class="custom-dropdown" id="region-dropdown-container">
+                        <div class="dropdown-trigger" id="dropdown-trigger-btn" onclick="toggleRegionDropdown(event)">
+                            <span id="selected-region-text">اختر المنطقة...</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu-list">
+                            <div class="dropdown-item" onclick="selectRegion('منبج وريفها', event)">منبج وريفها</div>
+                            <div class="dropdown-item" onclick="selectRegion('حلب وريفها', event)">حلب وريفها</div>
+                            <div class="dropdown-item" onclick="selectRegion('إدلب وريفها', event)">إدلب وريفها</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(4)">السابق</button>
+                    <button type="button" class="btn btn-primary" onclick="completeRegistration()">تسجيل الدخول</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Application View -->
+        <div id="dashboard-app">
+            <div class="dashboard-header">
+                <div class="user-welcome-box">
+                    <div class="user-avatar" id="dash-user-avatar">ش</div>
+                    <div class="user-meta">
+                        <h2 id="dash-user-name">اسم المستخدم</h2>
+                        <p id="dash-user-role-text">صفتك: صيدلية مرخصة</p>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="logoutSystem()"
+                    style="padding: 10px 20px; font-size: 14px;">تسجيل الخروج</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <span class="stat-card-title">حالة التوثيق المؤسسي</span>
+                    <span class="stat-card-value" style="color: var(--primary-teal); font-size: 20px;">موثق
+                        ومعتمد</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-card-title">نطاق التغطية الجغرافية</span>
+                    <span class="stat-card-value" id="dash-stat-region" style="font-size: 20px;">-</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-card-title">إجمالي الطلبات النشطة</span>
+                    <span class="stat-card-value">12 طلب</span>
+                </div>
+            </div>
+
+            <div class="dashboard-panel">
+                <div class="panel-title-bar">
+                    <h3>أحدث شحنات الأدوية المتاحة للتوزيع في المنطقة</h3>
+                    <span class="badge badge-success">حدث قبل دقيقتين</span>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>اسم الصنف الدوائي</th>
+                                <th>الشركة المصنعة</th>
+                                <th>الكمية المتاحة</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>أموكسيسيلين 500 مغ (Amoxicillin)</td>
+                                <td>مستودع الأمان الدوائي</td>
+                                <td>450 عبوة</td>
+                                <td><span class="badge badge-success">متاح للتوريد</span></td>
+                            </tr>
+                            <tr>
+                                <td>باراسيتامول 650 مغ (Panadol Advance)</td>
+                                <td>مستودع الشفاء المركزي</td>
+                                <td>1,200 شريط</td>
+                                <td><span class="badge badge-success">متاح للتوريد</span></td>
+                            </tr>
+                            <tr>
+                                <td>إيبوبروفين 400 مغ (Ibuprofen)</td>
+                                <td>مستودع النور الطبي</td>
+                                <td>300 علبة</td>
+                                <td><span class="badge badge-warning">كمية محدودة</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- البرمجة ومنطق التطبيق العازل والصلب -->
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
     <script>
-        // حالة البيانات المدارة داخل الجلسة
+        // Application State State Machine
         const state = {
-            role: null, // 'warehouse' أو 'pharmacy'
+            currentStep: 1,
+            role: 'pharmacy', // default
             phone: '',
-            entityName: '',
+            officialName: '',
             region: ''
         };
 
-        // الـ SVG المدمج والنقي لعلامة الصح الخاصة بشريط التقدم
-        const inlineSvgCheck = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        // Splash Screen Auto Hide
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.classList.add('fade-out');
+                setTimeout(() => splash.remove(), 600);
+            }, 1200);
 
-        // اختيار الصفة في الخطوة الأولى
-        function selectRole(roleType, element) {
-            state.role = roleType;
-            document.querySelectorAll('.role-card').forEach(card => card.classList.remove('selected'));
-            element.classList.add('selected');
-            document.getElementById('err-step-1').style.display = 'none';
+            // Check existing session in localStorage
+            const savedSession = localStorage.getItem('pharmalink_session');
+            if (savedSession) {
+                try {
+                    const data = JSON.parse(savedSession);
+                    state.role = data.role;
+                    state.phone = data.phone;
+                    state.officialName = data.officialName;
+                    state.region = data.region;
+                    showDashboard();
+                } catch (e) {
+                    localStorage.removeItem('pharmalink_session');
+                }
+            }
 
-            // تكييف نصوص الخطوة الثالثة فوراً وبذكاء تام
-            if (roleType === 'warehouse') {
-                document.getElementById('step3-title-label').innerText = 'اسم المستودع الرسمي';
-                document.getElementById('step3-desc-label').innerText = 'أدخل اسم المستودع الرسمي المعتمد بدقة لتأكيد الترخيص اللوجستي';
-                document.getElementById('entity-name-input').placeholder = 'اكتب اسم المستودع الرسمي هنا...';
-            } else {
-                document.getElementById('step3-title-label').innerText = 'اسم الصيدلية الرسمية';
-                document.getElementById('step3-desc-label').innerText = 'أدخل اسم الصيدلية الرسمية المعتمد بدقة لتأكيد الترخيص الطبي';
-                document.getElementById('entity-name-input').placeholder = 'اكتب اسم الصيدلية الرسمية هنا...';
+            // Global Event Listener to close Dropdown when clicking outside (Event Isolation)
+            document.addEventListener('click', (e) => {
+                const dropdownContainer = document.getElementById('region-dropdown-container');
+                const menu = document.getElementById('dropdown-menu-list');
+                if (dropdownContainer && !dropdownContainer.contains(e.target)) {
+                    menu.classList.remove('open');
+                }
+            });
+        });
+
+        // Role Selection Handler
+        function selectRole(selectedRole) {
+            state.role = selectedRole;
+            document.querySelectorAll('.role-card').forEach(card => {
+                if (card.getAttribute('data-role') === selectedRole) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+        }
+
+        // Navigation Engine & Dynamic Checkmarks Tracker
+        function updateProgressTracker(targetStep) {
+            for (let i = 1; i <= 4; i++) {
+                const stepElem = document.getElementById(`p-step-${i}`);
+                const indicator = stepElem.querySelector('.step-indicator');
+
+                stepElem.classList.remove('active', 'completed');
+
+                if (i < targetStep) {
+                    stepElem.classList.add('completed');
+                    // Inline SVG Checkmark replacement
+                    indicator.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                } else if (i === targetStep) {
+                    stepElem.classList.add('active');
+                    indicator.textContent = i;
+                } else {
+                    indicator.textContent = i;
+                }
             }
         }
 
-        // الانتقال للأمام مع التحقق وتحديث شريط التقدم بذكاء
-        function nextStep(currentStepNum) {
-            if (currentStepNum === 1) {
+        function nextStep(current) {
+            // Validate inputs per step
+            if (current === 1) {
                 if (!state.role) {
-                    document.getElementById('err-step-1').style.display = 'block';
+                    showToast('يرجى اختيار صفتك في المنصة أولاً.', 'error');
                     return;
                 }
-                document.getElementById('err-step-1').style.display = 'none';
-            } else if (currentStepNum === 2) {
-                const phoneVal = document.getElementById('phone-input').value.trim();
-                if (!phoneVal || phoneVal.length < 7) {
-                    document.getElementById('err-step-2').style.display = 'block';
+            } else if (current === 2) {
+                const phoneInput = document.getElementById('input-phone').value.trim();
+                if (!phoneInput) {
+                    showToast('يرجى إدخال رقم الهاتف.', 'error');
                     return;
                 }
-                state.phone = phoneVal;
-                document.getElementById('err-step-2').style.display = 'none';
-            } else if (currentStepNum === 3) {
-                const nameVal = document.getElementById('entity-name-input').value.trim();
-                if (!nameVal) {
-                    document.getElementById('err-step-3').style.display = 'block';
+                state.phone = phoneInput;
+            } else if (current === 3) {
+                const nameInput = document.getElementById('input-official-name').value.trim();
+                if (!nameInput) {
+                    showToast(state.role === 'warehouse' ? 'يرجى إدخال اسم المستودع الرسمي.' : 'يرجى إدخال اسم الصيدلية الرسمية.', 'error');
                     return;
                 }
-                state.entityName = nameVal;
-                document.getElementById('err-step-3').style.display = 'none';
+                state.officialName = nameInput;
             }
 
-            // تحديث شريط التقدم بصرياً بالـ SVG النقي
-            const currentStepElement = document.getElementById(`p-step-${currentStepNum}`);
-            currentStepElement.classList.remove('active');
-            currentStepElement.classList.add('completed');
-            currentStepElement.innerHTML = inlineSvgCheck;
-
-            // إخفاء الخطوة الحالية وإظهار التالية
-            document.getElementById(`step-${currentStepNum}`).classList.remove('active-step');
-            const nextStepNum = currentStepNum + 1;
-            document.getElementById(`step-${nextStepNum}`).classList.add('active-step');
-
-            const nextStepElement = document.getElementById(`p-step-${nextStepNum}`);
-            nextStepElement.classList.add('active');
-        }
-
-        // العودة للخطوة السابقة
-        function prevStep(currentStepNum) {
-            document.getElementById(`step-${currentStepNum}`).classList.remove('active-step');
-            const prevStepNum = currentStepNum - 1;
-            document.getElementById(`step-${prevStepNum}`).classList.add('active-step');
-
-            const currentStepElement = document.getElementById(`p-step-${currentStepNum}`);
-            currentStepElement.classList.remove('active');
-
-            const prevStepElement = document.getElementById(`p-step-${prevStepNum}`);
-            prevStepElement.classList.remove('completed');
-            prevStepElement.classList.add('active');
-            prevStepElement.innerHTML = prevStepNum; // إعادة الرقم مكانه عند التراجع
-
-            // إزالة علامة الصح من الخطوة الحالية التي تراجعنا عنها إن وجدت في تتبع سابق
-            if (currentStepNum === 4) {
-                document.getElementById('p-step-3').innerHTML = '3';
-            } else if (currentStepNum === 3) {
-                document.getElementById('p-step-2').innerHTML = '2';
+            if (current < 4) {
+                state.currentStep = current + 1;
+                renderStep(state.currentStep);
             }
         }
 
-        // --- إصلاح وتأمين القائمة المنسدلة بعزل أحداث صارم (Event Isolation) ---
-        function toggleDropdown(event) {
+        function prevStep(current) {
+            if (current > 1) {
+                state.currentStep = current - 1;
+                renderStep(state.currentStep);
+            }
+        }
+
+        function renderStep(step) {
+            updateProgressTracker(step);
+
+            // Adapt Dynamic Label in Step 3
+            if (step === 3) {
+                const heading = document.getElementById('step3-title-heading');
+                const sub = document.getElementById('step3-subtitle-text');
+                const label = document.getElementById('step3-input-label');
+                const input = document.getElementById('input-official-name');
+
+                if (state.role === 'warehouse') {
+                    heading.textContent = 'اسم المستودع الرسمي';
+                    sub.textContent = 'أدخل اسم المستودع الرسمي المرخص قانونياً';
+                    label.textContent = 'اسم المستودع الرسمي';
+                    input.placeholder = 'اكتب اسم المستودع الرسمي هنا...';
+                } else {
+                    heading.textContent = 'اسم الصيدلية الرسمية';
+                    sub.textContent = 'أدخل اسم الصيدلية الرسمية المرخصة أصولاً';
+                    label.textContent = 'اسم الصيدلية الرسمية';
+                    input.placeholder = 'اكتب الاسم الرسمي هنا...';
+                }
+            }
+
+            document.querySelectorAll('.wizard-step-content').forEach(content => {
+                if (parseInt(content.getAttribute('data-step')) === step) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        // Dropdown Toggle & Selection Logic with Strict Event Isolation
+        function toggleRegionDropdown(event) {
             event.stopPropagation();
-            const optionsContainer = document.getElementById('dropdown-options');
-            const selectBox = document.getElementById('dropdown-box');
-
-            const isOpen = optionsContainer.classList.contains('open');
-            if (isOpen) {
-                optionsContainer.classList.remove('open');
-                selectBox.classList.remove('active');
-            } else {
-                optionsContainer.classList.add('open');
-                selectBox.classList.add('active');
-            }
+            const menu = document.getElementById('dropdown-menu-list');
+            menu.classList.toggle('open');
         }
 
         function selectRegion(regionName, event) {
             event.stopPropagation();
             state.region = regionName;
-            document.getElementById('selected-region-text').innerText = regionName;
-            document.getElementById('selected-region-text').style.color = 'var(--charcoal)';
-            document.getElementById('dropdown-options').classList.remove('open');
-            document.getElementById('dropdown-box').classList.remove('active');
-            document.getElementById('err-step-4').style.display = 'none';
+
+            const triggerText = document.getElementById('selected-region-text');
+            const triggerBtn = document.getElementById('dropdown-trigger-btn');
+            const menu = document.getElementById('dropdown-menu-list');
+
+            triggerText.textContent = regionName;
+            triggerBtn.classList.add('has-value');
+            menu.classList.remove('open');
+
+            showToast(`تم اختيار المنطقة: ${regionName}`, 'success');
         }
 
-        // إغلاق القائمة المنسدلة عند النقر في أي مكان خارجها
-        window.addEventListener('click', () => {
-            const optionsContainer = document.getElementById('dropdown-options');
-            const selectBox = document.getElementById('dropdown-box');
-            if (optionsContainer && optionsContainer.classList.contains('open')) {
-                optionsContainer.classList.remove('open');
-                selectBox.classList.remove('active');
-            }
-        });
-
-        // إتمام التسجيل وتوليد التوكن والانتقال للوحة التحكم
-        function completeLogin() {
+        // Complete Registration & Save to LocalStorage
+        function completeRegistration() {
             if (!state.region) {
-                document.getElementById('err-step-4').style.display = 'block';
+                showToast('يرجى اختيار المنطقة الجغرافية قبل المتابعة.', 'error');
                 return;
             }
-            document.getElementById('err-step-4').style.display = 'none';
 
-            // توليد وتخزين التوكن في localStorage
-            const sessionToken = 'PL-TOKEN-' + Math.random().toString(36).substring(2) + '-' + Date.now();
-            localStorage.setItem('pharmalink_session', sessionToken);
-            localStorage.setItem('pharmalink_user_data', JSON.stringify(state));
+            // Save state to localStorage as a robust state token
+            localStorage.setItem('pharmalink_session', JSON.stringify(state));
+            showToast('تم تسجيل الدخول بنجاح وتوليد توكن الجلسة.', 'success');
 
-            // تحديث شريط التقدم للخطوة الأخيرة بالكامل
-            const finalStepElement = document.getElementById('p-step-4');
-            finalStepElement.classList.remove('active');
-            finalStepElement.classList.add('completed');
-            finalStepElement.innerHTML = inlineSvgCheck;
-
-            // الانتقال الفوري للوحة التحكم بعد جزء من الثانية بسلاسة
             setTimeout(() => {
-                document.getElementById('onboarding-container').style.display = 'none';
-
-                const dashboard = document.getElementById('dashboard-view');
-                dashboard.style.display = 'flex';
-
-                document.getElementById('db-profile-name').innerText = state.entityName;
-                document.getElementById('db-profile-region').innerText = state.region;
-                document.getElementById('banner-greeting').innerText = `أهلاً بك، بيك ${state.entityName}`;
-            }, 300);
+                showDashboard();
+            }, 600);
         }
 
-        // التحقق من حالة الجلسة عند التحميل المباشر للنافذة
-        window.addEventListener('DOMContentLoaded', () => {
-            const activeToken = localStorage.getItem('pharmalink_session');
-            const savedData = localStorage.getItem('pharmalink_user_data');
+        // Transition to Dashboard View
+        function showDashboard() {
+            document.getElementById('onboarding-wizard').style.display = 'none';
+            const dashApp = document.getElementById('dashboard-app');
+            dashApp.classList.add('active');
 
-            if (activeToken && savedData) {
-                const parsed = JSON.parse(savedData);
-                state.role = parsed.role;
-                state.phone = parsed.phone;
-                state.entityName = parsed.entityName;
-                state.region = parsed.region;
+            // Populate Dashboard Data
+            document.getElementById('dash-user-name').textContent = state.officialName || 'مستخدم معتمد';
+            document.getElementById('dash-user-role-text').textContent = state.role === 'warehouse' ? 'الصفة: مستودع أدوية معتمد' : 'الصفة: صيدلية مرخصة';
+            document.getElementById('dash-user-avatar').textContent = (state.officialName || 'ش').charAt(0);
+            document.getElementById('dash-stat-region').textContent = state.region || 'غير محدد';
+        }
 
-                document.getElementById('splash-screen').style.display = 'none';
-                document.getElementById('onboarding-container').style.display = 'none';
-
-                const dashboard = document.getElementById('dashboard-view');
-                dashboard.style.display = 'flex';
-
-                document.getElementById('db-profile-name').innerText = state.entityName;
-                document.getElementById('db-profile-region').innerText = state.region;
-                document.getElementById('banner-greeting').innerText = `أهلاً بك، بيك ${state.entityName}`;
-            }
-        });
-
-        // تسجيل الخروج وإعادة تعيين النظام
+        // Logout System
         function logoutSystem() {
             localStorage.removeItem('pharmalink_session');
-            localStorage.removeItem('pharmalink_user_data');
             window.location.reload();
         }
 
-        // تشغيل ماسح الباركود العتادي
-        let html5QrCode = null;
-        function toggleScanner() {
-            const wrapper = document.getElementById('scanner-wrapper');
-            const btn = document.getElementById('scanner-toggle-btn');
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderRight = type === 'error' ? '4px solid var(--admin-red)' : '4px solid var(--primary-teal)';
+            toast.innerHTML = `<span>${message}</span>`;
 
-            if (wrapper.style.display === 'block') {
-                if (html5QrCode) {
-                    html5QrCode.stop().then(() => {
-                        wrapper.style.display = 'none';
-                        btn.innerText = 'تشغيل الماسح الضوئي';
-                    }).catch(() => {
-                        wrapper.style.display = 'none';
-                        btn.innerText = 'تشغيل الماسح الضوئي';
-                    });
-                } else {
-                    wrapper.style.display = 'none';
-                    btn.innerText = 'تشغيل الماسح الضوئي';
-                }
-            } else {
-                wrapper.style.display = 'block';
-                btn.innerText = 'إيقاف الماسح الضوئي';
+            container.appendChild(toast);
 
-                if (!html5QrCode) {
-                    html5QrCode = new Html5Qrcode("reader");
-                }
-
-                html5QrCode.start(
-                    { facingMode: "environment" },
-                    { fps: 10, qrbox: { width: 250, height: 150 } },
-                    (decodedText) => {
-                        alert(`تم قراءة باركود الدواء بنجاح: ${decodedText}`);
-                    },
-                    (errorMessage) => {
-                        // الأخطاء المتعلقة بعدم رؤية باركود في الإطار يتم تجاهلها بصمت لمنع التشويش
-                    }
-                ).catch((err) => {
-                    alert("تعذر تشغيل كاميرا الجهاز. الرجاء منح الصلاحية المطلوبة.");
-                    wrapper.style.display = 'none';
-                    btn.innerText = 'تشغيل الماسح الضوئي';
-                });
-            }
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
     </script>
 </body>
