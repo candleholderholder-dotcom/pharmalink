@@ -142,10 +142,11 @@
         }
 
         .splash-title {
-            margin-top: 30px;
+            margin-top: 25px;
             font-size: 28px;
             font-weight: 900;
             letter-spacing: 0.5px;
+            text-align: center;
         }
 
         .splash-title span.pharmacy {
@@ -154,6 +155,23 @@
 
         .splash-title span.link {
             color: var(--primary-teal);
+        }
+
+        .splash-subtitle {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-align: center;
+        }
+
+        .splash-subtitle span.sub-gray {
+            color: var(--arch-gray);
+        }
+
+        .splash-subtitle span.sub-core {
+            color: #009688;
+            font-weight: 800;
         }
 
         /* Stage 2: Multi-Step Onboarding Form Wizard */
@@ -800,6 +818,9 @@
         <div class="splash-title">
             <span class="pharmacy">Pharma</span><span class="link">Link</span>
         </div>
+        <div class="splash-subtitle">
+            <span class="sub-gray">A Subsidiary of Millennium</span> <span class="sub-core">Core</span>
+        </div>
     </div>
 
     <!-- 📝 Stage 2: Multi-Step Onboarding Form Wizard -->
@@ -1061,13 +1082,15 @@
             const optPharmacy = document.getElementById('option-pharmacy');
             const facilityTypeInput = document.getElementById('facility-type');
 
-            optWarehouse.addEventListener('click', () => {
+            optWarehouse.addEventListener('click', (e) => {
+                e.stopPropagation();
                 facilityTypeInput.value = 'warehouse';
                 optWarehouse.classList.add('selected');
                 optPharmacy.classList.remove('selected');
             });
 
-            optPharmacy.addEventListener('click', () => {
+            optPharmacy.addEventListener('click', (e) => {
+                e.stopPropagation();
                 facilityTypeInput.value = 'pharmacy';
                 optPharmacy.classList.add('selected');
                 optWarehouse.classList.remove('selected');
@@ -1075,7 +1098,6 @@
 
             // Custom Dropdown Handling
             const customSelectBox = document.getElementById('custom-select-trigger-box');
-            const customSelectWrapper = document.getElementById('custom-select-wrapper');
             const regionTextSpan = document.getElementById('selected-region-text');
             const geographicScopeInput = document.getElementById('geographic-scope');
 
@@ -1102,7 +1124,8 @@
             const btnNext = document.getElementById('btn-next');
             const btnPrev = document.getElementById('btn-prev');
 
-            btnNext.addEventListener('click', () => {
+            btnNext.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if (currentStep === 1 && !facilityTypeInput.value) {
                     alert('يرجى اختيار الهوية التجارية للمنشأة للمتابعة.');
                     return;
@@ -1130,7 +1153,8 @@
                 }
             });
 
-            btnPrev.addEventListener('click', () => {
+            btnPrev.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if (currentStep > 1) {
                     document.querySelector(`.wizard-step-content[data-content="${currentStep}"]`).classList.remove('active');
                     currentStep--;
@@ -1203,7 +1227,8 @@
             }
 
             // Logout Handler
-            document.getElementById('btn-logout').addEventListener('click', () => {
+            document.getElementById('btn-logout').addEventListener('click', (e) => {
+                e.stopPropagation();
                 localStorage.removeItem('pharmalink_token');
                 localStorage.removeItem('pharmalink_data');
                 window.location.reload();
@@ -1211,12 +1236,14 @@
 
             // Scanner Modal Controls
             const scannerModal = document.getElementById('scanner-modal');
-            document.getElementById('btn-open-scanner').addEventListener('click', () => {
+            document.getElementById('btn-open-scanner').addEventListener('click', (e) => {
+                e.stopPropagation();
                 scannerModal.style.display = 'flex';
                 initZXingScanner();
             });
 
-            document.getElementById('btn-close-scanner').addEventListener('click', () => {
+            document.getElementById('btn-close-scanner').addEventListener('click', (e) => {
+                e.stopPropagation();
                 scannerModal.style.display = 'none';
                 if (codeReader) {
                     codeReader.reset();
@@ -1251,8 +1278,9 @@
                 }
             }
 
-            document.getElementById('btn-sham-cash').addEventListener('click', () => {
-                alert('محفظة Sham Cash الرقمية متصلة وجاهزة لمعالجة التسويلات المالية الآمنة.');
+            document.getElementById('btn-sham-cash').addEventListener('click', (e) => {
+                e.stopPropagation();
+                alert('محفظة Sham Cash الرقمية متصلة وجاهزة لمعالجة التسويات المالية الآمنة.');
             });
         });
     </script>
