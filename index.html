@@ -213,6 +213,19 @@
             box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1);
         }
 
+        /* DYNAMIC SVG COLOR TRANSITION CLASSES */
+        .icon-fill-transition {
+            transition: fill 0.3s ease, stroke 0.3s ease;
+        }
+
+        .role-option-card.active .dynamic-teal-fill {
+            fill: var(--primary-teal) !important;
+        }
+
+        .role-option-card.active .dynamic-teal-stroke {
+            stroke: var(--primary-teal) !important;
+        }
+
         .role-option-title {
             margin-top: 16px;
             font-weight: 800;
@@ -622,13 +635,13 @@
                             <rect x="70" y="0" width="70" height="70" />
                         </clipPath>
                     </defs>
-                    <!-- Left Half: Solid Architectural Gray (#6C7A89) exactly 50% -->
-                    <g clip-path="url(#left-clip)">
-                        <rect x="0" y="10" width="140" height="50" rx="25" fill="#6C7A89" />
-                    </g>
                     <!-- Right Half: Solid Premium Peacock Teal (#008080) exactly 50% -->
                     <g clip-path="url(#right-clip)">
                         <rect x="0" y="10" width="140" height="50" rx="25" fill="#008080" />
+                    </g>
+                    <!-- Left Half: Solid Architectural Gray (#6C7A89) exactly 50% -->
+                    <g clip-path="url(#left-clip)">
+                        <rect x="0" y="10" width="140" height="50" rx="25" fill="#6C7A89" />
                     </g>
                     <!-- Dividing seam line -->
                     <line x1="70" y1="10" x2="70" y2="60" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2" />
@@ -652,43 +665,59 @@
             <div class="wizard-step" id="step-1">
                 <div class="wizard-step-title">اختر صفحتك التشغيلية في المنصة</div>
                 <div class="role-grid">
-                    <!-- Warehouse Card with Prominent B2B Truck SVG -->
+                    <!-- Warehouse Card with Interactive Detailed Truck SVG -->
                     <div class="role-option-card" id="card-warehouse" onclick="PharmaLinkApp.selectRole('warehouse')">
                         <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Aerodynamic Speed Lines -->
-                            <line x1="2" y1="22" x2="16" y2="22" stroke="#6C7A89" stroke-width="3.5"
-                                stroke-linecap="round" />
-                            <line x1="0" y1="35" x2="12" y2="35" stroke="#6C7A89" stroke-width="3.5"
-                                stroke-linecap="round" />
-                            <line x1="2" y1="48" x2="16" y2="48" stroke="#6C7A89" stroke-width="3.5"
-                                stroke-linecap="round" />
-                            <!-- Logistics Delivery Truck Cabin & Cargo Box -->
-                            <rect x="18" y="20" width="34" height="32" rx="4" fill="#008080" />
-                            <path d="M52 30H62L70 40V52H52V30Z" fill="#008080" />
+                            <!-- Aerodynamic Speed Lines (Default Gray, turns Teal on active) -->
+                            <line x1="2" y1="22" x2="16" y2="22" class="icon-fill-transition dynamic-teal-stroke"
+                                stroke="#6C7A89" stroke-width="3.5" stroke-linecap="round" />
+                            <line x1="0" y1="35" x2="12" y2="35" class="icon-fill-transition dynamic-teal-stroke"
+                                stroke="#6C7A89" stroke-width="3.5" stroke-linecap="round" />
+                            <line x1="2" y1="48" x2="16" y2="48" class="icon-fill-transition dynamic-teal-stroke"
+                                stroke="#6C7A89" stroke-width="3.5" stroke-linecap="round" />
+                            <!-- Logistics Delivery Truck Cabin & Cargo Box (Default Gray #6C7A89, shifts to #008080 when active) -->
+                            <rect x="18" y="20" width="34" height="32" rx="4" fill="#6C7A89"
+                                class="icon-fill-transition dynamic-teal-fill" />
+                            <path d="M52 30H62L70 40V52H52V30Z" fill="#6C7A89"
+                                class="icon-fill-transition dynamic-teal-fill" />
                             <!-- Windshield -->
                             <path d="M56 33H61L66 40H56V33Z" fill="#FFFFFF" fill-opacity="0.9" />
-                            <!-- Massive Circular Wheels with Internal Rims -->
+                            <!-- Massive Circular Wheels with Internal Hubcaps -->
                             <circle cx="28" cy="54" r="7" fill="#1E2229" />
-                            <circle cx="28" cy="54" r="3" fill="#6C7A89" />
+                            <circle cx="28" cy="54" r="3" fill="#6C7A89"
+                                class="icon-fill-transition dynamic-teal-fill" />
                             <circle cx="60" cy="54" r="7" fill="#1E2229" />
-                            <circle cx="60" cy="54" r="3" fill="#6C7A89" />
+                            <circle cx="60" cy="54" r="3" fill="#6C7A89"
+                                class="icon-fill-transition dynamic-teal-fill" />
                             <!-- Embossed Medical Cross -->
                             <path d="M33 30H37V36H43V40H37V46H33V40H27V36H33V30Z" fill="#FFFFFF" />
                         </svg>
                         <div class="role-option-title">مستودع أدوية</div>
                     </div>
-                    <!-- Pharmacy Card with Enlarged Diagonal Capsule & Side Cross SVG -->
+
+                    <!-- Pharmacy Card with Interactive Split Capsule & Side Cross SVG -->
                     <div class="role-option-card" id="card-pharmacy" onclick="PharmaLinkApp.selectRole('pharmacy')">
                         <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <clipPath id="capsule-left-clip">
+                                    <rect x="0" y="0" width="20" height="40" />
+                                </clipPath>
+                            </defs>
                             <!-- Diagonal Capsule -->
                             <g transform="translate(12, 10) rotate(-30 30 25)">
-                                <rect x="10" y="15" width="40" height="22" rx="11" fill="#6C7A89" />
-                                <path d="M30 15H40V37H30V15Z" fill="#008080" />
+                                <!-- Default baseline: Uniform Gray #6C7A89 -->
+                                <rect x="10" y="15" width="40" height="22" rx="11" fill="#6C7A89"
+                                    class="icon-fill-transition capsule-base-shell" />
+                                <!-- Active state: Right half becomes Teal #008080 via dynamic fill class -->
+                                <path d="M30 15H40V37H30V15Z" fill="#6C7A89"
+                                    class="icon-fill-transition capsule-right-half dynamic-teal-fill" />
                             </g>
                             <!-- Side-by-Side Bold Medical Cross Anchor -->
                             <g transform="translate(62, 22)">
-                                <rect x="2" y="0" width="5" height="22" rx="1.5" fill="#008080" />
-                                <rect x="-3.5" y="8.5" width="22" height="5" rx="1.5" fill="#008080" />
+                                <rect x="2" y="0" width="5" height="22" rx="1.5" fill="#6C7A89"
+                                    class="icon-fill-transition dynamic-teal-fill" />
+                                <rect x="-3.5" y="8.5" width="22" height="5" rx="1.5" fill="#6C7A89"
+                                    class="icon-fill-transition dynamic-teal-fill" />
                             </g>
                         </svg>
                         <div class="role-option-title">صيدلية</div>
