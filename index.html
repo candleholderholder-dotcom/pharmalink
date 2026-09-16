@@ -51,7 +51,7 @@
             width: 100%;
         }
 
-        /* PHASE 1: SPLASH SCREEN */
+        /* PHASE 1: CINEMATIC SPLASH SCREEN */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -1235,6 +1235,29 @@
             `;
         }
 
+        // Web Audio API Beep Signal Generator
+        function playSuccessBeep() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(600, audioCtx.currentTime); // 600 Hz frequency
+
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.15); // Exact duration: 150ms
+            } catch (e) {
+                console.warn('Audio Context interaction error:', e);
+            }
+        }
+
         function startCameraScanner() {
             const wrapper = document.getElementById('scanner-wrapper');
             wrapper.style.display = 'block';
@@ -1248,8 +1271,11 @@
                 { facingMode: "environment" },
                 config,
                 (decodedText) => {
+                    // 1. Play Audio Beep Signal (600Hz for 150ms)
+                    playSuccessBeep();
+                    // 2. Auto-Populate Data
                     document.getElementById('new-med-barcode').value = decodedText;
-                    alert(`تم قراءة الباركود بنجاح: ${decodedText}`);
+                    // 3. Auto-Close Camera Execution & Unmount Wrapper
                     stopCameraScanner();
                 },
                 () => { }
@@ -1262,11 +1288,14 @@
         function stopCameraScanner() {
             if (PharmaLinkApp.html5QrCode) {
                 PharmaLinkApp.html5QrCode.stop().then(() => {
+                    PharmaLinkApp.html5QrCode.clear();
                     PharmaLinkApp.html5QrCode = null;
                     const wrapper = document.getElementById('scanner-wrapper');
                     if (wrapper) wrapper.style.display = 'none';
                 }).catch(() => {
                     PharmaLinkApp.html5QrCode = null;
+                    const wrapper = document.getElementById('scanner-wrapper');
+                    if (wrapper) wrapper.style.display = 'none';
                 });
             }
         }
