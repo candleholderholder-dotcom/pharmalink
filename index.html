@@ -171,6 +171,22 @@
             border: 1px solid var(--border-color);
         }
 
+        .timeline-progress {
+            width: 100%;
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .timeline-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 25%;
+            transition: width 0.4s ease;
+        }
+
         .wizard-header h2 {
             font-size: 24px;
             font-weight: 900;
@@ -227,6 +243,11 @@
             cursor: pointer;
             transition: all 0.3s;
             background: var(--white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .role-card.active {
@@ -235,9 +256,10 @@
         }
 
         .role-card h4 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
-            margin-top: 8px;
+            margin: 0;
+            color: var(--text-main);
         }
 
         .btn-primary-custom {
@@ -348,7 +370,6 @@
             fill: currentColor;
         }
 
-        /* Views & Cards */
         .view-panel {
             display: none;
         }
@@ -417,7 +438,6 @@
             color: var(--danger);
         }
 
-        /* Action Buttons */
         .btn-action {
             padding: 8px 16px;
             background-color: var(--primary);
@@ -442,7 +462,6 @@
             background-color: #55606d;
         }
 
-        /* Search Bar */
         .search-container {
             position: relative;
             margin-bottom: 20px;
@@ -469,7 +488,6 @@
             fill: var(--secondary);
         }
 
-        /* Cart Drawer & Floating Basket */
         .cart-drawer {
             position: fixed;
             top: 0;
@@ -541,7 +559,6 @@
             margin-bottom: 15px;
         }
 
-        /* Floating Cart Trigger */
         .floating-cart-btn {
             position: fixed;
             bottom: 75px;
@@ -567,7 +584,6 @@
             fill: var(--white);
         }
 
-        /* Barcode Scanner Modal / Container */
         #reader-container {
             margin-top: 15px;
             border-radius: 10px;
@@ -581,7 +597,6 @@
             width: 100%;
         }
 
-        /* Commission Breakdown */
         .commission-box {
             background: rgba(0, 128, 128, 0.05);
             border: 1px solid rgba(0, 128, 128, 0.2);
@@ -623,6 +638,9 @@
     <!-- --- PHASE 2: Multi-Step Onboarding Wizard --- -->
     <div id="onboarding-container">
         <div class="wizard-card">
+            <div class="timeline-progress">
+                <div class="timeline-bar" id="timelineBar"></div>
+            </div>
             <div class="wizard-header">
                 <h2>التسجيل في منصة PharmaLink</h2>
                 <p>يرجى إكمال البيانات أدناه للوصول إلى النظام الرقمي</p>
@@ -632,17 +650,29 @@
                 <div class="form-group">
                     <label>اختر صفة الحساب:</label>
                     <div class="role-cards">
+                        <!-- Pharmacy Card with Custom SVG -->
                         <div class="role-card" onclick="selectRole('صيدلية', this)">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="#008080">
-                                <path
-                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                            <svg viewBox="0 0 64 64" width="40" height="40">
+                                <rect x="22" y="10" width="20" height="44" rx="10" fill="#008080" />
+                                <rect x="22" y="10" width="10" height="44" rx="10" fill="#6C7A89" />
+                                <path d="M32 24v16M24 32h16" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
                             </svg>
                             <h4>صيدلية</h4>
                         </div>
+                        <!-- Warehouse Card with Custom Logistics Truck & Speed Lines & Medical Cross -->
                         <div class="role-card" onclick="selectRole('مستودع أدوية', this)">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="#008080">
-                                <path
-                                    d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z" />
+                            <svg viewBox="0 0 64 64" width="44" height="44">
+                                <!-- Speed lines -->
+                                <path d="M4 22h12M2 30h16M6 38h10" stroke="#6C7A89" stroke-width="3"
+                                    stroke-linecap="round" />
+                                <!-- Truck Body -->
+                                <path d="M18 24h24v20H18z" fill="#008080" />
+                                <path d="M42 28h12l6 8v8H42V28z" fill="#6C7A89" />
+                                <!-- Wheels -->
+                                <circle cx="26" cy="48" r="5" fill="#1E2229" />
+                                <circle cx="50" cy="48" r="5" fill="#1E2229" />
+                                <!-- Medical Cross on Truck -->
+                                <path d="M28 30h4v8h-4zM24 34h12v-4h-12z" fill="#FFFFFF" />
                             </svg>
                             <h4>مستودع أدوية</h4>
                         </div>
@@ -653,20 +683,20 @@
                 <div class="form-group">
                     <label for="respName">اسم المسؤول / الصيدلاني</label>
                     <input type="text" id="respName" class="form-control" placeholder="أدخل اسمك الكامل..."
-                        oninput="validateWizard()">
+                        oninput="updateWizardProgress()">
                 </div>
 
                 <!-- Step 3: Entity Profile Name -->
                 <div class="form-group">
                     <label for="entityName">اسم الجهة (المستودع أو الصيدلية)</label>
                     <input type="text" id="entityName" class="form-control" placeholder="أدخل اسم المنشأة..."
-                        oninput="validateWizard()">
+                        oninput="updateWizardProgress()">
                 </div>
 
                 <!-- Step 4: Geographic Location -->
                 <div class="form-group">
                     <label for="geoRegion">النطاق الجغرافي المستهدف</label>
-                    <select id="geoRegion" class="form-control" onchange="validateWizard()">
+                    <select id="geoRegion" class="form-control" onchange="updateWizardProgress()">
                         <option value="">-- اختر النطاق الجغرافي --</option>
                         <option value="منبج وريفها">منبج وريفها</option>
                         <option value="حلب وريفها">حلب وريفها</option>
@@ -745,7 +775,7 @@
                 { id: 2, name: "أموكسيسيلين 250 ملغ", activeIngredient: "Amoxicillin", price: 9200, warehouse: "مستودع الشفاء الدوائي", region: "منبج وريفها", stock: 85 },
                 { id: 3, name: "إيبوبروفين 400 ملغ", activeIngredient: "Ibuprofen", price: 6000, warehouse: "مستودع النور الطبي", region: "إدلب وريفها", stock: 200 },
                 { id: 4, name: "ديكلوفيناك الصوديوم", activeIngredient: "Diclofenac", price: 7500, warehouse: "مستودع الدواء الراقي", region: "حلب وريفها", stock: 50 },
-                { id: 5, name: "أوميبرازول 20 ملغ", activeIngredient: "Omeprazole", price: 11000, warehouse: "مستودع دمشق الإقليمي", region: "منبج وريفها", stock: 95 }
+                { id: 5, name: "أوميبرازول 20 ملغ", activeIngredient: "Omeprazole", price: 11000, warehouse: "مستودع منبج الإقليمي", region: "منبج وريفها", stock: 95 }
             ],
             deficits: [
                 { id: 101, medicineName: "سيفالكسين 500 ملغ", pharmacy: "صيدلية النور", region: "منبج وريفها", time: "منذ 10 دقائق" },
@@ -767,7 +797,6 @@
                 document.getElementById('splash-screen').style.display = 'none';
                 startDashboard();
             } else {
-                // Run Cinematic Splash Screen for 2.5 seconds
                 setTimeout(() => {
                     document.getElementById('splash-screen').style.opacity = '0';
                     setTimeout(() => {
@@ -783,14 +812,23 @@
             selectedRoleTemp = role;
             document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
             element.classList.add('active');
-            validateWizard();
+            updateWizardProgress();
         }
 
-        function validateWizard() {
+        function updateWizardProgress() {
             const respName = document.getElementById('respName').value.trim();
             const entityName = document.getElementById('entityName').value.trim();
             const geoRegion = document.getElementById('geoRegion').value;
             const btn = document.getElementById('wizardSubmitBtn');
+            const bar = document.getElementById('timelineBar');
+
+            let filledCount = 0;
+            if (selectedRoleTemp) filledCount++;
+            if (respName) filledCount++;
+            if (entityName) filledCount++;
+            if (geoRegion) filledCount++;
+
+            bar.style.width = (filledCount * 25) + '%';
 
             if (selectedRoleTemp && respName && entityName && geoRegion) {
                 btn.classList.add('active');
@@ -883,7 +921,6 @@
             PharmaLinkApp.activeView = viewName;
             const container = document.getElementById('mainContentArea');
 
-            // Stop scanner if leaving add medicine view
             if (html5QrCodeScanner && viewName !== 'warehouse_add_medicine') {
                 html5QrCodeScanner.stop().catch(() => { });
                 html5QrCodeScanner = null;
@@ -1176,7 +1213,6 @@
                 { facingMode: "environment" },
                 { fps: 10, qrbox: { width: 250, height: 150 } },
                 (decodedText, decodedResult) => {
-                    // Successful read
                     document.getElementById('newBarcode').value = decodedText;
                     alert(`تم قراءة الباركود بنجاح: ${decodedText}`);
                     html5QrCodeScanner.stop().then(() => {
@@ -1184,7 +1220,7 @@
                     }).catch(err => console.error(err));
                 },
                 (errorMessage) => {
-                    // Scanning in progress...
+                    // Scanning active...
                 }
             ).catch(err => {
                 alert('تعذر الوصول إلى الكاميرا الخلفية. تأكد من الأذونات المطلوبة.');
