@@ -100,72 +100,143 @@
 
 
     <!-- ========================================== -->
-    <!-- SCREEN 2: ONBOARDING & REGISTRATION FORM   -->
+    <!-- SCREEN 2: MULTI-STEP ONBOARDING WIZARD     -->
     <!-- ========================================== -->
     <div id="screen-onboarding" class="hidden flex-1 flex items-center justify-center p-4 md:p-6 transition-all-custom">
         <div class="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-zinc-100 p-8 space-y-6">
-            <div class="text-center space-y-2">
-                <h2 class="text-2xl font-bold text-zinc-900">إنشاء حساب المنشأة</h2>
-                <p class="text-sm text-zinc-500">اختر نوع الكيان وقم بتعبئة التفاصيل الرسمية للانضمام إلى الشبكة</p>
+
+            <!-- Wizard Header & Progress Bar -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between text-xs font-bold text-zinc-500 uppercase tracking-wider">
+                    <span id="wizard-step-indicator">الخطوة 1 من 3</span>
+                    <span class="text-teal-600">إعداد الحساب</span>
+                </div>
+                <div class="w-full h-2 bg-zinc-100 rounded-full overflow-hidden">
+                    <div id="wizard-progress-bar" class="w-1/3 h-full bg-teal-600 transition-all-custom"></div>
+                </div>
             </div>
 
-            <!-- Role Selector Tabs -->
-            <div class="grid grid-cols-2 gap-2 p-1 bg-zinc-50 rounded-xl border border-zinc-200">
-                <button type="button" id="tab-pharmacy" onclick="setRole('pharmacy')"
-                    class="py-2.5 text-sm font-bold rounded-lg bg-teal-600 text-white shadow-sm transition-all-custom">
-                    <i class="fa-solid fa-clinic-medical ml-2"></i> صيدلية (Pharmacy)
-                </button>
-                <button type="button" id="tab-warehouse" onclick="setRole('warehouse')"
-                    class="py-2.5 text-sm font-bold rounded-lg text-zinc-600 hover:text-zinc-900 transition-all-custom">
-                    <i class="fa-solid fa-warehouse ml-2"></i> مستودع (Warehouse)
-                </button>
-            </div>
+            <!-- Form Wizard Container -->
+            <form id="onboarding-wizard-form" onsubmit="handleWizardFinalSubmit(event)">
 
-            <!-- Registration Form -->
-            <form id="onboarding-form" onsubmit="handleOnboardingSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">اسم النشاط
-                        التجاري (Business Name)</label>
-                    <input type="text" id="biz-name" required placeholder="مثال: مستودع الأدوية الذكي أو صيدلية النور"
-                        class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
-                </div>
+                <!-- STEP 1: Role Selection -->
+                <div id="wizard-step-1" class="space-y-4">
+                    <div class="text-center space-y-1 mb-6">
+                        <h2 class="text-2xl font-bold text-zinc-900">اختر طبيعة منشأتك</h2>
+                        <p class="text-sm text-zinc-500">حدد ما إذا كنت تمثل صيدلية أو مستودعاً للأدوية</p>
+                    </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">رقم الترخيص
-                            (License Number)</label>
-                        <input type="text" id="biz-license" required placeholder="LIC-2026-PH"
-                            class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">المدينة /
-                            الموقع (City)</label>
-                        <input type="text" id="biz-city" required placeholder="المدينة"
-                            class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
-                    </div>
-                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div onclick="selectRoleCard('pharmacy')" id="card-pharmacy"
+                            class="cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 transition-all-custom">
+                            <div
+                                class="w-12 h-12 bg-teal-600 text-white rounded-xl flex items-center justify-center text-xl shadow-sm">
+                                <i class="fa-solid fa-clinic-medical"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-zinc-900">صيدلية</h4>
+                                <p class="text-xs text-zinc-500 mt-1">Pharmacy</p>
+                            </div>
+                        </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">رقم الهاتف
-                            (Phone Number)</label>
-                        <input type="tel" id="biz-phone" required placeholder="09xxxxxxxx"
-                            class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
+                        <div onclick="selectRoleCard('warehouse')" id="card-warehouse"
+                            class="cursor-pointer p-6 rounded-2xl border-2 border-zinc-200 bg-white flex flex-col items-center text-center space-y-3 hover:border-zinc-300 transition-all-custom">
+                            <div
+                                class="w-12 h-12 bg-zinc-100 text-zinc-600 rounded-xl flex items-center justify-center text-xl shadow-sm">
+                                <i class="fa-solid fa-warehouse"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-zinc-900">مستودع أدوية</h4>
+                                <p class="text-xs text-zinc-500 mt-1">Warehouse</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">البريد
-                            الإلكتروني للعمل (Corporate Email)</label>
-                        <input type="email" id="biz-email" required placeholder="contact@pharmalink.com"
-                            class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
+
+                    <div class="pt-6">
+                        <button type="button" onclick="nextWizardStep(2)"
+                            class="w-full py-4 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all-custom">
+                            التالي (Next)
+                        </button>
                     </div>
                 </div>
 
-                <div class="pt-4">
-                    <button type="submit"
-                        class="w-full py-4 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all-custom">
-                        Save & Enter Dashboard (حفظ والدخول)
-                    </button>
+                <!-- STEP 2: Basic Identity -->
+                <div id="wizard-step-2" class="hidden space-y-4">
+                    <div class="text-center space-y-1 mb-6">
+                        <h2 class="text-2xl font-bold text-zinc-900">البيانات الأساسية للمنشأة</h2>
+                        <p class="text-sm text-zinc-500">أدخل الاسم الرسمي ورقم الترخيص المعتمد</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">اسم
+                                النشاط التجاري (Business Name)</label>
+                            <input type="text" id="biz-name" placeholder="مثال: صيدلية الأمل المركزية"
+                                class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">رقم
+                                الترخيص (License Number)</label>
+                            <input type="text" id="biz-license" placeholder="LIC-9842-PH"
+                                class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 pt-6">
+                        <button type="button" onclick="prevWizardStep(1)"
+                            class="w-1/3 py-4 bg-zinc-100 text-zinc-700 font-bold rounded-xl hover:bg-zinc-200 transition-all-custom">
+                            السابق
+                        </button>
+                        <button type="button" onclick="nextWizardStep(3)"
+                            class="w-2/3 py-4 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all-custom">
+                            التالي (Next)
+                        </button>
+                    </div>
                 </div>
+
+                <!-- STEP 3: Contact Details -->
+                <div id="wizard-step-3" class="hidden space-y-4">
+                    <div class="text-center space-y-1 mb-6">
+                        <h2 class="text-2xl font-bold text-zinc-900">معلومات الاتصال والموقع</h2>
+                        <p class="text-sm text-zinc-500">لتسهيل عمليات التوريد والتواصل المباشر</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">المدينة /
+                                الموقع (City/Location)</label>
+                            <input type="text" id="biz-city" placeholder="المدينة"
+                                class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">رقم
+                                    الهاتف (Phone)</label>
+                                <input type="tel" id="biz-phone" placeholder="09xxxxxxxx"
+                                    class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1">البريد
+                                    الإلكتروني (Email)</label>
+                                <input type="email" id="biz-email" placeholder="contact@domain.com"
+                                    class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm font-medium">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 pt-6">
+                        <button type="button" onclick="prevWizardStep(2)"
+                            class="w-1/3 py-4 bg-zinc-100 text-zinc-700 font-bold rounded-xl hover:bg-zinc-200 transition-all-custom">
+                            السابق
+                        </button>
+                        <button type="submit"
+                            class="w-2/3 py-4 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all-custom">
+                            Save & Enter Dashboard
+                        </button>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -272,7 +343,7 @@
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">إجمالي الطلبات (Total
                                 Orders)</p>
-                            <h3 class="text-3xl font-extrabold text-zinc-900 mt-1">148</h3>
+                            <h3 class="text-3xl font-extrabold text-zinc-900 mt-1">156</h3>
                         </div>
                         <div
                             class="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-xl">
@@ -285,7 +356,7 @@
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">التوصيلات المعلقة
                                 (Pending)</p>
-                            <h3 class="text-3xl font-extrabold text-zinc-900 mt-1">14</h3>
+                            <h3 class="text-3xl font-extrabold text-zinc-900 mt-1">9</h3>
                         </div>
                         <div
                             class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl">
@@ -298,7 +369,7 @@
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">الارتباطات النشطة
                                 (Connections)</p>
-                            <h3 class="text-3xl font-extrabold text-zinc-900 mt-1">32</h3>
+                            <h3 class="text-3xl font-extrabold text-zinc-900 mt-1">35</h3>
                         </div>
                         <div
                             class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">
@@ -313,7 +384,7 @@
                         <h3 class="text-lg font-extrabold text-zinc-900">الأدوية والمستلزمات المتوفرة (Marketplace Feed)
                         </h3>
                         <button
-                            onclick="alert('[Backend API Hook]: سيتم ربط هذا الزر بـ Node.js API لإضافة منتج جديد لقاعدة بيانات المستودع')"
+                            onclick="alert('[Backend API Hook]: POST /api/v1/inventory - ربط مع قاعدة بيانات المستودع')"
                             class="px-4 py-2 bg-teal-600 text-white text-xs font-bold rounded-lg shadow-sm hover:bg-teal-700 transition-all-custom">
                             <i class="fa-solid fa-plus ml-1"></i> إضافة منتج جديد
                         </button>
@@ -329,7 +400,7 @@
                     <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between">
                         <h3 class="text-base font-extrabold text-zinc-900">سجل الطلبات الأخيرة (Recent Orders Activity)
                         </h3>
-                        <span class="text-xs text-zinc-400 font-bold">متصل بالخادم مباشر</span>
+                        <span class="text-xs text-zinc-400 font-bold">متزامن مع الخادم</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-right text-sm">
@@ -354,11 +425,11 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- JAVASCRIPT STATE & APPLICATION CONTROLLER  -->
+    <!-- JAVASCRIPT STATE & WIZARD CONTROLLER       -->
     <!-- ========================================== -->
     <script>
-        // Mock Database State & Local Persistent Store
-        // [Backend Integration Point]: Replace or synchronize this state with Firebase Firestore / Node.js REST API endpoints.
+        // Mock Database State & Persistent Store
+        // [Backend Integration Point]: Connect to Node.js / Express REST API or Firebase Firestore here.
         let appState = {
             currentRole: 'pharmacy',
             profile: {
@@ -369,14 +440,14 @@
                 email: ''
             },
             inventory: [
-                { id: 1, name: 'Paracetamol 500mg', category: 'مسكنات ألم', stock: 'متوفر', count: 140, price: '$4.50' },
-                { id: 2, name: 'Amoxicillin 250mg', category: 'مضاد حيوي', stock: 'متوفر', count: 95, price: '$12.00' },
-                { id: 3, name: 'Ibuprofen 400mg', category: 'مضادات الالتهاب', stock: 'متوفر', count: 210, price: '$6.20' }
+                { id: 1, name: 'Paracetamol 500mg', category: 'مسكنات ألم', stock: 'متوفر', count: 180, price: '$4.50' },
+                { id: 2, name: 'Amoxicillin 250mg', category: 'مضاد حيوي', stock: 'متوفر', count: 110, price: '$12.00' },
+                { id: 3, name: 'Ibuprofen 400mg', category: 'مضادات الالتهاب', stock: 'متوفر', count: 240, price: '$6.20' }
             ],
             orders: [
-                { id: '#PL-9401', item: 'Paracetamol 500mg', qty: '60 علبة', status: 'مكتمل', date: '2026-09-17' },
-                { id: '#PL-9402', item: 'Amoxicillin 250mg', qty: '25 عبوة', status: 'قيد التوصيل', date: '2026-09-18' },
-                { id: '#PL-9403', item: 'Ibuprofen 400mg', qty: '120 عبوة', status: 'قيد المعالجة', date: '2026-09-18' }
+                { id: '#PL-9501', item: 'Paracetamol 500mg', qty: '80 علبة', status: 'مكتمل', date: '2026-09-18' },
+                { id: '#PL-9502', item: 'Amoxicillin 250mg', qty: '30 عبوة', status: 'قيد التوصيل', date: '2026-09-18' },
+                { id: '#PL-9503', item: 'Ibuprofen 400mg', qty: '150 عبوة', status: 'قيد المعالجة', date: '2026-09-18' }
             ]
         };
 
@@ -393,56 +464,114 @@
             }
         }
 
-        // Role Selector in Onboarding
-        function setRole(role) {
+        // Role Card Selector in Wizard Step 1
+        function selectRoleCard(role) {
             appState.currentRole = role;
-            const pharmacyTab = document.getElementById('tab-pharmacy');
-            const warehouseTab = document.getElementById('tab-warehouse');
+            const pharmacyCard = document.getElementById('card-pharmacy');
+            const warehouseCard = document.getElementById('card-warehouse');
 
             if (role === 'pharmacy') {
-                pharmacyTab.className = "py-2.5 text-sm font-bold rounded-lg bg-teal-600 text-white shadow-sm transition-all-custom";
-                warehouseTab.className = "py-2.5 text-sm font-bold rounded-lg text-zinc-600 hover:text-zinc-900 transition-all-custom";
+                pharmacyCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 transition-all-custom";
+                warehouseCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-zinc-200 bg-white flex flex-col items-center text-center space-y-3 hover:border-zinc-300 transition-all-custom";
+                pharmacyCard.querySelector('div').className = "w-12 h-12 bg-teal-600 text-white rounded-xl flex items-center justify-center text-xl shadow-sm";
+                warehouseCard.querySelector('div').className = "w-12 h-12 bg-zinc-100 text-zinc-600 rounded-xl flex items-center justify-center text-xl shadow-sm";
             } else {
-                warehouseTab.className = "py-2.5 text-sm font-bold rounded-lg bg-teal-600 text-white shadow-sm transition-all-custom";
-                pharmacyTab.className = "py-2.5 text-sm font-bold rounded-lg text-zinc-600 hover:text-zinc-900 transition-all-custom";
+                warehouseCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 transition-all-custom";
+                pharmacyCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-zinc-200 bg-white flex flex-col items-center text-center space-y-3 hover:border-zinc-300 transition-all-custom";
+                warehouseCard.querySelector('div').className = "w-12 h-12 bg-teal-600 text-white rounded-xl flex items-center justify-center text-xl shadow-sm";
+                pharmacyCard.querySelector('div').className = "w-12 h-12 bg-zinc-100 text-zinc-600 rounded-xl flex items-center justify-center text-xl shadow-sm";
             }
         }
 
-        // Handle Form Validation & Submission
-        function handleOnboardingSubmit(event) {
+        // Multi-Step Wizard Navigation & Validation Logic
+        function nextWizardStep(targetStep) {
+            if (targetStep === 2) {
+                // Moving from Step 1 to Step 2 (Role is already selected)
+            } else if (targetStep === 3) {
+                // Validate Step 2 inputs before proceeding
+                const name = document.getElementById('biz-name').value.trim();
+                const license = document.getElementById('biz-license').value.trim();
+
+                if (!name || !license) {
+                    alert('الرجاء إدخال اسم النشاط التجاري ورقم الترخيص للمتابعة.');
+                    return;
+                }
+            }
+
+            // Update Wizard UI Visibility
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`wizard-step-${i}`).classList.add('hidden');
+            }
+            document.getElementById(`wizard-step-${targetStep}`).classList.remove('hidden');
+
+            // Update Progress Bar & Indicator
+            const progressBar = document.getElementById('wizard-progress-bar');
+            const indicator = document.getElementById('wizard-step-indicator');
+
+            if (targetStep === 1) {
+                progressBar.style.width = '33.33%';
+                indicator.innerText = 'الخطوة 1 من 3';
+            } else if (targetStep === 2) {
+                progressBar.style.width = '66.66%';
+                indicator.innerText = 'الخطوة 2 من 3';
+            } else if (targetStep === 3) {
+                progressBar.style.width = '100%';
+                indicator.innerText = 'الخطوة 3 من 3';
+            }
+        }
+
+        function prevWizardStep(targetStep) {
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`wizard-step-${i}`).classList.add('hidden');
+            }
+            document.getElementById(`wizard-step-${targetStep}`).classList.remove('hidden');
+
+            const progressBar = document.getElementById('wizard-progress-bar');
+            const indicator = document.getElementById('wizard-step-indicator');
+
+            if (targetStep === 1) {
+                progressBar.style.width = '33.33%';
+                indicator.innerText = 'الخطوة 1 من 3';
+            } else if (targetStep === 2) {
+                progressBar.style.width = '66.66%';
+                indicator.innerText = 'الخطوة 2 من 3';
+            }
+        }
+
+        // Final Step Submission & Validation
+        function handleWizardFinalSubmit(event) {
             event.preventDefault();
 
-            // Gather input values
+            // Gather all form values
             appState.profile = {
-                name: document.getElementById('biz-name').value,
-                license: document.getElementById('biz-license').value,
-                city: document.getElementById('biz-city').value,
-                phone: document.getElementById('biz-phone').value,
-                email: document.getElementById('biz-email').value
+                name: document.getElementById('biz-name').value.trim(),
+                license: document.getElementById('biz-license').value.trim(),
+                city: document.getElementById('biz-city').value.trim(),
+                phone: document.getElementById('biz-phone').value.trim(),
+                email: document.getElementById('biz-email').value.trim()
             };
 
-            // Basic validation check
-            if (!appState.profile.name || !appState.profile.license) {
-                alert('الرجاء تعبئة الحقول المطلوبة بدقة.');
+            // Final validation check
+            if (!appState.profile.city || !appState.profile.phone || !appState.profile.email) {
+                alert('الرجاء تعبئة كافة حقول المدينة ورقم الهاتف والبريد الإلكتروني.');
                 return;
             }
 
-            // [Backend API Hook]: POST request to Node.js backend for user creation
-            // fetch('/api/v1/auth/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(appState.profile) });
+            // [Backend API Hook]: POST request to Node.js backend
+            // fetch('/api/v1/auth/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(appState) });
 
-            // Transition to Dashboard
+            // Transition to Dashboard Screen
             goToScreen('screen-dashboard');
         }
 
         // Render Dashboard Dynamic Elements
         function renderDashboardData() {
-            // Update Profile Snippet
             document.getElementById('profile-name-display').innerText = appState.profile.name || 'مستودع فارما لينك';
             const roleText = appState.currentRole === 'pharmacy' ? 'صيدلية معتمدة' : 'مستودع أدوية رئيسي';
             document.getElementById('profile-role-display').innerText = roleText;
             document.getElementById('profile-avatar').innerText = appState.profile.name ? appState.profile.name.charAt(0) : 'ف';
 
-            // Render Product Feed Cards with Teal Badges
+            // Render Product Feed Cards
             const productGrid = document.getElementById('product-grid');
             productGrid.innerHTML = '';
             appState.inventory.forEach(prod => {
