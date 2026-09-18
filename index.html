@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - ربط المستودعات والصيدليات</title>
+    <title>PharmaLink - الربط الذكي بين المستودعات والصيدليات</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -19,13 +19,16 @@
                             600: '#0D9488',
                             700: '#0F766E',
                         },
+                        slate: {
+                            50: '#F8FAFC',
+                        },
                         zinc: {
                             50: '#F4F4F5',
                             100: '#E4E4E7',
                             300: '#D4D4D8',
                             600: '#71717A',
-                            700: '#52525B',
-                            800: '#3F3F46',
+                            700: '#3F3F46',
+                            800: '#27272A',
                             900: '#18181B',
                         }
                     },
@@ -44,81 +47,135 @@
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #F4F4F5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #F8FAFC;
         }
 
         .transition-all-custom {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        /* Custom Scrollbar for Teal Theme */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0D9488;
+        }
+
+        @keyframes laserScan {
+            0% {
+                top: 0%;
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0.8;
+            }
+        }
+
+        .laser-beam {
+            animation: laserScan 1.5s infinite ease-in-out alternate;
+        }
     </style>
 </head>
 
 <body
-    class="text-zinc-800 antialiased min-h-screen flex flex-col justify-center items-center bg-zinc-100 relative overflow-x-hidden">
+    class="text-zinc-700 antialiased min-h-screen flex flex-col justify-center items-center relative overflow-x-hidden selection:bg-teal-100 selection:text-teal-800">
 
-    <!-- Container wrapper optimized for cross-platform responsiveness -->
+    <!-- Master App Container for Cross-Platform Presentation -->
     <div
-        class="w-full max-w-7xl min-h-screen lg:min-h-[85vh] lg:max-h-[92vh] bg-white lg:rounded-2xl lg:shadow-xl flex flex-col relative overflow-hidden">
+        class="w-full max-w-7xl min-h-screen lg:min-h-[88vh] lg:max-h-[94vh] bg-zinc-100 lg:rounded-2xl lg:shadow-xl flex flex-col relative overflow-hidden border border-zinc-200">
 
-        <!-- ========================================== -->
-        <!-- SCREEN 1: WELCOME / SPLASH PAGE (AUTO)     -->
-        <!-- ========================================== -->
+        <!-- ================================================= -->
+        <!-- SCREEN 1: THE WELCOME / SPLASH PAGE (AUTO-TIMER)  -->
+        <!-- ================================================= -->
         <div id="screen-welcome"
-            class="absolute inset-0 z-50 bg-white flex flex-col items-center justify-center p-6 text-center transition-all-custom">
-            <div class="space-y-6">
-                <!-- Coded SVG Logo: Split Capsule (Left Gray Outline, Right Solid Teal) -->
-                <div class="flex flex-col items-center justify-center space-y-4">
-                    <svg class="w-28 h-28 drop-shadow-sm animate-pulse" viewBox="0 0 100 100" fill="none"
+            class="absolute inset-0 z-50 bg-slate-50 flex flex-col items-center justify-center p-6 text-center transition-all-custom duration-500">
+            <div class="space-y-6 max-w-md mx-auto">
+                <!-- Professional Scalable SVG Capsule Logo with 3D Depth & Split Design -->
+                <div class="flex flex-col items-center justify-center space-y-5">
+                    <svg class="w-28 h-28 drop-shadow-md animate-pulse" viewBox="0 0 100 100" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="tealGrad" x1="50" y1="25" x2="80" y2="85"
+                                gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#14B8A6" />
+                                <stop offset="100%" stop-color="#0D9488" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Left Half: Clean Gray Outline (Structured Warehouse) -->
                         <path d="M 50 25 C 33.43 25 20 38.43 20 55 C 20 71.57 33.43 85 50 85 L 50 25 Z" stroke="#71717A"
                             stroke-width="6" fill="none" stroke-linecap="round" />
+                        <!-- Right Half: Solid Teal Fill (Healthcare & Pharmacy) -->
                         <path d="M 50 25 C 66.57 25 80 38.43 80 55 C 80 71.57 66.57 85 50 85 L 50 25 Z"
-                            fill="#0D9488" />
-                        <line x1="50" y1="25" x2="50" y2="85" stroke="#FFFFFF" stroke-width="3" />
+                            fill="url(#tealGrad)" />
+                        <!-- Central Division Line for Absolute Precision -->
+                        <line x1="50" y1="25" x2="50" y2="85" stroke="#F8FAFC" stroke-width="3"
+                            stroke-linecap="round" />
                     </svg>
 
-                    <!-- Typography Branding: Pharma (Gray) Link (Teal) -->
+                    <!-- Brand Typography: Pharma (Charcoal Gray) Link (Primary Teal) -->
                     <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">
                         <span class="text-zinc-700">Pharma</span><span class="text-teal-600">Link</span>
                     </h1>
                 </div>
 
                 <p class="text-base md:text-lg text-zinc-500 font-medium">
-                    جسر التواصل الذكي بين المستودعات والصيدليات
+                    الربط الذكي بين مستودعات الأدوية والصيدليات
                 </p>
             </div>
-            <div class="absolute bottom-8 text-xs text-zinc-400">
-                &copy; 2026 Millennium Core. جميع الحقوق محفوظة.
+
+            <div class="absolute bottom-8 text-xs text-zinc-400 font-medium">
+                &copy; 2026 PharmaLink Platform. جميع الحقوق محفوظة.
             </div>
         </div>
 
 
-        <!-- ========================================== -->
-        <!-- SCREEN 2: 4-STEP ONBOARDING WIZARD         -->
-        <!-- ========================================== -->
+        <!-- ================================================= -->
+        <!-- SCREEN 2: MULTI-STEP ONBOARDING WIZARD            -->
+        <!-- ================================================= -->
         <div id="screen-onboarding"
-            class="hidden flex-1 flex flex-col items-center justify-center p-6 md:p-12 transition-all-custom max-w-xl mx-auto w-full">
+            class="hidden flex-1 flex flex-col items-center justify-center p-6 md:p-12 transition-all-custom max-w-xl mx-auto w-full bg-white">
             <div class="w-full space-y-6">
 
-                <!-- Screen Header -->
-                <div class="text-center space-y-1">
+                <!-- Page Header & Progress Tracker -->
+                <div class="text-center space-y-2">
                     <h2 class="text-2xl md:text-3xl font-extrabold text-zinc-900">إعداد حساب المنصة</h2>
-                    <p id="wizard-step-subtitle" class="text-sm text-zinc-500">الخطوة 1 من 4: اختر طبيعة منشأتك</p>
+                    <p id="wizard-step-subtitle" class="text-sm font-semibold text-teal-600">الخطوة 1 من 4: اختيار نوع
+                        الحساب</p>
                 </div>
 
-                <!-- Progress Bar -->
+                <!-- 4-Step Progress Bar -->
                 <div class="w-full h-2 bg-zinc-100 rounded-full overflow-hidden">
                     <div id="wizard-progress-bar" class="w-1/4 h-full bg-teal-600 transition-all-custom"></div>
                 </div>
 
-                <!-- Onboarding Form Container -->
+                <!-- Onboarding Wizard Form Container -->
                 <form id="onboarding-wizard-form" onsubmit="handleWizardFinalSubmit(event)" class="space-y-6 pt-4">
 
                     <!-- STEP 1: Role Selection -->
                     <div id="wizard-step-1" class="space-y-4">
                         <div class="grid grid-cols-2 gap-4">
                             <div onclick="selectRoleCard('pharmacy')" id="card-pharmacy"
-                                class="cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 transition-all-custom">
+                                class="cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 shadow-sm transition-all-custom">
                                 <div
                                     class="w-12 h-12 bg-teal-600 text-white rounded-xl flex items-center justify-center text-xl shadow-sm">
                                     <i class="fa-solid fa-clinic-medical"></i>
@@ -144,12 +201,12 @@
                         </div>
                     </div>
 
-                    <!-- STEP 2: Identity (Business Name) -->
+                    <!-- STEP 2: Business Name (اسم المنشأة) -->
                     <div id="wizard-step-2" class="hidden space-y-4">
                         <div class="space-y-2">
-                            <label class="block text-xs font-bold text-zinc-600">اسم المنشأة</label>
-                            <input type="text" id="biz-name" placeholder="مثال: مستودع الأدوية المركزي أو صيدلية الشفاء"
-                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
+                            <label class="block text-xs font-bold text-zinc-700">اسم المنشأة</label>
+                            <input type="text" id="biz-name" placeholder="أدخل اسم الصيدلية أو المستودع..."
+                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 text-sm font-medium transition-all-custom">
                         </div>
 
                         <div class="flex gap-3 pt-4">
@@ -164,12 +221,12 @@
                         </div>
                     </div>
 
-                    <!-- STEP 3: Location (City) -->
+                    <!-- STEP 3: City (المدينة) -->
                     <div id="wizard-step-3" class="hidden space-y-4">
                         <div class="space-y-2">
-                            <label class="block text-xs font-bold text-zinc-600">المدينة</label>
-                            <input type="text" id="biz-city" placeholder="أدخل اسم المدينة"
-                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
+                            <label class="block text-xs font-bold text-zinc-700">المدينة</label>
+                            <input type="text" id="biz-city" placeholder="أدخل اسم المدينة..."
+                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 text-sm font-medium transition-all-custom">
                         </div>
 
                         <div class="flex gap-3 pt-4">
@@ -184,12 +241,12 @@
                         </div>
                     </div>
 
-                    <!-- STEP 4: Contact (Phone Number) -->
+                    <!-- STEP 4: Phone Number (رقم الهاتف) -->
                     <div id="wizard-step-4" class="hidden space-y-4">
                         <div class="space-y-2">
-                            <label class="block text-xs font-bold text-zinc-600">رقم الهاتف</label>
+                            <label class="block text-xs font-bold text-zinc-700">رقم الهاتف</label>
                             <input type="tel" id="biz-phone" placeholder="09xxxxxxxx"
-                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
+                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 text-sm font-medium transition-all-custom">
                         </div>
 
                         <div class="flex gap-3 pt-4">
@@ -209,14 +266,15 @@
         </div>
 
 
-        <!-- ========================================== -->
-        <!-- SCREEN 3: MAIN DASHBOARD (RESPONSIVE)      -->
-        <!-- ========================================== -->
-        <div id="screen-dashboard" class="hidden flex-1 flex flex-col lg:flex-row h-full overflow-hidden">
+        <!-- ================================================= -->
+        <!-- SCREEN 3: CROSS-PLATFORM INTERACTIVE DASHBOARD    -->
+        <!-- ================================================= -->
+        <div id="screen-dashboard" class="hidden flex-1 flex flex-col lg:flex-row h-full overflow-hidden bg-slate-50">
 
-            <!-- Sidebar for Laptops & iPads (Hidden on Mobile) -->
+            <!-- Desktop Sidebar RTL (Visible on Laptops/Tablets) -->
             <aside class="hidden lg:flex w-64 bg-white border-l border-zinc-200 flex-col justify-between shrink-0">
                 <div>
+                    <!-- Brand Sidebar Header -->
                     <div class="h-20 flex items-center px-6 border-b border-zinc-100 gap-3">
                         <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M 50 25 C 33.43 25 20 38.43 20 55 C 20 71.57 33.43 85 50 85 L 50 25 Z"
@@ -228,9 +286,10 @@
                                 class="text-zinc-700">Pharma</span><span class="text-teal-600">Link</span></span>
                     </div>
 
+                    <!-- Navigation Items -->
                     <nav class="p-4 space-y-1">
                         <a href="#" onclick="switchTab(event, 'dashboard')"
-                            class="desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-teal-50 text-teal-700">
+                            class="desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-teal-50 text-teal-700 transition-all-custom">
                             <i class="fa-solid fa-chart-pie w-5"></i> الرئيسية
                         </a>
                         <a href="#" onclick="switchTab(event, 'warehouse')"
@@ -252,6 +311,7 @@
                     </nav>
                 </div>
 
+                <!-- Sidebar Footer Logout -->
                 <div class="p-4 border-t border-zinc-100">
                     <button onclick="logout()"
                         class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all-custom">
@@ -261,7 +321,7 @@
             </aside>
 
             <!-- Main Workspace Container -->
-            <div class="flex-1 flex flex-col h-full overflow-hidden bg-zinc-50">
+            <div class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50">
 
                 <!-- Top Header Bar -->
                 <header
@@ -292,13 +352,13 @@
 
                     <!-- Dynamic Tab Content Container -->
                     <div id="tab-content-area" class="space-y-6">
-                        <!-- Injected via JS based on active tab -->
+                        <!-- Injected via JavaScript based on active tab -->
                     </div>
 
                 </main>
             </div>
 
-            <!-- Bottom Navigation Bar for Mobile Screens -->
+            <!-- Mobile Bottom Navigation Bar (شريط أيقونات سفلي) -->
             <nav
                 class="lg:hidden absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-zinc-200 flex items-center justify-around px-2 z-20 shadow-lg">
                 <button onclick="switchTab(event, 'dashboard')"
@@ -332,76 +392,87 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- MODAL: ADD NEW MEDICINE & BARCODE SCAN     -->
-    <!-- ========================================== -->
+    <!-- ================================================= -->
+    <!-- MODAL: ADD NEW MEDICINE & BARCODE SCANNER         -->
+    <!-- ================================================= -->
     <div id="add-medicine-modal"
         class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-6 animate-scaleIn">
+
+            <!-- Modal Header -->
             <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
                 <h3 class="text-lg font-extrabold text-zinc-900">إضافة دواء جديد للمخزن</h3>
                 <button onclick="closeAddMedicineModal()"
-                    class="w-8 h-8 rounded-full bg-zinc-100 text-zinc-500 hover:bg-zinc-200 flex items-center justify-center">
+                    class="w-8 h-8 rounded-full bg-zinc-100 text-zinc-500 hover:bg-zinc-200 flex items-center justify-center transition-all-custom">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- Camera Barcode Scan Simulation Section -->
-            <div class="bg-teal-50/60 border-2 border-dashed border-teal-300 rounded-xl p-4 text-center space-y-3">
+            <!-- Barcode Camera Scanner Simulation Section -->
+            <div class="space-y-3">
                 <div
-                    class="w-12 h-12 bg-teal-100 text-teal-700 rounded-full flex items-center justify-center mx-auto text-lg shadow-sm">
-                    <i class="fa-solid fa-barcode"></i>
+                    class="relative bg-zinc-900 rounded-xl overflow-hidden h-40 flex flex-col items-center justify-center border-2 border-teal-500/50 shadow-inner">
+                    <!-- Laser Scanning Beam Animation -->
+                    <div class="absolute left-0 right-0 h-0.5 bg-teal-400 shadow-[0_0_12px_#14B8A6] laser-beam z-10">
+                    </div>
+
+                    <!-- Viewfinder Icon / Feed -->
+                    <div class="text-teal-400/80 text-3xl mb-2">
+                        <i class="fa-solid fa-barcode"></i>
+                    </div>
+                    <p class="text-xs text-zinc-300 font-medium z-20">وجه كاميرا الجهاز نحو باركود الدواء</p>
+
+                    <!-- Loading Spinner Overlay during scan -->
+                    <div id="camera-loading"
+                        class="absolute inset-0 bg-zinc-900/90 flex flex-col items-center justify-center space-y-2 hidden z-30">
+                        <i class="fa-solid fa-spinner fa-spin text-teal-400 text-2xl"></i>
+                        <span class="text-xs font-bold text-teal-300">جاري التركيز وقراءة الباركود...</span>
+                    </div>
                 </div>
-                <div>
-                    <h4 class="font-bold text-sm text-zinc-900">مسح الباركود بالكاميرا</h4>
-                    <p class="text-xs text-zinc-500 mt-0.5">انقر أدناه لبدء القراءة التلقائية لباركود الدواء</p>
-                </div>
+
                 <button type="button" onclick="simulateBarcodeScan()"
-                    class="px-4 py-2 bg-teal-600 text-white text-xs font-bold rounded-lg shadow hover:bg-teal-700 transition-all-custom inline-flex items-center gap-2">
-                    <i class="fa-solid fa-camera"></i> محاكاة مسح الباركود بالكاميرا
+                    class="w-full py-3 bg-teal-600 text-white text-xs font-bold rounded-xl shadow hover:bg-teal-700 transition-all-custom inline-flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-camera"></i> محاكاة قراءة الباركود
                 </button>
-                <div id="scan-status" class="text-xs font-bold text-teal-700 hidden">
-                    <i class="fa-solid fa-spinner fa-spin ml-1"></i> جاري مسح الباركود وقراءة الكود...
-                </div>
             </div>
 
-            <!-- Manual / Auto-filled Form inside Modal -->
+            <!-- First-Time Setup Form Fields -->
             <form id="new-medicine-form" onsubmit="handleSaveNewMedicine(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-zinc-600 mb-1">اسم الدواء</label>
-                    <input type="text" id="med-name" required placeholder="مثال: Augmentin 1g"
+                    <label class="block text-xs font-bold text-zinc-700 mb-1">اسم الدواء</label>
+                    <input type="text" id="med-name" required placeholder="أدخل اسم الدواء..."
                         class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-zinc-600 mb-1">الكمية</label>
-                        <input type="number" id="med-count" required placeholder="150"
+                        <label class="block text-xs font-bold text-zinc-700 mb-1">الكمية</label>
+                        <input type="number" id="med-count" required placeholder="100"
                             class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-zinc-600 mb-1">السعر الإفرادي</label>
-                        <input type="text" id="med-price" required placeholder="$14.50"
+                        <label class="block text-xs font-bold text-zinc-700 mb-1">السعر الإفرادي</label>
+                        <input type="text" id="med-price" required placeholder="$12.00"
                             class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
                     </div>
                 </div>
 
-                <div class="pt-4 flex gap-3">
+                <div class="pt-2 flex gap-3">
                     <button type="button" onclick="closeAddMedicineModal()"
                         class="w-1/3 py-3 bg-zinc-100 text-zinc-700 font-bold rounded-xl text-sm hover:bg-zinc-200 transition-all-custom">إلغاء</button>
                     <button type="submit"
                         class="w-2/3 py-3 bg-teal-600 text-white font-bold rounded-xl text-sm shadow hover:bg-teal-700 transition-all-custom">حفظ
-                        وإضافة للمخزن</button>
+                        في المخزن</button>
                 </div>
             </form>
         </div>
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- JAVASCRIPT CONTROLLER & APP LOGIC          -->
-    <!-- ========================================== -->
+    <!-- ================================================= -->
+    <!-- JAVASCRIPT STATE ENGINE & APPLICATION LOGIC       -->
+    <!-- ================================================= -->
     <script>
-        // Mock Database State & Persistent Store
+        // Global State Store (Mock Database & Session)
         // [Backend Integration Point]: Connect to Node.js / Express REST API or Firebase Firestore here.
         let appState = {
             currentRole: 'warehouse', // Default to warehouse for full feature testing
@@ -411,18 +482,18 @@
                 phone: ''
             },
             inventory: [
-                { id: 1, name: 'Paracetamol 500mg', category: 'مسكنات ألم', stock: 'متوفر', count: 180, price: '$4.50' },
-                { id: 2, name: 'Amoxicillin 250mg', category: 'مضاد حيوي', stock: 'متوفر', count: 110, price: '$12.00' },
-                { id: 3, name: 'Ibuprofen 400mg', category: 'مضادات الالتهاب', stock: 'متوفر', count: 240, price: '$6.20' },
-                { id: 4, name: 'Omeprazole 20mg', category: 'معدية هضمية', stock: 'متوفر', count: 95, price: '$8.75' }
+                { id: 1, name: 'Paracetamol 500mg', category: 'مسكنات ألم', stock: 'متوفر', count: 190, price: '$4.50' },
+                { id: 2, name: 'Amoxicillin 250mg', category: 'مضاد حيوي', stock: 'متوفر', count: 125, price: '$12.00' },
+                { id: 3, name: 'Ibuprofen 400mg', category: 'مضادات الالتهاب', stock: 'متوفر', count: 210, price: '$6.20' },
+                { id: 4, name: 'Ceftriaxone 1g', category: 'أدوية تخصصية', stock: 'متوفر', count: 85, price: '$18.50' }
             ],
             orders: [
-                { id: '#PL-9501', item: 'Paracetamol 500mg', qty: '80 علبة', status: 'مكتمل', date: '2026-09-18' },
-                { id: '#PL-9502', item: 'Amoxicillin 250mg', qty: '30 عبوة', status: 'قيد التوصيل', date: '2026-09-18' }
+                { id: '#PL-9801', item: 'Paracetamol 500mg', qty: '100 علبة', status: 'مكتمل', date: '2026-09-18' },
+                { id: '#PL-9802', item: 'Amoxicillin 250mg', qty: '50 عبوة', status: 'قيد التوصيل', date: '2026-09-18' }
             ]
         };
 
-        // Automated Splash Screen Timer (2.5 Seconds)
+        // Automated Splash Screen Clock (2.5 Seconds)
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('screen-welcome');
@@ -430,33 +501,31 @@
                 setTimeout(() => {
                     splash.style.display = 'none';
                     document.getElementById('screen-onboarding').classList.remove('hidden');
-                }, 300);
+                }, 400);
             }, 2500);
         });
 
-        // Role Card Selector in Wizard Step 1
+        // Role Card Selection Handler in Step 1
         function selectRoleCard(role) {
             appState.currentRole = role;
             const pharmacyCard = document.getElementById('card-pharmacy');
             const warehouseCard = document.getElementById('card-warehouse');
 
             if (role === 'pharmacy') {
-                pharmacyCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 transition-all-custom";
+                pharmacyCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 shadow-sm transition-all-custom";
                 warehouseCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-zinc-200 bg-white flex flex-col items-center text-center space-y-3 hover:border-zinc-300 transition-all-custom";
             } else {
-                warehouseCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 transition-all-custom";
+                warehouseCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 shadow-sm transition-all-custom";
                 pharmacyCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-zinc-200 bg-white flex flex-col items-center text-center space-y-3 hover:border-zinc-300 transition-all-custom";
             }
         }
 
         // Multi-Step Wizard Navigation & Validation Logic
         function nextWizardStep(targetStep) {
-            if (targetStep === 2) {
-                // Moving from Step 1 to 2
-            } else if (targetStep === 3) {
+            if (targetStep === 3) {
                 const name = document.getElementById('biz-name').value.trim();
                 if (!name) {
-                    alert('الرجاء إدخال اسم المنشأة للمتابعة.');
+                    alert('الرجاء إدخال اسم الصيدلية أو المستودع للمتابعة.');
                     return;
                 }
             } else if (targetStep === 4) {
@@ -475,16 +544,16 @@
             const progressBar = document.getElementById('wizard-progress-bar');
             const subtitle = document.getElementById('wizard-step-subtitle');
 
-            const progressSteps = { 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
-            const titles = {
-                1: 'الخطوة 1 من 4: اختر طبيعة منشأتك',
-                2: 'الخطوة 2 من 4: أدخل اسم المنشأة',
-                3: 'الخطوة 3 من 4: حدد المدينة',
-                4: 'الخطوة 4 من 4: رقم الهاتف للتواصل'
+            const progressPercentages = { 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
+            const stepTitles = {
+                1: 'الخطوة 1 من 4: اختيار نوع الحساب',
+                2: 'الخطوة 2 من 4: اسم المنشأة',
+                3: 'الخطوة 3 من 4: تحديد المدينة',
+                4: 'الخطوة 4 من 4: رقم الهاتف المحمول'
             };
 
-            progressBar.style.width = progressSteps[targetStep];
-            subtitle.innerText = titles[targetStep];
+            progressBar.style.width = progressPercentages[targetStep];
+            subtitle.innerText = stepTitles[targetStep];
         }
 
         function prevWizardStep(targetStep) {
@@ -496,35 +565,41 @@
             const progressBar = document.getElementById('wizard-progress-bar');
             const subtitle = document.getElementById('wizard-step-subtitle');
 
-            const progressSteps = { 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
-            const titles = {
-                1: 'الخطوة 1 من 4: اختر طبيعة منشأتك',
-                2: 'الخطوة 2 من 4: أدخل اسم المنشأة',
-                3: 'الخطوة 3 من 4: حدد المدينة',
-                4: 'الخطوة 4 من 4: رقم الهاتف للتواصل'
+            const progressPercentages = { 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
+            const stepTitles = {
+                1: 'الخطوة 1 من 4: اختيار نوع الحساب',
+                2: 'الخطوة 2 من 4: اسم المنشأة',
+                3: 'الخطوة 3 من 4: تحديد المدينة',
+                4: 'الخطوة 4 من 4: رقم الهاتف المحمول'
             };
 
-            progressBar.style.width = progressSteps[targetStep];
-            subtitle.innerText = titles[targetStep];
+            progressBar.style.width = progressPercentages[targetStep];
+            subtitle.innerText = stepTitles[targetStep];
         }
 
-        // Final Step Submission & Login to Dashboard
+        // Final Form Submission & Transition to Screen 3 (Dashboard)
         function handleWizardFinalSubmit(event) {
             event.preventDefault();
 
+            const phone = document.getElementById('biz-phone').value.trim();
+            if (!phone) {
+                alert('الرجاء إدخال رقم الهاتف للمتابعة.');
+                return;
+            }
+
             appState.profile = {
-                name: document.getElementById('biz-name').value.trim() || 'مستودع فارما لينك الرئيسي',
+                name: document.getElementById('biz-name').value.trim() || 'مستودع فارما لينك المركزي',
                 city: document.getElementById('biz-city').value.trim() || 'دمشق',
-                phone: document.getElementById('biz-phone').value.trim() || '0912345678'
+                phone: phone
             };
 
-            // [Backend API Hook]: POST request to Node.js backend
+            // [Backend API Hook]: POST request to Node.js backend authentication service
             // fetch('/api/v1/auth/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(appState) });
 
             document.getElementById('screen-onboarding').classList.add('hidden');
             document.getElementById('screen-dashboard').classList.remove('hidden');
 
-            // Render Profile and Default Dashboard View
+            // Render Profile Header Information
             document.getElementById('profile-name-display').innerText = appState.profile.name;
             document.getElementById('profile-role-display').innerText = appState.currentRole === 'warehouse' ? 'مستودع أدوية رئيسي' : 'صيدلية معتمدة';
             document.getElementById('profile-avatar').innerText = appState.profile.name.charAt(0);
@@ -532,41 +607,45 @@
             renderActiveTab('dashboard');
         }
 
-        // Web Audio API Beep Generator for Barcode Scan Success
-        function playSuccessBeep() {
+        // Web Audio API Beep Synthesizer (1200Hz high-pitched 0.1s electronic beep)
+        function playElectronicBeep() {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const audioCtx = new AudioContext();
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
 
                 oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch A5 note
-                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime); // 1200Hz frequency
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioCtx.destination);
 
                 oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.15); // Short 150ms crisp beep
+                oscillator.stop(audioCtx.currentTime + 0.1); // Exact 0.1-second duration
             } catch (e) {
-                console.log('Web Audio API not supported or blocked', e);
+                console.log('Web Audio API execution blocked or not supported', e);
             }
         }
 
-        // Simulate Barcode Scan via Camera Feature
+        // Barcode Camera Simulation Engine
         function simulateBarcodeScan() {
-            const statusDiv = document.getElementById('scan-status');
-            statusDiv.classList.remove('hidden');
+            const loadingOverlay = document.getElementById('camera-loading');
+            loadingOverlay.classList.remove('hidden');
 
+            // 1-Second camera auto-focus loading simulation
             setTimeout(() => {
-                statusDiv.classList.add('hidden');
-                playSuccessBeep(); // Crisp electronic beep
+                loadingOverlay.classList.add('hidden');
 
-                // Auto-populate scanned sample data
-                document.getElementById('med-name').value = 'Ceftriaxone 1g Injection';
-                document.getElementById('med-count').value = '120';
-                document.getElementById('med-price').value = '$18.50';
-            }, 1000); // 1-second camera reading simulation
+                // Trigger crisp Web Audio Beep sound
+                playElectronicBeep();
+
+                // Dynamic Autofill of Scanned Sample Data
+                document.getElementById('med-name').value = 'Omeprazole 20mg Capsules';
+                document.getElementById('med-count').value = '150';
+                document.getElementById('med-price').value = '$9.50';
+            }, 1000);
         }
 
         // Modal Controls
@@ -577,45 +656,44 @@
         function closeAddMedicineModal() {
             document.getElementById('add-medicine-modal').classList.add('hidden');
             document.getElementById('new-medicine-form').reset();
-            document.getElementById('scan-status').classList.add('hidden');
+            document.getElementById('camera-loading').classList.add('hidden');
         }
 
-        // Handle Save New Medicine from Modal
+        // Save New Medicine into Memory Array & Refresh View
         function handleSaveNewMedicine(event) {
             event.preventDefault();
 
-            const newMed = {
+            const newMedicine = {
                 id: appState.inventory.length + 1,
                 name: document.getElementById('med-name').value.trim(),
-                category: 'أدوية تخصصية',
+                category: 'أدوية عامة',
                 stock: 'متوفر',
-                count: parseInt(document.getElementById('med-count').value) || 50,
+                count: parseInt(document.getElementById('med-count').value) || 100,
                 price: document.getElementById('med-price').value.trim() || '$10.00'
             };
 
-            appState.inventory.unshift(newMed);
-            // [Backend API Hook]: POST /api/v1/inventory
+            appState.inventory.unshift(newMedicine);
+            // [Backend API Hook]: POST /api/v1/inventory/add
 
             closeAddMedicineModal();
-            renderActiveTab('warehouse'); // Refresh warehouse store view
+            renderActiveTab('warehouse');
         }
 
-        // Tab Switcher Controller (Responsive Desktop Sidebar & Mobile Bottom Nav)
+        // Responsive Tab Switcher Controller (Desktop & Mobile)
         function switchTab(event, tabName) {
             event.preventDefault();
 
-            // Update Desktop Sidebar Links UI
+            // Update Desktop Sidebar Active States
             document.querySelectorAll('.desktop-nav-link').forEach(el => {
                 el.className = "desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-zinc-600 hover:bg-zinc-50 hover:text-teal-600 transition-all-custom";
             });
-            // Update Mobile Bottom Nav Links UI
+            // Update Mobile Bottom Nav Active States
             document.querySelectorAll('.mobile-nav-tab').forEach(el => {
                 el.className = "mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-zinc-400 hover:text-zinc-600 transition-all-custom";
             });
 
-            // Highlight active links
             if (event.currentTarget.classList.contains('desktop-nav-link')) {
-                event.currentTarget.className = "desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-teal-50 text-teal-700";
+                event.currentTarget.className = "desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-teal-50 text-teal-700 transition-all-custom";
             } else {
                 event.currentTarget.className = "mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-teal-600 transition-all-custom";
             }
@@ -623,7 +701,7 @@
             renderActiveTab(tabName);
         }
 
-        // Render Content based on active tab
+        // Render Active Tab Content Dynamically
         function renderActiveTab(tabName) {
             const container = document.getElementById('tab-content-area');
             container.innerHTML = '';
@@ -634,7 +712,7 @@
                         <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">إجمالي الطلبات</p>
-                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">162</h3>
+                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">174</h3>
                             </div>
                             <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-lg">
                                 <i class="fa-solid fa-bag-shopping"></i>
@@ -643,7 +721,7 @@
                         <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">التوصيلات المعلقة</p>
-                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">8</h3>
+                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">6</h3>
                             </div>
                             <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-lg">
                                 <i class="fa-solid fa-truck-fast"></i>
@@ -652,7 +730,7 @@
                         <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">الارتباطات النشطة</p>
-                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">38</h3>
+                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">42</h3>
                             </div>
                             <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-lg">
                                 <i class="fa-solid fa-handshake"></i>
@@ -660,16 +738,16 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 space-y-4">
-                        <h3 class="text-base font-extrabold text-zinc-900">نظرة عامة على نشاط المنصة</h3>
-                        <p class="text-xs text-zinc-500 leading-relaxed">أهلاً بك في منصة PharmaLink. يتم ربط المستودعات بالصيدليات لحظياً لتنفيذ الطلبات وإدارة المخزون بدقة فائقة.</p>
+                    <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 space-y-3">
+                        <h3 class="text-base font-extrabold text-zinc-900">نظرة عامة على منصة PharmaLink</h3>
+                        <p class="text-xs text-zinc-500 leading-relaxed">أهلاً بك. منصتك مصممة لربط المستودعات الدوائية بالصيدليات لحظياً لتسهيل طلبات التوريد، تتبع الشحنات، وإدارة المخزن بكفاءة مهنية عالية.</p>
                     </div>
                 `;
             } else if (tabName === 'warehouse') {
-                // The Warehouse Store / Inventory Section with "Add New Medicine" button
-                let productsHTML = '';
+                // Warehouse Store Inventory View with "إضافة دواء جديد" button
+                let inventoryCardsHTML = '';
                 appState.inventory.forEach(prod => {
-                    productsHTML += `
+                    inventoryCardsHTML += `
                         <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-all-custom">
                             <div class="flex items-start justify-between">
                                 <div>
@@ -694,7 +772,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="text-lg font-extrabold text-zinc-900">المخزن (المنتجات والأدوية)</h3>
-                            <p class="text-xs text-zinc-500 mt-0.5">إدارة مخزون المستودع وإضافة أصناف جديدة</p>
+                            <p class="text-xs text-zinc-500 mt-0.5">إدارة مخزون المستودع وإضافة أصناف جديدة عبر الباركود</p>
                         </div>
                         <button onclick="openAddMedicineModal()" class="px-4 py-2.5 bg-teal-600 text-white text-xs font-bold rounded-xl shadow hover:bg-teal-700 transition-all-custom inline-flex items-center gap-2">
                             <i class="fa-solid fa-plus"></i> إضافة دواء جديد
@@ -702,13 +780,13 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        ${productsHTML}
+                        ${inventoryCardsHTML}
                     </div>
                 `;
             } else if (tabName === 'orders') {
-                let ordersHTML = '';
+                let ordersTableHTML = '';
                 appState.orders.forEach(ord => {
-                    ordersHTML += `
+                    ordersTableHTML += `
                         <tr class="hover:bg-zinc-50 transition-all-custom">
                             <td class="px-6 py-4 font-bold text-zinc-900">${ord.id}</td>
                             <td class="px-6 py-4 text-zinc-600">${ord.item}</td>
@@ -722,7 +800,7 @@
                 container.innerHTML = `
                     <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
                         <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between">
-                            <h3 class="text-base font-extrabold text-zinc-900">سجل الطلبات الحالية</h3>
+                            <h3 class="text-base font-extrabold text-zinc-900">سجل الطلبات والعمليات الحالية</h3>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-right text-sm">
@@ -736,7 +814,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-zinc-100 font-medium">
-                                    ${ordersHTML}
+                                    ${ordersTableHTML}
                                 </tbody>
                             </table>
                         </div>
@@ -744,9 +822,9 @@
                 `;
             } else {
                 container.innerHTML = `
-                    <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 text-center space-y-3">
+                    <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-8 text-center space-y-3">
                         <h3 class="text-lg font-extrabold text-zinc-900">قسم ${tabName === 'notifications' ? 'الإشعارات' : 'الإعدادات'}</h3>
-                        <p class="text-xs text-zinc-500">هذه الشاشة مخصصة لإدارة إعدادات حساب المنشأة والتنبيهات الفورية.</p>
+                        <p class="text-xs text-zinc-500">هذه الشاشة مخصصة لإدارة تفضيلات الحساب، الأمان، والتنبيهات الفورية للمنصة.</p>
                     </div>
                 `;
             }
