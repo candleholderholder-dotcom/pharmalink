@@ -4,7 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaLink - الربط الذكي بين المستودعات والصيدليات</title>
+    <title>PharmaLink - الربط الذكي بين مستودعات الأدوية والصيدليات</title>
+
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -19,63 +26,52 @@
                             600: '#0D9488',
                             700: '#0F766E',
                         },
-                        slate: {
-                            50: '#F8FAFC',
-                        },
-                        zinc: {
-                            50: '#F4F4F5',
-                            100: '#E4E4E7',
-                            300: '#D4D4D8',
-                            600: '#71717A',
-                            700: '#3F3F46',
-                            800: '#27272A',
-                            900: '#18181B',
-                        }
+                        neutralBg: '#F8FAFC',
+                        neutralCard: '#F4F4F5',
+                        neutralText: '#3F3F46',
+                        neutralBorder: '#D4D4D8'
                     },
                     fontFamily: {
-                        sans: ['Cairo', 'sans-serif'],
+                        cairo: ['Cairo', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome Icons CDN -->
+
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+
+    <!-- Custom CSS Animations & Styles -->
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             background-color: #F8FAFC;
+            color: #3F3F46;
+            overflow-x: hidden;
         }
 
-        .transition-all-custom {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Pulsing Logo Animation */
+        @keyframes pulseLogo {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.85;
+            }
         }
 
-        /* Custom Scrollbar for Teal Theme */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        .animate-pulse-logo {
+            animation: pulseLogo 2s infinite ease-in-out;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #F1F5F9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #CBD5E1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0D9488;
-        }
-
-        @keyframes laserScan {
+        /* Laser Scanning Animation */
+        @keyframes scanLaser {
             0% {
                 top: 0%;
                 opacity: 0.8;
@@ -86,752 +82,821 @@
             }
 
             100% {
-                top: 100%;
+                top: 95%;
                 opacity: 0.8;
             }
         }
 
-        .laser-beam {
-            animation: laserScan 1.5s infinite ease-in-out alternate;
+        .animate-laser {
+            animation: scanLaser 1.5s infinite alternate ease-in-out;
+        }
+
+        /* Smooth Screen Transition */
+        .screen {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F4F4F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D4D4D8;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14B8A6;
         }
     </style>
 </head>
 
-<body
-    class="text-zinc-700 antialiased min-h-screen flex flex-col justify-center items-center relative overflow-x-hidden selection:bg-teal-100 selection:text-teal-800">
+<body class="bg-neutralBg text-neutralText antialiased min-h-screen flex flex-col">
 
-    <!-- Master App Container for Cross-Platform Presentation -->
-    <div
-        class="w-full max-w-7xl min-h-screen lg:min-h-[88vh] lg:max-h-[94vh] bg-zinc-100 lg:rounded-2xl lg:shadow-xl flex flex-col relative overflow-hidden border border-zinc-200">
-
-        <!-- ================================================= -->
-        <!-- SCREEN 1: THE WELCOME / SPLASH PAGE (AUTO-TIMER)  -->
-        <!-- ================================================= -->
-        <div id="screen-welcome"
-            class="absolute inset-0 z-50 bg-slate-50 flex flex-col items-center justify-center p-6 text-center transition-all-custom duration-500">
-            <div class="space-y-6 max-w-md mx-auto">
-                <!-- Professional Scalable SVG Capsule Logo with 3D Depth & Split Design -->
-                <div class="flex flex-col items-center justify-center space-y-5">
-                    <svg class="w-28 h-28 drop-shadow-md animate-pulse" viewBox="0 0 100 100" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="tealGrad" x1="50" y1="25" x2="80" y2="85"
-                                gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#14B8A6" />
-                                <stop offset="100%" stop-color="#0D9488" />
-                            </linearGradient>
-                        </defs>
-                        <!-- Left Half: Clean Gray Outline (Structured Warehouse) -->
-                        <path d="M 50 25 C 33.43 25 20 38.43 20 55 C 20 71.57 33.43 85 50 85 L 50 25 Z" stroke="#71717A"
-                            stroke-width="6" fill="none" stroke-linecap="round" />
-                        <!-- Right Half: Solid Teal Fill (Healthcare & Pharmacy) -->
-                        <path d="M 50 25 C 66.57 25 80 38.43 80 55 C 80 71.57 66.57 85 50 85 L 50 25 Z"
-                            fill="url(#tealGrad)" />
-                        <!-- Central Division Line for Absolute Precision -->
-                        <line x1="50" y1="25" x2="50" y2="85" stroke="#F8FAFC" stroke-width="3"
-                            stroke-linecap="round" />
-                    </svg>
-
-                    <!-- Brand Typography: Pharma (Charcoal Gray) Link (Primary Teal) -->
-                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">
-                        <span class="text-zinc-700">Pharma</span><span class="text-teal-600">Link</span>
-                    </h1>
-                </div>
-
-                <p class="text-base md:text-lg text-zinc-500 font-medium">
-                    الربط الذكي بين مستودعات الأدوية والصيدليات
-                </p>
+    <!-- ========================================== -->
+    <!-- SCREEN 1: SPLASH SCREEN                    -->
+    <!-- ========================================== -->
+    <div id="splashScreen" class="fixed inset-0 bg-[#F8FAFC] z-50 flex flex-col items-center justify-center screen">
+        <div class="flex flex-col items-center text-center p-6">
+            <!-- SVG Capsule Logo -->
+            <div class="mb-6 animate-pulse-logo">
+                <svg width="90" height="90" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Left Half: Gray Outline (Warehouses/Logistics) -->
+                    <path d="M50 10C27.9086 10 10 27.9086 10 50C10 72.0914 27.9086 90 50 90V10Z" stroke="#71717A"
+                        stroke-width="6" fill="#F4F4F5" />
+                    <!-- Right Half: Solid Teal (Pharmacies/Medical) -->
+                    <path d="M50 10V90C72.0914 90 90 72.0914 90 50C90 27.9086 72.0914 10 50 10Z" fill="#14B8A6" />
+                    <!-- Cross Symbol in Center -->
+                    <path d="M44 38H38V44H32V56H38V62H44V56H56V62H62V56H68V44H62V38H56V44H44V38Z" fill="white"
+                        opacity="0.9" />
+                </svg>
             </div>
-
-            <div class="absolute bottom-8 text-xs text-zinc-400 font-medium">
-                &copy; 2026 PharmaLink Platform. جميع الحقوق محفوظة.
-            </div>
+            <!-- App Name & Slogan -->
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">
+                <span class="text-[#3F3F46]">Pharma</span><span class="text-teal-600">Link</span>
+            </h1>
+            <p class="text-sm text-zinc-500 font-medium">الربط الذكي بين مستودعات الأدوية والصيدليات</p>
         </div>
-
-
-        <!-- ================================================= -->
-        <!-- SCREEN 2: MULTI-STEP ONBOARDING WIZARD            -->
-        <!-- ================================================= -->
-        <div id="screen-onboarding"
-            class="hidden flex-1 flex flex-col items-center justify-center p-6 md:p-12 transition-all-custom max-w-xl mx-auto w-full bg-white">
-            <div class="w-full space-y-6">
-
-                <!-- Page Header & Progress Tracker -->
-                <div class="text-center space-y-2">
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-zinc-900">إعداد حساب المنصة</h2>
-                    <p id="wizard-step-subtitle" class="text-sm font-semibold text-teal-600">الخطوة 1 من 4: اختيار نوع
-                        الحساب</p>
-                </div>
-
-                <!-- 4-Step Progress Bar -->
-                <div class="w-full h-2 bg-zinc-100 rounded-full overflow-hidden">
-                    <div id="wizard-progress-bar" class="w-1/4 h-full bg-teal-600 transition-all-custom"></div>
-                </div>
-
-                <!-- Onboarding Wizard Form Container -->
-                <form id="onboarding-wizard-form" onsubmit="handleWizardFinalSubmit(event)" class="space-y-6 pt-4">
-
-                    <!-- STEP 1: Role Selection -->
-                    <div id="wizard-step-1" class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div onclick="selectRoleCard('pharmacy')" id="card-pharmacy"
-                                class="cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 shadow-sm transition-all-custom">
-                                <div
-                                    class="w-12 h-12 bg-teal-600 text-white rounded-xl flex items-center justify-center text-xl shadow-sm">
-                                    <i class="fa-solid fa-clinic-medical"></i>
-                                </div>
-                                <h4 class="font-bold text-base text-zinc-900">صيدلية</h4>
-                            </div>
-
-                            <div onclick="selectRoleCard('warehouse')" id="card-warehouse"
-                                class="cursor-pointer p-6 rounded-2xl border-2 border-zinc-200 bg-white flex flex-col items-center text-center space-y-3 hover:border-zinc-300 transition-all-custom">
-                                <div
-                                    class="w-12 h-12 bg-zinc-100 text-zinc-600 rounded-xl flex items-center justify-center text-xl shadow-sm">
-                                    <i class="fa-solid fa-warehouse"></i>
-                                </div>
-                                <h4 class="font-bold text-base text-zinc-900">مستودع أدوية</h4>
-                            </div>
-                        </div>
-
-                        <div class="pt-4">
-                            <button type="button" onclick="nextWizardStep(2)"
-                                class="w-full py-4 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all-custom text-base">
-                                التالي
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 2: Business Name (اسم المنشأة) -->
-                    <div id="wizard-step-2" class="hidden space-y-4">
-                        <div class="space-y-2">
-                            <label class="block text-xs font-bold text-zinc-700">اسم المنشأة</label>
-                            <input type="text" id="biz-name" placeholder="أدخل اسم الصيدلية أو المستودع..."
-                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 text-sm font-medium transition-all-custom">
-                        </div>
-
-                        <div class="flex gap-3 pt-4">
-                            <button type="button" onclick="prevWizardStep(1)"
-                                class="w-1/3 py-4 bg-zinc-100 text-zinc-700 font-bold rounded-xl hover:bg-zinc-200 transition-all-custom text-sm">
-                                السابق
-                            </button>
-                            <button type="button" onclick="nextWizardStep(3)"
-                                class="w-2/3 py-4 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all-custom text-sm">
-                                التالي
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 3: City (المدينة) -->
-                    <div id="wizard-step-3" class="hidden space-y-4">
-                        <div class="space-y-2">
-                            <label class="block text-xs font-bold text-zinc-700">المدينة</label>
-                            <input type="text" id="biz-city" placeholder="أدخل اسم المدينة..."
-                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 text-sm font-medium transition-all-custom">
-                        </div>
-
-                        <div class="flex gap-3 pt-4">
-                            <button type="button" onclick="prevWizardStep(2)"
-                                class="w-1/3 py-4 bg-zinc-100 text-zinc-700 font-bold rounded-xl hover:bg-zinc-200 transition-all-custom text-sm">
-                                السابق
-                            </button>
-                            <button type="button" onclick="nextWizardStep(4)"
-                                class="w-2/3 py-4 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all-custom text-sm">
-                                التالي
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 4: Phone Number (رقم الهاتف) -->
-                    <div id="wizard-step-4" class="hidden space-y-4">
-                        <div class="space-y-2">
-                            <label class="block text-xs font-bold text-zinc-700">رقم الهاتف</label>
-                            <input type="tel" id="biz-phone" placeholder="09xxxxxxxx"
-                                class="w-full px-4 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 text-sm font-medium transition-all-custom">
-                        </div>
-
-                        <div class="flex gap-3 pt-4">
-                            <button type="button" onclick="prevWizardStep(3)"
-                                class="w-1/3 py-4 bg-zinc-100 text-zinc-700 font-bold rounded-xl hover:bg-zinc-200 transition-all-custom text-sm">
-                                السابق
-                            </button>
-                            <button type="submit"
-                                class="w-2/3 py-4 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all-custom text-sm">
-                                تسجيل الدخول
-                            </button>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-
-
-        <!-- ================================================= -->
-        <!-- SCREEN 3: CROSS-PLATFORM INTERACTIVE DASHBOARD    -->
-        <!-- ================================================= -->
-        <div id="screen-dashboard" class="hidden flex-1 flex flex-col lg:flex-row h-full overflow-hidden bg-slate-50">
-
-            <!-- Desktop Sidebar RTL (Visible on Laptops/Tablets) -->
-            <aside class="hidden lg:flex w-64 bg-white border-l border-zinc-200 flex-col justify-between shrink-0">
-                <div>
-                    <!-- Brand Sidebar Header -->
-                    <div class="h-20 flex items-center px-6 border-b border-zinc-100 gap-3">
-                        <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 50 25 C 33.43 25 20 38.43 20 55 C 20 71.57 33.43 85 50 85 L 50 25 Z"
-                                stroke="#71717A" stroke-width="8" fill="none" stroke-linecap="round" />
-                            <path d="M 50 25 C 66.57 25 80 38.43 80 55 C 80 71.57 66.57 85 50 85 L 50 25 Z"
-                                fill="#0D9488" />
-                        </svg>
-                        <span class="font-extrabold text-lg tracking-tight"><span
-                                class="text-zinc-700">Pharma</span><span class="text-teal-600">Link</span></span>
-                    </div>
-
-                    <!-- Navigation Items -->
-                    <nav class="p-4 space-y-1">
-                        <a href="#" onclick="switchTab(event, 'dashboard')"
-                            class="desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-teal-50 text-teal-700 transition-all-custom">
-                            <i class="fa-solid fa-chart-pie w-5"></i> الرئيسية
-                        </a>
-                        <a href="#" onclick="switchTab(event, 'warehouse')"
-                            class="desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-zinc-600 hover:bg-zinc-50 hover:text-teal-600 transition-all-custom">
-                            <i class="fa-solid fa-boxes-stacked w-5"></i> المخزن
-                        </a>
-                        <a href="#" onclick="switchTab(event, 'orders')"
-                            class="desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-zinc-600 hover:bg-zinc-50 hover:text-teal-600 transition-all-custom">
-                            <i class="fa-solid fa-receipt w-5"></i> الطلبات
-                        </a>
-                        <a href="#" onclick="switchTab(event, 'notifications')"
-                            class="desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-zinc-600 hover:bg-zinc-50 hover:text-teal-600 transition-all-custom">
-                            <i class="fa-solid fa-bell w-5"></i> الإشعارات
-                        </a>
-                        <a href="#" onclick="switchTab(event, 'settings')"
-                            class="desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-zinc-600 hover:bg-zinc-50 hover:text-teal-600 transition-all-custom">
-                            <i class="fa-solid fa-gear w-5"></i> الإعدادات
-                        </a>
-                    </nav>
-                </div>
-
-                <!-- Sidebar Footer Logout -->
-                <div class="p-4 border-t border-zinc-100">
-                    <button onclick="logout()"
-                        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all-custom">
-                        <i class="fa-solid fa-right-from-bracket w-5"></i> تسجيل الخروج
-                    </button>
-                </div>
-            </aside>
-
-            <!-- Main Workspace Container -->
-            <div class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50">
-
-                <!-- Top Header Bar -->
-                <header
-                    class="h-16 lg:h-20 bg-white border-b border-zinc-200 flex items-center justify-between px-6 z-10 shrink-0">
-                    <div class="flex items-center gap-3">
-                        <div id="profile-avatar"
-                            class="w-10 h-10 bg-teal-600 text-white font-bold rounded-xl flex items-center justify-center text-sm shadow-sm">
-                            ص
-                        </div>
-                        <div>
-                            <div id="profile-name-display" class="text-sm font-bold text-zinc-900">اسم المنشأة</div>
-                            <div id="profile-role-display" class="text-xs text-teal-600 font-bold">صيدلية</div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-3">
-                        <button
-                            class="w-10 h-10 bg-zinc-50 rounded-full flex items-center justify-center text-zinc-600 hover:bg-zinc-100 transition-all-custom relative">
-                            <i class="fa-regular fa-bell"></i>
-                            <span
-                                class="absolute top-2.5 right-2.5 w-2 h-2 bg-teal-500 rounded-full ring-2 ring-white"></span>
-                        </button>
-                    </div>
-                </header>
-
-                <!-- Scrollable Content Area -->
-                <main class="flex-1 overflow-y-auto p-4 lg:p-8 space-y-6 pb-24 lg:pb-8">
-
-                    <!-- Dynamic Tab Content Container -->
-                    <div id="tab-content-area" class="space-y-6">
-                        <!-- Injected via JavaScript based on active tab -->
-                    </div>
-
-                </main>
-            </div>
-
-            <!-- Mobile Bottom Navigation Bar (شريط أيقونات سفلي) -->
-            <nav
-                class="lg:hidden absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-zinc-200 flex items-center justify-around px-2 z-20 shadow-lg">
-                <button onclick="switchTab(event, 'dashboard')"
-                    class="mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-teal-600 transition-all-custom">
-                    <i class="fa-solid fa-chart-pie text-base"></i>
-                    <span class="text-[10px] font-bold mt-1">الرئيسية</span>
-                </button>
-                <button onclick="switchTab(event, 'warehouse')"
-                    class="mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-zinc-400 hover:text-zinc-600 transition-all-custom">
-                    <i class="fa-solid fa-boxes-stacked text-base"></i>
-                    <span class="text-[10px] font-bold mt-1">المخزن</span>
-                </button>
-                <button onclick="switchTab(event, 'orders')"
-                    class="mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-zinc-400 hover:text-zinc-600 transition-all-custom">
-                    <i class="fa-solid fa-receipt text-base"></i>
-                    <span class="text-[10px] font-bold mt-1">الطلبات</span>
-                </button>
-                <button onclick="switchTab(event, 'notifications')"
-                    class="mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-zinc-400 hover:text-zinc-600 transition-all-custom">
-                    <i class="fa-solid fa-bell text-base"></i>
-                    <span class="text-[10px] font-bold mt-1">الإشعارات</span>
-                </button>
-                <button onclick="switchTab(event, 'settings')"
-                    class="mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-zinc-400 hover:text-zinc-600 transition-all-custom">
-                    <i class="fa-solid fa-gear text-base"></i>
-                    <span class="text-[10px] font-bold mt-1">الإعدادات</span>
-                </button>
-            </nav>
-        </div>
-
     </div>
 
+    <!-- ========================================== -->
+    <!-- SCREEN 2: MULTI-STEP ONBOARDING FORM       -->
+    <!-- ========================================== -->
+    <div id="onboardingScreen"
+        class="fixed inset-0 bg-neutralBg z-40 flex items-center justify-center p-4 hidden screen overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-lg border border-neutralBorder w-full max-w-xl p-8 my-auto">
 
-    <!-- ================================================= -->
-    <!-- MODAL: ADD NEW MEDICINE & BARCODE SCANNER         -->
-    <!-- ================================================= -->
-    <div id="add-medicine-modal"
-        class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-6 animate-scaleIn">
-
-            <!-- Modal Header -->
-            <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
-                <h3 class="text-lg font-extrabold text-zinc-900">إضافة دواء جديد للمخزن</h3>
-                <button onclick="closeAddMedicineModal()"
-                    class="w-8 h-8 rounded-full bg-zinc-100 text-zinc-500 hover:bg-zinc-200 flex items-center justify-center transition-all-custom">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+            <!-- Header & Progress -->
+            <div class="flex justify-between items-center mb-6 border-b border-neutralBorder pb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-zinc-800">إعداد حساب المنصة</h2>
+                    <p class="text-xs text-zinc-500 mt-1" id="stepIndicatorText">الخطوة 1 من 4: نوع الحساب</p>
+                </div>
+                <!-- Mini Logo -->
+                <div class="flex items-center gap-1">
+                    <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 10C27.9086 10 10 27.9086 10 50C10 72.0914 27.9086 90 50 90V10Z" stroke="#71717A"
+                            stroke-width="8" fill="#F4F4F5" />
+                        <path d="M50 10V90C72.0914 90 90 72.0914 90 50C90 27.9086 72.0914 10 50 10Z" fill="#14B8A6" />
+                    </svg>
+                </div>
             </div>
 
-            <!-- Barcode Camera Scanner Simulation Section -->
-            <div class="space-y-3">
-                <div
-                    class="relative bg-zinc-900 rounded-xl overflow-hidden h-40 flex flex-col items-center justify-center border-2 border-teal-500/50 shadow-inner">
-                    <!-- Laser Scanning Beam Animation -->
-                    <div class="absolute left-0 right-0 h-0.5 bg-teal-400 shadow-[0_0_12px_#14B8A6] laser-beam z-10">
+            <!-- Step 1: Account Type -->
+            <div id="wizardStep1" class="wizard-step space-y-4">
+                <label class="block text-sm font-semibold text-zinc-700 mb-2">اختر طبيعة منشأتك:</label>
+                <div class="grid grid-cols-2 gap-4">
+                    <div onclick="selectAccountType('pharmacy')" id="cardPharmacy"
+                        class="cursor-pointer border-2 border-neutralBorder rounded-xl p-6 flex flex-col items-center justify-center transition-all hover:border-teal-500 bg-neutralCard">
+                        <i class="fa-solid fa-pills text-3xl text-teal-600 mb-3"></i>
+                        <span class="font-bold text-zinc-800">صيدلية</span>
                     </div>
-
-                    <!-- Viewfinder Icon / Feed -->
-                    <div class="text-teal-400/80 text-3xl mb-2">
-                        <i class="fa-solid fa-barcode"></i>
-                    </div>
-                    <p class="text-xs text-zinc-300 font-medium z-20">وجه كاميرا الجهاز نحو باركود الدواء</p>
-
-                    <!-- Loading Spinner Overlay during scan -->
-                    <div id="camera-loading"
-                        class="absolute inset-0 bg-zinc-900/90 flex flex-col items-center justify-center space-y-2 hidden z-30">
-                        <i class="fa-solid fa-spinner fa-spin text-teal-400 text-2xl"></i>
-                        <span class="text-xs font-bold text-teal-300">جاري التركيز وقراءة الباركود...</span>
+                    <div onclick="selectAccountType('warehouse')" id="cardWarehouse"
+                        class="cursor-pointer border-2 border-neutralBorder rounded-xl p-6 flex flex-col items-center justify-center transition-all hover:border-teal-500 bg-neutralCard">
+                        <i class="fa-solid fa-warehouse text-3xl text-teal-600 mb-3"></i>
+                        <span class="font-bold text-zinc-800">مستودع أدوية</span>
                     </div>
                 </div>
+            </div>
 
-                <button type="button" onclick="simulateBarcodeScan()"
-                    class="w-full py-3 bg-teal-600 text-white text-xs font-bold rounded-xl shadow hover:bg-teal-700 transition-all-custom inline-flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-camera"></i> محاكاة قراءة الباركود
+            <!-- Step 2: Facility Name -->
+            <div id="wizardStep2" class="wizard-step space-y-4 hidden">
+                <label class="block text-sm font-semibold text-zinc-700 mb-2">اسم المنشأة:</label>
+                <input type="text" id="inputFacilityName" placeholder="مثال: صيدلية النور / مستودع ابن سينا"
+                    class="w-full px-4 py-3 rounded-xl border border-neutralBorder focus:outline-none focus:border-teal-600 bg-neutralCard text-zinc-800">
+            </div>
+
+            <!-- Step 3: City -->
+            <div id="wizardStep3" class="wizard-step space-y-4 hidden">
+                <label class="block text-sm font-semibold text-zinc-700 mb-2">المدينة / النطاق الجغرافي:</label>
+                <select id="inputCity"
+                    class="w-full px-4 py-3 rounded-xl border border-neutralBorder focus:outline-none focus:border-teal-600 bg-neutralCard text-zinc-800">
+                    <option value="">اختر المدينة...</option>
+                    <option value="حلب">حلب</option>
+                    <option value="دمشق">دمشق</option>
+                    <option value="حمص">حمص</option>
+                    <option value="اللاذقية">اللاذقية</option>
+                    <option value="حماة">حماة</option>
+                    <option value="إدلب">إدلب</option>
+                </select>
+            </div>
+
+            <!-- Step 4: Phone Number -->
+            <div id="wizardStep4" class="wizard-step space-y-4 hidden">
+                <label class="block text-sm font-semibold text-zinc-700 mb-2">رقم الهاتف:</label>
+                <input type="tel" id="inputPhone" placeholder="09xxxxxxxx"
+                    class="w-full px-4 py-3 rounded-xl border border-neutralBorder focus:outline-none focus:border-teal-600 bg-neutralCard text-zinc-800"
+                    dir="ltr" style="text-align: right;">
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center mt-8 pt-4 border-t border-neutralBorder">
+                <button id="btnBack" onclick="prevStep()"
+                    class="px-5 py-2.5 rounded-xl border border-neutralBorder text-zinc-600 font-semibold hover:bg-zinc-100 transition-all invisible">
+                    السابق
+                </button>
+                <button id="btnNext" onclick="nextStep()"
+                    class="px-6 py-2.5 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-700 transition-all shadow-sm">
+                    التالي
                 </button>
             </div>
 
-            <!-- First-Time Setup Form Fields -->
-            <form id="new-medicine-form" onsubmit="handleSaveNewMedicine(event)" class="space-y-4">
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCREEN 3: MAIN DASHBOARD SPA               -->
+    <!-- ========================================== -->
+    <div id="dashboardScreen" class="flex-1 flex flex-col md:flex-row hidden screen">
+
+        <!-- Desktop Sidebar (RTL Right side) -->
+        <aside class="hidden md:flex flex-col w-64 bg-white border-l border-neutralBorder shrink-0 z-20">
+            <!-- Top Logo Area -->
+            <div class="h-20 flex items-center px-6 border-b border-neutralBorder gap-3">
+                <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 10C27.9086 10 10 27.9086 10 50C10 72.0914 27.9086 90 50 90V10Z" stroke="#71717A"
+                        stroke-width="8" fill="#F4F4F5" />
+                    <path d="M50 10V90C72.0914 90 90 72.0914 90 50C90 27.9086 72.0914 10 50 10Z" fill="#14B8A6" />
+                </svg>
+                <span class="text-xl font-extrabold tracking-tight">
+                    <span class="text-[#3F3F46]">Pharma</span><span class="text-teal-600">Link</span>
+                </span>
+            </div>
+
+            <!-- Sidebar Navigation Links -->
+            <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
+                <button onclick="switchTab('overview')" id="nav-overview"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all bg-teal-50 text-teal-700">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                    الرئيسية
+                </button>
+                <button onclick="switchTab('inventory')" id="nav-inventory"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-zinc-600 hover:bg-neutralCard">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-center"></i>
+                    المخزن
+                </button>
+                <button onclick="switchTab('orders')" id="nav-orders"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-zinc-600 hover:bg-neutralCard">
+                    <i class="fa-solid fa-clipboard-list w-5 text-center"></i>
+                    الطلبات
+                </button>
+                <button onclick="switchTab('notifications')" id="nav-notifications"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-zinc-600 hover:bg-neutralCard">
+                    <i class="fa-solid fa-bell w-5 text-center"></i>
+                    الإشعارات
+                </button>
+                <button onclick="switchTab('settings')" id="nav-settings"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-zinc-600 hover:bg-neutralCard">
+                    <i class="fa-solid fa-gear w-5 text-center"></i>
+                    الإعدادات
+                </button>
+            </nav>
+
+            <!-- User Info Footer in Sidebar -->
+            <div class="p-4 border-t border-neutralBorder bg-neutralBg flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-sm">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <h4 id="sidebarFacilityName" class="font-bold text-sm truncate text-zinc-800">اسم المنشأة</h4>
+                    <span id="sidebarAccountType" class="text-xs text-teal-600 font-medium">نوع الحساب</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile/Tablet Bottom Navigation Bar -->
+        <nav
+            class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-neutralBorder flex justify-around items-center h-16 z-30 px-2">
+            <button onclick="switchTab('overview')" id="mob-overview"
+                class="flex flex-col items-center justify-center flex-1 py-1 text-teal-600">
+                <i class="fa-solid fa-chart-pie text-lg"></i>
+                <span class="text-[10px] font-semibold mt-1">الرئيسية</span>
+            </button>
+            <button onclick="switchTab('inventory')" id="mob-inventory"
+                class="flex flex-col items-center justify-center flex-1 py-1 text-zinc-500 hover:text-teal-600">
+                <i class="fa-solid fa-boxes-stacked text-lg"></i>
+                <span class="text-[10px] font-semibold mt-1">المخزن</span>
+            </button>
+            <button onclick="switchTab('orders')" id="mob-orders"
+                class="flex flex-col items-center justify-center flex-1 py-1 text-zinc-500 hover:text-teal-600">
+                <i class="fa-solid fa-clipboard-list text-lg"></i>
+                <span class="text-[10px] font-semibold mt-1">الطلبات</span>
+            </button>
+            <button onclick="switchTab('notifications')" id="mob-notifications"
+                class="flex flex-col items-center justify-center flex-1 py-1 text-zinc-500 hover:text-teal-600">
+                <i class="fa-solid fa-bell text-lg"></i>
+                <span class="text-[10px] font-semibold mt-1">الإشعارات</span>
+            </button>
+            <button onclick="switchTab('settings')" id="mob-settings"
+                class="flex flex-col items-center justify-center flex-1 py-1 text-zinc-500 hover:text-teal-600">
+                <i class="fa-solid fa-gear text-lg"></i>
+                <span class="text-[10px] font-semibold mt-1">الإعدادات</span>
+            </button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-w-0 pb-20 md:pb-0 overflow-y-auto">
+
+            <!-- Top Bar Header -->
+            <header class="h-20 bg-white border-b border-neutralBorder px-6 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <h3 id="currentTabTitle" class="text-lg font-bold text-zinc-800">الرئيسية</h3>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-left hidden sm:block">
+                        <span id="topBarCity" class="text-xs text-zinc-500 block">المدينة</span>
+                        <span class="text-xs font-bold text-teal-600">متصل الآن</span>
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-xl bg-neutralCard border border-neutralBorder flex items-center justify-center text-zinc-600">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Tab Contents Container -->
+            <div class="p-6 flex-1">
+
+                <!-- TAB 1: OVERVIEW -->
+                <section id="tabContent-overview" class="tab-content space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div
+                            class="bg-white p-6 rounded-xl border border-neutralBorder shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-zinc-500 font-semibold">إجمالي الأدوية المسجلة</p>
+                                <h4 id="statTotalMeds" class="text-2xl font-bold text-zinc-800 mt-1">0</h4>
+                            </div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-capsules"></i>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl border border-neutralBorder shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-zinc-500 font-semibold">الطلبات النشطة</p>
+                                <h4 class="text-2xl font-bold text-zinc-800 mt-1">3</h4>
+                            </div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-white p-6 rounded-xl border border-neutralBorder shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-zinc-500 font-semibold">حالة الربط التقني</p>
+                                <h4 class="text-2xl font-bold text-teal-600 mt-1">نشط 100%</h4>
+                            </div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl border border-neutralBorder shadow-sm">
+                        <h4 class="font-bold text-zinc-800 mb-4">مرحباً بك في منصة PharmaLink</h4>
+                        <p class="text-sm text-zinc-600 leading-relaxed">
+                            النظام الذكي الأمثل لربط مستودعات الأدوية والصيدليات مباشرة. يمكنك تتبع المخزون، استقبال
+                            الطلبات، وإدارة حركة الأدوية بكفاءة عالية وبأعلى معايير السرعة والدقة.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- TAB 2: INVENTORY -->
+                <section id="tabContent-inventory" class="tab-content space-y-6 hidden">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-zinc-800 text-lg">إدارة المخزون الدوائي</h4>
+                            <p class="text-xs text-zinc-500">قائمة الأدوية المتاحة في المستودع</p>
+                        </div>
+                        <button onclick="openInventoryModal()"
+                            class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-sm transition-all">
+                            <i class="fa-solid fa-plus"></i>
+                            إضافة دواء جديد
+                        </button>
+                    </div>
+
+                    <!-- Inventory Grid Container -->
+                    <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Dynamically populated -->
+                    </div>
+                </section>
+
+                <!-- TAB 3: ORDERS -->
+                <section id="tabContent-orders" class="tab-content space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-neutralBorder shadow-sm">
+                        <h4 class="font-bold text-zinc-800 mb-2">تتبع الطلبات</h4>
+                        <p class="text-xs text-zinc-500 mb-6">سجل الطلبات الواردة والصادرة عبر المنصة.</p>
+                        <div class="space-y-3">
+                            <div
+                                class="p-4 rounded-xl bg-neutralCard border border-neutralBorder flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-teal-600 bg-teal-50 px-2.5 py-1 rounded-lg">طلب
+                                        قيد الشحن</span>
+                                    <h5 class="font-bold text-zinc-800 mt-2">شحنة أدوية مضادات حيوية</h5>
+                                    <p class="text-xs text-zinc-500 mt-0.5">الكمية: 150 علبة | الوجهة: صيدلية الأمل</p>
+                                </div>
+                                <span class="text-xs text-zinc-400">منذ ساعتين</span>
+                            </div>
+                            <div
+                                class="p-4 rounded-xl bg-neutralCard border border-neutralBorder flex items-center justify-between">
+                                <div>
+                                    <span
+                                        class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg">تم
+                                        التسليم</span>
+                                    <h5 class="font-bold text-zinc-800 mt-2">طلب باراسيتامول وفيتامينات</h5>
+                                    <p class="text-xs text-zinc-500 mt-0.5">الكمية: 300 علبة | الوجهة: صيدلية الشفاء</p>
+                                </div>
+                                <span class="text-xs text-zinc-400">أمس</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: NOTIFICATIONS -->
+                <section id="tabContent-notifications" class="tab-content space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-neutralBorder shadow-sm">
+                        <h4 class="font-bold text-zinc-800 mb-4">الإشعارات والتنبيهات</h4>
+                        <div class="space-y-3">
+                            <div class="p-4 rounded-xl bg-teal-50/50 border border-teal-100 flex items-start gap-3">
+                                <i class="fa-solid fa-circle-exclamation text-teal-600 mt-1"></i>
+                                <div>
+                                    <h5 class="font-bold text-zinc-800 text-sm">تحديث نظام الربط السحابي</h5>
+                                    <p class="text-xs text-zinc-600 mt-1">تمت بنجاح مزامنة قواعد بيانات المستودعات
+                                        والصيدليات لشهر سبتمبر 2026.</p>
+                                    <span class="text-[10px] text-zinc-400 mt-2 block">اليوم، 04:00 ص</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 5: SETTINGS -->
+                <section id="tabContent-settings" class="tab-content space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-neutralBorder shadow-sm space-y-4">
+                        <h4 class="font-bold text-zinc-800">إعدادات الحساب</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-500 mb-1">اسم المنشأة</label>
+                                <input type="text" id="settingsFacilityName"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-neutralBorder bg-neutralCard text-zinc-800 text-sm"
+                                    readonly>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-500 mb-1">المدينة</label>
+                                <input type="text" id="settingsCity"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-neutralBorder bg-neutralCard text-zinc-800 text-sm"
+                                    readonly>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-500 mb-1">رقم الهاتف</label>
+                                <input type="text" id="settingsPhone"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-neutralBorder bg-neutralCard text-zinc-800 text-sm"
+                                    readonly dir="ltr" style="text-align: right;">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-500 mb-1">نوع الحساب</label>
+                                <input type="text" id="settingsAccountType"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-neutralBorder bg-neutralCard text-zinc-800 text-sm"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-neutralBorder flex justify-end">
+                            <button onclick="resetApp()"
+                                class="px-4 py-2 rounded-xl bg-red-50 text-red-600 text-sm font-semibold hover:bg-red-100 transition-all">
+                                تسجيل الخروج وإعادة الضبط
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BARCODE SCANNER MODAL                      -->
+    <!-- ========================================== -->
+    <div id="inventoryModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl border border-neutralBorder w-full max-w-lg p-6 space-y-6 shadow-xl">
+            <div class="flex justify-between items-center border-b border-neutralBorder pb-3">
+                <h3 class="font-bold text-zinc-800">إضافة دواء جديد للمخزن</h3>
+                <button onclick="closeInventoryModal()" class="text-zinc-400 hover:text-zinc-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Scanner Camera Simulation Box -->
+            <div
+                class="relative bg-zinc-900 rounded-xl h-48 overflow-hidden flex flex-col items-center justify-center border border-zinc-700 shadow-inner">
+                <!-- Laser Line -->
+                <div id="laserLine"
+                    class="absolute left-0 right-0 h-0.5 bg-teal-400 shadow-[0_0_12px_#14B8A6] animate-laser hidden">
+                </div>
+
+                <!-- Loading Spinner State -->
+                <div id="scannerLoading" class="flex flex-col items-center justify-center space-y-3 hidden">
+                    <div class="w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-xs text-teal-300 font-medium">جاري التركيز البؤري للكاميرا...</span>
+                </div>
+
+                <!-- Initial State Icon -->
+                <div id="scannerIdle" class="flex flex-col items-center justify-center space-y-2">
+                    <i class="fa-solid fa-barcode text-4xl text-zinc-500"></i>
+                    <span class="text-xs text-zinc-400">جاهز لمسح الباركود</span>
+                </div>
+            </div>
+
+            <!-- Scan Button -->
+            <button id="btnScanTrigger" onclick="triggerBarcodeScan()"
+                class="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold text-sm transition-all shadow-sm">
+                محاكاة قراءة الباركود
+            </button>
+
+            <!-- Scanned Data Form -->
+            <div class="space-y-4 pt-2 border-t border-neutralBorder">
                 <div>
-                    <label class="block text-xs font-bold text-zinc-700 mb-1">اسم الدواء</label>
-                    <input type="text" id="med-name" required placeholder="أدخل اسم الدواء..."
-                        class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
+                    <label class="block text-xs font-semibold text-zinc-600 mb-1">اسم الدواء</label>
+                    <input type="text" id="modalMedName" placeholder="سيتم تعبئته تلقائياً بعد المسح..."
+                        class="w-full px-4 py-2.5 rounded-xl border border-neutralBorder bg-neutralCard text-zinc-800 text-sm focus:outline-none focus:border-teal-600">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-zinc-700 mb-1">الكمية</label>
-                        <input type="number" id="med-count" required placeholder="100"
-                            class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
+                        <label class="block text-xs font-semibold text-zinc-600 mb-1">الكمية</label>
+                        <input type="number" id="modalMedQty" value="100"
+                            class="w-full px-4 py-2.5 rounded-xl border border-neutralBorder bg-neutralCard text-zinc-800 text-sm focus:outline-none focus:border-teal-600">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-zinc-700 mb-1">السعر الإفرادي</label>
-                        <input type="text" id="med-price" required placeholder="$12.00"
-                            class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:outline-none focus:border-teal-500 text-sm font-medium">
+                        <label class="block text-xs font-semibold text-zinc-600 mb-1">سعر الوحدة (ل.س)</label>
+                        <input type="number" id="modalMedPrice" value="2500"
+                            class="w-full px-4 py-2.5 rounded-xl border border-neutralBorder bg-neutralCard text-zinc-800 text-sm focus:outline-none focus:border-teal-600">
                     </div>
                 </div>
+            </div>
 
-                <div class="pt-2 flex gap-3">
-                    <button type="button" onclick="closeAddMedicineModal()"
-                        class="w-1/3 py-3 bg-zinc-100 text-zinc-700 font-bold rounded-xl text-sm hover:bg-zinc-200 transition-all-custom">إلغاء</button>
-                    <button type="submit"
-                        class="w-2/3 py-3 bg-teal-600 text-white font-bold rounded-xl text-sm shadow hover:bg-teal-700 transition-all-custom">حفظ
-                        في المخزن</button>
-                </div>
-            </form>
+            <!-- Modal Actions -->
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeInventoryModal()"
+                    class="px-4 py-2.5 rounded-xl border border-neutralBorder text-zinc-600 text-sm font-semibold hover:bg-zinc-100 transition-all">
+                    إلغاء
+                </button>
+                <button onclick="saveInventoryItem()"
+                    class="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold transition-all shadow-sm">
+                    حفظ في المخزن
+                </button>
+            </div>
         </div>
     </div>
 
-
-    <!-- ================================================= -->
-    <!-- JAVASCRIPT STATE ENGINE & APPLICATION LOGIC       -->
-    <!-- ================================================= -->
+    <!-- ========================================== -->
+    <!-- CORE JAVASCRIPT LOGIC                      -->
+    <!-- ========================================== -->
     <script>
-        // Global State Store (Mock Database & Session)
-        // [Backend Integration Point]: Connect to Node.js / Express REST API or Firebase Firestore here.
+        // Global App State
         let appState = {
-            currentRole: 'warehouse', // Default to warehouse for full feature testing
-            profile: {
-                name: '',
-                city: '',
-                phone: ''
-            },
+            currentStep: 1,
+            accountType: '',
+            facilityName: '',
+            city: '',
+            phone: '',
             inventory: [
-                { id: 1, name: 'Paracetamol 500mg', category: 'مسكنات ألم', stock: 'متوفر', count: 190, price: '$4.50' },
-                { id: 2, name: 'Amoxicillin 250mg', category: 'مضاد حيوي', stock: 'متوفر', count: 125, price: '$12.00' },
-                { id: 3, name: 'Ibuprofen 400mg', category: 'مضادات الالتهاب', stock: 'متوفر', count: 210, price: '$6.20' },
-                { id: 4, name: 'Ceftriaxone 1g', category: 'أدوية تخصصية', stock: 'متوفر', count: 85, price: '$18.50' }
-            ],
-            orders: [
-                { id: '#PL-9801', item: 'Paracetamol 500mg', qty: '100 علبة', status: 'مكتمل', date: '2026-09-18' },
-                { id: '#PL-9802', item: 'Amoxicillin 250mg', qty: '50 عبوة', status: 'قيد التوصيل', date: '2026-09-18' }
+                { id: 1, name: 'أوميبرازول 20 ملغ', quantity: 120, price: 4200 },
+                { id: 2, name: 'أموكسيسيلين 500 ملغ', quantity: 85, price: 6500 },
+                { id: 3, name: 'فيتامين سي فوار', quantity: 200, price: 3000 }
             ]
         };
 
-        // Automated Splash Screen Clock (2.5 Seconds)
+        // Screen 1: Splash Screen Timeout (2500ms)
         window.addEventListener('DOMContentLoaded', () => {
+            loadStateFromLocalStorage();
             setTimeout(() => {
-                const splash = document.getElementById('screen-welcome');
-                splash.classList.add('opacity-0', 'pointer-events-none');
+                const splash = document.getElementById('splashScreen');
+                splash.style.opacity = '0';
                 setTimeout(() => {
-                    splash.style.display = 'none';
-                    document.getElementById('screen-onboarding').classList.remove('hidden');
+                    splash.classList.add('hidden');
+                    checkAuthenticationFlow();
                 }, 400);
             }, 2500);
         });
 
-        // Role Card Selection Handler in Step 1
-        function selectRoleCard(role) {
-            appState.currentRole = role;
-            const pharmacyCard = document.getElementById('card-pharmacy');
-            const warehouseCard = document.getElementById('card-warehouse');
-
-            if (role === 'pharmacy') {
-                pharmacyCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 shadow-sm transition-all-custom";
-                warehouseCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-zinc-200 bg-white flex flex-col items-center text-center space-y-3 hover:border-zinc-300 transition-all-custom";
+        // Check if user already configured account
+        function checkAuthenticationFlow() {
+            if (appState.facilityName && appState.accountType) {
+                showDashboard();
             } else {
-                warehouseCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-teal-600 bg-teal-50/50 flex flex-col items-center text-center space-y-3 shadow-sm transition-all-custom";
-                pharmacyCard.className = "cursor-pointer p-6 rounded-2xl border-2 border-zinc-200 bg-white flex flex-col items-center text-center space-y-3 hover:border-zinc-300 transition-all-custom";
+                showOnboarding();
             }
         }
 
-        // Multi-Step Wizard Navigation & Validation Logic
-        function nextWizardStep(targetStep) {
-            if (targetStep === 3) {
-                const name = document.getElementById('biz-name').value.trim();
-                if (!name) {
-                    alert('الرجاء إدخال اسم الصيدلية أو المستودع للمتابعة.');
+        function showOnboarding() {
+            document.getElementById('onboardingScreen').classList.remove('hidden');
+            document.getElementById('dashboardScreen').classList.add('hidden');
+            updateWizardUI();
+        }
+
+        function showDashboard() {
+            document.getElementById('onboardingScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            updateDashboardData();
+            renderInventoryGrid();
+        }
+
+        // Wizard Logic
+        function selectAccountType(type) {
+            appState.accountType = type;
+            document.getElementById('cardPharmacy').className = type === 'pharmacy'
+                ? 'cursor-pointer border-2 border-teal-600 rounded-xl p-6 flex flex-col items-center justify-center transition-all bg-teal-50/50'
+                : 'cursor-pointer border-2 border-neutralBorder rounded-xl p-6 flex flex-col items-center justify-center transition-all hover:border-teal-500 bg-neutralCard';
+
+            document.getElementById('cardWarehouse').className = type === 'warehouse'
+                ? 'cursor-pointer border-2 border-teal-600 rounded-xl p-6 flex flex-col items-center justify-center transition-all bg-teal-50/50'
+                : 'cursor-pointer border-2 border-neutralBorder rounded-xl p-6 flex flex-col items-center justify-center transition-all hover:border-teal-500 bg-neutralCard';
+        }
+
+        function nextStep() {
+            if (appState.currentStep === 1 && !appState.accountType) {
+                alert('يرجى اختيار طبيعة المنشأة أولاً.');
+                return;
+            }
+            if (appState.currentStep === 2) {
+                const val = document.getElementById('inputFacilityName').value.trim();
+                if (!val) {
+                    alert('يرجى إدخال اسم المنشأة.');
                     return;
                 }
-            } else if (targetStep === 4) {
-                const city = document.getElementById('biz-city').value.trim();
-                if (!city) {
-                    alert('الرجاء إدخال اسم المدينة للمتابعة.');
+                appState.facilityName = val;
+            }
+            if (appState.currentStep === 3) {
+                const val = document.getElementById('inputCity').value;
+                if (!val) {
+                    alert('يرجى اختيار المدينة.');
                     return;
                 }
+                appState.city = val;
             }
-
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`wizard-step-${i}`).classList.add('hidden');
-            }
-            document.getElementById(`wizard-step-${targetStep}`).classList.remove('hidden');
-
-            const progressBar = document.getElementById('wizard-progress-bar');
-            const subtitle = document.getElementById('wizard-step-subtitle');
-
-            const progressPercentages = { 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
-            const stepTitles = {
-                1: 'الخطوة 1 من 4: اختيار نوع الحساب',
-                2: 'الخطوة 2 من 4: اسم المنشأة',
-                3: 'الخطوة 3 من 4: تحديد المدينة',
-                4: 'الخطوة 4 من 4: رقم الهاتف المحمول'
-            };
-
-            progressBar.style.width = progressPercentages[targetStep];
-            subtitle.innerText = stepTitles[targetStep];
-        }
-
-        function prevWizardStep(targetStep) {
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`wizard-step-${i}`).classList.add('hidden');
-            }
-            document.getElementById(`wizard-step-${targetStep}`).classList.remove('hidden');
-
-            const progressBar = document.getElementById('wizard-progress-bar');
-            const subtitle = document.getElementById('wizard-step-subtitle');
-
-            const progressPercentages = { 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
-            const stepTitles = {
-                1: 'الخطوة 1 من 4: اختيار نوع الحساب',
-                2: 'الخطوة 2 من 4: اسم المنشأة',
-                3: 'الخطوة 3 من 4: تحديد المدينة',
-                4: 'الخطوة 4 من 4: رقم الهاتف المحمول'
-            };
-
-            progressBar.style.width = progressPercentages[targetStep];
-            subtitle.innerText = stepTitles[targetStep];
-        }
-
-        // Final Form Submission & Transition to Screen 3 (Dashboard)
-        function handleWizardFinalSubmit(event) {
-            event.preventDefault();
-
-            const phone = document.getElementById('biz-phone').value.trim();
-            if (!phone) {
-                alert('الرجاء إدخال رقم الهاتف للمتابعة.');
+            if (appState.currentStep === 4) {
+                const val = document.getElementById('inputPhone').value.trim();
+                if (!val) {
+                    alert('يرجى إدخال رقم الهاتف.');
+                    return;
+                }
+                appState.phone = val;
+                saveStateToLocalStorage();
+                showDashboard();
                 return;
             }
 
-            appState.profile = {
-                name: document.getElementById('biz-name').value.trim() || 'مستودع فارما لينك المركزي',
-                city: document.getElementById('biz-city').value.trim() || 'دمشق',
-                phone: phone
-            };
-
-            // [Backend API Hook]: POST request to Node.js backend authentication service
-            // fetch('/api/v1/auth/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(appState) });
-
-            document.getElementById('screen-onboarding').classList.add('hidden');
-            document.getElementById('screen-dashboard').classList.remove('hidden');
-
-            // Render Profile Header Information
-            document.getElementById('profile-name-display').innerText = appState.profile.name;
-            document.getElementById('profile-role-display').innerText = appState.currentRole === 'warehouse' ? 'مستودع أدوية رئيسي' : 'صيدلية معتمدة';
-            document.getElementById('profile-avatar').innerText = appState.profile.name.charAt(0);
-
-            renderActiveTab('dashboard');
+            appState.currentStep++;
+            updateWizardUI();
         }
 
-        // Web Audio API Beep Synthesizer (1200Hz high-pitched 0.1s electronic beep)
-        function playElectronicBeep() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                const audioCtx = new AudioContext();
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime); // 1200Hz frequency
-                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.1); // Exact 0.1-second duration
-            } catch (e) {
-                console.log('Web Audio API execution blocked or not supported', e);
+        function prevStep() {
+            if (appState.currentStep > 1) {
+                appState.currentStep--;
+                updateWizardUI();
             }
         }
 
-        // Barcode Camera Simulation Engine
-        function simulateBarcodeScan() {
-            const loadingOverlay = document.getElementById('camera-loading');
-            loadingOverlay.classList.remove('hidden');
+        function updateWizardUI() {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`wizardStep${i}`).classList.add('hidden');
+            }
+            document.getElementById(`wizardStep${appState.currentStep}`).classList.remove('hidden');
 
-            // 1-Second camera auto-focus loading simulation
+            const titles = [
+                "الخطوة 1 من 4: نوع الحساب",
+                "الخطوة 2 من 4: اسم المنشأة",
+                "الخطوة 3 من 4: المدينة",
+                "الخطوة 4 من 4: رقم الهاتف"
+            ];
+            document.getElementById('stepIndicatorText').innerText = titles[appState.currentStep - 1];
+
+            const btnBack = document.getElementById('btnBack');
+            const btnNext = document.getElementById('btnNext');
+
+            if (appState.currentStep === 1) {
+                btnBack.classList.add('invisible');
+            } else {
+                btnBack.classList.remove('invisible');
+            }
+
+            if (appState.currentStep === 4) {
+                btnNext.innerText = 'تسجيل الدخول';
+            } else {
+                btnNext.innerText = 'التالي';
+            }
+        }
+
+        // Dashboard Tabs Navigation
+        function switchTab(tabId) {
+            const tabs = ['overview', 'inventory', 'orders', 'notifications', 'settings'];
+            tabs.forEach(t => {
+                document.getElementById(`tabContent-${t}`).classList.add('hidden');
+
+                // Desktop Nav Style
+                const desktopNav = document.getElementById(`nav-${t}`);
+                if (desktopNav) {
+                    desktopNav.className = 'w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-zinc-600 hover:bg-neutralCard';
+                }
+                // Mobile Nav Style
+                const mobNav = document.getElementById(`mob-${t}`);
+                if (mobNav) {
+                    mobNav.className = 'flex flex-col items-center justify-center flex-1 py-1 text-zinc-500 hover:text-teal-600';
+                }
+            });
+
+            document.getElementById(`tabContent-${tabId}`).classList.remove('hidden');
+
+            const activeDesktop = document.getElementById(`nav-${tabId}`);
+            if (activeDesktop) {
+                activeDesktop.className = 'w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all bg-teal-50 text-teal-700';
+            }
+            const activeMob = document.getElementById(`mob-${tabId}`);
+            if (activeMob) {
+                activeMob.className = 'flex flex-col items-center justify-center flex-1 py-1 text-teal-600';
+            }
+
+            const titles = {
+                overview: 'الرئيسية',
+                inventory: 'المخزن',
+                orders: 'الطلبات',
+                notifications: 'الإشعارات',
+                settings: 'الإعدادات'
+            };
+            document.getElementById('currentTabTitle').innerText = titles[tabId];
+        }
+
+        function updateDashboardData() {
+            document.getElementById('sidebarFacilityName').innerText = appState.facilityName;
+            document.getElementById('sidebarAccountType').innerText = appState.accountType === 'warehouse' ? 'مستودع أدوية' : 'صيدلية';
+            document.getElementById('topBarCity').innerText = appState.city;
+
+            document.getElementById('settingsFacilityName').value = appState.facilityName;
+            document.getElementById('settingsCity').value = appState.city;
+            document.getElementById('settingsPhone').value = appState.phone;
+            document.getElementById('settingsAccountType').value = appState.accountType === 'warehouse' ? 'مستودع أدوية' : 'صيدلية';
+
+            document.getElementById('statTotalMeds').innerText = appState.inventory.length;
+        }
+
+        // Inventory & Barcode Scanner Simulation Logic
+        function openInventoryModal() {
+            document.getElementById('inventoryModal').classList.remove('hidden');
+            document.getElementById('laserLine').classList.add('hidden');
+            document.getElementById('scannerLoading').classList.add('hidden');
+            document.getElementById('scannerIdle').classList.remove('hidden');
+            document.getElementById('modalMedName').value = '';
+        }
+
+        function closeInventoryModal() {
+            document.getElementById('inventoryModal').classList.add('hidden');
+        }
+
+        function triggerBarcodeScan() {
+            const idleEl = document.getElementById('scannerIdle');
+            const loadingEl = document.getElementById('scannerLoading');
+            const laserEl = document.getElementById('laserLine');
+
+            idleEl.classList.add('hidden');
+            loadingEl.classList.remove('hidden');
+            laserEl.classList.remove('hidden');
+
+            // 1 Second loading simulation for camera auto-focus
             setTimeout(() => {
-                loadingOverlay.classList.add('hidden');
+                loadingEl.classList.add('hidden');
 
-                // Trigger crisp Web Audio Beep sound
-                playElectronicBeep();
+                // Play electronic Beep sound using Web Audio API
+                playBeepSound();
 
-                // Dynamic Autofill of Scanned Sample Data
-                document.getElementById('med-name').value = 'Omeprazole 20mg Capsules';
-                document.getElementById('med-count').value = '150';
-                document.getElementById('med-price').value = '$9.50';
+                // Auto-fill scanned data
+                document.getElementById('modalMedName').value = 'باراسيتامول 500 ملغ';
+                document.getElementById('modalMedQty').value = '150';
+                document.getElementById('modalMedPrice').value = '2500';
             }, 1000);
         }
 
-        // Modal Controls
-        function openAddMedicineModal() {
-            document.getElementById('add-medicine-modal').classList.remove('hidden');
+        function playBeepSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.value = 1200; // Frequency: 1200Hz
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1); // Duration: 0.1s
+            } catch (e) {
+                console.log('Web Audio API not supported or blocked', e);
+            }
         }
 
-        function closeAddMedicineModal() {
-            document.getElementById('add-medicine-modal').classList.add('hidden');
-            document.getElementById('new-medicine-form').reset();
-            document.getElementById('camera-loading').classList.add('hidden');
-        }
+        function saveInventoryItem() {
+            const name = document.getElementById('modalMedName').value.trim();
+            const qty = parseInt(document.getElementById('modalMedQty').value) || 0;
+            const price = parseFloat(document.getElementById('modalMedPrice').value) || 0;
 
-        // Save New Medicine into Memory Array & Refresh View
-        function handleSaveNewMedicine(event) {
-            event.preventDefault();
+            if (!name) {
+                alert('يرجى إدخال اسم الدواء أو مسح الباركود أولاً.');
+                return;
+            }
 
-            const newMedicine = {
-                id: appState.inventory.length + 1,
-                name: document.getElementById('med-name').value.trim(),
-                category: 'أدوية عامة',
-                stock: 'متوفر',
-                count: parseInt(document.getElementById('med-count').value) || 100,
-                price: document.getElementById('med-price').value.trim() || '$10.00'
+            const newItem = {
+                id: Date.now(),
+                name: name,
+                quantity: qty,
+                price: price
             };
 
-            appState.inventory.unshift(newMedicine);
-            // [Backend API Hook]: POST /api/v1/inventory/add
-
-            closeAddMedicineModal();
-            renderActiveTab('warehouse');
+            appState.inventory.push(newItem);
+            saveStateToLocalStorage();
+            renderInventoryGrid();
+            updateDashboardData();
+            closeInventoryModal();
         }
 
-        // Responsive Tab Switcher Controller (Desktop & Mobile)
-        function switchTab(event, tabName) {
-            event.preventDefault();
+        function renderInventoryGrid() {
+            const grid = document.getElementById('inventoryGrid');
+            grid.innerHTML = '';
 
-            // Update Desktop Sidebar Active States
-            document.querySelectorAll('.desktop-nav-link').forEach(el => {
-                el.className = "desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-zinc-600 hover:bg-zinc-50 hover:text-teal-600 transition-all-custom";
-            });
-            // Update Mobile Bottom Nav Active States
-            document.querySelectorAll('.mobile-nav-tab').forEach(el => {
-                el.className = "mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-zinc-400 hover:text-zinc-600 transition-all-custom";
-            });
-
-            if (event.currentTarget.classList.contains('desktop-nav-link')) {
-                event.currentTarget.className = "desktop-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-teal-50 text-teal-700 transition-all-custom";
-            } else {
-                event.currentTarget.className = "mobile-nav-tab flex flex-col items-center justify-center w-12 h-full text-teal-600 transition-all-custom";
-            }
-
-            renderActiveTab(tabName);
-        }
-
-        // Render Active Tab Content Dynamically
-        function renderActiveTab(tabName) {
-            const container = document.getElementById('tab-content-area');
-            container.innerHTML = '';
-
-            if (tabName === 'dashboard') {
-                container.innerHTML = `
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">إجمالي الطلبات</p>
-                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">174</h3>
-                            </div>
-                            <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-lg">
-                                <i class="fa-solid fa-bag-shopping"></i>
-                            </div>
+            appState.inventory.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-5 rounded-xl border border-neutralBorder shadow-sm flex flex-col justify-between space-y-4';
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-lg">متوفر في المخزن</span>
+                            <span class="text-xs text-zinc-400">#${item.id.toString().slice(-4)}</span>
                         </div>
-                        <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">التوصيلات المعلقة</p>
-                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">6</h3>
-                            </div>
-                            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-lg">
-                                <i class="fa-solid fa-truck-fast"></i>
-                            </div>
-                        </div>
-                        <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-bold uppercase tracking-wider text-zinc-500">الارتباطات النشطة</p>
-                                <h3 class="text-2xl font-extrabold text-zinc-900 mt-1">42</h3>
-                            </div>
-                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-lg">
-                                <i class="fa-solid fa-handshake"></i>
-                            </div>
-                        </div>
+                        <h5 class="font-bold text-zinc-800 text-base mt-2">${item.name}</h5>
                     </div>
-
-                    <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 space-y-3">
-                        <h3 class="text-base font-extrabold text-zinc-900">نظرة عامة على منصة PharmaLink</h3>
-                        <p class="text-xs text-zinc-500 leading-relaxed">أهلاً بك. منصتك مصممة لربط المستودعات الدوائية بالصيدليات لحظياً لتسهيل طلبات التوريد، تتبع الشحنات، وإدارة المخزن بكفاءة مهنية عالية.</p>
-                    </div>
-                `;
-            } else if (tabName === 'warehouse') {
-                // Warehouse Store Inventory View with "إضافة دواء جديد" button
-                let inventoryCardsHTML = '';
-                appState.inventory.forEach(prod => {
-                    inventoryCardsHTML += `
-                        <div class="bg-white p-5 rounded-2xl border border-zinc-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-all-custom">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-full">${prod.category}</span>
-                                    <h4 class="font-extrabold text-zinc-900 mt-2 text-sm">${prod.name}</h4>
-                                </div>
-                                <span class="text-sm font-extrabold text-zinc-900">${prod.price}</span>
-                            </div>
-                            <div class="flex items-center justify-between pt-3 border-t border-zinc-100 text-xs">
-                                <span class="inline-flex items-center gap-1.5 text-teal-700 bg-teal-50 px-2.5 py-1 rounded-lg font-bold">
-                                    <span class="w-1.5 h-1.5 bg-teal-500 rounded-full"></span> ${prod.stock} (${prod.count})
-                                </span>
-                                <button onclick="alert('تم إرسال طلب توريد الصنف بنجاح')" class="px-3 py-1.5 bg-zinc-900 text-white font-bold rounded-lg hover:bg-teal-600 transition-all-custom">
-                                    طلب توريد
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                container.innerHTML = `
-                    <div class="flex items-center justify-between">
+                    <div class="flex justify-between items-center pt-3 border-t border-neutralBorder text-sm">
                         <div>
-                            <h3 class="text-lg font-extrabold text-zinc-900">المخزن (المنتجات والأدوية)</h3>
-                            <p class="text-xs text-zinc-500 mt-0.5">إدارة مخزون المستودع وإضافة أصناف جديدة عبر الباركود</p>
+                            <span class="text-xs text-zinc-500 block">الكمية</span>
+                            <span class="font-bold text-zinc-800">${item.quantity} علبة</span>
                         </div>
-                        <button onclick="openAddMedicineModal()" class="px-4 py-2.5 bg-teal-600 text-white text-xs font-bold rounded-xl shadow hover:bg-teal-700 transition-all-custom inline-flex items-center gap-2">
-                            <i class="fa-solid fa-plus"></i> إضافة دواء جديد
-                        </button>
+                        <div class="text-left">
+                            <span class="text-xs text-zinc-500 block">السعر</span>
+                            <span class="font-bold text-teal-600">${item.price} ل.س</span>
+                        </div>
                     </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        ${inventoryCardsHTML}
-                    </div>
-                `;
-            } else if (tabName === 'orders') {
-                let ordersTableHTML = '';
-                appState.orders.forEach(ord => {
-                    ordersTableHTML += `
-                        <tr class="hover:bg-zinc-50 transition-all-custom">
-                            <td class="px-6 py-4 font-bold text-zinc-900">${ord.id}</td>
-                            <td class="px-6 py-4 text-zinc-600">${ord.item}</td>
-                            <td class="px-6 py-4 text-zinc-600">${ord.qty}</td>
-                            <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-700">${ord.status}</span></td>
-                            <td class="px-6 py-4 text-zinc-400 text-xs">${ord.date}</td>
-                        </tr>
-                    `;
-                });
+        // LocalStorage Persistence
+        function saveStateToLocalStorage() {
+            localStorage.setItem('pharmaLinkState', JSON.stringify(appState));
+        }
 
-                container.innerHTML = `
-                    <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
-                        <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between">
-                            <h3 class="text-base font-extrabold text-zinc-900">سجل الطلبات والعمليات الحالية</h3>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-right text-sm">
-                                <thead class="bg-zinc-50 text-zinc-600 font-bold border-b border-zinc-200">
-                                    <tr>
-                                        <th class="px-6 py-3">رقم الطلب</th>
-                                        <th class="px-6 py-3">الصنف الدوائي</th>
-                                        <th class="px-6 py-3">الكمية</th>
-                                        <th class="px-6 py-3">الحالة</th>
-                                        <th class="px-6 py-3">التاريخ</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-zinc-100 font-medium">
-                                    ${ordersTableHTML}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-8 text-center space-y-3">
-                        <h3 class="text-lg font-extrabold text-zinc-900">قسم ${tabName === 'notifications' ? 'الإشعارات' : 'الإعدادات'}</h3>
-                        <p class="text-xs text-zinc-500">هذه الشاشة مخصصة لإدارة تفضيلات الحساب، الأمان، والتنبيهات الفورية للمنصة.</p>
-                    </div>
-                `;
+        function loadStateFromLocalStorage() {
+            const saved = localStorage.getItem('pharmaLinkState');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch (e) {
+                    console.error(e);
+                }
             }
         }
 
-        function logout() {
-            if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج؟')) {
+        function resetApp() {
+            if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج وإعادة ضبط البيانات؟')) {
+                localStorage.removeItem('pharmaLinkState');
                 location.reload();
             }
         }
