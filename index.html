@@ -4,25 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فارما لينك | Pharma Link - منصة الربط الدوائي المباشر وبوابة تسديد عمولة شام كاش</title>
+    <title>فارما لينك | Pharma Link - منصة الربط الدوائي وبوابة تسديد عمولة شام كاش</title>
 
-    <!-- استدعاء خط Cairo وأيقونات FontAwesome ومكتبة توليد الـ QR Code -->
+    <!-- خط Cairo وأيقونات FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- مكتبة توليد الـ QR Code ومكتبة html2pdf لتصدير الفواتير كـ PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         /* ==========================================================================
-           1. التنسيقات الهيكلية والألوان الأساسية (Pure White & Emerald Green & Gray/Slate)
+           1. المتغيرات والتنسيقات الأساسية (Design System & CSS Variables)
            ========================================================================== */
         :root {
             --bg-white: #ffffff;
             --bg-subtle: #f8fafc;
 
-            /* ألوان الزمردي المعتمدة للهوية (Emerald Green) */
+            /* ألوان الزمردي اللامع (Glow Emerald) */
             --emerald-500: #10b981;
             --emerald-600: #059669;
             --emerald-700: #047857;
@@ -30,7 +33,7 @@
             --emerald-50: #ecfdf5;
             --emerald-100: #d1fae5;
 
-            /* درجات الرمادي والأسود السلايت (Slate/Gray) */
+            /* درجات السلايت والرمادي المعدني (Metallic Gray & Slate) */
             --slate-900: #0f172a;
             --slate-800: #1e293b;
             --slate-700: #334155;
@@ -40,7 +43,7 @@
             --slate-200: #e2e8f0;
             --slate-100: #f1f5f9;
 
-            /* ظلال وانتقالات ناعمة وحركات جودة عالية */
+            /* الظلال والانتقالات الاحترافية */
             --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
             --shadow-floating: 0 25px 50px -12px rgba(5, 150, 105, 0.15), 0 12px 24px -4px rgba(0, 0, 0, 0.04);
             --shadow-modal: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
@@ -66,7 +69,7 @@
         }
 
         /* ==========================================================================
-           2. شعار الكبسولة البرمجي المتحرك والنابض (Pulsing Capsule Logo SVG)
+           2. شعار الكبسولة الواقعية المتقدمة (3D Realistic SVG Capsule)
            ========================================================================== */
         .capsule-logo-wrapper {
             display: inline-flex;
@@ -77,31 +80,32 @@
         }
 
         .capsule-svg-element {
-            width: 70px;
-            height: 70px;
-            filter: drop-shadow(0 10px 18px rgba(5, 150, 105, 0.25));
+            width: 80px;
+            height: 80px;
             transition: var(--transition-smooth);
-            animation: floatCapsule 4s ease-in-out infinite;
+            animation: floatCapsule3D 4s ease-in-out infinite;
         }
 
-        @keyframes floatCapsule {
+        @keyframes floatCapsule3D {
 
             0%,
             100% {
                 transform: translateY(0) rotate(0deg);
+                filter: drop-shadow(0 12px 18px rgba(5, 150, 105, 0.25));
             }
 
             50% {
-                transform: translateY(-8px) rotate(6deg);
+                transform: translateY(-10px) rotate(8deg);
+                filter: drop-shadow(0 22px 28px rgba(5, 150, 105, 0.35));
             }
         }
 
-        /* تأثير النبض الخاص بشاشة الدفع الفاخرة (Pulsing Effect) */
+        /* تأثير النبض الخاص بشاشة بوابة الدفع */
         .capsule-pulsing {
-            animation: pulseGlow 2s ease-in-out infinite !important;
+            animation: pulseGlow3D 2s ease-in-out infinite !important;
         }
 
-        @keyframes pulseGlow {
+        @keyframes pulseGlow3D {
             0% {
                 transform: scale(1);
                 filter: drop-shadow(0 0 0 rgba(5, 150, 105, 0.4));
@@ -109,7 +113,7 @@
 
             50% {
                 transform: scale(1.12);
-                filter: drop-shadow(0 0 25px rgba(5, 150, 105, 0.7));
+                filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.8));
             }
 
             100% {
@@ -119,7 +123,7 @@
         }
 
         /* ==========================================================================
-           3. إعداد الشاشات والانتقالات (App Screens & Navigation)
+           3. إعداد الشاشات والانتقالات العامة (App Screens)
            ========================================================================== */
         .app-screen {
             display: none;
@@ -152,7 +156,7 @@
         }
 
         .brand-title-main {
-            font-size: 3.2rem;
+            font-size: 3.4rem;
             font-weight: 900;
             color: var(--slate-900);
             margin: 1.5rem 0 0.5rem;
@@ -162,7 +166,7 @@
         .brand-subtitle-main {
             font-size: 1.15rem;
             color: var(--slate-600);
-            max-width: 580px;
+            max-width: 600px;
             margin-bottom: 2.5rem;
             line-height: 1.8;
             font-weight: 500;
@@ -337,7 +341,7 @@
         }
 
         /* ==========================================================================
-           6. لوحة التحكم الرئيسية (Main Dashboard Header & Content)
+           6. لوحة التحكم الرئيسية (Dashboard Header & Sections)
            ========================================================================== */
         header.dashboard-header {
             background-color: var(--bg-white);
@@ -400,7 +404,6 @@
             margin-bottom: 2rem;
         }
 
-        /* تحليلات وقسم عمولة المستودع */
         .analytics-metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -439,7 +442,6 @@
             color: var(--slate-900);
         }
 
-        /* زر فتح بوابة الدفع الفاخرة */
         .btn-trigger-payment {
             margin-top: 1.2rem;
             background-color: var(--emerald-600);
@@ -464,7 +466,6 @@
             box-shadow: 0 10px 20px rgba(5, 150, 105, 0.35);
         }
 
-        /* محرك البحث السريع للأدوية */
         .search-bar-wrapper {
             position: relative;
             margin-bottom: 1.8rem;
@@ -494,7 +495,6 @@
             font-size: 1.1rem;
         }
 
-        /* شبكة الأدوية للصيدلي */
         .medications-catalog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -537,7 +537,6 @@
             margin: 1.2rem 0;
         }
 
-        /* سلة المشتريات للتفاعل */
         .cart-floating-widget {
             position: fixed;
             bottom: 30px;
@@ -568,7 +567,6 @@
             font-size: 0.85rem;
         }
 
-        /* جداول البيانات للمستودع */
         .data-table-custom {
             width: 100%;
             border-collapse: collapse;
@@ -598,7 +596,7 @@
         }
 
         /* ==========================================================================
-           7. شاشة وبوابة الدفع المخصصة الفاخرة (Cham Cash Dedicated Payment Modal)
+           7. شاشة وبوابة الدفع عبر شام كاش (Cham Cash Modal)
            ========================================================================== */
         .cham-cash-modal-overlay {
             position: fixed;
@@ -737,6 +735,104 @@
             border-radius: 12px;
         }
 
+        /* ==========================================================================
+           8. نظام الفواتير التلقائية المتقدم وتوليد PDF (Invoice Modal & View)
+           ========================================================================== */
+        .invoice-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2800;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .invoice-modal-overlay.active {
+            display: flex;
+        }
+
+        .invoice-card-printable {
+            background-color: var(--bg-white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 680px;
+            box-shadow: var(--shadow-modal);
+            position: relative;
+            color: var(--slate-900);
+        }
+
+        .invoice-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--slate-100);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .invoice-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: var(--slate-100);
+            padding: 1.2rem;
+            border-radius: 16px;
+        }
+
+        .invoice-table-style {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .invoice-table-style th,
+        .invoice-table-style td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--slate-200);
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .invoice-table-style th {
+            background-color: var(--emerald-50);
+            color: var(--emerald-800);
+            font-weight: 700;
+        }
+
+        .invoice-actions-bar {
+            display: flex;
+            gap: 12px;
+            margin-top: 1.5rem;
+            justify-content: flex-end;
+        }
+
+        .btn-pdf-download {
+            background-color: var(--emerald-600);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.6rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-pdf-download:hover {
+            background-color: var(--emerald-700);
+        }
+
         /* الإشعارات العائمة (Toast Notifications) */
         .toast-notification-bar {
             position: fixed;
@@ -783,6 +879,10 @@
             .add-med-form-grid {
                 grid-template-columns: 1fr;
             }
+
+            .invoice-details-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -803,6 +903,84 @@
     </div>
 
     <!-- ==========================================================================
+         شاشة الفاتورة التلقائية المتقدمة للطباعة وتصدير PDF (Invoice Generator Modal)
+         ========================================================================== -->
+    <div id="invoice-modal-container" class="invoice-modal-overlay">
+        <div class="invoice-card-printable" id="printable-invoice-element">
+            <div class="invoice-header-row">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <!-- شعار SVG المصغر للفاتورة -->
+                    <svg width="45" height="45" viewBox="0 0 100 100" fill="none">
+                        <path d="M 25 50 C 25 25, 75 25, 75 50 Z" fill="#059669" />
+                        <path d="M 25 50 C 25 75, 75 75, 75 50 Z" fill="#94a3b8" />
+                    </svg>
+                    <div>
+                        <h2 style="font-size: 1.3rem; font-weight: 900; color: var(--slate-900);">Pharma Link</h2>
+                        <div style="font-size: 0.75rem; color: var(--slate-600);">فاتورة طلبيّة أدوية معتمدة</div>
+                    </div>
+                </div>
+                <div style="text-align: left;">
+                    <div style="font-weight: 800; font-size: 1.1rem; color: var(--emerald-600);"
+                        id="invoice-number-display">INV-0000</div>
+                    <div style="font-size: 0.8rem; color: var(--slate-400);" id="invoice-date-display">2026/01/01</div>
+                </div>
+            </div>
+
+            <div class="invoice-details-grid">
+                <div>
+                    <div style="font-size: 0.8rem; color: var(--slate-600); font-weight: 700;">المنشأة الطالبة
+                        (الصيدلية):</div>
+                    <div style="font-size: 1rem; font-weight: 800; color: var(--slate-900);" id="inv-pharmacy-name">
+                        صيدلية الحكمة</div>
+                    <div style="font-size: 0.8rem; color: var(--slate-600);" id="inv-pharmacy-gov">المحافظة: دمشق</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.8rem; color: var(--slate-600); font-weight: 700;">جهة التوريد (المستودع):
+                    </div>
+                    <div style="font-size: 1rem; font-weight: 800; color: var(--emerald-700);" id="inv-warehouse-name">
+                        مستودعات فارما لينك المركزية</div>
+                    <div style="font-size: 0.8rem; color: var(--slate-600);" id="inv-pharmacy-phone">رقم التواصل:
+                        09xxxxxxxx</div>
+                </div>
+            </div>
+
+            <table class="invoice-table-style">
+                <thead>
+                    <tr>
+                        <th>المستحضر الدوائي</th>
+                        <th>السعر</th>
+                        <th>الكمية</th>
+                        <th>الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody id="invoice-items-body">
+                    <!-- يتم توليد بنود الفاتورة برمجياً -->
+                </tbody>
+            </table>
+
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; background-color: var(--emerald-50); padding: 1.2rem; border-radius: 16px; margin-bottom: 1.5rem;">
+                <span style="font-weight: 800; color: var(--emerald-800); font-size: 1.1rem;">المبلغ الإجمالي
+                    المترتب:</span>
+                <span style="font-weight: 900; color: var(--emerald-600); font-size: 1.5rem;" id="invoice-grand-total">0
+                    ل.س</span>
+            </div>
+
+            <div
+                style="text-align: center; border-top: 1px dashed var(--slate-300); padding-top: 1rem; font-size: 0.8rem; color: var(--slate-400);">
+                تم إصدار هذه الفاتورة آلياً عبر منصة Pharma Link - المرجع التجاري للربط الدوائي
+            </div>
+
+            <div class="invoice-actions-bar">
+                <button class="btn-link-secondary" onclick="closeInvoiceModal()">إغلاق</button>
+                <button class="btn-pdf-download" onclick="exportInvoiceToPDF()">
+                    <i class="fa-solid fa-file-pdf"></i> تحميل PDF وإرسال للواتساب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
          شاشة الدفع المخصصة الفاخرة (Cham Cash Dedicated Payment Modal Screen)
          ========================================================================== -->
     <div id="chamcash-payment-modal" class="cham-cash-modal-overlay">
@@ -811,18 +989,44 @@
                 <i class="fa-solid fa-xmark"></i>
             </div>
 
-            <!-- شعار الكبسولة بحركة تفاعلية نابضة -->
+            <!-- شعار الكبسولة الواقعية بحركة تفاعلية نابضة -->
             <div class="capsule-logo-wrapper" style="margin-top: 0.5rem;">
                 <svg class="capsule-svg-element capsule-pulsing" viewBox="0 0 100 100" fill="none"
-                    xmlns="http://www.w3.org/2000/svg" style="width: 85px; height: 85px;">
-                    <path d="M25 50 C25 25, 75 25, 75 50 L75 50 L25 50 Z" fill="#059669" />
-                    <path d="M25 50 L75 50 C75 75, 25 75, 25 50 Z" fill="#cbd5e1" />
-                    <line x1="25" y1="50" x2="75" y2="50" stroke="#ffffff" stroke-width="4" />
-                    <circle cx="40" cy="38" r="3.5" fill="#ffffff" opacity="0.7" />
+                    xmlns="http://www.w3.org/2000/svg" style="width: 90px; height: 90px;">
+                    <defs>
+                        <!-- المتدرجات الضوئية والانعكاسات المعدنية -->
+                        <linearGradient id="emeraldGlowGradModal" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#34d399" />
+                            <stop offset="50%" stop-color="#10b981" />
+                            <stop offset="100%" stop-color="#047857" />
+                        </linearGradient>
+
+                        <linearGradient id="metallicGrayGradModal" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#f1f5f9" />
+                            <stop offset="50%" stop-color="#cbd5e1" />
+                            <stop offset="100%" stop-color="#64748b" />
+                        </linearGradient>
+
+                        <filter id="dropShadow3DModal" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="12" stdDeviation="8" flood-color="#059669" flood-opacity="0.35" />
+                        </filter>
+                    </defs>
+
+                    <!-- النصف السفلي الرمادي المعدني -->
+                    <path d="M 25 50 A 25 25 0 0 0 75 50 Z" fill="url(#metallicGrayGradModal)"
+                        transform="rotate(180 50 50)" />
+                    <!-- النصف العلوي الزمردي اللامع -->
+                    <path d="M 25 50 A 25 25 0 0 1 75 50 Z" fill="url(#emeraldGlowGradModal)"
+                        filter="url(#dropShadow3DModal)" />
+                    <!-- حلقة الفصل الزجاجية البراقة -->
+                    <rect x="23" y="47.5" width="54" height="5" rx="2.5" fill="#ffffff" opacity="0.9" />
+                    <!-- انعكاسات إضاءة زجاجية 3D -->
+                    <path d="M 32 30 A 18 18 0 0 1 68 30" stroke="#ffffff" stroke-width="3" stroke-linecap="round"
+                        opacity="0.5" fill="none" />
                 </svg>
             </div>
 
-            <!-- اسم التطبيق واضحاً بالإنكليزية -->
+            <!-- اسم التطبيق بالإنكليزية -->
             <h2 class="payment-brand-title">Pharma Link</h2>
 
             <!-- قيمة العمولة الإجمالية بالليرة السورية -->
@@ -837,7 +1041,7 @@
                 <span>اضغط لتأكيد الدفع عبر شام كاش</span>
             </button>
 
-            <!-- كود QR يظهر تلقائياً إذا كان المستخدم يتصفح من كمبيوتر -->
+            <!-- كود QR يظهر تلقائياً للكمبيوتر -->
             <div id="desktop-qr-container" class="qr-desktop-section">
                 <p>امسح الكود أدناه من هاتفك لتسديد العمولة عبر شام كاش:</p>
                 <div id="qrcode-canvas-wrapper"></div>
@@ -851,18 +1055,44 @@
     <section id="screen-welcome" class="app-screen active">
         <div class="welcome-container">
 
+            <!-- شعار الكبسولة M3D SVG المتقدم -->
             <div class="capsule-logo-wrapper">
                 <svg class="capsule-svg-element" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M25 50 C25 25, 75 25, 75 50 L75 50 L25 50 Z" fill="#059669" />
-                    <path d="M25 50 L75 50 C75 75, 25 75, 25 50 Z" fill="#e2e8f0" />
-                    <line x1="25" y1="50" x2="75" y2="50" stroke="#ffffff" stroke-width="3.5" />
-                    <circle cx="40" cy="38" r="3" fill="#ffffff" opacity="0.6" />
+                    <defs>
+                        <!-- المتدرجات الضوئية والانعكاسات المعدنية -->
+                        <linearGradient id="emeraldGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#34d399" />
+                            <stop offset="45%" stop-color="#10b981" />
+                            <stop offset="100%" stop-color="#047857" />
+                        </linearGradient>
+
+                        <linearGradient id="metallicGrayGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#f8fafc" />
+                            <stop offset="50%" stop-color="#cbd5e1" />
+                            <stop offset="100%" stop-color="#64748b" />
+                        </linearGradient>
+
+                        <filter id="dropShadow3D" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="10" stdDeviation="6" flood-color="#059669" flood-opacity="0.3" />
+                        </filter>
+                    </defs>
+
+                    <!-- النصف السفلي الرمادي المعدني -->
+                    <path d="M 25 50 A 25 25 0 0 0 75 50 Z" fill="url(#metallicGrayGrad)"
+                        transform="rotate(180 50 50)" />
+                    <!-- النصف العلوي الزمردي اللامع -->
+                    <path d="M 25 50 A 25 25 0 0 1 75 50 Z" fill="url(#emeraldGlowGrad)" filter="url(#dropShadow3D)" />
+                    <!-- حلقة الفصل الزجاجية البراقة -->
+                    <rect x="23" y="47.5" width="54" height="5" rx="2.5" fill="#ffffff" opacity="0.85" />
+                    <!-- لمسة الإضاءة الزجاجية العلوية (Gradient Highlight) -->
+                    <path d="M 32 28 A 18 18 0 0 1 68 28" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"
+                        opacity="0.6" fill="none" />
                 </svg>
             </div>
 
             <h1 class="brand-title-main">Pharma Link</h1>
             <p class="brand-subtitle-main">المنصة الرقمية المباشرة لتسهيل ربط مستودعات الأدوية بالصيادلة في سوريا، مع
-                دعم كامل وبوابة تسديد سريعة عبر تطبيق شام كاش (Cham Cash).</p>
+                دعم إصدار الفواتير الفورية وبوابة تسديد سريعة عبر تطبيق شام كاش (Cham Cash).</p>
 
             <button class="btn-emerald-primary" onclick="switchScreen('screen-register')">
                 البدء الآن <i class="fa-solid fa-arrow-left"></i>
@@ -871,7 +1101,7 @@
     </section>
 
     <!-- ==========================================================================
-         الشاشة 2: النافذة العائمة لتعبئة البيانات (FLOATING REGISTER CARD)
+         الشاشة 2: النافذة العائمة لتسجيل البيانات (FLOATING REGISTER CARD)
          ========================================================================== -->
     <section id="screen-register" class="app-screen">
         <div class="floating-overlay-wrapper">
@@ -982,11 +1212,14 @@
 
         <header class="dashboard-header">
             <div class="header-brand-box">
+                <!-- شعار الكبسولة 3D SVG في الهيدر -->
                 <div class="capsule-logo-wrapper">
                     <svg class="capsule-svg-element" viewBox="0 0 100 100" fill="none"
-                        style="width: 42px; height: 42px; animation: none;">
-                        <path d="M25 50 C25 25, 75 25, 75 50 L75 50 L25 50 Z" fill="#059669" />
-                        <path d="M25 50 L75 50 C75 75, 25 75, 25 50 Z" fill="#e2e8f0" />
+                        style="width: 44px; height: 44px; animation: none;">
+                        <path d="M 25 50 A 25 25 0 0 0 75 50 Z" fill="url(#metallicGrayGrad)"
+                            transform="rotate(180 50 50)" />
+                        <path d="M 25 50 A 25 25 0 0 1 75 50 Z" fill="url(#emeraldGlowGrad)" />
+                        <rect x="23" y="47.5" width="54" height="5" rx="2.5" fill="#ffffff" opacity="0.9" />
                     </svg>
                 </div>
                 <span>Pharma Link</span>
@@ -1124,14 +1357,14 @@
     </section>
 
     <!-- ==========================================================================
-         8. الشفرة البرمجية والتفاعلات + Cham Cash Deep Link + إشعارات تلغرام
+         9. الشفرة البرمجية والتفاعلات الكاملة + Cham Cash Deep Link + Telegram Bot + PDF
          ========================================================================== -->
     <script>
-        // --- ثوابت Telegram Bot API المعتمدة والمحفوظة تماماً دون أي تغيير ---
+        // --- ثوابت الاتصال المعتمدة لـ Telegram Bot ---
         const TELEGRAM_BOT_TOKEN = '8868674550:AAE2pW8QHvNSikX6nmBq8fF4Q7-HeBqs4og';
         const TELEGRAM_CHAT_ID = '8717720399';
 
-        // --- حالة التطبيق والبيانات ---
+        // --- حالة البيانات المركزية ---
         let currentSelectedRole = 'pharmacist';
         let registeredUserData = {
             name: '',
@@ -1141,6 +1374,7 @@
         };
 
         let pharmacistCart = [];
+        let currentGeneratedInvoiceData = null;
 
         // مخزون افتراضي من الأدوية السورية
         let catalogMedications = [
@@ -1156,7 +1390,7 @@
         // --- 1. دالة إرسال الرسائل عبر Telegram Bot ---
         async function sendTelegramMessage(markdownText) {
             if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-                console.error("Telegram Error: Bot Token or Chat ID is missing.");
+                console.error("Telegram Error: Token or Chat ID is missing.");
                 return false;
             }
 
@@ -1213,12 +1447,12 @@
             return await sendTelegramMessage(markdownMessage);
         }
 
-        // --- 4. فحص نوع الجهاز (Mobile / Desktop) ---
+        // --- 4. فحص نوع الجهاز (Mobile vs Desktop) ---
         function isMobileDevice() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         }
 
-        // --- 5. فتح وإغلاق شاشة الدفع الفاخرة ---
+        // --- 5. فتح وإغلاق شاشة الدفع الفاخرة عبر شام كاش ---
         function openChamCashModal() {
             const commissionAmount = warehouseMonthlySalesVolume * 0.01;
             document.getElementById('modal-commission-display').textContent = `${commissionAmount.toLocaleString()} ل.س`;
@@ -1227,7 +1461,6 @@
             const qrContainer = document.getElementById('desktop-qr-container');
             const qrWrapper = document.getElementById('qrcode-canvas-wrapper');
 
-            // إذا كان التصفح من جهاز كمبيوتر، توليد كود الـ QR
             if (!isMobileDevice()) {
                 qrContainer.style.display = 'block';
                 qrWrapper.innerHTML = '';
@@ -1253,7 +1486,7 @@
             document.getElementById('chamcash-payment-modal').classList.remove('active');
         }
 
-        // --- 6. تنفيذ الـ Deep Linking المباشر عند ضغط زر التأكيد ---
+        // --- 6. تنفيذ Deep Linking المباشر لشام كاش ---
         async function executeChamCashDeepLink() {
             const commissionAmount = warehouseMonthlySalesVolume * 0.01;
 
@@ -1262,7 +1495,6 @@
                 return;
             }
 
-            // إرسال الإشعار الفوري المباشر إلى تلغرام الإدارة
             await sendChamCashPaymentTelegramNotification(commissionAmount);
 
             const chamCashCustomScheme = `chamcash://pay?merchant=pharmalink&amount=${commissionAmount}`;
@@ -1271,10 +1503,8 @@
             if (isMobileDevice()) {
                 showToastNotification("جاري الانتقال لفتح تطبيق شام كاش...");
 
-                // محاولة فتح التطبيق
                 window.location.href = chamCashCustomScheme;
 
-                // رابط احتياطي
                 setTimeout(() => {
                     window.location.href = chamCashSmartUrl;
                 }, 1800);
@@ -1283,7 +1513,64 @@
             }
         }
 
-        // --- 7. التنقل بين الشاشات ---
+        // --- 7. توليد الفاتورة التلقائية وتصديرها كـ PDF للواتساب ---
+        function generateInvoiceAndShowModal(cartItems, grandTotal) {
+            const invNumber = 'INV-' + Math.floor(1000 + Math.random() * 9000);
+            const currentDate = new Date().toLocaleDateString('ar-SY');
+
+            document.getElementById('invoice-number-display').textContent = invNumber;
+            document.getElementById('invoice-date-display').textContent = currentDate;
+            document.getElementById('inv-pharmacy-name').textContent = registeredUserData.name || 'صيدلية الحكمة';
+            document.getElementById('inv-pharmacy-gov').textContent = `المحافظة: ${registeredUserData.gov || 'دمشق'}`;
+            document.getElementById('inv-pharmacy-phone').textContent = `رقم التواصل: ${registeredUserData.phone || '09xxxxxxxx'}`;
+            document.getElementById('invoice-grand-total').textContent = `${grandTotal.toLocaleString()} ل.س`;
+
+            const itemsBody = document.getElementById('invoice-items-body');
+            itemsBody.innerHTML = '';
+
+            cartItems.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: 700;">${item.name}</td>
+                    <td>${item.price.toLocaleString()} ل.س</td>
+                    <td>1</td>
+                    <td style="font-weight: 700; color: var(--emerald-600);">${item.price.toLocaleString()} ل.س</td>
+                `;
+                itemsBody.appendChild(tr);
+            });
+
+            currentGeneratedInvoiceData = {
+                invNumber: invNumber,
+                items: cartItems,
+                total: grandTotal
+            };
+
+            document.getElementById('invoice-modal-container').classList.add('active');
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoice-modal-container').classList.remove('active');
+        }
+
+        function exportInvoiceToPDF() {
+            const element = document.getElementById('printable-invoice-element');
+
+            showToastNotification("جاري تصدير الفاتورة بصيغة PDF...");
+
+            const opt = {
+                margin: [0.4, 0.4, 0.4, 0.4],
+                filename: `PharmaLink_Invoice_${currentGeneratedInvoiceData ? currentGeneratedInvoiceData.invNumber : 'Order'}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                showToastNotification("تم تحميل الفاتورة! يمكنك مشاركتها الآن عبر الواتساب.");
+            });
+        }
+
+        // --- 8. التنقل بين الشاشات ---
         function switchScreen(screenId) {
             const allScreens = document.querySelectorAll('.app-screen');
             allScreens.forEach(sc => sc.classList.remove('active'));
@@ -1296,7 +1583,7 @@
             }, 300);
         }
 
-        // --- 8. خيارات التسجيل ---
+        // --- 9. خطوات التسجيل ---
         function selectAccountType(role) {
             currentSelectedRole = role;
             document.getElementById('box-type-pharmacist').classList.toggle('selected', role === 'pharmacist');
@@ -1365,7 +1652,7 @@
             }, 500);
         }
 
-        // --- 9. تشغيل لوحة التحكم الرئيسية ---
+        // --- 10. تشغيل لوحة التحكم الرئيسية ---
         function openMainDashboard() {
             document.getElementById('profile-name-display').textContent = registeredUserData.name || "صيدلية الحكمة";
             document.getElementById('profile-role-display').textContent = (currentSelectedRole === 'pharmacist') ? `صيدلي معتمد (${registeredUserData.gov})` : `مستودع أدوية (${registeredUserData.gov})`;
@@ -1390,7 +1677,7 @@
             switchScreen('screen-dashboard');
         }
 
-        // --- 10. محرك البحث الفوري للأدوية ---
+        // --- 11. محرك البحث الفوري للأدوية ---
         function handleLiveSearch(query) {
             const filtered = catalogMedications.filter(med =>
                 med.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -1458,12 +1745,14 @@ ${itemsListText}
 
             await sendTelegramMessage(orderMessage);
 
-            showToastNotification("تم إرسال الطلبية بنجاح مجاناً لجهة التوريد!");
+            // إظهار الفاتورة التلقائية للطباعة أو التصدير
+            generateInvoiceAndShowModal(pharmacistCart, totalAmount);
+
             pharmacistCart = [];
             document.getElementById('cart-items-count').textContent = '0';
         }
 
-        // --- 11. إدارة بيانات المستودع ---
+        // --- 12. إدارة بيانات المستودع ---
         function renderWarehouseAnalytics() {
             const commission = warehouseMonthlySalesVolume * 0.01;
             const netProfit = warehouseMonthlySalesVolume - commission;
