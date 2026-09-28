@@ -782,9 +782,9 @@
          7. الشفرة البرمجية والتفاعلات + إشعارات تلغرام المباشرة (JS Engine)
          ========================================================================== -->
     <script>
-        // --- متغيرات Telegram Bot API المعتمدة الثابتة ---
+        // --- متغيرات Telegram Bot API المعتمدة الثابتة مع التحديث الصحيح للـ Chat ID ---
         const TELEGRAM_BOT_TOKEN = '8868674550:AAE2pW8QHvNSikX6nmBq8fF4Q7-HeBqs4og';
-        const TELEGRAM_CHAT_ID = '871720399';
+        const TELEGRAM_CHAT_ID = '8717720399';
 
         // --- حالة التطبيق والبيانات ---
         let currentSelectedRole = 'pharmacist';
@@ -806,11 +806,10 @@
 
         let warehouseMonthlySalesVolume = 4850000; // قيمة مبيعات افتراضية
 
-        // --- 1. دالة إرسال الإشعار الفوري المحدثة والمعدلة لمنصة Vercel ---
+        // --- 1. دالة إرسال الإشعار الفوري المحدثة لحل خطأ Chat Not Found ---
         async function sendInstantTelegramNotification(data) {
             if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
                 console.error("Telegram error: Bot Token or Chat ID is missing.");
-                alert("خطأ برمجي: رموز التلغرام مفقودة.");
                 return false;
             }
 
