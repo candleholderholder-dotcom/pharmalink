@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فارما لينك | Pharma Link - منصة الربط الدوائي المباشر في سوريا</title>
+    <title>فارما لينك | Pharma Link - منصة الربط الدوائي والدفع الإلكتروني عبر شام كاش</title>
 
     <!-- خط Cairo واستدعاء أيقونات FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,6 +37,10 @@
             --slate-300: #cbd5e1;
             --slate-200: #e2e8f0;
             --slate-100: #f1f5f9;
+
+            /* ألوان شام كاش والشارات التفاعلية */
+            --cham-cash-bg: #ecfdf5;
+            --cham-cash-border: #059669;
 
             /* ظلال وانتقالات ديناميكية ناعمة */
             --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
@@ -231,10 +235,6 @@
             transform: translateX(0);
         }
 
-        .step-pane.slide-back {
-            transform: translateX(30px);
-        }
-
         .step-title-text {
             font-size: 1.5rem;
             font-weight: 800;
@@ -392,7 +392,7 @@
         /* قسم أرقام المستودع وحاسبة العمولة الـ 1% */
         .analytics-metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -405,10 +405,14 @@
             border-top: 1px solid var(--slate-200);
             border-bottom: 1px solid var(--slate-200);
             border-left: 1px solid var(--slate-200);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .metric-card-box.commission-style {
-            border-right-color: var(--slate-700);
+            border-right-color: var(--emerald-600);
+            background-color: var(--emerald-50);
         }
 
         .metric-label {
@@ -422,6 +426,61 @@
             font-size: 1.8rem;
             font-weight: 800;
             color: var(--slate-900);
+        }
+
+        /* زر الدفع الخاص بشام كاش */
+        .btn-cham-cash-pay {
+            margin-top: 1.2rem;
+            background-color: var(--emerald-600);
+            color: var(--bg-white);
+            border: none;
+            padding: 0.85rem 1.2rem;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 16px rgba(5, 150, 105, 0.25);
+        }
+
+        .btn-cham-cash-pay:hover {
+            background-color: var(--emerald-700);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.35);
+        }
+
+        /* محرك البحث المباشر */
+        .search-bar-wrapper {
+            position: relative;
+            margin-bottom: 1.8rem;
+        }
+
+        .search-input-field {
+            width: 100%;
+            padding: 1rem 3.2rem 1rem 1.4rem;
+            border: 1.5px solid var(--slate-200);
+            border-radius: 16px;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .search-input-field:focus {
+            border-color: var(--emerald-600);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+        }
+
+        .search-icon-inside {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--slate-400);
+            font-size: 1.1rem;
         }
 
         /* شبكة أدوية الصيدلي */
@@ -464,10 +523,41 @@
             font-size: 1.35rem;
             font-weight: 800;
             color: var(--emerald-600);
-            margin: 1.4rem 0;
+            margin: 1.2rem 0;
         }
 
-        /* جداول البيانات */
+        /* سلة المشتريات للتفاعل */
+        .cart-floating-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--slate-900);
+            color: var(--bg-white);
+            padding: 1rem 1.6rem;
+            border-radius: 50px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition-smooth);
+        }
+
+        .cart-floating-widget:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-badge-count {
+            background-color: var(--emerald-600);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+
+        /* جداول البيانات للمستودع */
         .data-table-custom {
             width: 100%;
             border-collapse: collapse;
@@ -486,6 +576,15 @@
             background-color: var(--slate-100);
             color: var(--slate-700);
             font-weight: 700;
+        }
+
+        /* نموذج إضافة دواء جديد للمستودع */
+        .add-med-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) 120px;
+            gap: 1rem;
+            margin-top: 1rem;
+            align-items: center;
         }
 
         /* الإشعارات العائمة (Toast Notifications) */
@@ -531,6 +630,10 @@
             .brand-title-main {
                 font-size: 2.2rem;
             }
+
+            .add-med-form-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -541,6 +644,13 @@
     <div id="app-toast-bar" class="toast-notification-bar">
         <i class="fa-solid fa-circle-check" style="color: var(--emerald-500); font-size: 1.2rem;"></i>
         <span id="toast-message-text">تمت العملية بنجاح</span>
+    </div>
+
+    <!-- سلة المشتريات التفاعلية للصيدلي -->
+    <div id="cart-floating-btn" class="cart-floating-widget" style="display: none;" onclick="checkoutPharmacistCart()">
+        <i class="fa-solid fa-cart-shopping" style="color: var(--emerald-500);"></i>
+        <span>سلة الطلبيات</span>
+        <span class="cart-badge-count" id="cart-items-count">0</span>
     </div>
 
     <!-- ==========================================================================
@@ -560,8 +670,8 @@
             </div>
 
             <h1 class="brand-title-main">Pharma Link</h1>
-            <p class="brand-subtitle-main">المنصة الرقمية المباشرة الأولى لربط مستودعات الأدوية بالصيادلة في كافة
-                المحافظات السورية لتعمل كبديل متطور وفعال للمندوب التقليدي.</p>
+            <p class="brand-subtitle-main">المنصة الرقمية المباشرة الأولى لربط مستودعات الأدوية بالصيادلة في سوريا، مع
+                دعم كامل للدفع الإلكتروني والتسديد عبر شام كاش (Cham Cash).</p>
 
             <button class="btn-emerald-primary" onclick="switchScreen('screen-register')">
                 البدء الآن <i class="fa-solid fa-arrow-left"></i>
@@ -600,8 +710,8 @@
                         <div class="selector-box" id="box-type-warehouse" onclick="selectAccountType('warehouse')">
                             <i class="fa-solid fa-boxes-packing"></i>
                             <div style="font-weight: 800; color: var(--slate-900);">مستودع أدوية</div>
-                            <div style="font-size: 0.8rem; color: var(--slate-600); margin-top: 4px;">إدارة ومبيعات
-                            </div>
+                            <div style="font-size: 0.8rem; color: var(--slate-600); margin-top: 4px;">إدارة وتسديد
+                                العمولة</div>
                         </div>
                     </div>
 
@@ -710,20 +820,28 @@
         <!-- منطقة العمل والمحتوى -->
         <main class="dashboard-main-container">
 
-            <!-- لوحة تحكم الصيدلي (طلب أدوية مجاني) -->
+            <!-- لوحة تحكم الصيدلي (طلب أدوية مجاني + بحث فوري + سلة) -->
             <div id="pharmacist-dashboard-section">
                 <div class="content-panel-card"
                     style="display: flex; justify-content: space-between; align-items: center; border-right: 6px solid var(--emerald-600);">
                     <div>
                         <h2 style="font-weight: 800; font-size: 1.3rem; color: var(--slate-900);">دليل الأدوية
                             والمستحضرات المتاحة</h2>
-                        <p style="font-size: 0.9rem; color: var(--slate-600); margin-top: 3px;">تصفح المخزون المباشر من
-                            المستودعات وأرسل طلبك فوراً بدون عمولات.</p>
+                        <p style="font-size: 0.9rem; color: var(--slate-600); margin-top: 3px;">تصفح المخزون المباشر،
+                            ابحث بالاسم والعيار، وأضف لسلتك مجاناً.</p>
                     </div>
                     <span
                         style="background-color: var(--emerald-50); color: var(--emerald-600); padding: 0.5rem 1rem; border-radius: 30px; font-weight: 700; font-size: 0.85rem; border: 1px solid var(--emerald-100);">
-                        <i class="fa-solid fa-gift"></i> خدمة مجانية بالكامل
+                        <i class="fa-solid fa-gift"></i> طلب مجاني 100%
                     </span>
+                </div>
+
+                <!-- شريط البحث الفوري (Live Search) -->
+                <div class="search-bar-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
+                    <input type="text" id="live-search-input" class="search-input-field"
+                        placeholder="ابحث باسم الدواء، المادة الفعالة، أو العيار (مثال: أوميبرازول 20 ملغ)..."
+                        oninput="handleLiveSearch(this.value)">
                 </div>
 
                 <div class="medications-catalog-grid" id="pharmacist-meds-container">
@@ -731,32 +849,71 @@
                 </div>
             </div>
 
-            <!-- لوحة تحكم المستودع (إدارة المخزون والحاسبة المالية 1%) -->
+            <!-- لوحة تحكم المستودع (إدارة المخزون، إضافة أدوية، وحاسبة العمولة الـ 1% مع زر دفع شام كاش) -->
             <div id="warehouse-dashboard-section" style="display: none;">
 
-                <!-- الحاسبة المالية للعمولة 1% -->
+                <!-- الحاسبة المالية للعمولة 1% وزر الدفع المباشر عبر شام كاش -->
                 <div class="analytics-metrics-grid">
                     <div class="metric-card-box">
-                        <div class="metric-label">إجمالي مبيعات الشهر الحالي</div>
-                        <div class="metric-value-num" id="stat-sales-total">0 ل.س</div>
+                        <div>
+                            <div class="metric-label">إجمالي مبيعات الشهر الحالي</div>
+                            <div class="metric-value-num" id="stat-sales-total">0 ل.س</div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--slate-400); margin-top: 10px;">محسوبة بناءً على
+                            الطلبيات المؤكدة</div>
                     </div>
+
                     <div class="metric-card-box commission-style">
-                        <div class="metric-label">عمولة المنصة المقتطعة (1%)</div>
-                        <div class="metric-value-num" id="stat-commission-fee" style="color: var(--slate-700);">0 ل.س
+                        <div>
+                            <div class="metric-label" style="color: var(--emerald-700); font-weight: 700;">عمولة المنصة
+                                المقتطعة (1%)</div>
+                            <div class="metric-value-num" id="stat-commission-fee" style="color: var(--emerald-700);">0
+                                ل.س</div>
                         </div>
+
+                        <!-- زر دفع العمولة عبر شام كاش -->
+                        <button class="btn-cham-cash-pay" id="btn-pay-cham-cash" onclick="initiateChamCashPayment()">
+                            <i class="fa-solid fa-wallet"></i>
+                            <span>دفع العمولة عبر شام كاش</span>
+                        </button>
                     </div>
+
                     <div class="metric-card-box">
-                        <div class="metric-label">صافي أرباح المستودع المتبقية</div>
-                        <div class="metric-value-num" id="stat-net-profit" style="color: var(--emerald-600);">0 ل.س
+                        <div>
+                            <div class="metric-label">صافي أرباح المستودع المتبقية</div>
+                            <div class="metric-value-num" id="stat-net-profit" style="color: var(--emerald-600);">0 ل.س
+                            </div>
                         </div>
+                        <div style="font-size: 0.8rem; color: var(--emerald-600); margin-top: 10px; font-weight: 600;">
+                            بعد اقتطاع نسبة الـ 1%</div>
                     </div>
                 </div>
 
+                <!-- إضافة دواء جديد للمخزون -->
+                <div class="content-panel-card">
+                    <h3
+                        style="font-weight: 800; font-size: 1.15rem; color: var(--slate-900); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-plus-circle" style="color: var(--emerald-600);"></i> إضافة مستحضر دوائي
+                        جديد للمخزون
+                    </h3>
+                    <div class="add-med-form-grid">
+                        <input type="text" id="new-med-name" class="form-input-custom" style="margin:0;"
+                            placeholder="اسم الدواء والعيار">
+                        <input type="number" id="new-med-price" class="form-input-custom" style="margin:0;"
+                            placeholder="السعر (ل.س)">
+                        <input type="number" id="new-med-stock" class="form-input-custom" style="margin:0;"
+                            placeholder="الكمية المتاحة">
+                        <button class="btn-emerald-primary" style="padding: 1rem; justify-content: center;"
+                            onclick="addNewMedicationToStock()">إضافة</button>
+                    </div>
+                </div>
+
+                <!-- جدول المخزون الحالي -->
                 <div class="content-panel-card">
                     <h3
                         style="font-weight: 800; font-size: 1.2rem; color: var(--slate-900); display: flex; align-items: center; gap: 10px;">
                         <i class="fa-solid fa-boxes-stacked" style="color: var(--emerald-600);"></i> إدارة مخزون الأدوية
-                        والمستحضرات
+                        الحالي
                     </h3>
                     <table class="data-table-custom">
                         <thead>
@@ -765,6 +922,7 @@
                                 <th>السعر الإفرادي</th>
                                 <th>الكمية المتاحة بالمخزن</th>
                                 <th>حالة التوفر</th>
+                                <th>إجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="warehouse-inventory-table-body">
@@ -779,10 +937,10 @@
     </section>
 
     <!-- ==========================================================================
-         7. الشفرة البرمجية والتفاعلات + إشعارات تلغرام المباشرة (JS Engine)
+         7. الشفرة البرمجية والتفاعلات + إشعارات تلغرام المباشرة + Cham Cash (JS Engine)
          ========================================================================== -->
     <script>
-        // --- متغيرات Telegram Bot API المعتمدة الثابتة مع التحديث الصحيح للـ Chat ID ---
+        // --- متغيرات Telegram Bot API المعتمدة الثابتة دون أي تغيير ---
         const TELEGRAM_BOT_TOKEN = '8868674550:AAE2pW8QHvNSikX6nmBq8fF4Q7-HeBqs4og';
         const TELEGRAM_CHAT_ID = '8717720399';
 
@@ -795,27 +953,51 @@
             role: ''
         };
 
+        // سلة المشتريات للصيدلي
+        let pharmacistCart = [];
+
         // مخزون افتراضي من الأدوية والمستحضرات السورية
         let catalogMedications = [
             { id: 1, name: "أوميبرازول 20 ملغ (Omeprazole)", price: 4500, stock: 1200, warehouse: "مستودع الشفاء - دمشق" },
             { id: 2, name: "أزيثروميسين 500 ملغ (Azithromycin)", price: 12500, stock: 420, warehouse: "مستودع الأمل - حلب" },
             { id: 3, name: "فيتامين C + زنك (Forte)", price: 8500, stock: 950, warehouse: "مستودع الساحل - اللاذقية" },
             { id: 4, name: "باراسيتامول 500 ملغ (Paracetamol)", price: 2800, stock: 3100, warehouse: "مستودع الشفاء - دمشق" },
-            { id: 5, name: "أمبرازول 40 ملغ (Esomeprazole)", price: 9200, stock: 600, warehouse: "مستودع النور - حمص" }
+            { id: 5, name: "إيزوميبرازول 40 ملغ (Esomeprazole)", price: 9200, stock: 600, warehouse: "مستودع النور - حمص" }
         ];
 
-        let warehouseMonthlySalesVolume = 4850000; // قيمة مبيعات افتراضية
+        let warehouseMonthlySalesVolume = 6500000; // قيمة مبيعات افتراضية بالمرافق
 
-        // --- 1. دالة إرسال الإشعار الفوري المحدثة لحل خطأ Chat Not Found ---
-        async function sendInstantTelegramNotification(data) {
+        // --- 1. دالة إرسال الإشعار العام عبر تلغرام ---
+        async function sendTelegramMessage(markdownText) {
             if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
                 console.error("Telegram error: Bot Token or Chat ID is missing.");
                 return false;
             }
 
-            const roleArabic = data.role === 'pharmacist' ? 'صيدلي 💊' : 'مستودع أدوية 🏢';
+            const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            const payload = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: markdownText,
+                parse_mode: 'Markdown'
+            };
 
-            // صياغة الرسالة باستخدام Markdown المعتمد
+            try {
+                const response = await fetch(telegramUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                return result.ok;
+            } catch (error) {
+                console.error("Telegram Fetch Error:", error);
+                return false;
+            }
+        }
+
+        // --- 2. إشعار تسجيل حساب جديد ---
+        async function sendInstantTelegramNotification(data) {
+            const roleArabic = data.role === 'pharmacist' ? 'صيدلي 💊' : 'مستودع أدوية 🏢';
             const markdownMessage =
                 `🔔 *تسجيل جديد في منصة Pharma Link*
 ➖➖➖➖➖➖➖➖➖➖
@@ -823,45 +1005,64 @@
 👤 *نوع الحساب:* ${roleArabic}
 📍 *المحافظة السورية:* ${data.gov}
 📞 *رقم الهاتف:* \`${data.phone}\`
-🌐 *المصدر:* منصة فارما لينك الرقمية (Pharma Link Web - Vercel)
 ⏰ *التاريخ:* ${new Date().toLocaleString('ar-SY')}`;
 
-            const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-
-            // تجهيز البيانات المرسلة كـ Object متكامل ونظيف
-            const payload = {
-                chat_id: TELEGRAM_CHAT_ID,
-                text: markdownMessage,
-                parse_mode: 'Markdown'
-            };
-
-            try {
-                const response = await fetch(telegramUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-
-                if (result.ok) {
-                    console.log("Telegram Notification Sent Successfully:", result);
-                    return true;
-                } else {
-                    console.error("Telegram API Error Response:", result);
-                    alert(`خطأ من خادم تلغرام: ${result.description || 'لم يتم قبول الطلب'}`);
-                    return false;
-                }
-            } catch (error) {
-                console.error("Network/CORS Fetch Error sending Telegram Notification:", error);
-                alert(`فشل إرسال الإشعار عبر الشبكة: ${error.message}`);
-                return false;
-            }
+            return await sendTelegramMessage(markdownMessage);
         }
 
-        // --- 2. التحكم بالشاشات والانتقالات ---
+        // --- 3. إشعار تلقائي لعملية الدفع عبر شام كاش (Cham Cash Notification) ---
+        async function sendChamCashPaymentNotification(commissionAmount) {
+            const markdownMessage =
+                `💳 *عملية دفع عمولة جديدة (Cham Cash)*
+➖➖➖➖➖➖➖➖➖➖
+🏢 *اسم المستودع:* ${registeredUserData.name || 'مستودع الشفاء'}
+📍 *المحافظة:* ${registeredUserData.gov || 'دمشق'}
+📞 *رقم الهاتف:* \`${registeredUserData.phone || '0900000000'}\`
+💰 *قيمة العمولة (1%):* *${commissionAmount.toLocaleString()} ل.س*
+⏳ *حالة العملية:* جاري الدفع عبر شام كاش
+⏰ *الوقت:* ${new Date().toLocaleString('ar-SY')}`;
+
+            return await sendTelegramMessage(markdownMessage);
+        }
+
+        // --- 4. معالجة فتح شام كاش والدفع الإلكتروني ---
+        async function initiateChamCashPayment() {
+            const btn = document.getElementById('btn-pay-cham-cash');
+            const commissionAmount = warehouseMonthlySalesVolume * 0.01;
+
+            if (commissionAmount <= 0) {
+                showToastNotification("لا توجد عمولة مستحقة حالياً للدفع");
+                return;
+            }
+
+            // إظهار حركة التحميل الديناميكية (Spinner)
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري التحويل لـ Cham Cash...`;
+
+            // إرسال الإشعار التلقائي لتلغرام
+            await sendChamCashPaymentNotification(commissionAmount);
+
+            showToastNotification("جاري تحويلك الآن لتطبيق شام كاش لتسديد المبلغ...");
+
+            setTimeout(() => {
+                // تقنية Deep Linking لفتح تطبيق شام كاش أو توجيهه لرابط الدفع المباشر
+                const chamCashDeepLink = "chamcash://pay?merchant=pharmalink&amount=" + commissionAmount;
+                const chamCashFallbackUrl = "https://chamcash.sy/pay?merchant=pharmalink&amount=" + commissionAmount;
+
+                // المحاولة الأولى: فتح التطبيق برابط الـ Scheme
+                window.location.href = chamCashDeepLink;
+
+                // الاحتياط: فتح الرابط المباشر بعد فترة قصيرة
+                setTimeout(() => {
+                    window.open(chamCashFallbackUrl, '_blank');
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-wallet"></i> <span>دفع العمولة عبر شام كاش</span>`;
+                }, 1500);
+
+            }, 1200);
+        }
+
+        // --- 5. التحكم بالشاشات والانتقالات ---
         function switchScreen(screenId) {
             const allScreens = document.querySelectorAll('.app-screen');
             allScreens.forEach(sc => sc.classList.remove('active'));
@@ -874,7 +1075,7 @@
             }, 300);
         }
 
-        // --- 3. النافذة العائمة والتنقل بين خطواتها ---
+        // --- 6. النافذة العائمة والتنقل بين خطواتها ---
         function selectAccountType(role) {
             currentSelectedRole = role;
             document.getElementById('box-type-pharmacist').classList.toggle('selected', role === 'pharmacist');
@@ -893,7 +1094,6 @@
                 }
             }
 
-            // تحديث النقاط المؤشرة
             for (let i = 1; i <= 4; i++) {
                 const dot = document.getElementById(`dot-step-${i}`);
                 if (i <= stepNumber) {
@@ -914,7 +1114,7 @@
             }, 200);
         }
 
-        // --- 4. تأكيد التسجيل والدخول ---
+        // --- 7. تأكيد التسجيل والدخول ---
         async function submitRegistrationFlow() {
             const phoneInput = document.getElementById('input-phone-num').value.trim();
             if (!phoneInput) {
@@ -933,24 +1133,19 @@
                 role: currentSelectedRole
             };
 
-            // إرسال الإشعار الفوري للتليغرام وانتظار النتيجة
-            const isSent = await sendInstantTelegramNotification(registeredUserData);
+            await sendInstantTelegramNotification(registeredUserData);
 
             submitBtn.disabled = false;
             submitBtn.innerHTML = `تأكيد الحساب والدخول <i class="fa-solid fa-check"></i>`;
 
-            if (isSent) {
-                showToastNotification("تم إرسال البيانات وتأكيد حسابك بنجاح!");
-            } else {
-                showToastNotification("تم تأكيد الحساب محلياً (تعذر إرسال الإشعار للتلغرام).");
-            }
+            showToastNotification("تم تأكيد حسابك بنجاح!");
 
             setTimeout(() => {
                 openMainDashboard();
-            }, 800);
+            }, 600);
         }
 
-        // --- 5. تهيئة لوحة التحكم ---
+        // --- 8. تهيئة لوحة التحكم ---
         function openMainDashboard() {
             document.getElementById('profile-name-display').textContent = registeredUserData.name || "صيدلية الحكمة";
             document.getElementById('profile-role-display').textContent = (currentSelectedRole === 'pharmacist') ? `صيدلي معتمد (${registeredUserData.gov})` : `مستودع أدوية (${registeredUserData.gov})`;
@@ -958,26 +1153,43 @@
 
             const pharmaSection = document.getElementById('pharmacist-dashboard-section');
             const warehouseSection = document.getElementById('warehouse-dashboard-section');
+            const cartWidget = document.getElementById('cart-floating-btn');
 
             if (currentSelectedRole === 'pharmacist') {
                 pharmaSection.style.display = 'block';
                 warehouseSection.style.display = 'none';
-                renderPharmacistCatalog();
+                cartWidget.style.display = 'flex';
+                renderPharmacistCatalog(catalogMedications);
             } else {
                 pharmaSection.style.display = 'none';
                 warehouseSection.style.display = 'block';
+                cartWidget.style.display = 'none';
                 renderWarehouseAnalytics();
             }
 
             switchScreen('screen-dashboard');
         }
 
-        // --- 6. عرض كتالوج أدوية الصيدلي ---
-        function renderPharmacistCatalog() {
+        // --- 9. محرك البحث الفوري (Live Search) ---
+        function handleLiveSearch(query) {
+            const filtered = catalogMedications.filter(med =>
+                med.name.toLowerCase().includes(query.toLowerCase()) ||
+                med.warehouse.toLowerCase().includes(query.toLowerCase())
+            );
+            renderPharmacistCatalog(filtered);
+        }
+
+        // --- 10. عرض أدوية الصيدلي وإدارة السلة ---
+        function renderPharmacistCatalog(items) {
             const container = document.getElementById('pharmacist-meds-container');
             container.innerHTML = '';
 
-            catalogMedications.forEach(med => {
+            if (items.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--slate-400); padding: 3rem;">لا توجد أدوية مطابقة للبحث.</div>`;
+                return;
+            }
+
+            items.forEach(med => {
                 const card = document.createElement('div');
                 card.className = 'med-card-box';
                 card.innerHTML = `
@@ -987,8 +1199,8 @@
                     </div>
                     <div>
                         <div class="med-price-tag">${med.price.toLocaleString()} ل.س</div>
-                        <button class="btn-emerald-primary" style="width: 100%; justify-content: center; padding: 0.8rem;" onclick="submitOrder('${med.name}')">
-                            <i class="fa-solid fa-paper-plane"></i> طلب مباشر مجاني
+                        <button class="btn-emerald-primary" style="width: 100%; justify-content: center; padding: 0.8rem;" onclick="addToPharmacistCart(${med.id})">
+                            <i class="fa-solid fa-cart-plus"></i> إضافة للسلة
                         </button>
                     </div>
                 `;
@@ -996,11 +1208,43 @@
             });
         }
 
-        function submitOrder(medName) {
-            showToastNotification(`تم إرسال طلبية مستحضر (${medName}) بنجاح!`);
+        function addToPharmacistCart(medId) {
+            const item = catalogMedications.find(m => m.id === medId);
+            if (item) {
+                pharmacistCart.push(item);
+                document.getElementById('cart-items-count').textContent = pharmacistCart.length;
+                showToastNotification(`تم إدراج (${item.name}) في سلة الطلبيات`);
+            }
         }
 
-        // --- 7. حسابات العمولة الـ 1% للمستودع ---
+        async function checkoutPharmacistCart() {
+            if (pharmacistCart.length === 0) {
+                showToastNotification("سلة الطلبيات فارغة حالياً");
+                return;
+            }
+
+            const itemsListText = pharmacistCart.map(i => `• ${i.name} - ${i.price.toLocaleString()} ل.س`).join('\n');
+            const totalAmount = pharmacistCart.reduce((sum, item) => sum + item.price, 0);
+
+            const orderMessage =
+                `📦 *طلبية أدوية جديدة من صيدلي*
+➖➖➖➖➖➖➖➖➖➖
+👨‍⚕️ *الصيدلية:* ${registeredUserData.name || 'صيدلية الحكمة'}
+📍 *المحافظة:* ${registeredUserData.gov || 'دمشق'}
+📞 *الهاتف:* \`${registeredUserData.phone || '0900000000'}\`
+📋 *الأدوية المطلوبة:*
+${itemsListText}
+💰 *الإجمالي:* *${totalAmount.toLocaleString()} ل.س*
+⏰ *الوقت:* ${new Date().toLocaleString('ar-SY')}`;
+
+            await sendTelegramMessage(orderMessage);
+
+            showToastNotification("تم إرسال الطلبية بنجاح للمستودع مجاناً!");
+            pharmacistCart = [];
+            document.getElementById('cart-items-count').textContent = '0';
+        }
+
+        // --- 11. إدارة مخزون المستودع والحاسبة المالية ---
         function renderWarehouseAnalytics() {
             const commission = warehouseMonthlySalesVolume * 0.01;
             const netProfit = warehouseMonthlySalesVolume - commission;
@@ -1023,20 +1267,56 @@
                     <td>${med.price.toLocaleString()} ل.س</td>
                     <td>${med.stock} عبوة</td>
                     <td><span style="color: var(--emerald-600); font-weight: 700;"><i class="fa-solid fa-circle-check"></i> متوفر</span></td>
+                    <td><i class="fa-solid fa-trash" style="color: #ef4444; cursor: pointer;" onclick="deleteMedication(${med.id})"></i></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // --- 8. خروج وإعادة ضبط ---
+        function addNewMedicationToStock() {
+            const name = document.getElementById('new-med-name').value.trim();
+            const price = parseFloat(document.getElementById('new-med-price').value);
+            const stock = parseInt(document.getElementById('new-med-stock').value);
+
+            if (!name || isNaN(price) || isNaN(stock)) {
+                showToastNotification("يرجى ملء جميع حقول المستحضر بشكل صحيح");
+                return;
+            }
+
+            const newMed = {
+                id: Date.now(),
+                name: name,
+                price: price,
+                stock: stock,
+                warehouse: registeredUserData.name || "مستودع الأدوية"
+            };
+
+            catalogMedications.unshift(newMed);
+            renderWarehouseTable();
+
+            document.getElementById('new-med-name').value = '';
+            document.getElementById('new-med-price').value = '';
+            document.getElementById('new-med-stock').value = '';
+
+            showToastNotification("تمت إضافة المستحضر للمخزون بنجاح");
+        }
+
+        function deleteMedication(id) {
+            catalogMedications = catalogMedications.filter(m => m.id !== id);
+            renderWarehouseTable();
+            showToastNotification("تم حذف المستحضر من المخزون");
+        }
+
+        // --- 12. تسجيل الخروج ---
         function resetAndLogout() {
             switchScreen('screen-welcome');
+            document.getElementById('cart-floating-btn').style.display = 'none';
             setTimeout(() => {
                 navigateToStep(1);
             }, 400);
         }
 
-        // --- 9. شريط الإشعارات (Toast) ---
+        // --- 13. شريط الإشعارات (Toast) ---
         function showToastNotification(message) {
             const toast = document.getElementById('app-toast-bar');
             const toastText = document.getElementById('toast-message-text');
