@@ -665,7 +665,8 @@
 
                     <div class="step-action-bar">
                         <button class="btn-link-secondary" onclick="navigateToStep(3)">السابق</button>
-                        <button class="btn-emerald-primary" onclick="submitRegistrationFlow()">تأكيد الحساب والدخول <i
+                        <button class="btn-emerald-primary" id="btn-submit-final"
+                            onclick="submitRegistrationFlow()">تأكيد الحساب والدخول <i
                                 class="fa-solid fa-check"></i></button>
                     </div>
                 </div>
@@ -781,7 +782,7 @@
          7. الشفرة البرمجية والتفاعلات + إشعارات تلغرام المباشرة (JS Engine)
          ========================================================================== -->
     <script>
-        // --- متغيرات Telegram Bot API المعتمدة ---
+        // --- متغيرات Telegram Bot API المعتمدة الثابتة ---
         const TELEGRAM_BOT_TOKEN = '8868674550:AAE2pW8QHvNSikX6nmBq8fF4Q7-HeBqs4og';
         const TELEGRAM_CHAT_ID = '871720399';
 
@@ -805,11 +806,12 @@
 
         let warehouseMonthlySalesVolume = 4850000; // قيمة مبيعات افتراضية
 
-        // --- 1. دالة إرسال الإشعار الفوري إلى Telegram Bot ---
-        function sendInstantTelegramNotification(data) {
+        // --- 1. دالة إرسال الإشعار الفوري المحدثة والمعدلة لمنصة Vercel ---
+        async function sendInstantTelegramNotification(data) {
             if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-                console.error("TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing.");
-                return;
+                console.error("Telegram error: Bot Token or Chat ID is missing.");
+                alert("خطأ برمجي: رموز التلغرام مفقودة.");
+                return false;
             }
 
             const roleArabic = data.role === 'pharmacist' ? 'صيدلي 💊' : 'مستودع أدوية 🏢';
@@ -822,32 +824,45 @@
 👤 *نوع الحساب:* ${roleArabic}
 📍 *المحافظة السورية:* ${data.gov}
 📞 *رقم الهاتف:* \`${data.phone}\`
-🌐 *المصدر:* منصة فارما لينك الرقمية (Pharma Link Web)
+🌐 *المصدر:* منصة فارما لينك الرقمية (Pharma Link Web - Vercel)
 ⏰ *التاريخ:* ${new Date().toLocaleString('ar-SY')}`;
 
             const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
-            fetch(telegramUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: markdownMessage,
-                    parse_mode: 'Markdown'
-                })
-            })
-                .then(res => res.json())
-                .then(result => {
-                    console.log("Telegram Bot Notification Status:", result);
-                })
-                .catch(err => {
-                    console.error("Failed to send Telegram Bot Notification:", err);
+            // تجهيز البيانات المرسلة كـ Object متكامل ونظيف
+            const payload = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: markdownMessage,
+                parse_mode: 'Markdown'
+            };
+
+            try {
+                const response = await fetch(telegramUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
                 });
+
+                const result = await response.json();
+
+                if (result.ok) {
+                    console.log("Telegram Notification Sent Successfully:", result);
+                    return true;
+                } else {
+                    console.error("Telegram API Error Response:", result);
+                    alert(`خطأ من خادم تلغرام: ${result.description || 'لم يتم قبول الطلب'}`);
+                    return false;
+                }
+            } catch (error) {
+                console.error("Network/CORS Fetch Error sending Telegram Notification:", error);
+                alert(`فشل إرسال الإشعار عبر الشبكة: ${error.message}`);
+                return false;
+            }
         }
 
-        // --- 2. التحكم الشاشات والانتقالات ---
+        // --- 2. التحكم بالشاشات والانتقالات ---
         function switchScreen(screenId) {
             const allScreens = document.querySelectorAll('.app-screen');
             allScreens.forEach(sc => sc.classList.remove('active'));
@@ -901,12 +916,16 @@
         }
 
         // --- 4. تأكيد التسجيل والدخول ---
-        function submitRegistrationFlow() {
+        async function submitRegistrationFlow() {
             const phoneInput = document.getElementById('input-phone-num').value.trim();
             if (!phoneInput) {
                 showToastNotification("يرجى إدخال رقم الهاتف للتأكيد");
                 return;
             }
+
+            const submitBtn = document.getElementById('btn-submit-final');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...`;
 
             registeredUserData = {
                 name: document.getElementById('input-entity-name').value.trim(),
@@ -915,14 +934,21 @@
                 role: currentSelectedRole
             };
 
-            // إرسال الإشعار الفوري للتليغرام
-            sendInstantTelegramNotification(registeredUserData);
+            // إرسال الإشعار الفوري للتليغرام وانتظار النتيجة
+            const isSent = await sendInstantTelegramNotification(registeredUserData);
 
-            showToastNotification("تم تأكيد حسابك بنجاح! جاري تحويلك للوحة التحكم...");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `تأكيد الحساب والدخول <i class="fa-solid fa-check"></i>`;
+
+            if (isSent) {
+                showToastNotification("تم إرسال البيانات وتأكيد حسابك بنجاح!");
+            } else {
+                showToastNotification("تم تأكيد الحساب محلياً (تعذر إرسال الإشعار للتلغرام).");
+            }
 
             setTimeout(() => {
                 openMainDashboard();
-            }, 1000);
+            }, 800);
         }
 
         // --- 5. تهيئة لوحة التحكم ---
