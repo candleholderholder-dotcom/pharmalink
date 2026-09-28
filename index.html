@@ -4,31 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فارما لينك | Pharma Link - منصة الربط الدوائي والدفع الإلكتروني عبر شام كاش</title>
+    <title>فارما لينك | Pharma Link - منصة الربط الدوائي المباشر وبوابة تسديد عمولة شام كاش</title>
 
-    <!-- خط Cairo واستدعاء أيقونات FontAwesome -->
+    <!-- استدعاء خط Cairo وأيقونات FontAwesome ومكتبة توليد الـ QR Code -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
         /* ==========================================================================
-           1. المتغيرات والألوان الهيكلية (Pure White & Emerald Green & Slate/Gray)
+           1. التنسيقات الهيكلية والألوان الأساسية (Pure White & Emerald Green & Gray/Slate)
            ========================================================================== */
         :root {
             --bg-white: #ffffff;
             --bg-subtle: #f8fafc;
 
-            /* ألوان الزمردي المعتمدة للأزرار والتفاعلات (Emerald Green) */
+            /* ألوان الزمردي المعتمدة للهوية (Emerald Green) */
             --emerald-500: #10b981;
             --emerald-600: #059669;
             --emerald-700: #047857;
+            --emerald-800: #065f46;
             --emerald-50: #ecfdf5;
             --emerald-100: #d1fae5;
 
-            /* ألوان الرمادي والسلايت للنصوص والأطر (Gray / Slate) */
+            /* درجات الرمادي والأسود السلايت (Slate/Gray) */
             --slate-900: #0f172a;
             --slate-800: #1e293b;
             --slate-700: #334155;
@@ -38,13 +40,10 @@
             --slate-200: #e2e8f0;
             --slate-100: #f1f5f9;
 
-            /* ألوان شام كاش والشارات التفاعلية */
-            --cham-cash-bg: #ecfdf5;
-            --cham-cash-border: #059669;
-
-            /* ظلال وانتقالات ديناميكية ناعمة */
+            /* ظلال وانتقالات ناعمة وحركات جودة عالية */
             --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
             --shadow-floating: 0 25px 50px -12px rgba(5, 150, 105, 0.15), 0 12px 24px -4px rgba(0, 0, 0, 0.04);
+            --shadow-modal: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
             --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -67,7 +66,7 @@
         }
 
         /* ==========================================================================
-           2. شعار الكبسولة البرمجي المبتكر (Animated Capsule SVG/CSS)
+           2. شعار الكبسولة البرمجي المتحرك والنابض (Pulsing Capsule Logo SVG)
            ========================================================================== */
         .capsule-logo-wrapper {
             display: inline-flex;
@@ -97,12 +96,30 @@
             }
         }
 
-        .capsule-logo-wrapper:hover .capsule-svg-element {
-            transform: scale(1.1) rotate(12deg);
+        /* تأثير النبض الخاص بشاشة الدفع الفاخرة (Pulsing Effect) */
+        .capsule-pulsing {
+            animation: pulseGlow 2s ease-in-out infinite !important;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 0 rgba(5, 150, 105, 0.4));
+            }
+
+            50% {
+                transform: scale(1.12);
+                filter: drop-shadow(0 0 25px rgba(5, 150, 105, 0.7));
+            }
+
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 0 rgba(5, 150, 105, 0.4));
+            }
         }
 
         /* ==========================================================================
-           3. إعدادات الشاشات والانتقالات (Screen Management)
+           3. إعداد الشاشات والانتقالات (App Screens & Navigation)
            ========================================================================== */
         .app-screen {
             display: none;
@@ -135,7 +152,7 @@
         }
 
         .brand-title-main {
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 900;
             color: var(--slate-900);
             margin: 1.5rem 0 0.5rem;
@@ -155,10 +172,10 @@
             background-color: var(--emerald-600);
             color: var(--bg-white);
             border: none;
-            padding: 1rem 2.8rem;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 700;
+            padding: 1.1rem 3rem;
+            border-radius: 18px;
+            font-size: 1.15rem;
+            font-weight: 800;
             cursor: pointer;
             transition: var(--transition-smooth);
             display: inline-flex;
@@ -173,12 +190,8 @@
             box-shadow: 0 16px 28px -6px rgba(5, 150, 105, 0.45);
         }
 
-        .btn-emerald-primary:active {
-            transform: translateY(0);
-        }
-
         /* ==========================================================================
-           5. النافذة العائمة لتعبئة البيانات (Multi-step Floating Card)
+           5. النافذة العائمة لتسجيل المنشأة (Multi-step Registration Card)
            ========================================================================== */
         .floating-overlay-wrapper {
             flex: 1;
@@ -221,7 +234,6 @@
             background-color: var(--emerald-600);
         }
 
-        /* حركات التنقل الديناميكية (Slide & Fade) */
         .step-pane {
             display: none;
             opacity: 0;
@@ -268,7 +280,6 @@
             box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
         }
 
-        /* بطاقات تحديد نوع الحساب */
         .account-selector-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -326,7 +337,7 @@
         }
 
         /* ==========================================================================
-           6. لوحات التحكم الرئيسية (Main Dashboard)
+           6. لوحة التحكم الرئيسية (Main Dashboard Header & Content)
            ========================================================================== */
         header.dashboard-header {
             background-color: var(--bg-white);
@@ -389,7 +400,7 @@
             margin-bottom: 2rem;
         }
 
-        /* قسم أرقام المستودع وحاسبة العمولة الـ 1% */
+        /* تحليلات وقسم عمولة المستودع */
         .analytics-metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -428,15 +439,15 @@
             color: var(--slate-900);
         }
 
-        /* زر الدفع الخاص بشام كاش */
-        .btn-cham-cash-pay {
+        /* زر فتح بوابة الدفع الفاخرة */
+        .btn-trigger-payment {
             margin-top: 1.2rem;
             background-color: var(--emerald-600);
             color: var(--bg-white);
             border: none;
-            padding: 0.85rem 1.2rem;
+            padding: 0.9rem 1.4rem;
             border-radius: 14px;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 0.95rem;
             cursor: pointer;
             transition: var(--transition-smooth);
@@ -447,13 +458,13 @@
             box-shadow: 0 6px 16px rgba(5, 150, 105, 0.25);
         }
 
-        .btn-cham-cash-pay:hover {
+        .btn-trigger-payment:hover {
             background-color: var(--emerald-700);
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(5, 150, 105, 0.35);
         }
 
-        /* محرك البحث المباشر */
+        /* محرك البحث السريع للأدوية */
         .search-bar-wrapper {
             position: relative;
             margin-bottom: 1.8rem;
@@ -461,7 +472,7 @@
 
         .search-input-field {
             width: 100%;
-            padding: 1rem 3.2rem 1rem 1.4rem;
+            padding: 1.1rem 3.2rem 1.1rem 1.4rem;
             border: 1.5px solid var(--slate-200);
             border-radius: 16px;
             font-size: 1rem;
@@ -483,7 +494,7 @@
             font-size: 1.1rem;
         }
 
-        /* شبكة أدوية الصيدلي */
+        /* شبكة الأدوية للصيدلي */
         .medications-catalog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -578,13 +589,152 @@
             font-weight: 700;
         }
 
-        /* نموذج إضافة دواء جديد للمستودع */
         .add-med-form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) 120px;
             gap: 1rem;
             margin-top: 1rem;
             align-items: center;
+        }
+
+        /* ==========================================================================
+           7. شاشة وبوابة الدفع المخصصة الفاخرة (Cham Cash Dedicated Payment Modal)
+           ========================================================================== */
+        .cham-cash-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2500;
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .cham-cash-modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .cham-cash-payment-card {
+            background-color: var(--bg-white);
+            border-radius: 32px;
+            padding: 3rem 2.5rem;
+            max-width: 460px;
+            width: 90%;
+            box-shadow: var(--shadow-modal);
+            text-align: center;
+            position: relative;
+            transform: scale(0.88);
+            transition: var(--transition-smooth);
+            border: 1px solid var(--emerald-100);
+        }
+
+        .cham-cash-modal-overlay.active .cham-cash-payment-card {
+            transform: scale(1);
+        }
+
+        .close-modal-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--slate-400);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--slate-100);
+        }
+
+        .close-modal-icon:hover {
+            color: var(--slate-900);
+            background-color: var(--slate-200);
+        }
+
+        .payment-brand-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--slate-900);
+            margin-top: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .payment-amount-box {
+            background-color: var(--emerald-50);
+            border: 1.5px solid var(--emerald-100);
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin: 1.8rem 0;
+        }
+
+        .payment-amount-label {
+            font-size: 0.85rem;
+            color: var(--emerald-800);
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .payment-amount-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--emerald-600);
+        }
+
+        .btn-confirm-chamcash {
+            width: 100%;
+            background-color: var(--emerald-600);
+            color: var(--bg-white);
+            border: none;
+            padding: 1.2rem;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn-confirm-chamcash:hover {
+            background-color: var(--emerald-700);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px -5px rgba(5, 150, 105, 0.5);
+        }
+
+        .qr-desktop-section {
+            display: none;
+            margin-top: 1.5rem;
+            background-color: var(--slate-100);
+            padding: 1.2rem;
+            border-radius: 20px;
+            border: 1px solid var(--slate-200);
+        }
+
+        .qr-desktop-section p {
+            font-size: 0.85rem;
+            color: var(--slate-600);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        #qrcode-canvas-wrapper {
+            display: inline-block;
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
         }
 
         /* الإشعارات العائمة (Toast Notifications) */
@@ -605,7 +755,7 @@
             transform: translateY(120px);
             opacity: 0;
             transition: var(--transition-smooth);
-            z-index: 1000;
+            z-index: 3000;
         }
 
         .toast-notification-bar.show {
@@ -613,7 +763,6 @@
             opacity: 1;
         }
 
-        /* تحسين التجاوب للشاشات الصغيرة */
         @media (max-width: 768px) {
             header.dashboard-header {
                 padding: 1rem 1.5rem;
@@ -628,7 +777,7 @@
             }
 
             .brand-title-main {
-                font-size: 2.2rem;
+                font-size: 2.3rem;
             }
 
             .add-med-form-grid {
@@ -654,12 +803,54 @@
     </div>
 
     <!-- ==========================================================================
+         شاشة الدفع المخصصة الفاخرة (Cham Cash Dedicated Payment Modal Screen)
+         ========================================================================== -->
+    <div id="chamcash-payment-modal" class="cham-cash-modal-overlay">
+        <div class="cham-cash-payment-card">
+            <div class="close-modal-icon" onclick="closeChamCashModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+
+            <!-- شعار الكبسولة بحركة تفاعلية نابضة -->
+            <div class="capsule-logo-wrapper" style="margin-top: 0.5rem;">
+                <svg class="capsule-svg-element capsule-pulsing" viewBox="0 0 100 100" fill="none"
+                    xmlns="http://www.w3.org/2000/svg" style="width: 85px; height: 85px;">
+                    <path d="M25 50 C25 25, 75 25, 75 50 L75 50 L25 50 Z" fill="#059669" />
+                    <path d="M25 50 L75 50 C75 75, 25 75, 25 50 Z" fill="#cbd5e1" />
+                    <line x1="25" y1="50" x2="75" y2="50" stroke="#ffffff" stroke-width="4" />
+                    <circle cx="40" cy="38" r="3.5" fill="#ffffff" opacity="0.7" />
+                </svg>
+            </div>
+
+            <!-- اسم التطبيق واضحاً بالإنكليزية -->
+            <h2 class="payment-brand-title">Pharma Link</h2>
+
+            <!-- قيمة العمولة الإجمالية بالليرة السورية -->
+            <div class="payment-amount-box">
+                <div class="payment-amount-label">عمولة المنصة المقتطعة (1%)</div>
+                <div class="payment-amount-value" id="modal-commission-display">0 ل.س</div>
+            </div>
+
+            <!-- زر التأكيد والانتقال المباشر لشام كاش -->
+            <button class="btn-confirm-chamcash" onclick="executeChamCashDeepLink()">
+                <i class="fa-solid fa-bolt"></i>
+                <span>اضغط لتأكيد الدفع عبر شام كاش</span>
+            </button>
+
+            <!-- كود QR يظهر تلقائياً إذا كان المستخدم يتصفح من كمبيوتر -->
+            <div id="desktop-qr-container" class="qr-desktop-section">
+                <p>امسح الكود أدناه من هاتفك لتسديد العمولة عبر شام كاش:</p>
+                <div id="qrcode-canvas-wrapper"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
          الشاشة 1: الصفحة الترحيبية (WELCOME SCREEN)
          ========================================================================== -->
     <section id="screen-welcome" class="app-screen active">
         <div class="welcome-container">
 
-            <!-- شعار الكبسولة البرمجي المتحرك SVG -->
             <div class="capsule-logo-wrapper">
                 <svg class="capsule-svg-element" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M25 50 C25 25, 75 25, 75 50 L75 50 L25 50 Z" fill="#059669" />
@@ -670,8 +861,8 @@
             </div>
 
             <h1 class="brand-title-main">Pharma Link</h1>
-            <p class="brand-subtitle-main">المنصة الرقمية المباشرة الأولى لربط مستودعات الأدوية بالصيادلة في سوريا، مع
-                دعم كامل للدفع الإلكتروني والتسديد عبر شام كاش (Cham Cash).</p>
+            <p class="brand-subtitle-main">المنصة الرقمية المباشرة لتسهيل ربط مستودعات الأدوية بالصيادلة في سوريا، مع
+                دعم كامل وبوابة تسديد سريعة عبر تطبيق شام كاش (Cham Cash).</p>
 
             <button class="btn-emerald-primary" onclick="switchScreen('screen-register')">
                 البدء الآن <i class="fa-solid fa-arrow-left"></i>
@@ -686,7 +877,6 @@
         <div class="floating-overlay-wrapper">
             <div class="floating-card">
 
-                <!-- مؤشرات خطوات التسجيل -->
                 <div class="step-progress-dots">
                     <div class="dot-indicator active" id="dot-step-1"></div>
                     <div class="dot-indicator" id="dot-step-2"></div>
@@ -694,7 +884,7 @@
                     <div class="dot-indicator" id="dot-step-4"></div>
                 </div>
 
-                <!-- الخطوة 1: تحديد نوع الحساب -->
+                <!-- الخطوة 1 -->
                 <div class="step-pane active" id="pane-step-1">
                     <h2 class="step-title-text">تحديد نوع الحساب</h2>
                     <p class="step-desc-text">اختر نوع حسابك لتخصيص لوحة التحكم المناسبة لنشاطك.</p>
@@ -722,7 +912,7 @@
                     </div>
                 </div>
 
-                <!-- الخطوة 2: الاسم التجاري -->
+                <!-- الخطوة 2 -->
                 <div class="step-pane" id="pane-step-2">
                     <h2 class="step-title-text" id="label-step2-title">اسم الصيدلية</h2>
                     <p class="step-desc-text">أدخل الاسم الرسمي المعتمد لمنشأتك الدوائية.</p>
@@ -737,10 +927,10 @@
                     </div>
                 </div>
 
-                <!-- الخطوة 3: تحديد المحافظة السورية -->
+                <!-- الخطوة 3 -->
                 <div class="step-pane" id="pane-step-3">
                     <h2 class="step-title-text">المحافظة السورية</h2>
-                    <p class="step-desc-text">حدد المحافظة التي تقع فيها المنشأة لضبط التغطية.</p>
+                    <p class="step-desc-text">حدد المحافظة التي تقع فيها المنشأة لضبط نطاق التغطية.</p>
 
                     <select class="form-input-custom" id="select-syrian-gov">
                         <option value="دمشق">دمشق</option>
@@ -766,7 +956,7 @@
                     </div>
                 </div>
 
-                <!-- الخطوة 4: رقم الهاتف والتأكيد -->
+                <!-- الخطوة 4 -->
                 <div class="step-pane" id="pane-step-4">
                     <h2 class="step-title-text">التواصل والأمان</h2>
                     <p class="step-desc-text">أدخل رقم الهاتف للتحقق وتأكيد حسابك المعتمد.</p>
@@ -790,7 +980,6 @@
          ========================================================================== -->
     <section id="screen-dashboard" class="app-screen">
 
-        <!-- الهيدر العلوي للوحة التحكم -->
         <header class="dashboard-header">
             <div class="header-brand-box">
                 <div class="capsule-logo-wrapper">
@@ -817,10 +1006,9 @@
             </div>
         </header>
 
-        <!-- منطقة العمل والمحتوى -->
         <main class="dashboard-main-container">
 
-            <!-- لوحة تحكم الصيدلي (طلب أدوية مجاني + بحث فوري + سلة) -->
+            <!-- لوحة تحكم الصيدلي -->
             <div id="pharmacist-dashboard-section">
                 <div class="content-panel-card"
                     style="display: flex; justify-content: space-between; align-items: center; border-right: 6px solid var(--emerald-600);">
@@ -840,19 +1028,18 @@
                 <div class="search-bar-wrapper">
                     <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
                     <input type="text" id="live-search-input" class="search-input-field"
-                        placeholder="ابحث باسم الدواء، المادة الفعالة، أو العيار (مثال: أوميبرازول 20 ملغ)..."
+                        placeholder="ابحث باسم الدواء، المادة الفعالة، أو العيار..."
                         oninput="handleLiveSearch(this.value)">
                 </div>
 
                 <div class="medications-catalog-grid" id="pharmacist-meds-container">
-                    <!-- المادة الدوائية تُولد عبر JavaScript -->
+                    <!-- تُولد بطاقات الأدوية برمجياً -->
                 </div>
             </div>
 
-            <!-- لوحة تحكم المستودع (إدارة المخزون، إضافة أدوية، وحاسبة العمولة الـ 1% مع زر دفع شام كاش) -->
+            <!-- لوحة تحكم المستودع -->
             <div id="warehouse-dashboard-section" style="display: none;">
 
-                <!-- الحاسبة المالية للعمولة 1% وزر الدفع المباشر عبر شام كاش -->
                 <div class="analytics-metrics-grid">
                     <div class="metric-card-box">
                         <div>
@@ -871,10 +1058,10 @@
                                 ل.س</div>
                         </div>
 
-                        <!-- زر دفع العمولة عبر شام كاش -->
-                        <button class="btn-cham-cash-pay" id="btn-pay-cham-cash" onclick="initiateChamCashPayment()">
+                        <!-- زر فتح شاشة الدفع الفاخرة -->
+                        <button class="btn-trigger-payment" onclick="openChamCashModal()">
                             <i class="fa-solid fa-wallet"></i>
-                            <span>دفع العمولة عبر شام كاش</span>
+                            <span>دفع العمولة عبر تطبيق شام كاش</span>
                         </button>
                     </div>
 
@@ -926,7 +1113,7 @@
                             </tr>
                         </thead>
                         <tbody id="warehouse-inventory-table-body">
-                            <!-- جدول المخزون يُولد عبر JavaScript -->
+                            <!-- جدول الأدوية يُولد برمجياً -->
                         </tbody>
                     </table>
                 </div>
@@ -937,10 +1124,10 @@
     </section>
 
     <!-- ==========================================================================
-         7. الشفرة البرمجية والتفاعلات + إشعارات تلغرام المباشرة + Cham Cash (JS Engine)
+         8. الشفرة البرمجية والتفاعلات + Cham Cash Deep Link + إشعارات تلغرام
          ========================================================================== -->
     <script>
-        // --- متغيرات Telegram Bot API المعتمدة الثابتة دون أي تغيير ---
+        // --- ثوابت Telegram Bot API المعتمدة والمحفوظة تماماً دون أي تغيير ---
         const TELEGRAM_BOT_TOKEN = '8868674550:AAE2pW8QHvNSikX6nmBq8fF4Q7-HeBqs4og';
         const TELEGRAM_CHAT_ID = '8717720399';
 
@@ -953,10 +1140,9 @@
             role: ''
         };
 
-        // سلة المشتريات للصيدلي
         let pharmacistCart = [];
 
-        // مخزون افتراضي من الأدوية والمستحضرات السورية
+        // مخزون افتراضي من الأدوية السورية
         let catalogMedications = [
             { id: 1, name: "أوميبرازول 20 ملغ (Omeprazole)", price: 4500, stock: 1200, warehouse: "مستودع الشفاء - دمشق" },
             { id: 2, name: "أزيثروميسين 500 ملغ (Azithromycin)", price: 12500, stock: 420, warehouse: "مستودع الأمل - حلب" },
@@ -965,12 +1151,12 @@
             { id: 5, name: "إيزوميبرازول 40 ملغ (Esomeprazole)", price: 9200, stock: 600, warehouse: "مستودع النور - حمص" }
         ];
 
-        let warehouseMonthlySalesVolume = 6500000; // قيمة مبيعات افتراضية بالمرافق
+        let warehouseMonthlySalesVolume = 8500000;
 
-        // --- 1. دالة إرسال الإشعار العام عبر تلغرام ---
+        // --- 1. دالة إرسال الرسائل عبر Telegram Bot ---
         async function sendTelegramMessage(markdownText) {
             if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-                console.error("Telegram error: Bot Token or Chat ID is missing.");
+                console.error("Telegram Error: Bot Token or Chat ID is missing.");
                 return false;
             }
 
@@ -1010,24 +1196,65 @@
             return await sendTelegramMessage(markdownMessage);
         }
 
-        // --- 3. إشعار تلقائي لعملية الدفع عبر شام كاش (Cham Cash Notification) ---
-        async function sendChamCashPaymentNotification(commissionAmount) {
+        // --- 3. إشعار الدفع عبر شام كاش الموجه لتلغرام الإدارة ---
+        async function sendChamCashPaymentTelegramNotification(commissionAmount) {
+            const warehouseName = registeredUserData.name || 'مستودع أدوية معتمد';
+            const governorate = registeredUserData.gov || 'دمشق';
+
             const markdownMessage =
-                `💳 *عملية دفع عمولة جديدة (Cham Cash)*
+                `💳 *عملية دفع عمولة عبر شام كاش*
 ➖➖➖➖➖➖➖➖➖➖
-🏢 *اسم المستودع:* ${registeredUserData.name || 'مستودع الشفاء'}
-📍 *المحافظة:* ${registeredUserData.gov || 'دمشق'}
-📞 *رقم الهاتف:* \`${registeredUserData.phone || '0900000000'}\`
-💰 *قيمة العمولة (1%):* *${commissionAmount.toLocaleString()} ل.س*
-⏳ *حالة العملية:* جاري الدفع عبر شام كاش
+🏢 *اسم مستودع الأدوية:* ${warehouseName}
+📍 *المحافظة:* ${governorate}
+💰 *المبلغ المدفوع (عمولة 1%):* *${commissionAmount.toLocaleString()} ل.س*
+✅ *الحالة:* تم الانتقال إلى تطبيق شام كاش بنجاح
 ⏰ *الوقت:* ${new Date().toLocaleString('ar-SY')}`;
 
             return await sendTelegramMessage(markdownMessage);
         }
 
-        // --- 4. معالجة فتح شام كاش والدفع الإلكتروني ---
-        async function initiateChamCashPayment() {
-            const btn = document.getElementById('btn-pay-cham-cash');
+        // --- 4. فحص نوع الجهاز (Mobile / Desktop) ---
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // --- 5. فتح وإغلاق شاشة الدفع الفاخرة ---
+        function openChamCashModal() {
+            const commissionAmount = warehouseMonthlySalesVolume * 0.01;
+            document.getElementById('modal-commission-display').textContent = `${commissionAmount.toLocaleString()} ل.س`;
+
+            const modal = document.getElementById('chamcash-payment-modal');
+            const qrContainer = document.getElementById('desktop-qr-container');
+            const qrWrapper = document.getElementById('qrcode-canvas-wrapper');
+
+            // إذا كان التصفح من جهاز كمبيوتر، توليد كود الـ QR
+            if (!isMobileDevice()) {
+                qrContainer.style.display = 'block';
+                qrWrapper.innerHTML = '';
+
+                const chamCashSmartUrl = `https://chamcash.sy/pay?amount=${commissionAmount}&merchant=pharmalink`;
+
+                new QRCode(qrWrapper, {
+                    text: chamCashSmartUrl,
+                    width: 160,
+                    height: 160,
+                    colorDark: "#059669",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            } else {
+                qrContainer.style.display = 'none';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeChamCashModal() {
+            document.getElementById('chamcash-payment-modal').classList.remove('active');
+        }
+
+        // --- 6. تنفيذ الـ Deep Linking المباشر عند ضغط زر التأكيد ---
+        async function executeChamCashDeepLink() {
             const commissionAmount = warehouseMonthlySalesVolume * 0.01;
 
             if (commissionAmount <= 0) {
@@ -1035,34 +1262,28 @@
                 return;
             }
 
-            // إظهار حركة التحميل الديناميكية (Spinner)
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري التحويل لـ Cham Cash...`;
+            // إرسال الإشعار الفوري المباشر إلى تلغرام الإدارة
+            await sendChamCashPaymentTelegramNotification(commissionAmount);
 
-            // إرسال الإشعار التلقائي لتلغرام
-            await sendChamCashPaymentNotification(commissionAmount);
+            const chamCashCustomScheme = `chamcash://pay?merchant=pharmalink&amount=${commissionAmount}`;
+            const chamCashSmartUrl = `https://chamcash.sy/pay?amount=${commissionAmount}&merchant=pharmalink`;
 
-            showToastNotification("جاري تحويلك الآن لتطبيق شام كاش لتسديد المبلغ...");
+            if (isMobileDevice()) {
+                showToastNotification("جاري الانتقال لفتح تطبيق شام كاش...");
 
-            setTimeout(() => {
-                // تقنية Deep Linking لفتح تطبيق شام كاش أو توجيهه لرابط الدفع المباشر
-                const chamCashDeepLink = "chamcash://pay?merchant=pharmalink&amount=" + commissionAmount;
-                const chamCashFallbackUrl = "https://chamcash.sy/pay?merchant=pharmalink&amount=" + commissionAmount;
+                // محاولة فتح التطبيق
+                window.location.href = chamCashCustomScheme;
 
-                // المحاولة الأولى: فتح التطبيق برابط الـ Scheme
-                window.location.href = chamCashDeepLink;
-
-                // الاحتياط: فتح الرابط المباشر بعد فترة قصيرة
+                // رابط احتياطي
                 setTimeout(() => {
-                    window.open(chamCashFallbackUrl, '_blank');
-                    btn.disabled = false;
-                    btn.innerHTML = `<i class="fa-solid fa-wallet"></i> <span>دفع العمولة عبر شام كاش</span>`;
-                }, 1500);
-
-            }, 1200);
+                    window.location.href = chamCashSmartUrl;
+                }, 1800);
+            } else {
+                showToastNotification("يرجى مسح رمز الـ QR الظاهر أمامك عبر هاتف الموبايل لإتمام الدفع.");
+            }
         }
 
-        // --- 5. التحكم بالشاشات والانتقالات ---
+        // --- 7. التنقل بين الشاشات ---
         function switchScreen(screenId) {
             const allScreens = document.querySelectorAll('.app-screen');
             allScreens.forEach(sc => sc.classList.remove('active'));
@@ -1075,7 +1296,7 @@
             }, 300);
         }
 
-        // --- 6. النافذة العائمة والتنقل بين خطواتها ---
+        // --- 8. خيارات التسجيل ---
         function selectAccountType(role) {
             currentSelectedRole = role;
             document.getElementById('box-type-pharmacist').classList.toggle('selected', role === 'pharmacist');
@@ -1114,7 +1335,6 @@
             }, 200);
         }
 
-        // --- 7. تأكيد التسجيل والدخول ---
         async function submitRegistrationFlow() {
             const phoneInput = document.getElementById('input-phone-num').value.trim();
             if (!phoneInput) {
@@ -1124,7 +1344,7 @@
 
             const submitBtn = document.getElementById('btn-submit-final');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري التأكيد...`;
 
             registeredUserData = {
                 name: document.getElementById('input-entity-name').value.trim(),
@@ -1138,14 +1358,14 @@
             submitBtn.disabled = false;
             submitBtn.innerHTML = `تأكيد الحساب والدخول <i class="fa-solid fa-check"></i>`;
 
-            showToastNotification("تم تأكيد حسابك بنجاح!");
+            showToastNotification("تم تأكيد وتفعيل الحساب بنجاح!");
 
             setTimeout(() => {
                 openMainDashboard();
-            }, 600);
+            }, 500);
         }
 
-        // --- 8. تهيئة لوحة التحكم ---
+        // --- 9. تشغيل لوحة التحكم الرئيسية ---
         function openMainDashboard() {
             document.getElementById('profile-name-display').textContent = registeredUserData.name || "صيدلية الحكمة";
             document.getElementById('profile-role-display').textContent = (currentSelectedRole === 'pharmacist') ? `صيدلي معتمد (${registeredUserData.gov})` : `مستودع أدوية (${registeredUserData.gov})`;
@@ -1170,7 +1390,7 @@
             switchScreen('screen-dashboard');
         }
 
-        // --- 9. محرك البحث الفوري (Live Search) ---
+        // --- 10. محرك البحث الفوري للأدوية ---
         function handleLiveSearch(query) {
             const filtered = catalogMedications.filter(med =>
                 med.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -1179,7 +1399,6 @@
             renderPharmacistCatalog(filtered);
         }
 
-        // --- 10. عرض أدوية الصيدلي وإدارة السلة ---
         function renderPharmacistCatalog(items) {
             const container = document.getElementById('pharmacist-meds-container');
             container.innerHTML = '';
@@ -1213,7 +1432,7 @@
             if (item) {
                 pharmacistCart.push(item);
                 document.getElementById('cart-items-count').textContent = pharmacistCart.length;
-                showToastNotification(`تم إدراج (${item.name}) في سلة الطلبيات`);
+                showToastNotification(`تم إضافة (${item.name}) إلى سلة الطلبيات`);
             }
         }
 
@@ -1239,12 +1458,12 @@ ${itemsListText}
 
             await sendTelegramMessage(orderMessage);
 
-            showToastNotification("تم إرسال الطلبية بنجاح للمستودع مجاناً!");
+            showToastNotification("تم إرسال الطلبية بنجاح مجاناً لجهة التوريد!");
             pharmacistCart = [];
             document.getElementById('cart-items-count').textContent = '0';
         }
 
-        // --- 11. إدارة مخزون المستودع والحاسبة المالية ---
+        // --- 11. إدارة بيانات المستودع ---
         function renderWarehouseAnalytics() {
             const commission = warehouseMonthlySalesVolume * 0.01;
             const netProfit = warehouseMonthlySalesVolume - commission;
@@ -1279,7 +1498,7 @@ ${itemsListText}
             const stock = parseInt(document.getElementById('new-med-stock').value);
 
             if (!name || isNaN(price) || isNaN(stock)) {
-                showToastNotification("يرجى ملء جميع حقول المستحضر بشكل صحيح");
+                showToastNotification("يرجى ملء جميع حقول المستحضر بدقة");
                 return;
             }
 
@@ -1298,16 +1517,15 @@ ${itemsListText}
             document.getElementById('new-med-price').value = '';
             document.getElementById('new-med-stock').value = '';
 
-            showToastNotification("تمت إضافة المستحضر للمخزون بنجاح");
+            showToastNotification("تم إضافة المستحضر إلى المخزون بنجاح");
         }
 
         function deleteMedication(id) {
             catalogMedications = catalogMedications.filter(m => m.id !== id);
             renderWarehouseTable();
-            showToastNotification("تم حذف المستحضر من المخزون");
+            showToastNotification("تم حذف المستحضر من قائمة المخزون");
         }
 
-        // --- 12. تسجيل الخروج ---
         function resetAndLogout() {
             switchScreen('screen-welcome');
             document.getElementById('cart-floating-btn').style.display = 'none';
@@ -1316,7 +1534,6 @@ ${itemsListText}
             }, 400);
         }
 
-        // --- 13. شريط الإشعارات (Toast) ---
         function showToastNotification(message) {
             const toast = document.getElementById('app-toast-bar');
             const toastText = document.getElementById('toast-message-text');
