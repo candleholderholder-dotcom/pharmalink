@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zone | السوق الطلابي الذكي</title>
 
-    <!-- استدعاء خط Cairo من Google Fonts -->
+    <!-- استدعاء خط Cairo المعتمد من Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -236,6 +236,9 @@
             margin-top: 10px;
             box-shadow: 0 4px 18px var(--orange-neon-glow);
             transition: var(--transition-smooth);
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
         }
 
         .btn-action-primary:hover {
@@ -454,7 +457,7 @@
         }
 
         /* ===================================================
-       4. شاشة الانتظار للموافقة اليدوية (Pending Screen)
+       4. شاشة الانتظار الديناميكية والمراجعة (Pending Screen)
        =================================================== */
         #pending-screen {
             min-height: 100vh;
@@ -481,6 +484,7 @@
             text-align: center;
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
             position: relative;
+            transition: border-color 0.4s ease;
         }
 
         .pending-pulse-circle {
@@ -495,6 +499,7 @@
             justify-content: center;
             position: relative;
             animation: pulseGlow 1.8s infinite;
+            transition: all 0.4s ease;
         }
 
         .pending-spinner {
@@ -504,6 +509,12 @@
             border-top-color: var(--orange-neon);
             border-radius: 50%;
             animation: spin 1s linear infinite;
+        }
+
+        .pending-icon-static {
+            display: none;
+            font-size: 2rem;
+            line-height: 1;
         }
 
         @keyframes spin {
@@ -530,6 +541,7 @@
             font-size: 1.45rem;
             font-weight: 800;
             margin-bottom: 12px;
+            transition: color 0.4s ease;
         }
 
         .pending-msg {
@@ -537,6 +549,7 @@
             font-size: 0.95rem;
             margin-bottom: 24px;
             line-height: 1.7;
+            transition: color 0.4s ease;
         }
 
         .pending-id-badge {
@@ -548,6 +561,57 @@
             font-size: 0.85rem;
             color: var(--orange-neon);
             font-weight: 800;
+        }
+
+        /* حالات الـ Callback التفاعلية لشاشة الانتظار */
+        /* حالة المراجعة (Wait State - أصفر) */
+        .pending-card.state-wait {
+            border-color: #ffb300;
+        }
+
+        .pending-card.state-wait .pending-pulse-circle {
+            border-color: #ffb300;
+            background: rgba(255, 179, 0, 0.1);
+            box-shadow: 0 0 20px rgba(255, 179, 0, 0.35);
+        }
+
+        .pending-card.state-wait .pending-spinner {
+            border-top-color: #ffb300;
+            border-color: rgba(255, 179, 0, 0.2);
+        }
+
+        .pending-card.state-wait .pending-title {
+            color: #ffb300;
+        }
+
+        /* حالة الرفض (Reject State - أحمر) */
+        .pending-card.state-rejected {
+            border-color: #ff5252;
+        }
+
+        .pending-card.state-rejected .pending-pulse-circle {
+            border-color: #ff5252;
+            background: rgba(255, 82, 82, 0.15);
+            animation: none;
+            box-shadow: 0 0 20px rgba(255, 82, 82, 0.4);
+        }
+
+        .pending-card.state-rejected .pending-spinner {
+            display: none;
+        }
+
+        .pending-card.state-rejected .pending-icon-static {
+            display: block;
+            color: #ff5252;
+        }
+
+        .pending-card.state-rejected .pending-title {
+            color: #ff5252;
+        }
+
+        #retry-pay-btn {
+            display: none;
+            margin-top: 18px;
         }
 
         /* ===================================================
@@ -948,17 +1012,23 @@
         </div>
     </section>
 
-    <!-- 4. شاشة الانتظار للموافقة اليدوية (Pending Screen) -->
+    <!-- 4. شاشة الانتظار الديناميكية والمراجعة (Pending Screen) -->
     <section id="pending-screen">
-        <div class="pending-card">
+        <div class="pending-card" id="pending-status-card">
             <div class="pending-pulse-circle">
                 <div class="pending-spinner"></div>
+                <div class="pending-icon-static">✖</div>
             </div>
-            <h2 class="pending-title">جاري التحقق من الحوالة</h2>
-            <p class="pending-msg">
+            <h2 class="pending-title" id="pending-title-text">جاري التحقق من الحوالة</h2>
+            <p class="pending-msg" id="pending-msg-text">
                 جاري التحقق من الحوالة وتفعيل حسابك من قبل الإدارة في تلغرام بشكل حي.. يرجى عدم إغلاق الصفحة.
             </p>
-            <div class="pending-id-badge" id="display-user-id">معرف الحساب: STU_------</div>
+            <div class="pending-id-badge" id="display-user-id">معرف الحساب: STU------</div>
+
+            <!-- زر إعادة المحاولة يظهر عند الرفض -->
+            <button class="btn-action-primary" id="retry-pay-btn" onclick="window.location.reload();">
+                العودة وتجربة الدفع مجدداً
+            </button>
         </div>
     </section>
 
@@ -1002,8 +1072,8 @@
         const TELEGRAM_BOT_TOKEN = "8757174068:AAEdk_fNRchcGTm47kpro49FEzOVXSGVX3k";
         const TELEGRAM_CHAT_ID = "8717720399";
 
-        // توليد معرف عشوائي فريد لكل طالب
-        let currentUserId = "STU_" + Math.floor(100000 + Math.random() * 900000);
+        // توليد معرف عشوائي فريد لكل طالب بصيغة STU123456
+        let currentUserId = "STU" + Math.floor(100000 + Math.random() * 900000);
         let selectedPlanName = "باقة سنوي ذكي (10$)";
         let selectedPaymentName = "شام كاش (Cham Cash)";
         let studentData = {};
@@ -1149,14 +1219,14 @@
                     displayUserId.textContent = `معرف الحساب: ${currentUserId}`;
                 }, 300);
 
-                // إرسال تفاصيل العملية إلى Telegram Bot
+                // إرسال تفاصيل العملية مع Inline Keyboards إلى Telegram Bot
                 sendNotificationToTelegram();
 
-                // بدء الاستماع العكسي الحقيقي كل 3 ثوانٍ
+                // بدء الاستماع العكسي الحقيقي للـ Callback Queries كل 3 ثوانٍ
                 startTelegramPolling();
             });
 
-            // دالة إرسال الرسالة إلى تلغرام
+            // دالة إرسال الرسالة إلى تلغرام مع الأزرار التفاعلية الشفافة (Inline Keyboard)
             function sendNotificationToTelegram() {
                 const now = new Date();
                 const formattedDate = now.toLocaleDateString("ar-SY", {
@@ -1179,28 +1249,44 @@
 ⏰ *الوقت والتاريخ:* ${formattedDate} - ${formattedTime}
 
 ---------------------------------------
-🔑 *لتفعيل حساب الطالب فوراً، انسخ هذا الكود وأرسله هنا:*
-\`activate_${currentUserId}\`
+👇 *اختر الإجراء المباشر للطالب عبر الأزرار:*
         `.trim();
 
-                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                // تضمين الأزرار التفاعلية الشفافة (Inline Keyboard)
+                const replyMarkup = {
+                    inline_keyboard: [
+                        [
+                            { text: "🟢 قبول وتفعيل", callback_data: `ok_${currentUserId}` },
+                            { text: "🟡 انتظار ومراجعة", callback_data: `wait_${currentUserId}` }
+                        ],
+                        [
+                            { text: "🔴 رفض وإغلاق", callback_data: `no_${currentUserId}` }
+                        ]
+                    ]
+                };
+
+                const url = `https://telegram.org${TELEGRAM_BOT_TOKEN}/sendMessage`;
                 fetch(url, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         chat_id: TELEGRAM_CHAT_ID,
                         text: messageText,
-                        parse_mode: "Markdown"
+                        parse_mode: "Markdown",
+                        reply_markup: replyMarkup
                     })
                 }).catch(err => console.error("Error sending message to Telegram:", err));
             }
 
-            // دالة الاستماع المتكرر للتحديثات (getUpdates) كل 3 ثوانٍ
+            // دالة الاستماع العكسي الدوري (getUpdates) لفحص الـ Callback Queries وتحديث الحالات لحظياً
             function startTelegramPolling() {
-                const activationCommand = `activate_${currentUserId}`;
+                const statusCard = document.getElementById("pending-status-card");
+                const titleText = document.getElementById("pending-title-text");
+                const msgText = document.getElementById("pending-msg-text");
+                const retryBtn = document.getElementById("retry-pay-btn");
 
                 pollingInterval = setInterval(() => {
-                    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=2`;
+                    const url = `https://telegram.org${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=2`;
 
                     fetch(url)
                         .then(res => res.json())
@@ -1208,13 +1294,34 @@
                             if (data.ok && data.result.length > 0) {
                                 for (let update of data.result) {
                                     lastUpdateId = update.update_id;
-                                    const text = (update.message && update.message.text) ? update.message.text.trim() : "";
 
-                                    // فحص كود التفعيل الموجه لهذا المعرف بالذات
-                                    if (text === activationCommand) {
-                                        clearInterval(pollingInterval);
-                                        unlockMarket();
-                                        break;
+                                    // فحص أزرار الـ Callback القادمة من التيليجرام
+                                    if (update.callback_query && update.callback_query.data) {
+                                        const callbackData = update.callback_query.data.trim();
+
+                                        // 1. حالة القبول (ok) -> فك القفل فوراً
+                                        if (callbackData === `ok_${currentUserId}`) {
+                                            clearInterval(pollingInterval);
+                                            unlockMarket();
+                                            break;
+                                        }
+
+                                        // 2. حالة الانتظار والمراجعة (wait) -> تبديل النصوص وتغيير اللون للأصفر
+                                        else if (callbackData === `wait_${currentUserId}`) {
+                                            statusCard.className = "pending-card state-wait";
+                                            titleText.textContent = "تم وضع حسابك قيد المراجعة";
+                                            msgText.textContent = "جاري تدقيق تفاصيل عملية الدفع الخاصة بك حالياً من قبل الإدارة، يرجى الانتظار.";
+                                        }
+
+                                        // 3. حالة الرفض والإغلاق (no) -> إيقاف التكرار، التحول للأحمر، وإظهار زر إعادة المحاولة
+                                        else if (callbackData === `no_${currentUserId}`) {
+                                            clearInterval(pollingInterval);
+                                            statusCard.className = "pending-card state-rejected";
+                                            titleText.textContent = "لم نتمكن من تأكيد الدفع";
+                                            msgText.textContent = "نعتذر منك، لقد تم رفض طلب التفعيل لعدم مطابقة الحوالة المالية. يرجى إعادة المحاولة والتحقق من عملية الدفع.";
+                                            retryBtn.style.display = "inline-block";
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -1253,6 +1360,7 @@
               </div>
               <h3 class="card-name">${item.title}</h3>
               
+              <!-- مؤشر السعر العادل (Fair Price Guide) -->
               <div class="fair-guide">
                 <span class="guide-dot ${dotClass}"></span>
                 <span>مؤشر السعر: ${item.fairText}</span>
