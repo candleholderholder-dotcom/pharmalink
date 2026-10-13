@@ -4,31 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zone | السوق الطلابي الذكي</title>
-
-    <!-- استدعاء خط Cairo المعتمد من Google Fonts -->
+    <title>ZONE - المنصة الطلابية السورية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            --bg-navy-dark: #0b132b;
-            --bg-navy-surface: #121c3b;
-            --bg-navy-card: #1c2b52;
-            --border-navy: #243666;
-            --orange-neon: #ff5a00;
-            --orange-neon-hover: #ff7324;
-            --orange-neon-glow: rgba(255, 90, 0, 0.45);
-            --text-main: #f0f4f8;
-            --text-muted: #8fa2c4;
-            --status-great: #00e676;
-            --status-fair: #ffb300;
-            --status-high: #ff5252;
-            --radius-sm: 8px;
-            --radius-md: 14px;
-            --radius-lg: 20px;
-            --transition-smooth: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-dark: #0b132b;
+            --bg-card: #141f3d;
+            --bg-card-hover: #1c2b54;
+            --primary: #ff5a00;
+            --primary-glow: rgba(255, 90, 0, 0.35);
+            --text-light: #f8f9fa;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -40,1364 +33,1042 @@
         }
 
         body {
-            background-color: var(--bg-navy-dark);
-            color: var(--text-main);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* ===================================================
-       1. الشاشة الترحيبية (Splash Screen)
-       =================================================== */
-        #splash-screen {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, #16244d 0%, var(--bg-navy-dark) 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-
-        #splash-screen.fade-out {
+        .screen {
+            display: none;
             opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .splash-logo-container {
-            text-align: center;
-            animation: pulseBrand 2s ease-in-out infinite;
-        }
-
-        .splash-logo-text {
-            font-size: 5.5rem;
-            font-weight: 900;
-            letter-spacing: -2px;
-            line-height: 1;
-            color: var(--text-main);
-        }
-
-        .splash-logo-text span {
-            color: var(--orange-neon);
-            text-shadow: 0 0 30px var(--orange-neon-glow);
-        }
-
-        .splash-subtitle {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            margin-top: 14px;
-            font-weight: 700;
-        }
-
-        .splash-loader {
-            margin-top: 30px;
-            width: 50px;
-            height: 4px;
-            background: var(--border-navy);
-            border-radius: 4px;
-            overflow: hidden;
+            transition: opacity 0.4s ease-in-out;
+            width: 100%;
+            min-height: 100vh;
             position: relative;
         }
 
-        .splash-loader::after {
-            content: '';
-            position: absolute;
-            left: -100%;
-            top: 0;
-            height: 100%;
-            width: 100%;
-            background: var(--orange-neon);
-            animation: fillProgress 1.8s ease-in-out forwards;
-        }
-
-        @keyframes fillProgress {
-            0% {
-                left: -100%;
-            }
-
-            100% {
-                left: 100%;
-            }
-        }
-
-        @keyframes pulseBrand {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.02);
-            }
-        }
-
-        /* ===================================================
-       2. صفحة تسجيل البيانات (Sign Up Screen)
-       =================================================== */
-        #signup-screen {
-            min-height: 100vh;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        #signup-screen.active {
+        .screen.active {
             display: flex;
+            flex-direction: column;
             opacity: 1;
         }
 
-        .auth-card {
-            background: var(--bg-navy-surface);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-lg);
-            padding: 38px 30px;
-            width: 100%;
-            max-width: 480px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-
-        .auth-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--orange-neon), transparent);
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .auth-brand {
-            font-size: 2.3rem;
-            font-weight: 900;
-            margin-bottom: 4px;
-        }
-
-        .auth-brand span {
-            color: var(--orange-neon);
-        }
-
-        .auth-desc {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.88rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .form-control {
-            width: 100%;
-            background: var(--bg-navy-dark);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-sm);
-            padding: 12px 14px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            outline: none;
-            transition: var(--transition-smooth);
-        }
-
-        .form-control:focus {
-            border-color: var(--orange-neon);
-            box-shadow: 0 0 0 3px var(--orange-neon-glow);
-        }
-
-        .btn-action-primary {
-            width: 100%;
-            background: var(--orange-neon);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            padding: 14px;
-            font-size: 1.05rem;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 4px 18px var(--orange-neon-glow);
-            transition: var(--transition-smooth);
-            display: inline-block;
-            text-align: center;
-            text-decoration: none;
-        }
-
-        .btn-action-primary:hover {
-            background: var(--orange-neon-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(255, 90, 0, 0.55);
-        }
-
-        /* ===================================================
-       3. صفحة بوابات الدفع وقفل التطبيق (The Paywall)
-       =================================================== */
-        #paywall-screen {
-            min-height: 100vh;
-            display: none;
-            align-items: center;
+        /* --- SCREEN 1: SPLASH SCREEN --- */
+        #screen-splash {
             justify-content: center;
-            padding: 30px 20px;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        #paywall-screen.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .paywall-wrapper {
-            background: var(--bg-navy-surface);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-lg);
-            padding: 36px 26px;
-            width: 100%;
-            max-width: 620px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-            position: relative;
-        }
-
-        .paywall-badge {
-            display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(255, 90, 0, 0.12);
-            color: var(--orange-neon);
-            border: 1px solid rgba(255, 90, 0, 0.3);
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            margin-bottom: 12px;
+            background: radial-gradient(circle at center, #141f3d 0%, #0b132b 80%);
         }
 
-        .paywall-title {
-            font-size: 1.8rem;
+        .splash-content {
+            text-align: center;
+        }
+
+        .splash-logo {
+            font-size: 4.5rem;
             font-weight: 900;
-            line-height: 1.25;
-            margin-bottom: 8px;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-shadow: 0 0 25px var(--primary-glow);
+            animation: pulseLogo 1.5s infinite alternate;
         }
 
-        .paywall-subtitle {
+        .splash-sub {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 24px;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        @media (min-width: 580px) {
-            .pricing-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .pricing-card {
-            background: var(--bg-navy-card);
-            border: 2px solid var(--border-navy);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .pricing-card:hover {
-            border-color: rgba(255, 90, 0, 0.5);
-        }
-
-        .pricing-card.selected {
-            border-color: var(--orange-neon);
-            background: linear-gradient(180deg, rgba(255, 90, 0, 0.08) 0%, var(--bg-navy-card) 100%);
-            box-shadow: 0 0 20px var(--orange-neon-glow);
-        }
-
-        .ribbon-smart {
-            position: absolute;
-            top: -12px;
-            left: 16px;
-            background: var(--orange-neon);
-            color: #fff;
-            font-size: 0.72rem;
-            font-weight: 900;
-            padding: 2px 10px;
-            border-radius: 12px;
-        }
-
-        .plan-title {
-            font-size: 1.15rem;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .plan-price {
-            font-size: 1.45rem;
-            font-weight: 900;
-            color: var(--orange-neon);
-            margin-bottom: 12px;
-        }
-
-        .plan-price span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 5px;
             font-weight: 600;
         }
 
-        .plan-features {
-            list-style: none;
-            font-size: 0.83rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-navy);
-            padding-top: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .plan-features li::before {
-            content: "✔ ";
-            color: var(--orange-neon);
-            font-weight: 900;
-        }
-
-        /* خيارات وسيلة الدفع مع الـ Active State الحركي */
-        .payment-methods-box {
-            margin-bottom: 22px;
-        }
-
-        .methods-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 12px;
-        }
-
-        .payment-methods-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-
-        @media (min-width: 480px) {
-            .payment-methods-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .payment-method-box {
-            background: var(--bg-navy-card);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-sm);
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            color: var(--text-main);
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: var(--transition-smooth);
-            position: relative;
-            user-select: none;
-        }
-
-        .payment-method-box:hover {
-            border-color: rgba(255, 90, 0, 0.4);
-        }
-
-        /* الحالة النشطة: التحول المباشر إلى البرتقالي المشرق */
-        .payment-method-box.active {
-            background-color: var(--orange-neon) !important;
-            border-color: var(--orange-neon) !important;
-            color: #ffffff !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px var(--orange-neon-glow);
-        }
-
-        .payment-method-box.active .method-badge-rec {
-            background: #ffffff;
-            color: var(--orange-neon);
-        }
-
-        .method-badge-rec {
-            background: var(--orange-neon);
-            color: #ffffff;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 800;
-            transition: var(--transition-smooth);
-        }
-
-        /* ===================================================
-       4. شاشة الانتظار الديناميكية والمراجعة (Pending Screen)
-       =================================================== */
-        #pending-screen {
-            min-height: 100vh;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        #pending-screen.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .pending-card {
-            background: var(--bg-navy-surface);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-lg);
-            padding: 45px 30px;
-            width: 100%;
-            max-width: 520px;
-            text-align: center;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
-            position: relative;
-            transition: border-color 0.4s ease;
-        }
-
-        .pending-pulse-circle {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 24px;
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 90, 0, 0.15);
+            border-top: 4px solid var(--primary);
             border-radius: 50%;
-            background: rgba(255, 90, 0, 0.1);
-            border: 2px solid var(--orange-neon);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            animation: pulseGlow 1.8s infinite;
-            transition: all 0.4s ease;
-        }
-
-        .pending-spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid rgba(255, 90, 0, 0.2);
-            border-top-color: var(--orange-neon);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .pending-icon-static {
-            display: none;
-            font-size: 2rem;
-            line-height: 1;
+            margin: 30px auto 0;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
             100% {
                 transform: rotate(360deg);
             }
         }
 
-        @keyframes pulseGlow {
+        @keyframes pulseLogo {
             0% {
-                box-shadow: 0 0 0 0 rgba(255, 90, 0, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 16px rgba(255, 90, 0, 0);
+                transform: scale(0.97);
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(255, 90, 0, 0);
+                transform: scale(1.03);
             }
         }
 
-        .pending-title {
-            font-size: 1.45rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            transition: color 0.4s ease;
+        /* --- SCREEN 2: SIGN UP --- */
+        #screen-signup {
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
         }
 
-        .pending-msg {
+        .form-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-light);
+        }
+
+        .card-header span {
+            color: var(--primary);
+        }
+
+        .card-header p {
             color: var(--text-muted);
             font-size: 0.95rem;
-            margin-bottom: 24px;
-            line-height: 1.7;
-            transition: color 0.4s ease;
+            margin-top: 6px;
         }
 
-        .pending-id-badge {
-            display: inline-block;
-            background: var(--bg-navy-dark);
-            border: 1px solid var(--border-navy);
-            padding: 8px 16px;
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            color: var(--orange-neon);
-            font-weight: 800;
+        .form-group {
+            margin-bottom: 18px;
         }
 
-        /* حالات الـ Callback التفاعلية لشاشة الانتظار */
-        /* حالة المراجعة (Wait State - أصفر) */
-        .pending-card.state-wait {
-            border-color: #ffb300;
-        }
-
-        .pending-card.state-wait .pending-pulse-circle {
-            border-color: #ffb300;
-            background: rgba(255, 179, 0, 0.1);
-            box-shadow: 0 0 20px rgba(255, 179, 0, 0.35);
-        }
-
-        .pending-card.state-wait .pending-spinner {
-            border-top-color: #ffb300;
-            border-color: rgba(255, 179, 0, 0.2);
-        }
-
-        .pending-card.state-wait .pending-title {
-            color: #ffb300;
-        }
-
-        /* حالة الرفض (Reject State - أحمر) */
-        .pending-card.state-rejected {
-            border-color: #ff5252;
-        }
-
-        .pending-card.state-rejected .pending-pulse-circle {
-            border-color: #ff5252;
-            background: rgba(255, 82, 82, 0.15);
-            animation: none;
-            box-shadow: 0 0 20px rgba(255, 82, 82, 0.4);
-        }
-
-        .pending-card.state-rejected .pending-spinner {
-            display: none;
-        }
-
-        .pending-card.state-rejected .pending-icon-static {
+        .form-group label {
             display: block;
-            color: #ff5252;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-light);
         }
 
-        .pending-card.state-rejected .pending-title {
-            color: #ff5252;
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
         }
 
-        #retry-pay-btn {
-            display: none;
-            margin-top: 18px;
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
-        /* ===================================================
-       5. واجهة السوق الطلابي (Main Market)
-       =================================================== */
-        #market-screen {
-            display: none;
-            min-height: 100vh;
-            opacity: 0;
-            flex-direction: column;
-            transition: opacity 0.5s ease;
-            padding-bottom: 75px;
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff5a00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: left 12px center;
+            background-size: 16px;
         }
 
-        #market-screen.active {
+        select.form-control option {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
             display: flex;
-            opacity: 1;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px var(--primary-glow);
+            margin-top: 10px;
         }
 
-        .market-header {
-            background: rgba(18, 28, 59, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-navy);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 14px 24px;
+        .btn-primary:hover {
+            opacity: 0.92;
+            transform: translateY(-2px);
         }
 
-        .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* --- SCREEN 3: PAYWALL --- */
+        #screen-paywall {
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .paywall-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 6px;
         }
 
-        .brand-wrap {
-            display: flex;
-            flex-direction: column;
+        .plans-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 24px;
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            line-height: 1.1;
-            color: var(--text-main);
-            text-decoration: none;
+        .selectable-card {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            user-select: none;
         }
 
-        .logo span {
-            color: var(--orange-neon);
-            text-shadow: 0 0 15px var(--orange-neon-glow);
+        .selectable-card:hover {
+            border-color: var(--text-muted);
         }
 
-        .premium-activated-tag {
-            color: var(--orange-neon);
-            font-size: 0.8rem;
-            font-weight: 800;
-            margin-top: 2px;
+        .selectable-card.selected {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px var(--primary-glow);
         }
 
-        .student-tag {
-            background: var(--bg-navy-card);
-            border: 1px solid var(--border-navy);
-            padding: 6px 14px;
+        .selectable-card.selected * {
+            color: #ffffff !important;
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 2px 6px;
             border-radius: 20px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
             font-weight: 700;
         }
 
-        .market-body {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 26px 20px 40px;
-        }
-
-        .market-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background: var(--bg-navy-surface);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: var(--transition-smooth);
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--orange-neon);
-            box-shadow: 0 10px 25px rgba(255, 90, 0, 0.15);
-        }
-
-        .type-pill {
-            font-size: 0.72rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 8px;
-            background: var(--bg-navy-card);
-            color: var(--text-muted);
-        }
-
-        .card-meta {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-muted);
-            font-size: 0.82rem;
-            margin-bottom: 6px;
-        }
-
-        .card-name {
-            font-size: 1.15rem;
+        .plan-title {
+            font-size: 1.05rem;
             font-weight: 800;
             margin-bottom: 4px;
         }
 
-        .card-faculty {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 12px;
+        .plan-price {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 6px;
         }
 
-        .fair-guide {
-            background: var(--bg-navy-dark);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-sm);
-            padding: 6px 10px;
-            font-size: 0.78rem;
+        .plan-features {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .method-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            font-size: 0.85rem;
             font-weight: 700;
+        }
+
+        /* --- SCREEN 4: PENDING SCREEN --- */
+        #screen-pending {
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .pending-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px 24px;
+            max-width: 460px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .pending-title {
+            color: var(--primary);
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .pending-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+
+        .pulse-ring {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            animation: ringPulse 1.2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes ringPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+                border-color: #ff8138;
+            }
+
+            100% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+        }
+
+        /* --- SCREEN 5: PREMIUM MARKET --- */
+        #screen-market {
+            padding-bottom: 70px;
+        }
+
+        header.market-header {
+            background-color: #0f1a3a;
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-box {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .premium-tag {
+            background-color: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--success);
+            color: var(--success);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-bottom: 14px;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
         }
 
-        .guide-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .guide-dot.great {
-            background: var(--status-great);
-            box-shadow: 0 0 6px var(--status-great);
-        }
-
-        .guide-dot.fair {
-            background: var(--status-fair);
-            box-shadow: 0 0 6px var(--status-fair);
-        }
-
-        .guide-dot.high {
-            background: var(--status-high);
-            box-shadow: 0 0 6px var(--status-high);
-        }
-
-        .card-bottom {
-            border-top: 1px solid var(--border-navy);
-            padding-top: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .price-wrap {
+        .market-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
             display: flex;
             flex-direction: column;
+            gap: 28px;
+            width: 100%;
         }
 
-        .price-val {
-            color: var(--orange-neon);
+        .market-section-title {
             font-size: 1.25rem;
-            font-weight: 900;
-            line-height: 1.1;
-        }
-
-        .price-unit {
-            color: var(--text-muted);
-            font-size: 0.72rem;
-        }
-
-        .btn-contact {
-            background: transparent;
-            color: var(--orange-neon);
-            border: 1px solid var(--orange-neon);
-            border-radius: var(--radius-sm);
-            padding: 7px 14px;
-            font-size: 0.86rem;
             font-weight: 800;
-            cursor: pointer;
-            transition: var(--transition-smooth);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-right: 4px solid var(--primary);
+            padding-right: 8px;
+        }
+
+        .cards-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .market-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .market-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 90, 0, 0.3);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .fair-price-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 8px;
             white-space: nowrap;
         }
 
-        .btn-contact:hover {
-            background: var(--orange-neon);
-            color: #fff;
-            box-shadow: 0 0 12px var(--orange-neon-glow);
+        .fair-price-tag.fair-good {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.4);
         }
 
-        .safe-hub-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(18, 28, 59, 0.96);
-            backdrop-filter: blur(8px);
-            border-top: 2px solid var(--orange-neon);
-            padding: 10px 16px;
-            z-index: 90;
-            text-align: center;
+        .fair-price-tag.fair-high {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .card-desc {
             font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-main);
+            color: var(--text-muted);
+            line-height: 1.4;
         }
 
-        /* Modal صندوق التواصل */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(5px);
-            display: none;
+        .card-price-row {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            z-index: 1000;
+        }
+
+        .card-price {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .card-actions {
+            margin-top: 4px;
+        }
+
+        .btn-card {
+            width: 100%;
+            padding: 9px;
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-card:hover {
+            opacity: 0.9;
+        }
+
+        .wishlist-box {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #172447 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
             padding: 20px;
         }
 
-        .modal-overlay.active {
+        .wishlist-form {
             display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            flex-wrap: wrap;
         }
 
-        .modal-box {
-            background: var(--bg-navy-surface);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-md);
-            padding: 26px;
-            max-width: 420px;
+        .wishlist-form input {
+            flex: 1 1 200px;
+        }
+
+        .wishlist-form button {
+            flex: 0 0 auto;
+            width: auto;
+            padding: 10px 22px;
+            margin-top: 0;
+        }
+
+        .fixed-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
+            background-color: #080e21;
+            border-top: 1px solid var(--border-color);
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        }
-
-        .modal-box h3 {
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .modal-box p {
+            padding: 12px 16px;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            font-size: 0.92rem;
-            margin-bottom: 20px;
+            z-index: 99;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.4);
         }
 
-        .btn-modal-close {
-            background: var(--orange-neon);
-            color: #fff;
-            border: none;
-            padding: 8px 22px;
-            border-radius: var(--radius-sm);
-            font-weight: 800;
-            cursor: pointer;
+        @media (max-width: 600px) {
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- 1. الشاشة الترحيبية (Splash Screen) -->
-    <div id="splash-screen">
-        <div class="splash-logo-container">
-            <div class="splash-logo-text">Z<span>one</span></div>
-            <div class="splash-subtitle">السوق الطلابي الذكي | الجامعات السورية</div>
-            <div class="splash-loader"></div>
+    <!-- الشاشة 1: شاشة البداية (Splash Screen) -->
+    <section id="screen-splash" class="screen active">
+        <div class="splash-content">
+            <h1 class="splash-logo">ZONE</h1>
+            <p class="splash-sub">المنصة الطلابية السورية الشاملة</p>
+            <div class="spinner"></div>
         </div>
-    </div>
+    </section>
 
-    <!-- 2. صفحة تسجيل البيانات (Sign Up Screen) -->
-    <main id="signup-screen">
-        <div class="auth-card">
-            <div class="auth-header">
-                <h1 class="auth-brand">Z<span>one</span></h1>
-                <p class="auth-desc">سجل بياناتك الجامعية للمتابعة وتفعيل الحساب</p>
+    <!-- الشاشة 2: تسجيل بيانات الطالب (Sign Up) -->
+    <section id="screen-signup" class="screen">
+        <div class="form-card">
+            <div class="card-header">
+                <h2>مرحباً بك في <span>ZONE</span></h2>
+                <p>سجّل بياناتك الأكاديمية للوصول لخدمات مجتمعك الجامعي</p>
             </div>
-
             <form id="signup-form">
                 <div class="form-group">
-                    <label for="student-name">الاسم الكامل</label>
-                    <input type="text" id="student-name" class="form-control" placeholder="مثال: يحيى جمال" required>
+                    <label for="student-name">الاسم الثلاثي الكامل</label>
+                    <input type="text" id="student-name" class="form-control" placeholder="محمد يحيى جمال" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="student-uni">الجامعة</label>
-                    <select id="student-uni" class="form-control" required>
-                        <option value="" disabled selected>اختر الجامعة</option>
+                    <label for="student-univ">الجامعة</label>
+                    <select id="student-univ" class="form-control" required>
+                        <option value="" disabled selected>اختر جامعتك...</option>
                         <option value="جامعة دمشق">جامعة دمشق</option>
                         <option value="جامعة حلب">جامعة حلب</option>
                         <option value="جامعة تشرين">جامعة تشرين</option>
                         <option value="جامعة البعث">جامعة البعث</option>
-                        <option value="جامعة طرطوس">جامعة طرطوس</option>
                         <option value="جامعة حماة">جامعة حماة</option>
-                        <option value="جامعة خاصة / افتراضية">جامعة خاصة / افتراضية</option>
+                        <option value="الجامعة الافتراضية السورية">الجامعة الافتراضية السورية</option>
+                        <option value="الجامعات الخاصة">الجامعات الخاصة</option>
                     </select>
                 </div>
-
                 <div class="form-group">
-                    <label for="student-faculty">الكلية</label>
-                    <input type="text" id="student-faculty" class="form-control" placeholder="مثال: الهندسة الميكانيكية"
-                        required>
+                    <label for="student-faculty">الكلية / الاختصاص</label>
+                    <input type="text" id="student-faculty" class="form-control"
+                        placeholder="مثال: الهندسة الميكانيكية، المعلوماتية، الطب..." required>
                 </div>
-
                 <div class="form-group">
-                    <label for="student-phone">رقم الموبايل</label>
-                    <input type="tel" id="student-phone" class="form-control" placeholder="09xxxxxxxx" required
-                        pattern="[0-9]{10}">
+                    <label for="student-phone">رقم الموبايل الشخصي</label>
+                    <input type="tel" id="student-phone" class="form-control" placeholder="09xxxxxxxx" required>
                 </div>
-
-                <button type="submit" class="btn-action-primary">تسجيل وحفظ البيانات</button>
+                <button type="submit" class="btn-primary">
+                    تسجيل وحفظ البيانات
+                </button>
             </form>
         </div>
-    </main>
+    </section>
 
-    <!-- 3. صفحة بوابات الدفع وقفل التطبيق (The Paywall) -->
-    <section id="paywall-screen">
-        <div class="paywall-wrapper">
-            <div class="paywall-badge">قفل التفعيل المالي</div>
-            <h2 class="paywall-title">اشترك الآن لفتح سوق ZONE الطلابي</h2>
-            <p class="paywall-subtitle">اختر باقة الاشتراك المناسبة لإتمام تفعيل حسابك والوصول للمستلزمات الجامعية.</p>
+    <!-- الشاشة 3: بوابة الدفع والاشتراك (The Paywall Gate) -->
+    <section id="screen-paywall" class="screen">
+        <div class="paywall-card">
+            <div class="card-header">
+                <h2>تفعيل اشتراك <span>ZONE</span></h2>
+                <p>اختر الباقة المناسبة وطريقة الدفع لتفعيل حسابك الأكاديمي</p>
+            </div>
 
-            <!-- بطاقات الأسعار -->
-            <div class="pricing-grid">
-                <!-- باقة شهري -->
-                <div class="pricing-card" onclick="selectPlan(this, 'باقة شهري (1$)')">
-                    <div>
-                        <div class="plan-title">باقة شهري</div>
-                        <div class="plan-price">15,000 <span>ل.س / شهرياً (1$)</span></div>
+            <div class="section-title">1. حدد باقة الاشتراك:</div>
+            <div class="plans-grid">
+                <div class="selectable-card plan-item" data-plan="شهري (1$ ما يعادلها بالليرة)">
+                    <div class="plan-title">باقة شهري</div>
+                    <div class="plan-price">1$ <span style="font-size: 0.8rem; font-weight: normal;">(بالليرة)</span>
                     </div>
-                    <ul class="plan-features">
-                        <li>تصفح كامل السوق الطلابي لمدة 30 يوماً</li>
-                        <li>التواصل المباشر مع البائعين</li>
-                    </ul>
+                    <div class="plan-features">تصفح السوق الطلابي والوصول للأدوات والملخصات طيلة الشهر.</div>
                 </div>
-
-                <!-- باقة سنوي ذكي (مختارة افتراضياً) -->
-                <div class="pricing-card selected" onclick="selectPlan(this, 'باقة سنوي ذكي (10$)')">
-                    <div class="ribbon-smart">الأكثر توفيراً للطلاب</div>
-                    <div>
-                        <div class="plan-title">باقة سنوي ذكي</div>
-                        <div class="plan-price">150,000 <span>ل.س / سنوياً (10$)</span></div>
+                <div class="selectable-card plan-item selected" data-plan="سنوي ذكي (10$ ما يعادلها بالليرة)">
+                    <span class="plan-badge">الأكثر توفيراً</span>
+                    <div class="plan-title">سنوي ذكي</div>
+                    <div class="plan-price">10$ <span style="font-size: 0.8rem; font-weight: normal;">(بالليرة)</span>
                     </div>
-                    <ul class="plan-features">
-                        <li>توفر ثمن شهرين كاملين</li>
-                        <li>تصفح غير محدود طوال الفصول الدراسية</li>
-                        <li>أولوية الحصول على حزم التوريث وأدوات العملي النادرة فور نزولها</li>
-                    </ul>
+                    <div class="plan-features">وفر شهرين، تصفح غير محدود، أولوية حزم التوريث وأدوات العملي النادرة فور
+                        نزولها.</div>
                 </div>
             </div>
 
-            <!-- خيارات وسيلة الدفع مع التفاعل الحركي المباشر -->
-            <div class="payment-methods-box">
-                <div class="methods-title">اختر وسيلة الدفع المحلية:</div>
-                <div class="payment-methods-grid">
-                    <div class="payment-method-box active" onclick="selectPaymentMethod(this, 'شام كاش (Cham Cash)')">
-                        <span class="method-badge-rec">الأساسي</span>
-                        <span>شام كاش - Cham Cash</span>
+            <div class="section-title">2. اختر وسيلة الدفع المحلية:</div>
+            <div class="payment-methods">
+                <div class="selectable-card method-item selected" data-method="شام كاش (الخيار الرئيسي)">
+                    <div class="method-card">
+                        <span>💳</span>
+                        <span>شام كاش (الرئيسي)</span>
                     </div>
-
-                    <div class="payment-method-box" onclick="selectPaymentMethod(this, 'سيريتل كاش (Syriatel Cash)')">
+                </div>
+                <div class="selectable-card method-item" data-method="سيريتل كاش">
+                    <div class="method-card">
+                        <span>📱</span>
                         <span>سيريتل كاش</span>
                     </div>
-
-                    <div class="payment-method-box" onclick="selectPaymentMethod(this, 'إم تي إن كاش (MTN Cash)')">
+                </div>
+                <div class="selectable-card method-item" data-method="إم تي إن كاش">
+                    <div class="method-card">
+                        <span>🟡</span>
                         <span>إم تي إن كاش</span>
                     </div>
-
-                    <div class="payment-method-box"
-                        onclick="selectPaymentMethod(this, 'شحن بطاقة كرتونية عبر المكتبة')">
-                        <span>شحن بطاقة كرتونية من المكتبة</span>
+                </div>
+                <div class="selectable-card method-item" data-method="شحن بطاقة كرتونية من المكتبة">
+                    <div class="method-card">
+                        <span>🏷️</span>
+                        <span>بطاقة كرتونية من المكتبة</span>
                     </div>
                 </div>
             </div>
 
-            <button class="btn-action-primary" id="btn-confirm-payment">تأكيد الدفع وتفعيل الحساب</button>
+            <button id="btn-confirm-pay" class="btn-primary">تأكيد الدفع وتفعيل الحساب</button>
         </div>
     </section>
 
-    <!-- 4. شاشة الانتظار الديناميكية والمراجعة (Pending Screen) -->
-    <section id="pending-screen">
-        <div class="pending-card" id="pending-status-card">
-            <div class="pending-pulse-circle">
-                <div class="pending-spinner"></div>
-                <div class="pending-icon-static">✖</div>
-            </div>
-            <h2 class="pending-title" id="pending-title-text">جاري التحقق من الحوالة</h2>
-            <p class="pending-msg" id="pending-msg-text">
-                جاري التحقق من الحوالة وتفعيل حسابك من قبل الإدارة في تلغرام بشكل حي.. يرجى عدم إغلاق الصفحة.
-            </p>
-            <div class="pending-id-badge" id="display-user-id">معرف الحساب: STU------</div>
-
-            <!-- زر إعادة المحاولة يظهر عند الرفض -->
-            <button class="btn-action-primary" id="retry-pay-btn" onclick="window.location.reload();">
-                العودة وتجربة الدفع مجدداً
-            </button>
+    <!-- الشاشة 4: المراجعة الحية وقيد الانتظار (Pending & Dynamic Review) -->
+    <section id="screen-pending" class="screen">
+        <div class="pending-card">
+            <div id="pending-spinner" class="pulse-ring"></div>
+            <div id="pending-icon" class="status-icon" style="display: none;"></div>
+            <h3 id="pending-title" class="pending-title">جاري التحقق من الحوالة وتفعيل حسابك</h3>
+            <p id="pending-desc" class="pending-desc">جاري التدقيق من قبل الإدارة في تلغرام بشكل حي.. يرجى عدم إغلاق
+                الصفحة.</p>
+            <button id="btn-reload-pay" class="btn-primary" style="display: none;">العودة وتجربة الدفع مجدداً</button>
         </div>
     </section>
 
-    <!-- 5. واجهة السوق الطلابي (Main Market) -->
-    <div id="market-screen">
+    <!-- الشاشة 5: السوق الطلابي المتكامل (Main Premium Market) -->
+    <section id="screen-market" class="screen">
         <header class="market-header">
-            <div class="header-inner">
-                <div class="brand-wrap">
-                    <a href="#" class="logo">Z<span>one</span></a>
-                    <div class="premium-activated-tag">حسابك مفعّل (Premium) ✅</div>
-                </div>
-                <div id="user-display-tag" class="student-tag">طالب مسجل</div>
+            <div class="logo-box">ZONE</div>
+            <div class="premium-tag">
+                <span>👑</span>
+                <span>حسابك مفعّل (Premium) ✅</span>
             </div>
         </header>
 
-        <main class="market-body">
-            <div class="market-grid" id="market-cards-container">
-                <!-- توليد بطاقات السوق المباشرة عبر JavaScript -->
+        <main class="market-container">
+            <!-- 1 & 2: قسم السوق الأساسي وحزم التوريث + مؤشر السعر العادل -->
+            <div>
+                <h2 class="market-section-title">السوق الطلابي وحزم التوريث الأكاديمية (Batch Bundles)</h2>
+                <div class="cards-row">
+                    <div class="market-card">
+                        <div class="card-top">
+                            <span class="card-name">فرجار هندسي احترافي Rotring</span>
+                            <span class="fair-price-tag fair-good">🟢 سعر ممتاز وعادل</span>
+                        </div>
+                        <p class="card-desc">مستعمل بحالة ممتازة لفصل واحد، مثالي لطلاب العمارة والميكانيك
+                            والميكاترونيكس.</p>
+                        <div class="card-price-row">
+                            <span class="card-price">45,000 ل.س</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="tel:0944000111" class="btn-card">تواصل مع البائع 📞</a>
+                        </div>
+                    </div>
+
+                    <div class="market-card">
+                        <div class="card-top">
+                            <span class="card-name">حزمة توريث: سنة أولى هندسة كاملة</span>
+                            <span class="fair-price-tag fair-good">🟢 سعر ممتاز وعادل</span>
+                        </div>
+                        <p class="card-desc">مسطرة T، مثلثات، بورد رسم، دفاتر عملي، ومراجع ملخصة مع نوط الامتحانات لدفعة
+                            كاملة.</p>
+                        <div class="card-price-row">
+                            <span class="card-price">180,000 ل.س</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="tel:0933111222" class="btn-card">تواصل مع البائع 📞</a>
+                        </div>
+                    </div>
+
+                    <div class="market-card">
+                        <div class="card-top">
+                            <span class="card-name">آلة حاسبة كاسيو fx-991EX أصلية</span>
+                            <span class="fair-price-tag fair-high">🔴 السعر مرتفع عن المعدل</span>
+                        </div>
+                        <p class="card-desc">تدعم حل المعادلات والمصفوفات المعقدة، مستعملة ونظيفة مع البطارية والغطاء
+                            الأصلي.</p>
+                        <div class="card-price-row">
+                            <span class="card-price">310,000 ل.س</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="tel:0955222333" class="btn-card">تواصل مع البائع 📞</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3: قسم تأجير الأدوات المؤقت (Rent My Tools) -->
+            <div>
+                <h2 class="market-section-title">قسم تأجير الأدوات المؤقت (Rent My Tools)</h2>
+                <div class="cards-row">
+                    <div class="market-card">
+                        <div class="card-top">
+                            <span class="card-name">راسم إشارة رقمي محمول (Oscilloscope)</span>
+                            <span class="fair-price-tag fair-good">🟢 إيجار يومي معتمد</span>
+                        </div>
+                        <p class="card-desc">جاهز لمشاريع التخرج والتجارب العملية السريعة لمشاريع التحكم والإلكترونيات.
+                        </p>
+                        <div class="card-price-row">
+                            <span class="card-price">25,000 ل.س / يوم</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="tel:0966333444" class="btn-card">طلب استئجار 🛠️</a>
+                        </div>
+                    </div>
+
+                    <div class="market-card">
+                        <div class="card-top">
+                            <span class="card-name">كيت أردوينو وسنسورات متكامل</span>
+                            <span class="fair-price-tag fair-good">🟢 إيجار أسبوعي</span>
+                        </div>
+                        <p class="card-desc">يحتوي على كافة الحساسات وشاشات LCD ومحركات السيرفو لإنجاز حلقات البحث
+                            الجامعية.</p>
+                        <div class="card-price-row">
+                            <span class="card-price">40,000 ل.س / أسبوع</span>
+                        </div>
+                        <div class="card-actions">
+                            <a href="tel:0988444555" class="btn-card">طلب استئجار 🛠️</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4: رادار الطلب المسبق (Wishlist Radar) -->
+            <div class="wishlist-box">
+                <h2 class="market-section-title" style="border: none; padding: 0;">رادار الطلب المسبق للقطع النادرة
+                    (Wishlist Radar) 📡</h2>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
+                    تبحث عن أداة نادرة غير معروضة؟ انشر طلبك ليظهر لزملاء دفعتك في الجامعة وتستقبل عروضهم فوراً.
+                </p>
+                <form id="wishlist-form" class="wishlist-form">
+                    <input type="text" id="wish-item" class="form-control"
+                        placeholder="اسم الأداة أو القطعة المطلوبة..." required>
+                    <input type="number" id="wish-budget" class="form-control" placeholder="الميزانية المتوقعة (ل.س)..."
+                        required>
+                    <button type="submit" class="btn-primary">بث الطلب في الرادار</button>
+                </form>
             </div>
         </main>
 
-        <aside class="safe-hub-bar">
-            الوسيط المعتمد عبر مكتبة الجامعة (Safe Hub): يمكنك فحص واستلام الأداة وتسليم المبلغ بأمان عبر مكتبة الجامعة
-            المعتمدة.
-        </aside>
-    </div>
-
-    <!-- Modal صندوق التواصل مع البائع -->
-    <div class="modal-overlay" id="contact-modal">
-        <div class="modal-box">
-            <h3 id="modal-item-title">تواصل مع البائع</h3>
-            <p id="modal-item-info">جاري جلب معلومات الاتصال...</p>
-            <button class="btn-modal-close" id="modal-close-btn">إغلاق</button>
-        </div>
-    </div>
+        <!-- 6: الفوتر الثابت والمؤمّن -->
+        <footer class="fixed-footer">
+            🛡️ جميع المعاملات وفحص الأغراض مؤمنة بالكامل عبر مكتبة الجامعة (الوسيط المعتمد Safe Hub)
+        </footer>
+    </section>
 
     <script>
-        /* =========================================================================
-           إعدادات الربط المباشر مع Telegram Bot API
-           ========================================================================= */
-        const TELEGRAM_BOT_TOKEN = "8757174068:AAEdk_fNRchcGTm47kpro49FEzOVXSGVX3k";
-        const TELEGRAM_CHAT_ID = "8717720399";
+        // إعدادات وبيانات التلغرام
+        const TG_CONFIG = {
+            token: "8757174068:AAEdk_fNRchcGTm47kpro49FEzOVXSGVX3k",
+            chatId: "8717720399",
+            botUser: "@ZoneStudent_bot"
+        };
 
-        // توليد معرف عشوائي فريد لكل طالب بصيغة STU123456
-        let currentUserId = "STU" + Math.floor(100000 + Math.random() * 900000);
-        let selectedPlanName = "باقة سنوي ذكي (10$)";
-        let selectedPaymentName = "شام كاش (Cham Cash)";
-        let studentData = {};
+        // الروابط الديناميكية الصحيحة لاستدعاء API التلغرام
+        const TG_SEND_URL = "https://telegram.org" + TG_CONFIG.token + "/sendMessage";
+        const TG_UPDATES_URL = "https://telegram.org" + TG_CONFIG.token + "/getUpdates";
+
+        // إدارة الحالة
+        let studentData = {
+            name: '',
+            univ: '',
+            faculty: '',
+            phone: '',
+            plan: 'سنوي ذكي (10$ ما يعادلها بالليرة)',
+            paymentMethod: 'شام كاش (الخيار الرئيسي)',
+            userId: ''
+        };
+
         let pollingInterval = null;
         let lastUpdateId = 0;
 
-        // قائمة بضائع السوق الطلابي المباشرة
-        const marketProducts = [
-            {
-                id: 1,
-                title: "حزمة توريث طب أسنان كاملة (سنة ثانية)",
-                type: "حزمة توريث دفعة",
-                price: "950,000",
-                faculty: "طب الأسنان",
-                city: "دمشق",
-                fairLevel: "great",
-                fairText: "سعر ممتاز (وفر 40% من السوق)",
-                phone: "0933112233"
-            },
-            {
-                id: 2,
-                title: "طقم أدوات نحت وفحص الأسنان",
-                type: "أدوات طبية",
-                price: "180,000",
-                faculty: "طب الأسنان",
-                city: "حلب",
-                fairLevel: "fair",
-                fairText: "سعر عادل ومناسب للعملي",
-                phone: "0944223344"
-            },
-            {
-                id: 3,
-                title: "حزمة أدوات عمارة متكاملة (مسطرة T + بورد + مثلثات)",
-                type: "حزمة توريث كاملة",
-                price: "320,000",
-                faculty: "الهندسة المعمارية",
-                city: "حمص",
-                fairLevel: "great",
-                fairText: "سعر ممتاز ونادر التوفر",
-                phone: "0955334455"
-            },
-            {
-                id: 4,
-                title: "فرجار هندسي احترافي ألماني الصنع",
-                type: "أدوات هندسية",
-                price: "175,000",
-                faculty: "الهندسة الميكانيكية والمدنية",
-                city: "اللاذقية",
-                fairLevel: "high",
-                fairText: "سعر مرتفع (نظافة وكالة)",
-                phone: "0966445566"
-            },
-            {
-                id: 5,
-                title: "سماعة فحص طبية Littmann Classic III أصلية",
-                type: "أدوات طبية",
-                price: "680,000",
-                faculty: "الطب البشري",
-                city: "حلب",
-                fairLevel: "fair",
-                fairText: "سعر عادل ومطابق للواقع",
-                phone: "0988556677"
-            },
-            {
-                id: 6,
-                title: "نوطة وملخص الكيمياء الحيوية الشاملة",
-                type: "ملخصات جامعية",
-                price: "45,000",
-                faculty: "الصيدلة",
-                city: "دمشق",
-                fairLevel: "great",
-                fairText: "سعر رمزي ممتاز",
-                phone: "0999667788"
+        // دالة التنقل بين الشاشات
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+            });
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo(0, 0);
             }
-        ];
+        }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const splashScreen = document.getElementById("splash-screen");
-            const signupScreen = document.getElementById("signup-screen");
-            const paywallScreen = document.getElementById("paywall-screen");
-            const pendingScreen = document.getElementById("pending-screen");
-            const marketScreen = document.getElementById("market-screen");
-
-            const signupForm = document.getElementById("signup-form");
-            const userDisplayTag = document.getElementById("user-display-tag");
-            const displayUserId = document.getElementById("display-user-id");
-            const btnConfirmPayment = document.getElementById("btn-confirm-payment");
-            const marketCardsContainer = document.getElementById("market-cards-container");
-
-            const contactModal = document.getElementById("contact-modal");
-            const modalItemTitle = document.getElementById("modal-item-title");
-            const modalItemInfo = document.getElementById("modal-item-info");
-            const modalCloseBtn = document.getElementById("modal-close-btn");
-
-            // 1. إدارة الشاشة الترحيبية (ثانيتان تماماً ثم Fade out)
+        // الشاشة 1: سبلاش لمدة ثانيتين ثم الانتقال للشاشة 2
+        window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
-                splashScreen.classList.add("fade-out");
-                setTimeout(() => {
-                    splashScreen.style.display = "none";
-                    signupScreen.classList.add("active");
-                }, 600);
+                navigateTo('screen-signup');
             }, 2000);
+        });
 
-            // 2. تسجيل البيانات والانتقال للـ Paywall
-            signupForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                studentData = {
-                    name: document.getElementById("student-name").value.trim(),
-                    university: document.getElementById("student-uni").value,
-                    faculty: document.getElementById("student-faculty").value.trim(),
-                    phone: document.getElementById("student-phone").value.trim()
-                };
+        // الشاشة 2: حفظ البيانات والانتقال لـ Paywall
+        const signupForm = document.getElementById('signup-form');
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            studentData.name = document.getElementById('student-name').value.trim();
+            studentData.univ = document.getElementById('student-univ').value;
+            studentData.faculty = document.getElementById('student-faculty').value.trim();
+            studentData.phone = document.getElementById('student-phone').value.trim();
 
-                userDisplayTag.textContent = `${studentData.name} | ${studentData.university}`;
-
-                signupScreen.classList.remove("active");
-                setTimeout(() => {
-                    signupScreen.style.display = "none";
-                    paywallScreen.classList.add("active");
-                }, 300);
-            });
-
-            // 3. اختيار الباقة
-            window.selectPlan = function (cardElem, planName) {
-                document.querySelectorAll(".pricing-card").forEach(c => c.classList.remove("selected"));
-                cardElem.classList.add("selected");
-                selectedPlanName = planName;
-            };
-
-            // 4. اختيار وسيلة الدفع (تطبيق الـ Active State الحركي بالبرتقالي المشرق)
-            window.selectPaymentMethod = function (boxElem, methodName) {
-                document.querySelectorAll(".payment-method-box").forEach(b => b.classList.remove("active"));
-                boxElem.classList.add("active");
-                selectedPaymentName = methodName;
-            };
-
-            // 5. تأكيد الدفع وإرسال الإشعار لتلغرام وفتح شاشة الانتظار
-            btnConfirmPayment.addEventListener("click", () => {
-                paywallScreen.classList.remove("active");
-                setTimeout(() => {
-                    paywallScreen.style.display = "none";
-                    pendingScreen.classList.add("active");
-                    displayUserId.textContent = `معرف الحساب: ${currentUserId}`;
-                }, 300);
-
-                // إرسال تفاصيل العملية مع Inline Keyboards إلى Telegram Bot
-                sendNotificationToTelegram();
-
-                // بدء الاستماع العكسي الحقيقي للـ Callback Queries كل 3 ثوانٍ
-                startTelegramPolling();
-            });
-
-            // دالة إرسال الرسالة إلى تلغرام مع الأزرار التفاعلية الشفافة (Inline Keyboard)
-            function sendNotificationToTelegram() {
-                const now = new Date();
-                const formattedDate = now.toLocaleDateString("ar-SY", {
-                    year: "numeric", month: "2-digit", day: "2-digit"
-                });
-                const formattedTime = now.toLocaleTimeString("ar-SY", {
-                    hour: "2-digit", minute: "2-digit", second: "2-digit"
-                });
-
-                const messageText = `
-🔔 *طلب اشتراك جديد في تطبيق ZONE*
-
-👤 *الاسم:* ${studentData.name}
-🏛 *الجامعة:* ${studentData.university}
-📚 *الكلية:* ${studentData.faculty}
-📱 *رقم الموبايل:* ${studentData.phone}
-💎 *الباقة:* ${selectedPlanName}
-💳 *طريقة الدفع:* ${selectedPaymentName}
-🆔 *معرف الطالب:* \`${currentUserId}\`
-⏰ *الوقت والتاريخ:* ${formattedDate} - ${formattedTime}
-
----------------------------------------
-👇 *اختر الإجراء المباشر للطالب عبر الأزرار:*
-        `.trim();
-
-                // تضمين الأزرار التفاعلية الشفافة (Inline Keyboard)
-                const replyMarkup = {
-                    inline_keyboard: [
-                        [
-                            { text: "🟢 قبول وتفعيل", callback_data: `ok_${currentUserId}` },
-                            { text: "🟡 انتظار ومراجعة", callback_data: `wait_${currentUserId}` }
-                        ],
-                        [
-                            { text: "🔴 رفض وإغلاق", callback_data: `no_${currentUserId}` }
-                        ]
-                    ]
-                };
-
-                const url = `https://telegram.org${TELEGRAM_BOT_TOKEN}/sendMessage`;
-                fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: messageText,
-                        parse_mode: "Markdown",
-                        reply_markup: replyMarkup
-                    })
-                }).catch(err => console.error("Error sending message to Telegram:", err));
+            if (!studentData.name || !studentData.univ || !studentData.faculty || !studentData.phone) {
+                alert('يرجى استكمال جميع البيانات بدقة.');
+                return;
             }
 
-            // دالة الاستماع العكسي الدوري (getUpdates) لفحص الـ Callback Queries وتحديث الحالات لحظياً
-            function startTelegramPolling() {
-                const statusCard = document.getElementById("pending-status-card");
-                const titleText = document.getElementById("pending-title-text");
-                const msgText = document.getElementById("pending-msg-text");
-                const retryBtn = document.getElementById("retry-pay-btn");
+            navigateTo('screen-paywall');
+        });
 
-                pollingInterval = setInterval(() => {
-                    const url = `https://telegram.org${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=2`;
+        // الشاشة 3: التفاعل مع البطاقات (باقات ووسائل الدفع)
+        function setupSingleSelection(elementsSelector, propertyName) {
+            const elements = document.querySelectorAll(elementsSelector);
+            elements.forEach(item => {
+                item.addEventListener('click', () => {
+                    elements.forEach(el => el.classList.remove('selected'));
+                    item.classList.add('selected');
+                    if (propertyName === 'plan') {
+                        studentData.plan = item.getAttribute('data-plan');
+                    } else if (propertyName === 'paymentMethod') {
+                        studentData.paymentMethod = item.getAttribute('data-method');
+                    }
+                });
+            });
+        }
 
-                    fetch(url)
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.ok && data.result.length > 0) {
-                                for (let update of data.result) {
-                                    lastUpdateId = update.update_id;
+        setupSingleSelection('.plan-item', 'plan');
+        setupSingleSelection('.method-item', 'paymentMethod');
 
-                                    // فحص أزرار الـ Callback القادمة من التيليجرام
-                                    if (update.callback_query && update.callback_query.data) {
-                                        const callbackData = update.callback_query.data.trim();
+        // زر تأكيد الدفع وإرسال الإشعار لتلغرام
+        const btnConfirmPay = document.getElementById('btn-confirm-pay');
+        btnConfirmPay.addEventListener('click', async () => {
+            // توليد معرف فريد بصيغة STU + 6 أرقام
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            studentData.userId = 'STU' + randomNum;
 
-                                        // 1. حالة القبول (ok) -> فك القفل فوراً
-                                        if (callbackData === `ok_${currentUserId}`) {
-                                            clearInterval(pollingInterval);
-                                            unlockMarket();
-                                            break;
-                                        }
+            const timeString = new Date().toLocaleString('ar-SY', { hour12: true });
 
-                                        // 2. حالة الانتظار والمراجعة (wait) -> تبديل النصوص وتغيير اللون للأصفر
-                                        else if (callbackData === `wait_${currentUserId}`) {
-                                            statusCard.className = "pending-card state-wait";
-                                            titleText.textContent = "تم وضع حسابك قيد المراجعة";
-                                            msgText.textContent = "جاري تدقيق تفاصيل عملية الدفع الخاصة بك حالياً من قبل الإدارة، يرجى الانتظار.";
-                                        }
+            const messageText =
+                `🔔 طلب اشتراك وتفعيل جديد في ZONE!
 
-                                        // 3. حالة الرفض والإغلاق (no) -> إيقاف التكرار، التحول للأحمر، وإظهار زر إعادة المحاولة
-                                        else if (callbackData === `no_${currentUserId}`) {
-                                            clearInterval(pollingInterval);
-                                            statusCard.className = "pending-card state-rejected";
-                                            titleText.textContent = "لم نتمكن من تأكيد الدفع";
-                                            msgText.textContent = "نعتذر منك، لقد تم رفض طلب التفعيل لعدم مطابقة الحوالة المالية. يرجى إعادة المحاولة والتحقق من عملية الدفع.";
-                                            retryBtn.style.display = "inline-block";
-                                            break;
-                                        }
-                                    }
+👤 اسم الطالب: ${studentData.name}
+🏛️ الجامعة: ${studentData.univ}
+📚 الكلية / التخصص: ${studentData.faculty}
+📞 رقم الهاتف: ${studentData.phone}
+💎 الباقة: ${studentData.plan}
+💵 وسيلة التحويل: ${studentData.paymentMethod}
+🆔 معرف الطالب: ${studentData.userId}
+⏰ التوقيت: ${timeString}`;
+
+            const inlineKeyboard = {
+                inline_keyboard: [
+                    [
+                        { text: "🟢 قبول وتفعيل", callback_data: `ok_${studentData.userId}` },
+                        { text: "🟡 انتظار ومراجعة", callback_data: `wait_${studentData.userId}` },
+                        { text: "🔴 رفض وإغلاق", callback_data: `no_${studentData.userId}` }
+                    ]
+                ]
+            };
+
+            // الانتقال المباشر لشاشة الانتظار
+            navigateTo('screen-pending');
+
+            try {
+                // إرسال الرسالة إلى البوت
+                await fetch(TG_SEND_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TG_CONFIG.chatId,
+                        text: messageText,
+                        reply_markup: inlineKeyboard
+                    })
+                });
+            } catch (err) {
+                console.error("فشل الاتصال الأولي بالتلغرام:", err);
+            }
+
+            // بدء مراقبة قرارات الإدارة كل 3 ثوانٍ
+            startTelegramPolling(studentData.userId);
+        });
+
+        // دالة المراقبة العكسية اللحظية (Polling)
+        function startTelegramPolling(targetUserId) {
+            if (pollingInterval) clearInterval(pollingInterval);
+
+            pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(TG_UPDATES_URL + (lastUpdateId ? `?offset=${lastUpdateId + 1}` : ''));
+                    const data = await response.json();
+
+                    if (data.ok && Array.isArray(data.result)) {
+                        for (const update of data.result) {
+                            lastUpdateId = update.update_id;
+
+                            if (update.callback_query && update.callback_query.data) {
+                                const action = update.callback_query.data;
+
+                                // قبول وتفعيل
+                                if (action === `ok_${targetUserId}`) {
+                                    clearInterval(pollingInterval);
+                                    navigateTo('screen-market');
+                                    return;
+                                }
+
+                                // انتظار ومراجعة
+                                if (action === `wait_${targetUserId}`) {
+                                    const titleEl = document.getElementById('pending-title');
+                                    const descEl = document.getElementById('pending-desc');
+                                    titleEl.style.color = 'var(--warning)';
+                                    titleEl.innerText = 'تم وضع حسابك قيد المراجعة 🟡';
+                                    descEl.innerText = 'جاري تدقيق تفاصيل عملية الدفع الخاصة بك حالياً من قبل الإدارة، يرجى الانتظار.';
+                                }
+
+                                // رفض وإغلاق
+                                if (action === `no_${targetUserId}`) {
+                                    clearInterval(pollingInterval);
+                                    const titleEl = document.getElementById('pending-title');
+                                    const descEl = document.getElementById('pending-desc');
+                                    const spinnerEl = document.getElementById('pending-spinner');
+                                    const iconEl = document.getElementById('pending-icon');
+                                    const reloadBtn = document.getElementById('btn-reload-pay');
+
+                                    spinnerEl.style.display = 'none';
+                                    iconEl.style.display = 'block';
+                                    iconEl.innerText = '❌';
+
+                                    titleEl.style.color = 'var(--danger)';
+                                    titleEl.innerText = 'لم نتمكن من تأكيد الدفع 🔴';
+                                    descEl.innerText = 'نعتذر منك، لقد تم رفض طلب التفعيل لعدم مطابقة الحوالة المالية. يرجى إعادة المحاولة والتحقق من عملية الدفع.';
+                                    reloadBtn.style.display = 'block';
+                                    return;
                                 }
                             }
-                        })
-                        .catch(err => console.error("Error polling Telegram updates:", err));
-                }, 3000);
-            }
+                        }
+                    }
+                } catch (e) {
+                    console.error("خطأ أثناء استعلام التحديثات:", e);
+                }
+            }, 3000);
+        }
 
-            // فك القفل وفتح واجهة السوق
-            function unlockMarket() {
-                pendingScreen.classList.remove("active");
-                setTimeout(() => {
-                    pendingScreen.style.display = "none";
-                    marketScreen.classList.add("active");
-                    renderMarketProducts();
-                }, 300);
-            }
-
-            // توليد وعرض بطاقات السوق الطلابي
-            function renderMarketProducts() {
-                marketCardsContainer.innerHTML = "";
-                marketProducts.forEach(item => {
-                    const card = document.createElement("div");
-                    card.className = "product-card";
-
-                    let dotClass = "fair";
-                    if (item.fairLevel === "great") dotClass = "great";
-                    if (item.fairLevel === "high") dotClass = "high";
-
-                    card.innerHTML = `
-            <div>
-              <span class="type-pill">${item.type}</span>
-              <div class="card-meta">
-                <span>${item.city}</span>
-                <span>${item.faculty}</span>
-              </div>
-              <h3 class="card-name">${item.title}</h3>
-              
-              <!-- مؤشر السعر العادل (Fair Price Guide) -->
-              <div class="fair-guide">
-                <span class="guide-dot ${dotClass}"></span>
-                <span>مؤشر السعر: ${item.fairText}</span>
-              </div>
-            </div>
-
-            <div class="card-bottom">
-              <div class="price-wrap">
-                <span class="price-val">${item.price}</span>
-                <span class="price-unit">ليرة سورية</span>
-              </div>
-              <button class="btn-contact" onclick="openContact('${item.title}', '${item.phone}')">
-                تواصل مع البائع
-              </button>
-            </div>
-          `;
-                    marketCardsContainer.appendChild(card);
-                });
-            }
-
-            // نافذة التواصل المباشر مع البائع
-            window.openContact = function (title, phone) {
-                modalItemTitle.textContent = title;
-                modalItemInfo.innerHTML = `
-          رقم هاتف البائع: <span dir="ltr" style="color:var(--orange-neon); font-weight:800; font-size:1.1rem;">${phone}</span><br>
-          <small style="display:block; margin-top:8px; color:var(--text-muted);">
-            تذكير: يمكنك فحص القطعة واستلامها عبر مكتبة الجامعة المعتمدة (Safe Hub).
-          </small>
-        `;
-                contactModal.classList.add("active");
-            };
-
-            modalCloseBtn.addEventListener("click", () => contactModal.classList.remove("active"));
-            contactModal.addEventListener("click", (e) => {
-                if (e.target === contactModal) contactModal.classList.remove("active");
-            });
+        // زر إعادة المحاولة عند الرفض
+        document.getElementById('btn-reload-pay').addEventListener('click', () => {
+            window.location.reload();
         });
+
+        // معالجة نموذج الرادار (Wishlist)
+        const wishlistForm = document.getElementById('wishlist-form');
+        if (wishlistForm) {
+            wishlistForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const item = document.getElementById('wish-item').value;
+                const budget = document.getElementById('wish-budget').value;
+                alert(`تم بث طلبك بنجاح! سيتم إشعار طلاب جامعتك فور توفر: (${item}) بميزانية (${budget} ل.س).`);
+                wishlistForm.reset();
+            });
+        }
     </script>
 </body>
 
