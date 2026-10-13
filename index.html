@@ -5,28 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zone | السوق الطلابي الذكي</title>
+    <!-- استدعاء خط كايرو من Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-navy-dark: #070d17;
-            --bg-navy-surface: #0e1726;
-            --bg-navy-card: #142238;
-            --border-navy: #1f3352;
-            --orange-neon: #ff6a00;
-            --orange-neon-hover: #ff7f24;
-            --orange-neon-glow: rgba(255, 106, 0, 0.35);
+            --bg-navy-dark: #0b132b;
+            --bg-navy-surface: #121c3b;
+            --bg-navy-card: #1c2b52;
+            --border-navy: #243666;
+            --orange-neon: #ff5a00;
+            --orange-neon-hover: #ff7324;
+            --orange-neon-glow: rgba(255, 90, 0, 0.4);
             --text-main: #f0f4f8;
-            --text-muted: #8ea3bf;
-            --fair-price-great: #00e676;
-            --fair-price-fair: #ffb300;
-            --fair-price-high: #ff5252;
+            --text-muted: #8fa2c4;
+            --status-great: #00e676;
+            --status-fair: #ffb300;
+            --status-high: #ff5252;
             --radius-sm: 8px;
             --radius-md: 14px;
             --radius-lg: 20px;
-            --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -45,11 +46,13 @@
             line-height: 1.6;
         }
 
-        /* 1. شاشة البداية الترحيبية */
+        /* ===================================================
+       1. الشاشة الترحيبية (Splash Screen)
+       =================================================== */
         #splash-screen {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, #111e33 0%, var(--bg-navy-dark) 100%);
+            background: radial-gradient(circle at center, #16244d 0%, var(--bg-navy-dark) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -66,28 +69,27 @@
 
         .splash-logo-container {
             text-align: center;
-            animation: splashPulse 2s ease-in-out infinite;
+            animation: pulseBrand 2s ease-in-out infinite;
         }
 
         .splash-logo-text {
-            font-size: 5rem;
+            font-size: 5.5rem;
             font-weight: 900;
             letter-spacing: -2px;
-            color: var(--text-main);
             line-height: 1;
+            color: var(--text-main);
         }
 
         .splash-logo-text span {
             color: var(--orange-neon);
-            text-shadow: 0 0 25px var(--orange-neon-glow);
+            text-shadow: 0 0 30px var(--orange-neon-glow);
         }
 
         .splash-subtitle {
             font-size: 1.15rem;
             color: var(--text-muted);
-            margin-top: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            margin-top: 14px;
+            font-weight: 700;
         }
 
         .splash-loader {
@@ -108,10 +110,10 @@
             height: 100%;
             width: 100%;
             background: var(--orange-neon);
-            animation: loadAnim 1.8s ease-in-out forwards;
+            animation: fillProgress 1.8s ease-in-out forwards;
         }
 
-        @keyframes loadAnim {
+        @keyframes fillProgress {
             0% {
                 left: -100%;
             }
@@ -121,7 +123,7 @@
             }
         }
 
-        @keyframes splashPulse {
+        @keyframes pulseBrand {
 
             0%,
             100% {
@@ -133,18 +135,20 @@
             }
         }
 
-        /* 2. شاشة تسجيل الدخول وتعبئة البيانات */
-        #auth-screen {
+        /* ===================================================
+       2. صفحة تسجيل البيانات (Sign Up Screen)
+       =================================================== */
+        #signup-screen {
             min-height: 100vh;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 24px;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.4s ease;
         }
 
-        #auth-screen.visible {
+        #signup-screen.active {
             display: flex;
             opacity: 1;
         }
@@ -153,10 +157,10 @@
             background: var(--bg-navy-surface);
             border: 1px solid var(--border-navy);
             border-radius: var(--radius-lg);
-            padding: 36px 30px;
+            padding: 38px 30px;
             width: 100%;
             max-width: 480px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
             position: relative;
         }
 
@@ -178,7 +182,7 @@
         .auth-brand {
             font-size: 2.3rem;
             font-weight: 900;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .auth-brand span {
@@ -218,20 +222,14 @@
             box-shadow: 0 0 0 3px var(--orange-neon-glow);
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .btn-submit {
+        .btn-action-primary {
             width: 100%;
             background: var(--orange-neon);
             color: #fff;
             border: none;
             border-radius: var(--radius-sm);
-            padding: 13px;
-            font-size: 1rem;
+            padding: 14px;
+            font-size: 1.05rem;
             font-weight: 800;
             cursor: pointer;
             margin-top: 10px;
@@ -239,20 +237,328 @@
             transition: var(--transition-smooth);
         }
 
-        .btn-submit:hover {
+        .btn-action-primary:hover {
             background: var(--orange-neon-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(255, 106, 0, 0.5);
+            box-shadow: 0 6px 24px rgba(255, 90, 0, 0.55);
         }
 
-        /* 3. شاشة سوق Zone الشامل */
+        /* ===================================================
+       3. صفحة بوابات الدفع وقفل التطبيق (The Paywall)
+       =================================================== */
+        #paywall-screen {
+            min-height: 100vh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        #paywall-screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .paywall-wrapper {
+            background: var(--bg-navy-surface);
+            border: 1px solid var(--border-navy);
+            border-radius: var(--radius-lg);
+            padding: 36px 26px;
+            width: 100%;
+            max-width: 620px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .paywall-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 90, 0, 0.12);
+            color: var(--orange-neon);
+            border: 1px solid rgba(255, 90, 0, 0.3);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .paywall-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1.25;
+            margin-bottom: 8px;
+        }
+
+        .paywall-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 580px) {
+            .pricing-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .pricing-card {
+            background: var(--bg-navy-card);
+            border: 2px solid var(--border-navy);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pricing-card:hover {
+            border-color: rgba(255, 90, 0, 0.5);
+        }
+
+        .pricing-card.selected {
+            border-color: var(--orange-neon);
+            background: linear-gradient(180deg, rgba(255, 90, 0, 0.08) 0%, var(--bg-navy-card) 100%);
+            box-shadow: 0 0 20px var(--orange-neon-glow);
+        }
+
+        .ribbon-smart {
+            position: absolute;
+            top: -12px;
+            left: 16px;
+            background: var(--orange-neon);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 900;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        .plan-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .plan-price {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: var(--orange-neon);
+            margin-bottom: 12px;
+        }
+
+        .plan-price span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .plan-features {
+            list-style: none;
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-navy);
+            padding-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .plan-features li::before {
+            content: "✔ ";
+            color: var(--orange-neon);
+            font-weight: 900;
+        }
+
+        /* خيارات وسيلة الدفع مع شرط الـ Active State الحركي */
+        .payment-methods-box {
+            margin-bottom: 22px;
+        }
+
+        .methods-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 480px) {
+            .payment-methods-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .payment-method-box {
+            background: var(--bg-navy-card);
+            border: 1px solid var(--border-navy);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            user-select: none;
+        }
+
+        .payment-method-box:hover {
+            border-color: rgba(255, 90, 0, 0.4);
+        }
+
+        /* الحالة النشطة: التحول المباشر إلى البرتقالي المشرق */
+        .payment-method-box.active {
+            background-color: var(--orange-neon) !important;
+            border-color: var(--orange-neon) !important;
+            color: #ffffff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--orange-neon-glow);
+        }
+
+        .payment-method-box.active .method-badge-rec {
+            background: #ffffff;
+            color: var(--orange-neon);
+        }
+
+        .method-badge-rec {
+            background: var(--orange-neon);
+            color: #ffffff;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 800;
+            transition: var(--transition-smooth);
+        }
+
+        /* ===================================================
+       4. شاشة الانتظار للموافقة اليدوية (Pending Screen)
+       =================================================== */
+        #pending-screen {
+            min-height: 100vh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #pending-screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .pending-card {
+            background: var(--bg-navy-surface);
+            border: 1px solid var(--border-navy);
+            border-radius: var(--radius-lg);
+            padding: 45px 30px;
+            width: 100%;
+            max-width: 520px;
+            text-align: center;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .pending-pulse-circle {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: rgba(255, 90, 0, 0.1);
+            border: 2px solid var(--orange-neon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: pulseGlow 1.8s infinite;
+        }
+
+        .pending-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 90, 0, 0.2);
+            border-top-color: var(--orange-neon);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 90, 0, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 16px rgba(255, 90, 0, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 90, 0, 0);
+            }
+        }
+
+        .pending-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .pending-msg {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .pending-id-badge {
+            display: inline-block;
+            background: var(--bg-navy-dark);
+            border: 1px solid var(--border-navy);
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            color: var(--orange-neon);
+            font-weight: 800;
+        }
+
+        /* ===================================================
+       5. واجهة السوق الطلابي (Main Market)
+       =================================================== */
         #market-screen {
             display: none;
             min-height: 100vh;
             opacity: 0;
             flex-direction: column;
             transition: opacity 0.5s ease;
-            padding-bottom: 80px;
+            padding-bottom: 75px;
         }
 
         #market-screen.active {
@@ -261,7 +567,7 @@
         }
 
         .market-header {
-            background: rgba(14, 23, 38, 0.95);
+            background: rgba(18, 28, 59, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-navy);
             position: sticky;
@@ -270,7 +576,7 @@
             padding: 14px 24px;
         }
 
-        .header-container {
+        .header-inner {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
@@ -278,95 +584,55 @@
             justify-content: space-between;
         }
 
+        .brand-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+
         .logo {
             font-size: 1.8rem;
             font-weight: 900;
-            text-decoration: none;
+            line-height: 1.1;
             color: var(--text-main);
+            text-decoration: none;
         }
 
         .logo span {
             color: var(--orange-neon);
+            text-shadow: 0 0 15px var(--orange-neon-glow);
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
+        .premium-activated-tag {
+            color: var(--orange-neon);
+            font-size: 0.8rem;
+            font-weight: 800;
+            margin-top: 2px;
         }
 
-        .student-pill {
+        .student-tag {
             background: var(--bg-navy-card);
             border: 1px solid var(--border-navy);
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .student-pill {
-                display: block;
-            }
-        }
-
-        .premium-btn {
-            background: linear-gradient(135deg, #ff6a00 0%, #d84315 100%);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            padding: 8px 16px;
             font-size: 0.85rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 0 14px var(--orange-neon-glow);
-            transition: var(--transition-smooth);
-        }
-
-        .premium-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 20px rgba(255, 106, 0, 0.6);
+            color: var(--text-muted);
+            font-weight: 700;
         }
 
         .market-body {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
-            padding: 28px 20px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
+            padding: 26px 20px 40px;
         }
 
-        .section-header {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-right: 4px solid var(--orange-neon);
-            padding-right: 12px;
-        }
-
-        .section-title {
-            font-size: 1.45rem;
-            font-weight: 800;
-        }
-
-        .section-desc {
-            color: var(--text-muted);
-            font-size: 0.88rem;
-        }
-
-        /* البطاقات وشبكة العرض */
-        .cards-grid {
+        .market-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
 
-        .item-card {
+        .product-card {
             background: var(--bg-navy-surface);
             border: 1px solid var(--border-navy);
             border-radius: var(--radius-md);
@@ -375,100 +641,77 @@
             flex-direction: column;
             justify-content: space-between;
             transition: var(--transition-smooth);
-            position: relative;
         }
 
-        .item-card:hover {
+        .product-card:hover {
             transform: translateY(-4px);
             border-color: var(--orange-neon);
-            box-shadow: 0 10px 25px rgba(255, 106, 0, 0.12);
+            box-shadow: 0 10px 25px rgba(255, 90, 0, 0.15);
         }
 
-        /* تمييز حزم التوريث */
-        .item-card.bundle-card {
-            background: linear-gradient(180deg, rgba(255, 106, 0, 0.05) 0%, var(--bg-navy-surface) 100%);
-            border: 1px solid rgba(255, 106, 0, 0.4);
-        }
-
-        .badge-bundle {
-            background: var(--orange-neon);
-            color: #fff;
+        .type-pill {
             font-size: 0.72rem;
             font-weight: 800;
             padding: 2px 8px;
             border-radius: 4px;
             display: inline-block;
             margin-bottom: 8px;
-            width: fit-content;
+            background: var(--bg-navy-card);
+            color: var(--text-muted);
         }
 
-        .card-top {
+        .card-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .card-tag {
-            background: rgba(255, 106, 0, 0.12);
-            color: var(--orange-neon);
-            border: 1px solid rgba(255, 106, 0, 0.25);
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-
-        .card-location {
             color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        .card-title {
-            font-size: 1.15rem;
-            font-weight: 800;
+            font-size: 0.82rem;
             margin-bottom: 6px;
         }
 
-        .card-sub {
+        .card-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .card-faculty {
             color: var(--text-muted);
             font-size: 0.85rem;
             margin-bottom: 12px;
         }
 
-        /* مؤشر السعر العادل (Fair Price Guide) */
-        .fair-price-indicator {
+        .fair-guide {
+            background: var(--bg-navy-dark);
+            border: 1px solid var(--border-navy);
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 6px;
-            background: var(--bg-navy-dark);
-            border: 1px solid var(--border-navy);
-            padding: 6px 10px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 16px;
-            font-size: 0.78rem;
-            font-weight: 700;
+            margin-bottom: 14px;
         }
 
-        .fair-status-dot {
+        .guide-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
 
-        .dot-great {
-            background-color: var(--fair-price-great);
-            box-shadow: 0 0 6px var(--fair-price-great);
+        .guide-dot.great {
+            background: var(--status-great);
+            box-shadow: 0 0 6px var(--status-great);
         }
 
-        .dot-fair {
-            background-color: var(--fair-price-fair);
-            box-shadow: 0 0 6px var(--fair-price-fair);
+        .guide-dot.fair {
+            background: var(--status-fair);
+            box-shadow: 0 0 6px var(--status-fair);
         }
 
-        .dot-high {
-            background-color: var(--fair-price-high);
-            box-shadow: 0 0 6px var(--fair-price-high);
+        .guide-dot.high {
+            background: var(--status-high);
+            box-shadow: 0 0 6px var(--status-high);
         }
 
         .card-bottom {
@@ -480,144 +723,64 @@
             gap: 10px;
         }
 
-        .card-price {
+        .price-wrap {
             display: flex;
             flex-direction: column;
         }
 
-        .price-num {
+        .price-val {
             color: var(--orange-neon);
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 900;
             line-height: 1.1;
         }
 
-        .price-curr {
+        .price-unit {
             color: var(--text-muted);
             font-size: 0.72rem;
         }
 
-        .btn-action {
+        .btn-contact {
             background: transparent;
             color: var(--orange-neon);
             border: 1px solid var(--orange-neon);
             border-radius: var(--radius-sm);
             padding: 7px 14px;
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.86rem;
+            font-weight: 800;
             cursor: pointer;
             transition: var(--transition-smooth);
             white-space: nowrap;
         }
 
-        .btn-action:hover {
+        .btn-contact:hover {
             background: var(--orange-neon);
             color: #fff;
             box-shadow: 0 0 12px var(--orange-neon-glow);
         }
 
-        /* القسم الثالث: الطلب المسبق المستهدف (Wishlist Radar) */
-        .radar-box {
-            background: var(--bg-navy-surface);
-            border: 1px dashed var(--border-navy);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .radar-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .btn-radar {
-            background: var(--orange-neon);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            padding: 9px 18px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .btn-radar:hover {
-            background: var(--orange-neon-hover);
-            box-shadow: 0 0 12px var(--orange-neon-glow);
-        }
-
-        .radar-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 14px;
-        }
-
-        .radar-item {
-            background: var(--bg-navy-card);
-            border: 1px solid var(--border-navy);
-            border-radius: var(--radius-sm);
-            padding: 12px 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .radar-item-title {
-            font-weight: 700;
-            font-size: 0.92rem;
-            color: var(--text-main);
-        }
-
-        .radar-item-budget {
-            color: var(--orange-neon);
-            font-size: 0.82rem;
-            font-weight: 600;
-        }
-
-        /* شريط الوسيط المعتمد لحماية الكاش (The Safe Hub) */
         .safe-hub-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(14, 23, 38, 0.96);
+            background: rgba(18, 28, 59, 0.96);
             backdrop-filter: blur(8px);
             border-top: 2px solid var(--orange-neon);
-            padding: 12px 20px;
+            padding: 10px 16px;
             z-index: 90;
-            box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .safe-hub-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
             text-align: center;
-            font-size: 0.88rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 700;
             color: var(--text-main);
         }
 
-        .safe-hub-icon {
-            color: var(--orange-neon);
-            display: inline-flex;
-        }
-
-        /* النوافذ المنبثقة (Modals) */
+        /* Modal صندوق التواصل */
         .modal-overlay {
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(5px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -633,8 +796,8 @@
             background: var(--bg-navy-surface);
             border: 1px solid var(--border-navy);
             border-radius: var(--radius-md);
-            padding: 24px;
-            max-width: 440px;
+            padding: 26px;
+            max-width: 420px;
             width: 100%;
             text-align: center;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
@@ -643,22 +806,22 @@
         .modal-box h3 {
             font-size: 1.25rem;
             font-weight: 800;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .modal-box p {
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 18px;
+            font-size: 0.92rem;
+            margin-bottom: 20px;
         }
 
         .btn-modal-close {
             background: var(--orange-neon);
             color: #fff;
             border: none;
-            padding: 8px 20px;
+            padding: 8px 22px;
             border-radius: var(--radius-sm);
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
         }
     </style>
@@ -666,7 +829,7 @@
 
 <body>
 
-    <!-- 1. الصفحة الترحيبية (Splash Screen) -->
+    <!-- 1. الشاشة الترحيبية (Splash Screen) -->
     <div id="splash-screen">
         <div class="splash-logo-container">
             <div class="splash-logo-text">Z<span>one</span></div>
@@ -675,427 +838,463 @@
         </div>
     </div>
 
-    <!-- 2. صفحة تسجيل الدخول وتعبئة البيانات (Auth Screen) -->
-    <main id="auth-screen">
+    <!-- 2. صفحة تسجيل البيانات (Sign Up Screen) -->
+    <main id="signup-screen">
         <div class="auth-card">
             <div class="auth-header">
                 <h1 class="auth-brand">Z<span>one</span></h1>
-                <p class="auth-desc">يرجى تسجيل بياناتك الجامعية للدخول للمنصة</p>
+                <p class="auth-desc">سجل بياناتك الجامعية للمتابعة وتفعيل الحساب</p>
             </div>
 
-            <form id="student-form">
+            <form id="signup-form">
                 <div class="form-group">
                     <label for="student-name">الاسم الكامل</label>
                     <input type="text" id="student-name" class="form-control" placeholder="مثال: يحيى جمال" required>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="student-uni">الجامعة</label>
-                        <select id="student-uni" class="form-control" required>
-                            <option value="" disabled selected>اختر الجامعة</option>
-                            <option value="جامعة دمشق">جامعة دمشق</option>
-                            <option value="جامعة حلب">جامعة حلب</option>
-                            <option value="جامعة تشرين">جامعة تشرين</option>
-                            <option value="جامعة البعث">جامعة البعث</option>
-                            <option value="جامعة طرطوس">جامعة طرطوس</option>
-                            <option value="جامعة حماة">جامعة حماة</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="student-fac">الكلية</label>
-                        <input type="text" id="student-fac" class="form-control" placeholder="مثال: الهندسة الميكانيكية"
-                            required>
-                    </div>
+                <div class="form-group">
+                    <label for="student-uni">الجامعة</label>
+                    <select id="student-uni" class="form-control" required>
+                        <option value="" disabled selected>اختر الجامعة</option>
+                        <option value="جامعة دمشق">جامعة دمشق</option>
+                        <option value="جامعة حلب">جامعة حلب</option>
+                        <option value="جامعة تشرين">جامعة تشرين</option>
+                        <option value="جامعة البعث">جامعة البعث</option>
+                        <option value="جامعة طرطوس">جامعة طرطوس</option>
+                        <option value="جامعة حماة">جامعة حماة</option>
+                        <option value="جامعة خاصة / افتراضية">جامعة خاصة / افتراضية</option>
+                    </select>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="student-year">السنة الدراسية</label>
-                        <select id="student-year" class="form-control" required>
-                            <option value="السنة الأولى">السنة الأولى</option>
-                            <option value="السنة الثانية">السنة الثانية</option>
-                            <option value="السنة الثالثة">السنة الثالثة</option>
-                            <option value="السنة الرابعة">السنة الرابعة</option>
-                            <option value="السنة الخامسة">السنة الخامسة</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="student-phone">رقم الموبايل</label>
-                        <input type="tel" id="student-phone" class="form-control" placeholder="09xxxxxxxx" required
-                            pattern="[0-9]{10}">
-                    </div>
+                <div class="form-group">
+                    <label for="student-faculty">الكلية</label>
+                    <input type="text" id="student-faculty" class="form-control" placeholder="مثال: الهندسة الميكانيكية"
+                        required>
                 </div>
 
-                <button type="submit" class="btn-submit">تسجيل الدخول</button>
+                <div class="form-group">
+                    <label for="student-phone">رقم الموبايل</label>
+                    <input type="tel" id="student-phone" class="form-control" placeholder="09xxxxxxxx" required
+                        pattern="[0-9]{10}">
+                </div>
+
+                <button type="submit" class="btn-action-primary">تسجيل وحفظ البيانات</button>
             </form>
         </div>
     </main>
 
-    <!-- 3. الشاشة الرئيسية لسوق ZONE الشامل -->
+    <!-- 3. صفحة بوابات الدفع وقفل التطبيق (The Paywall) -->
+    <section id="paywall-screen">
+        <div class="paywall-wrapper">
+            <div class="paywall-badge">قفل التفعيل المالي</div>
+            <h2 class="paywall-title">اشترك الآن لفتح سوق ZONE الطلابي</h2>
+            <p class="paywall-subtitle">اختر باقة الاشتراك المناسبة لإتمام تفعيل حسابك والوصول للمستلزمات الجامعية.</p>
+
+            <!-- بطاقات الأسعار -->
+            <div class="pricing-grid">
+                <!-- باقة شهري -->
+                <div class="pricing-card" onclick="selectPlan(this, 'باقة شهري (1$)')">
+                    <div>
+                        <div class="plan-title">باقة شهري</div>
+                        <div class="plan-price">15,000 <span>ل.س / شهرياً (1$)</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li>تصفح كامل السوق الطلابي لمدة 30 يوماً</li>
+                        <li>التواصل المباشر مع البائعين</li>
+                    </ul>
+                </div>
+
+                <!-- باقة سنوي ذكي (مختارة افتراضياً) -->
+                <div class="pricing-card selected" onclick="selectPlan(this, 'باقة سنوي ذكي (10$)')">
+                    <div class="ribbon-smart">الأكثر توفيراً للطلاب</div>
+                    <div>
+                        <div class="plan-title">باقة سنوي ذكي</div>
+                        <div class="plan-price">150,000 <span>ل.س / سنوياً (10$)</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li>توفر ثمن شهرين كاملين</li>
+                        <li>تصفح غير محدود طوال الفصول الدراسية</li>
+                        <li>أولوية الحصول على حزم التوريث وأدوات العملي النادرة فور نزولها</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- خيارات وسيلة الدفع مع التفاعل الحركي المباشر -->
+            <div class="payment-methods-box">
+                <div class="methods-title">اختر وسيلة الدفع المحلية:</div>
+                <div class="payment-methods-grid">
+                    <div class="payment-method-box active" onclick="selectPaymentMethod(this, 'شام كاش (Cham Cash)')">
+                        <span class="method-badge-rec">الأساسي</span>
+                        <span>شام كاش - Cham Cash</span>
+                    </div>
+
+                    <div class="payment-method-box" onclick="selectPaymentMethod(this, 'سيريتل كاش (Syriatel Cash)')">
+                        <span>سيريتل كاش</span>
+                    </div>
+
+                    <div class="payment-method-box" onclick="selectPaymentMethod(this, 'إم تي إن كاش (MTN Cash)')">
+                        <span>إم تي إن كاش</span>
+                    </div>
+
+                    <div class="payment-method-box"
+                        onclick="selectPaymentMethod(this, 'شحن بطاقة كرتونية عبر المكتبة')">
+                        <span>شحن بطاقة كرتونية من المكتبة</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action-primary" id="btn-confirm-payment">تأكيد الدفع وتفعيل الحساب</button>
+        </div>
+    </section>
+
+    <!-- 4. شاشة الانتظار للموافقة اليدوية (Pending Screen) -->
+    <section id="pending-screen">
+        <div class="pending-card">
+            <div class="pending-pulse-circle">
+                <div class="pending-spinner"></div>
+            </div>
+            <h2 class="pending-title">جاري التحقق من الحوالة</h2>
+            <p class="pending-msg">
+                جاري التحقق من الحوالة وتفعيل حسابك من قبل الإدارة في تلغرام بشكل حي.. يرجى عدم إغلاق الصفحة.
+            </p>
+            <div class="pending-id-badge" id="display-user-id">معرف الحساب: STU_------</div>
+        </div>
+    </section>
+
+    <!-- 5. واجهة السوق الطلابي (Main Market) -->
     <div id="market-screen">
         <header class="market-header">
-            <div class="header-container">
-                <a href="#" class="logo">Z<span>one</span></a>
-                <div class="header-actions">
-                    <div id="student-info-pill" class="student-pill">طالب جامعي</div>
-                    <button class="premium-btn" id="premium-btn">ترقية Premium ($1/شهر)</button>
+            <div class="header-inner">
+                <div class="brand-wrap">
+                    <a href="#" class="logo">Z<span>one</span></a>
+                    <div class="premium-activated-tag">حسابك مفعّل (Premium) ✅</div>
                 </div>
+                <div id="user-display-tag" class="student-tag">طالب مسجل</div>
             </div>
         </header>
 
-        <div class="market-body">
-            <!-- القسم الأول: السوق الطلابي الأساسي وحزم التوريث -->
-            <section>
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">السوق الطلابي وحزم التوريث</h2>
-                        <p class="section-desc">شراء الأدوات الفردية وحزم الدفعة المتكاملة بسعر التوريث</p>
-                    </div>
-                </div>
-                <div class="cards-grid" id="main-market-grid"></div>
-            </section>
-
-            <!-- القسم الثاني: تأجير الأدوات المؤقت (Rent My Tools) -->
-            <section>
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">تأجير الأدوات المؤقت (Rent My Tools)</h2>
-                        <p class="section-desc">استئجار مستلزمات وساعات العمل العملي بالأيام أو الأسابيع</p>
-                    </div>
-                </div>
-                <div class="cards-grid" id="rental-grid"></div>
-            </section>
-
-            <!-- القسم الثالث: الطلب المسبق المستهدف (Wishlist Radar) -->
-            <section>
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">الطلب المسبق المستهدف (Wishlist Radar)</h2>
-                        <p class="section-desc">أعلن عن أداة تبحث عنها ليقوم الطلاب بتوفيرها لك</p>
-                    </div>
-                </div>
-                <div class="radar-box">
-                    <div class="radar-top">
-                        <p style="font-size:0.95rem; font-weight:600;">هل تبحث عن كتاب أو أداة غير معروضة في السوق؟</p>
-                        <button class="btn-radar" id="open-radar-btn">+ أنا أبحث عن أداة...</button>
-                    </div>
-                    <div class="radar-list" id="radar-items-container"></div>
-                </div>
-            </section>
-        </div>
-
-        <!-- القسم الرابع: الوسيط المعتمد لحماية الكاش (The Safe Hub) -->
-        <aside class="safe-hub-bar">
-            <div class="safe-hub-content">
-                <span class="safe-hub-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg>
-                </span>
-                <span>الوسيط الآمن للـ Zone: يمكنك إتمام عملية الفحص والاستلام وتسليم الكاش بأمان عبر مكتبة الجامعة
-                    المعتمدة.</span>
+        <main class="market-body">
+            <div class="market-grid" id="market-cards-container">
+                <!-- توليد بطاقات السوق المباشرة عبر JavaScript -->
             </div>
+        </main>
+
+        <aside class="safe-hub-bar">
+            الوسيط المعتمد عبر مكتبة الجامعة (Safe Hub): يمكنك فحص واستلام الأداة وتسليم المبلغ بأمان عبر مكتبة الجامعة
+            المعتمدة.
         </aside>
     </div>
 
-    <!-- صندوق منبثق للتواصل وتفاصيل الإجراءات -->
-    <div class="modal-overlay" id="common-modal">
+    <!-- صندوق منبثق للتواصل مع البائع -->
+    <div class="modal-overlay" id="contact-modal">
         <div class="modal-box">
-            <h3 id="modal-heading">تواصل</h3>
-            <p id="modal-body-text">تفاصيل الإجراء</p>
+            <h3 id="modal-item-title">تواصل مع البائع</h3>
+            <p id="modal-item-info">جاري جلب معلومات الاتصال...</p>
             <button class="btn-modal-close" id="modal-close-btn">إغلاق</button>
         </div>
     </div>
 
-    <!-- صندوق إضافة طلب رادار (Wishlist Form Modal) -->
-    <div class="modal-overlay" id="radar-form-modal">
-        <div class="modal-box" style="text-align: right;">
-            <h3 style="text-align: center; margin-bottom: 14px;">أضف طلباً إلى رادار الطلاب</h3>
-            <form id="radar-form">
-                <div class="form-group">
-                    <label>اسم الأداة أو الملخص المطلوب</label>
-                    <input type="text" id="radar-input-title" class="form-control"
-                        placeholder="مثال: ميكروميتر قياس دقيق" required>
-                </div>
-                <div class="form-group">
-                    <label>الميزانية التقريبية (ل.س)</label>
-                    <input type="number" id="radar-input-budget" class="form-control" placeholder="مثال: 120000"
-                        required>
-                </div>
-                <button type="submit" class="btn-submit" style="margin-top: 10px;">نشر في الرادار</button>
-                <button type="button" class="btn-action" id="cancel-radar-btn"
-                    style="width: 100%; margin-top: 8px;">إلغاء</button>
-            </form>
-        </div>
-    </div>
-
     <script>
-        // 1. بيانات السوق الأساسي وحزم التوريث
-        const marketItems = [
+        /* =========================================================================
+           إعدادات الربط المباشر مع Telegram Bot API
+           ضع الـ Token والـ Chat ID الخاصين ببوتك وقناتك/حسابك هنا:
+           ========================================================================= */
+        const TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"; // ضع التوكن هنا (مثال: 123456789:ABCdefGhI...)
+        const TELEGRAM_CHAT_ID = "YOUR_CHAT_ID_HERE";   // ضع معرف الشات أو الآدمن هنا (مثال: 987654321)
+
+        // متغيرات جلسة الطالب وحالته
+        let currentUserId = "STU_" + Math.floor(100000 + Math.random() * 900000);
+        let selectedPlanName = "باقة سنوي ذكي (10$)";
+        let selectedPaymentName = "شام كاش (Cham Cash)";
+        let studentData = {};
+        let pollingInterval = null;
+        let lastUpdateId = 0;
+
+        // قائمة بضائع السوق الطلابي المباشرة
+        const marketProducts = [
             {
                 id: 1,
-                title: "حزمة توريث كاملة لطب الأسنان (سنة ثانية)",
-                isBundle: true,
-                category: "حزمة توريث دفعة",
+                title: "حزمة توريث طب أسنان كاملة (سنة ثانية)",
+                type: "حزمة توريث دفعة",
+                price: "950,000",
                 faculty: "طب الأسنان",
                 city: "دمشق",
-                price: 950000,
                 fairLevel: "great",
-                fairLabel: "سعر ممتاز (وفر 40%)",
-                contactInfo: "0933111222"
+                fairText: "سعر ممتاز (وفر 40% من السوق)",
+                phone: "0933112233"
             },
             {
                 id: 2,
-                title: "سماعة فحص طبية Littmann Classic III",
-                isBundle: false,
-                category: "أداة فردية",
-                faculty: "الطب البشري",
+                title: "طقم أدوات نحت وفحص الأسنان",
+                type: "أدوات طبية",
+                price: "180,000",
+                faculty: "طب الأسنان",
                 city: "حلب",
-                price: 620000,
                 fairLevel: "fair",
-                fairLabel: "سعر عادل ومطابق للسوق",
-                contactInfo: "0944333444"
+                fairText: "سعر عادل ومناسب للعملي",
+                phone: "0944223344"
             },
             {
                 id: 3,
-                title: "حزمة أدوات الهندسة المعمارية (مسطرة T + مثلثات + بورد)",
-                isBundle: true,
-                category: "حزمة توريث كاملة",
+                title: "حزمة أدوات عمارة متكاملة (مسطرة T + بورد + مثلثات)",
+                type: "حزمة توريث كاملة",
+                price: "320,000",
                 faculty: "الهندسة المعمارية",
                 city: "حمص",
-                price: 320000,
                 fairLevel: "great",
-                fairLabel: "سعر ممتاز (حزمة تخرج)",
-                contactInfo: "0955666777"
+                fairText: "سعر ممتاز ونادر التوفر",
+                phone: "0955334455"
             },
             {
                 id: 4,
-                title: "فرجار هندسي احترافي Rotring دقيق",
-                isBundle: false,
-                category: "أداة فردية",
-                faculty: "الهندسة الميكانيكية",
+                title: "فرجار هندسي احترافي ألماني الصنع",
+                type: "أدوات هندسية",
+                price: "175,000",
+                faculty: "الهندسة الميكانيكية والمدنية",
                 city: "اللاذقية",
-                price: 180000,
                 fairLevel: "high",
-                fairLabel: "سعر مرتفع نسبياً (حالة الوكالة)",
-                contactInfo: "0966777888"
-            }
-        ];
-
-        // 2. بيانات تأجير الأدوات المؤقت
-        const rentalItems = [
-            {
-                id: 101,
-                title: "طقم أدوات فحص ونحت الأسنان العملي",
-                period: "لكل أسبوع",
-                price: 45000,
-                faculty: "طب الأسنان",
-                city: "دمشق",
-                contactInfo: "0933999888"
+                fairText: "سعر مرتفع (نظافة وكالة)",
+                phone: "0966445566"
             },
             {
-                id: 102,
-                title: "آلة حاسبة بيانية متقدمة Casio fx-9860GII",
-                period: "لكل يوم (فترة الامتحانات)",
-                price: 15000,
-                faculty: "الهندسة المدنية",
+                id: 5,
+                title: "سماعة فحص طبية Littmann Classic III أصلية",
+                type: "أدوات طبية",
+                price: "680,000",
+                faculty: "الطب البشري",
                 city: "حلب",
-                contactInfo: "0988222111"
+                fairLevel: "fair",
+                fairText: "سعر عادل ومطابق للواقع",
+                phone: "0988556677"
             },
             {
-                id: 103,
-                title: "بورد تجارب ومبرمجة ميكروكونترولر PIC/STM32",
-                period: "لكل أسبوعين",
-                price: 60000,
-                faculty: "هندسة الحواسيب والميكاترونيكس",
-                city: "حمص",
-                contactInfo: "0944000333"
+                id: 6,
+                title: "نوطة وملخص الكيمياء الحيوية الشاملة",
+                type: "ملخصات جامعية",
+                price: "45,000",
+                faculty: "الصيدلة",
+                city: "دمشق",
+                fairLevel: "great",
+                fairText: "سعر رمزي ممتاز",
+                phone: "0999667788"
             }
-        ];
-
-        // 3. بيانات الرادار الأولية (الطلبات المسبقة)
-        let radarItems = [
-            { title: "أطلس تشريح Netter باللغة الإنجليزية", budget: "140,000 ل.س", student: "طالب سنة ثانية" },
-            { title: "مستلزمات مشروع تخرج ميكاترونيكس (محركات ستيبر)", budget: "250,000 ل.س", student: "طالب سنة خامسة" }
         ];
 
         document.addEventListener("DOMContentLoaded", () => {
-            const splash = document.getElementById("splash-screen");
-            const authScreen = document.getElementById("auth-screen");
+            const splashScreen = document.getElementById("splash-screen");
+            const signupScreen = document.getElementById("signup-screen");
+            const paywallScreen = document.getElementById("paywall-screen");
+            const pendingScreen = document.getElementById("pending-screen");
             const marketScreen = document.getElementById("market-screen");
-            const studentForm = document.getElementById("student-form");
-            const studentPill = document.getElementById("student-info-pill");
 
-            const mainMarketGrid = document.getElementById("main-market-grid");
-            const rentalGrid = document.getElementById("rental-grid");
-            const radarContainer = document.getElementById("radar-items-container");
+            const signupForm = document.getElementById("signup-form");
+            const userDisplayTag = document.getElementById("user-display-tag");
+            const displayUserId = document.getElementById("display-user-id");
+            const btnConfirmPayment = document.getElementById("btn-confirm-payment");
+            const marketCardsContainer = document.getElementById("market-cards-container");
 
-            const commonModal = document.getElementById("common-modal");
-            const modalHeading = document.getElementById("modal-heading");
-            const modalBody = document.getElementById("modal-body-text");
+            const contactModal = document.getElementById("contact-modal");
+            const modalItemTitle = document.getElementById("modal-item-title");
+            const modalItemInfo = document.getElementById("modal-item-info");
             const modalCloseBtn = document.getElementById("modal-close-btn");
 
-            const radarModal = document.getElementById("radar-form-modal");
-            const openRadarBtn = document.getElementById("open-radar-btn");
-            const cancelRadarBtn = document.getElementById("cancel-radar-btn");
-            const radarForm = document.getElementById("radar-form");
-
-            // تشغيل الشاشة الترحيبية لمدة ثانيتين
+            // 1. إدارة الشاشة الترحيبية (ثانيتان ثم Fade out)
             setTimeout(() => {
-                splash.classList.add("fade-out");
+                splashScreen.classList.add("fade-out");
                 setTimeout(() => {
-                    splash.style.display = "none";
-                    authScreen.classList.add("visible");
+                    splashScreen.style.display = "none";
+                    signupScreen.classList.add("active");
                 }, 600);
             }, 2000);
 
-            // معالجة تسجيل الدخول
-            studentForm.addEventListener("submit", (e) => {
+            // 2. تسجيل البيانات والانتقال للـ Paywall
+            signupForm.addEventListener("submit", (e) => {
                 e.preventDefault();
-                const sName = document.getElementById("student-name").value.trim();
-                const sUni = document.getElementById("student-uni").value;
-                studentPill.textContent = `${sName} | ${sUni}`;
+                studentData = {
+                    name: document.getElementById("student-name").value.trim(),
+                    university: document.getElementById("student-uni").value,
+                    faculty: document.getElementById("student-faculty").value.trim(),
+                    phone: document.getElementById("student-phone").value.trim()
+                };
 
-                authScreen.classList.remove("visible");
+                userDisplayTag.textContent = `${studentData.name} | ${studentData.university}`;
+
+                signupScreen.classList.remove("active");
                 setTimeout(() => {
-                    authScreen.style.display = "none";
-                    marketScreen.classList.add("active");
-                    initMarketData();
-                }, 400);
+                    signupScreen.style.display = "none";
+                    paywallScreen.classList.add("active");
+                }, 300);
             });
 
-            // بناء بطاقات السوق وتأجير الأدوات والرادار
-            function initMarketData() {
-                renderMainMarket();
-                renderRentals();
-                renderRadar();
-            }
-
-            function renderMainMarket() {
-                mainMarketGrid.innerHTML = "";
-                marketItems.forEach(item => {
-                    const card = document.createElement("div");
-                    card.className = `item-card ${item.isBundle ? 'bundle-card' : ''}`;
-
-                    let dotClass = "dot-fair";
-                    if (item.fairLevel === "great") dotClass = "dot-great";
-                    if (item.fairLevel === "high") dotClass = "dot-high";
-
-                    card.innerHTML = `
-            <div>
-              ${item.isBundle ? `<span class="badge-bundle">📦 حزمة توريث كاملة</span>` : ''}
-              <div class="card-top">
-                <span class="card-tag">${item.category}</span>
-                <span class="card-location">${item.city}</span>
-              </div>
-              <h3 class="card-title">${item.title}</h3>
-              <p class="card-sub">${item.faculty}</p>
-              
-              <!-- مؤشر السعر العادل -->
-              <div class="fair-price-indicator">
-                <span class="fair-status-dot ${dotClass}"></span>
-                <span>مؤشر السعر: ${item.fairLabel}</span>
-              </div>
-            </div>
-
-            <div class="card-bottom">
-              <div class="card-price">
-                <span class="price-num">${item.price.toLocaleString("ar-SY")}</span>
-                <span class="price-curr">ليرة سورية</span>
-              </div>
-              <button class="btn-action" onclick="showContactModal('${item.title}', '${item.contactInfo}', 'بيع شراء مباشر')">تواصل مع البائع</button>
-            </div>
-          `;
-                    mainMarketGrid.appendChild(card);
-                });
-            }
-
-            function renderRentals() {
-                rentalGrid.innerHTML = "";
-                rentalItems.forEach(item => {
-                    const card = document.createElement("div");
-                    card.className = "item-card";
-                    card.innerHTML = `
-            <div>
-              <div class="card-top">
-                <span class="card-tag" style="border-color:#ffb300; color:#ffb300;">متاح للإيجار</span>
-                <span class="card-location">${item.city}</span>
-              </div>
-              <h3 class="card-title">${item.title}</h3>
-              <p class="card-sub">${item.faculty}</p>
-            </div>
-
-            <div class="card-bottom">
-              <div class="card-price">
-                <span class="price-num">${item.price.toLocaleString("ar-SY")}</span>
-                <span class="price-curr">${item.period}</span>
-              </div>
-              <button class="btn-action" onclick="showContactModal('${item.title}', '${item.contactInfo}', 'طلب استئجار مؤقت (${item.period})')">طلب استئجار</button>
-            </div>
-          `;
-                    rentalGrid.appendChild(card);
-                });
-            }
-
-            function renderRadar() {
-                radarContainer.innerHTML = "";
-                radarItems.forEach(item => {
-                    const div = document.createElement("div");
-                    div.className = "radar-item";
-                    div.innerHTML = `
-            <span class="radar-item-title">${item.title}</span>
-            <span class="radar-item-budget">الميزانية المقترحة: ${item.budget}</span>
-            <span style="font-size:0.75rem; color:var(--text-muted);">${item.student}</span>
-          `;
-                    radarContainer.appendChild(div);
-                });
-            }
-
-            // دوال النوافذ المنبثقة
-            window.showContactModal = function (title, contact, type) {
-                modalHeading.textContent = type;
-                modalBody.innerHTML = `
-          الغرض: <strong>${title}</strong><br>
-          رقم التواصل: <span dir="ltr" style="color:var(--orange-neon); font-weight:bold;">${contact}</span><br>
-          <small style="display:block; margin-top:8px; color:var(--text-muted);">
-            تذكير: يمكنك فحص الأداة واستلامها عبر مكتبة الجامعة (الوسيط الآمن).
-          </small>
-        `;
-                commonModal.classList.add("active");
+            // 3. اختيار الباقة
+            window.selectPlan = function (cardElem, planName) {
+                document.querySelectorAll(".pricing-card").forEach(c => c.classList.remove("selected"));
+                cardElem.classList.add("selected");
+                selectedPlanName = planName;
             };
 
-            document.getElementById("premium-btn").addEventListener("click", () => {
-                modalHeading.textContent = "ترقية Zone Premium";
-                modalBody.innerHTML = `
-          تمتع بميزات تمييز الإعلانات، تنبيهات الرادار الفورية، وأولوية الوساطة الآمنة.<br>
-          الاشتراك: <strong>1$ شهرياً</strong> أو <strong>10$ سنوياً</strong> عبر قنوات الدفع الجامعية.
-        `;
-                commonModal.classList.add("active");
+            // 4. اختيار وسيلة الدفع (تطبيق الـ Active State الحركي بالبرتقالي المشرق)
+            window.selectPaymentMethod = function (boxElem, methodName) {
+                document.querySelectorAll(".payment-method-box").forEach(b => b.classList.remove("active"));
+                boxElem.classList.add("active");
+                selectedPaymentName = methodName;
+            };
+
+            // 5. تأكيد الدفع وإرسال الإشعار لتلغرام وفتح شاشة الانتظار
+            btnConfirmPayment.addEventListener("click", () => {
+                paywallScreen.classList.remove("active");
+                setTimeout(() => {
+                    paywallScreen.style.display = "none";
+                    pendingScreen.classList.add("active");
+                    displayUserId.textContent = `معرف الحساب: ${currentUserId}`;
+                }, 300);
+
+                // إرسال تفاصيل العملية إلى Telegram Bot
+                sendNotificationToTelegram();
+
+                // بدء الاستماع العكسي الحقيقي كل 3 ثوانٍ
+                startTelegramPolling();
             });
 
-            modalCloseBtn.addEventListener("click", () => commonModal.classList.remove("active"));
-            commonModal.addEventListener("click", (e) => { if (e.target === commonModal) commonModal.classList.remove("active"); });
-
-            // إدارة رادار الطلب المسبق
-            openRadarBtn.addEventListener("click", () => radarModal.classList.add("active"));
-            cancelRadarBtn.addEventListener("click", () => radarModal.classList.remove("active"));
-
-            radarForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const title = document.getElementById("radar-input-title").value.trim();
-                const budget = Number(document.getElementById("radar-input-budget").value).toLocaleString("ar-SY") + " ل.س";
-
-                radarItems.unshift({
-                    title: title,
-                    budget: budget,
-                    student: "أنت (طلبك الحالي)"
+            // دالة إرسال الرسالة إلى تلغرام
+            function sendNotificationToTelegram() {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString("ar-SY", {
+                    year: "numeric", month: "2-digit", day: "2-digit"
+                });
+                const formattedTime = now.toLocaleTimeString("ar-SY", {
+                    hour: "2-digit", minute: "2-digit", second: "2-digit"
                 });
 
-                renderRadar();
-                radarForm.reset();
-                radarModal.classList.remove("active");
+                const messageText = `
+🔔 *طلب اشتراك جديد في تطبيق ZONE*
+
+👤 *الاسم:* ${studentData.name}
+🏛 *الجامعة:* ${studentData.university}
+📚 *الكلية:* ${studentData.faculty}
+📱 *رقم الموبايل:* ${studentData.phone}
+💎 *الباقة:* ${selectedPlanName}
+💳 *طريقة الدفع:* ${selectedPaymentName}
+🆔 *معرف الطالب:* \`${currentUserId}\`
+⏰ *الوقت والتاريخ:* ${formattedDate} - ${formattedTime}
+
+---------------------------------------
+🔑 *لتفعيل حساب الطالب فوراً، انسخ هذا الكود وأرسله هنا:*
+\`activate_${currentUserId}\`
+        `.trim();
+
+                if (TELEGRAM_BOT_TOKEN !== "YOUR_BOT_TOKEN_HERE" && TELEGRAM_CHAT_ID !== "YOUR_CHAT_ID_HERE") {
+                    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            chat_id: TELEGRAM_CHAT_ID,
+                            text: messageText,
+                            parse_mode: "Markdown"
+                        })
+                    }).catch(err => console.error("Error sending message to Telegram:", err));
+                } else {
+                    console.warn("Telegram Bot Token or Chat ID is not configured yet.");
+                }
+            }
+
+            // دالة الاستماع المتكرر للتحديثات (getUpdates) كل 3 ثوانٍ
+            function startTelegramPolling() {
+                const activationCommand = `activate_${currentUserId}`;
+
+                pollingInterval = setInterval(() => {
+                    if (TELEGRAM_BOT_TOKEN === "YOUR_BOT_TOKEN_HERE") return;
+
+                    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=2`;
+
+                    fetch(url)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.ok && data.result.length > 0) {
+                                for (let update of data.result) {
+                                    lastUpdateId = update.update_id;
+                                    const text = (update.message && update.message.text) ? update.message.text.trim() : "";
+
+                                    // فحص كود التفعيل الموجه لهذا المعرف بالذات
+                                    if (text === activationCommand) {
+                                        clearInterval(pollingInterval);
+                                        unlockMarket();
+                                        break;
+                                    }
+                                }
+                            }
+                        })
+                        .catch(err => console.error("Error polling Telegram updates:", err));
+                }, 3000);
+            }
+
+            // فك القفل وفتح واجهة السوق
+            function unlockMarket() {
+                pendingScreen.classList.remove("active");
+                setTimeout(() => {
+                    pendingScreen.style.display = "none";
+                    marketScreen.classList.add("active");
+                    renderMarketProducts();
+                }, 300);
+            }
+
+            // توليد وعرض بطاقات السوق الطلابي
+            function renderMarketProducts() {
+                marketCardsContainer.innerHTML = "";
+                marketProducts.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "product-card";
+
+                    let dotClass = "fair";
+                    if (item.fairLevel === "great") dotClass = "great";
+                    if (item.fairLevel === "high") dotClass = "high";
+
+                    card.innerHTML = `
+            <div>
+              <span class="type-pill">${item.type}</span>
+              <div class="card-meta">
+                <span>${item.city}</span>
+                <span>${item.faculty}</span>
+              </div>
+              <h3 class="card-name">${item.title}</h3>
+              
+              <!-- مؤشر السعر العادل -->
+              <div class="fair-guide">
+                <span class="guide-dot ${dotClass}"></span>
+                <span>مؤشر السعر: ${item.fairText}</span>
+              </div>
+            </div>
+
+            <div class="card-bottom">
+              <div class="price-wrap">
+                <span class="price-val">${item.price}</span>
+                <span class="price-unit">ليرة سورية</span>
+              </div>
+              <button class="btn-contact" onclick="openContact('${item.title}', '${item.phone}')">
+                تواصل مع البائع
+              </button>
+            </div>
+          `;
+                    marketCardsContainer.appendChild(card);
+                });
+            }
+
+            // نافذة التواصل المباشر مع البائع
+            window.openContact = function (title, phone) {
+                modalItemTitle.textContent = title;
+                modalItemInfo.innerHTML = `
+          رقم هاتف البائع: <span dir="ltr" style="color:var(--orange-neon); font-weight:800; font-size:1.1rem;">${phone}</span><br>
+          <small style="display:block; margin-top:8px; color:var(--text-muted);">
+            تذكير: يمكنك فحص القطعة واستلامها عبر مكتبة الجامعة المعتمدة (Safe Hub).
+          </small>
+        `;
+                contactModal.classList.add("active");
+            };
+
+            modalCloseBtn.addEventListener("click", () => contactModal.classList.remove("active"));
+            contactModal.addEventListener("click", (e) => {
+                if (e.target === contactModal) contactModal.classList.remove("active");
             });
         });
     </script>
