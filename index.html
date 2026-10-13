@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zone | السوق الطلابي الذكي</title>
 
-    <!-- استدعاء خط Cairo الرسمي من Google Fonts -->
+    <!-- استدعاء خط Cairo من Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
             --border-navy: #243666;
             --orange-neon: #ff5a00;
             --orange-neon-hover: #ff7324;
-            --orange-neon-glow: rgba(255, 90, 0, 0.4);
+            --orange-neon-glow: rgba(255, 90, 0, 0.45);
             --text-main: #f0f4f8;
             --text-muted: #8fa2c4;
             --status-great: #00e676;
@@ -28,7 +28,7 @@
             --radius-sm: 8px;
             --radius-md: 14px;
             --radius-lg: 20px;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -47,7 +47,9 @@
             line-height: 1.6;
         }
 
-        /* 1. الشاشة الترحيبية (Splash Screen) */
+        /* ===================================================
+       1. الشاشة الترحيبية (Splash Screen)
+       =================================================== */
         #splash-screen {
             position: fixed;
             inset: 0;
@@ -134,7 +136,9 @@
             }
         }
 
-        /* 2. صفحة تسجيل البيانات (Sign Up Screen) */
+        /* ===================================================
+       2. صفحة تسجيل البيانات (Sign Up Screen)
+       =================================================== */
         #signup-screen {
             min-height: 100vh;
             display: none;
@@ -240,7 +244,9 @@
             box-shadow: 0 6px 24px rgba(255, 90, 0, 0.55);
         }
 
-        /* 3. صفحة بوابات الدفع وقفل التطبيق (The Paywall) */
+        /* ===================================================
+       3. صفحة بوابات الدفع وقفل التطبيق (The Paywall)
+       =================================================== */
         #paywall-screen {
             min-height: 100vh;
             display: none;
@@ -378,7 +384,7 @@
             font-weight: 900;
         }
 
-        /* خيارات وسيلة الدفع مع شرط الـ Active State الحركي */
+        /* خيارات وسيلة الدفع مع الـ Active State الحركي */
         .payment-methods-box {
             margin-bottom: 22px;
         }
@@ -423,6 +429,7 @@
             border-color: rgba(255, 90, 0, 0.4);
         }
 
+        /* الحالة النشطة: التحول المباشر إلى البرتقالي المشرق */
         .payment-method-box.active {
             background-color: var(--orange-neon) !important;
             border-color: var(--orange-neon) !important;
@@ -446,7 +453,9 @@
             transition: var(--transition-smooth);
         }
 
-        /* 4. شاشة الانتظار للموافقة اليدوية (Pending Screen) */
+        /* ===================================================
+       4. شاشة الانتظار للموافقة اليدوية (Pending Screen)
+       =================================================== */
         #pending-screen {
             min-height: 100vh;
             display: none;
@@ -541,7 +550,9 @@
             font-weight: 800;
         }
 
-        /* 5. واجهة السوق الطلابي (Main Market) */
+        /* ===================================================
+       5. واجهة السوق الطلابي (Main Market)
+       =================================================== */
         #market-screen {
             display: none;
             min-height: 100vh;
@@ -986,12 +997,12 @@
 
     <script>
         /* =========================================================================
-           إعدادات الربط المباشر مع Telegram Bot API (الروابط الرسمية المصححة)
+           إعدادات الربط المباشر مع Telegram Bot API
            ========================================================================= */
-        const TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"; // ضع التوكن هنا (مثال: 123456789:ABCdefGhIjkLmNoPqRsTuVwXyZ)
-        const TELEGRAM_CHAT_ID = "YOUR_CHAT_ID_HERE";   // ضع معرف الشات أو الآدمن هنا (مثال: 987654321)
+        const TELEGRAM_BOT_TOKEN = "8757174068:AAEdk_fNRchcGTm47kpro49FEzOVXSGVX3k";
+        const TELEGRAM_CHAT_ID = "8717720399";
 
-        // متغيرات جلسة الطالب وحالته
+        // توليد معرف عشوائي فريد لكل طالب
         let currentUserId = "STU_" + Math.floor(100000 + Math.random() * 900000);
         let selectedPlanName = "باقة سنوي ذكي (10$)";
         let selectedPaymentName = "شام كاش (Cham Cash)";
@@ -1087,7 +1098,7 @@
             const modalItemInfo = document.getElementById("modal-item-info");
             const modalCloseBtn = document.getElementById("modal-close-btn");
 
-            // 1. إدارة الشاشة الترحيبية (ثانيتان ثم Fade out)
+            // 1. إدارة الشاشة الترحيبية (ثانيتان تماماً ثم Fade out)
             setTimeout(() => {
                 splashScreen.classList.add("fade-out");
                 setTimeout(() => {
@@ -1138,7 +1149,7 @@
                     displayUserId.textContent = `معرف الحساب: ${currentUserId}`;
                 }, 300);
 
-                // إرسال تفاصيل العملية إلى Telegram Bot عبر الرابط المصحح
+                // إرسال تفاصيل العملية إلى Telegram Bot
                 sendNotificationToTelegram();
 
                 // بدء الاستماع العكسي الحقيقي كل 3 ثوانٍ
@@ -1172,31 +1183,23 @@
 \`activate_${currentUserId}\`
         `.trim();
 
-                if (TELEGRAM_BOT_TOKEN !== "YOUR_BOT_TOKEN_HERE" && TELEGRAM_CHAT_ID !== "YOUR_CHAT_ID_HERE") {
-                    // الرابط الرسمي المصحح حصراً للـ API
-                    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-                    fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            chat_id: TELEGRAM_CHAT_ID,
-                            text: messageText,
-                            parse_mode: "Markdown"
-                        })
-                    }).catch(err => console.error("Error sending message to Telegram:", err));
-                } else {
-                    console.warn("يرجى وضع TELEGRAM_BOT_TOKEN و TELEGRAM_CHAT_ID لتشغيل الإرسال الفعلي.");
-                }
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: messageText,
+                        parse_mode: "Markdown"
+                    })
+                }).catch(err => console.error("Error sending message to Telegram:", err));
             }
 
-            // دالة الاستماع المتكرر للتحديثات (getUpdates) كل 3 ثوانٍ عبر الرابط المصحح
+            // دالة الاستماع المتكرر للتحديثات (getUpdates) كل 3 ثوانٍ
             function startTelegramPolling() {
                 const activationCommand = `activate_${currentUserId}`;
 
                 pollingInterval = setInterval(() => {
-                    if (TELEGRAM_BOT_TOKEN === "YOUR_BOT_TOKEN_HERE") return;
-
-                    // الرابط الرسمي المصحح حصراً لجلب التحديثات
                     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=2`;
 
                     fetch(url)
