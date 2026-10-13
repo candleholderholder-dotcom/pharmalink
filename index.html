@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZONE - المنصة الطلابية السورية</title>
+    <title>ZONE - السوق الطلابي الذكي في سوريا</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -17,6 +17,7 @@
             --primary-glow: rgba(255, 90, 0, 0.4);
             --text-light: #f8f9fa;
             --text-muted: #94a3b8;
+            --accent-blue: #3a86ff;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -56,7 +57,7 @@
             opacity: 1;
         }
 
-        /* --- الشاشة 1: الترحيبية (Splash Screen) --- */
+        /* --- الشاشة 1: الصفحة الترحيبية (Splash Screen) --- */
         #screen-splash {
             justify-content: center;
             align-items: center;
@@ -113,7 +114,7 @@
             }
         }
 
-        /* --- الشاشة 2: تسجيل البيانات (Sign Up) --- */
+        /* --- الشاشة 2: صفحة تسجيل البيانات (Sign Up) --- */
         #screen-signup {
             justify-content: center;
             align-items: center;
@@ -221,7 +222,7 @@
             transform: translateY(0);
         }
 
-        /* --- الشاشة 3: بوابة الاشتراك (Paywall Gate) --- */
+        /* --- الشاشة 3: بوابة الدفع وقفل التطبيق (The Paywall Gate) --- */
         #screen-paywall {
             justify-content: center;
             align-items: center;
@@ -328,76 +329,119 @@
             font-weight: 700;
         }
 
-        /* --- الشاشة 4: شاشة الانتظار والمراجعة اللحظية (Pending Screen) --- */
+        /* --- الشاشة 4: شاشة الانتظار والمراجعة اللحظية النظيفة (Pending Screen) --- */
         #screen-pending {
             justify-content: center;
             align-items: center;
             padding: 24px;
             text-align: center;
+            transition: background-color 0.4s ease;
+        }
+
+        #screen-pending.rejected {
+            background-color: #2b0b0b !important;
         }
 
         .pending-box {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 24px;
-            padding: 44px 26px;
+            padding: 50px 28px;
             max-width: 480px;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+            transition: var(--transition);
         }
 
-        .status-badge-icon {
-            font-size: 3.2rem;
-            margin-bottom: 16px;
+        #screen-pending.rejected .pending-box {
+            border-color: var(--danger);
         }
 
         .pending-header {
             color: var(--primary);
-            font-size: 1.5rem;
+            font-size: 1.55rem;
             font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 30px;
             transition: var(--transition);
         }
 
-        .pending-info {
-            color: var(--text-muted);
-            font-size: 0.96rem;
-            line-height: 1.6;
-            margin-bottom: 24px;
-            transition: var(--transition);
+        /* حاوية وأنيميشن التروس الميكانيكية */
+        .gears-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
         }
 
-        .live-pulse {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            border: 4px solid var(--primary);
-            animation: pulseWave 1.3s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
-            margin-bottom: 12px;
+        .gear {
+            position: absolute;
+            fill: none;
+            stroke-width: 4;
+            transition: stroke 0.4s ease, fill 0.4s ease;
         }
 
-        @keyframes pulseWave {
-            0% {
-                transform: scale(0.85);
-                opacity: 0.8;
+        .gear-primary {
+            stroke: var(--primary);
+            fill: rgba(255, 90, 0, 0.05);
+        }
+
+        .gear-warning {
+            stroke: var(--warning) !important;
+            fill: rgba(245, 158, 11, 0.05) !important;
+        }
+
+        .gear-danger {
+            stroke: var(--danger) !important;
+            fill: rgba(239, 68, 68, 0.05) !important;
+        }
+
+        .gear-1 {
+            width: 85px;
+            height: 85px;
+            top: 5px;
+            right: 5px;
+            transform-origin: center;
+            animation: rotateCw 4s linear infinite;
+        }
+
+        .gear-2 {
+            width: 65px;
+            height: 65px;
+            bottom: 10px;
+            left: 10px;
+            transform-origin: center;
+            animation: rotateCcw 3.06s linear infinite;
+        }
+
+        .gears-stopped .gear-1,
+        .gears-stopped .gear-2 {
+            animation-play-state: paused !important;
+        }
+
+        @keyframes rotateCw {
+            from {
+                transform: rotate(0deg);
             }
 
-            50% {
-                transform: scale(1.1);
-                opacity: 1;
-                border-color: #ff8038;
-            }
-
-            100% {
-                transform: scale(0.85);
-                opacity: 0.8;
+            to {
+                transform: rotate(360deg);
             }
         }
 
-        /* --- الشاشة 5: السوق الطلابي المتكامل (Main Premium Market) --- */
+        @keyframes rotateCcw {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        /* --- الشاشة 5: واجهة سوق ZONE الطلابي الرئيسي (Main Premium Market) --- */
         #screen-market {
             padding-bottom: 74px;
         }
@@ -545,6 +589,15 @@
             transform: translateY(-1px);
         }
 
+        .btn-interact-blue {
+            background-color: var(--accent-blue);
+            box-shadow: 0 4px 14px rgba(58, 134, 255, 0.3);
+        }
+
+        .btn-interact-blue:hover {
+            background-color: #2b74eb;
+        }
+
         .wishlist-wrapper {
             background: linear-gradient(135deg, var(--bg-card) 0%, #17244a 100%);
             border: 1px solid var(--border-color);
@@ -607,7 +660,7 @@
         </div>
     </section>
 
-    <!-- الشاشة 2: تسجيل البيانات (Sign Up) -->
+    <!-- الشاشة 2: صفحة تسجيل البيانات (Sign Up) -->
     <section id="screen-signup" class="screen">
         <div class="card-box">
             <div class="card-header">
@@ -663,22 +716,22 @@
                             السورية)</span></div>
                     <div class="plan-perks">تصفح كامل السوق والتواصل المباشر مع البائعين لمدة شهر كامل.</div>
                 </div>
-                <div class="selectable-box plan-box" data-plan="باقة سنوي ذكي (10$ بالليرة)">
+                <div class="selectable-box plan-box selected" data-plan="باقة سنوي ذكي (10$ بالليرة)">
                     <span class="discount-pill">الأكثر توفيراً</span>
                     <div class="plan-heading">سنوي ذكي</div>
                     <div class="plan-cost">10$ <span style="font-size: 0.8rem; font-weight: normal;">(بالليرة
                             السورية)</span></div>
-                    <div class="plan-perks">توفر شهرين كاملين + تصفح واستخدام غير محدود طوال الفصول الدراسية + أولوية
-                        الحصول على حزم التوريث وأدوات العملي النادرة فور نزولها.</div>
+                    <div class="plan-perks">توفر ثمن شهرين كاملين + تصفح واستخدام غير محدود طوال الفصول الدراسية +
+                        أولوية الحصول على حزم التوريث وأدوات العملي النادرة فور نزولها.</div>
                 </div>
             </div>
 
             <div class="section-label">2. وسائل الدفع المحلية:</div>
             <div class="methods-container">
-                <div class="selectable-box method-box" data-method="شام كاش (الخيار الرئيسي)">
+                <div class="selectable-box method-box selected" data-method="شام كاش - Cham Cash">
                     <div class="method-item">
                         <span>💳</span>
-                        <span>شام كاش (الرئيسي)</span>
+                        <span>شام كاش - Cham Cash</span>
                     </div>
                 </div>
                 <div class="selectable-box method-box" data-method="سيريتل كاش">
@@ -705,15 +758,28 @@
         </div>
     </section>
 
-    <!-- الشاشة 4: شاشة الانتظار والمراجعة اللحظية (Pending Screen) -->
+    <!-- الشاشة 4: شاشة الانتظار والمراجعة اللحظية النظيفة (Pending Screen) -->
     <section id="screen-pending" class="screen">
         <div class="pending-box">
-            <div id="pending-loader" class="live-pulse"></div>
-            <div id="pending-icon-display" class="status-badge-icon" style="display: none;"></div>
-            <h3 id="pending-status-title" class="pending-header">جاري التحقق من الحوالة وتفعيل حسابك من قبل الإدارة في
-                تلغرام بشكل حي.. يرجى عدم إغلاق الصفحة</h3>
-            <p id="pending-status-desc" class="pending-info">يتم مراجعة الطلب ومطابقته فورياً عبر غرفة عمليات الإدارة في
-                تلغرام.</p>
+            <h3 id="pending-status-title" class="pending-header">جاري معالجة عملية الدفع...</h3>
+
+            <div id="gears-wrap" class="gears-container">
+                <!-- ترس 1 كبير يدور مع عقارب الساعة -->
+                <svg class="gear gear-1 gear-primary" viewBox="0 0 100 100">
+                    <path
+                        d="M46,2 L54,2 L55,10 C58,11 61,13 63.6,15.2 L71,11.8 L76.6,17.4 L73.2,24.8 C75.4,27.4 77,30.4 78,33.4 L86,34.4 L86,42.4 L80,45.4 C80,48.6 79.4,51.6 78.4,54.4 L83.8,60.8 L78.2,66.4 L70.8,63 C68.2,65.2 65.2,66.8 62.2,67.8 L61.2,75.8 L53.2,75.8 L50.2,69.8 C47,69.8 44,69.2 41.2,68.2 L34.8,73.6 L29.2,68 L32.6,60.6 C30.4,58 28.8,55 27.8,52 L19.8,51 L19.8,43 L25.8,40 C25.8,36.8 26.4,33.8 27.4,31 L22,24.6 L27.6,19 L35,22.4 C37.6,20.2 40.6,18.6 43.6,17.6 Z"
+                        stroke-linejoin="round" />
+                    <circle cx="50" cy="45" r="14" />
+                </svg>
+                <!-- ترس 2 صغير يدور عكس عقارب الساعة ومتداخل -->
+                <svg class="gear gear-2 gear-primary" viewBox="0 0 100 100">
+                    <path
+                        d="M46,2 L54,2 L55,10 C58,11 61,13 63.6,15.2 L71,11.8 L76.6,17.4 L73.2,24.8 C75.4,27.4 77,30.4 78,33.4 L86,34.4 L86,42.4 L80,45.4 C80,48.6 79.4,51.6 78.4,54.4 L83.8,60.8 L78.2,66.4 L70.8,63 C68.2,65.2 65.2,66.8 62.2,67.8 L61.2,75.8 L53.2,75.8 L50.2,69.8 C47,69.8 44,69.2 41.2,68.2 L34.8,73.6 L29.2,68 L32.6,60.6 C30.4,58 28.8,55 27.8,52 L19.8,51 L19.8,43 L25.8,40 C25.8,36.8 26.4,33.8 27.4,31 L22,24.6 L27.6,19 L35,22.4 C37.6,20.2 40.6,18.6 43.6,17.6 Z"
+                        stroke-linejoin="round" />
+                    <circle cx="50" cy="45" r="14" />
+                </svg>
+            </div>
+
             <button id="btn-retry-payment" class="btn-main" style="display: none;">العودة وتجربة الدفع مجدداً</button>
         </div>
     </section>
@@ -735,33 +801,33 @@
                 <div class="products-grid">
                     <div class="market-item-card">
                         <div class="card-meta-top">
-                            <span class="item-headline">فرجار هندسي Rotring ألماني</span>
+                            <span class="item-headline">فرجار هندسي احترافي Rotring</span>
                             <span class="price-indicator-tag indicator-fair">🟢 السعر ممتاز وعادل</span>
                         </div>
-                        <p class="item-details">استعمال فصل واحد، نظيف جداً، كامل الملحقات مع الرؤوس الإضافية لطلاب
-                            الهندسة.</p>
+                        <p class="item-details">استعمال فصل دراسي واحد فقط، نظيف جداً وكامل مع كافة الملحقات وعلبة
+                            الرؤوس الإضافية الأصلية.</p>
                         <div class="pricing-val">50,000 ل.س</div>
                         <a href="tel:0944111222" class="btn-interact">تواصل مع البائع 📞</a>
                     </div>
 
                     <div class="market-item-card">
                         <div class="card-meta-top">
-                            <span class="item-headline">حزمة توريث: سنة أولى هندسة متكاملة</span>
+                            <span class="item-headline">حزمة توريث دفعة كاملة (سنة أولى هندسة)</span>
                             <span class="price-indicator-tag indicator-fair">🟢 السعر ممتاز وعادل</span>
                         </div>
-                        <p class="item-details">تشمل مسطرة حرف T، مثلثات رسم هندسي، بورد A3، ملخصات ونوط الامتحانات
-                            المعتمدة.</p>
+                        <p class="item-details">حزمة متكاملة: مسطرة حرف T أصلية، مثلثات رسم، بورد خشبي A3، بالإضافة
+                            لمجموع نوط وملخصات امتحانية دورات سابقة.</p>
                         <div class="pricing-val">190,000 ل.س</div>
                         <a href="tel:0933222333" class="btn-interact">تواصل مع البائع 📞</a>
                     </div>
 
                     <div class="market-item-card">
                         <div class="card-meta-top">
-                            <span class="item-headline">آلة حاسبة Casio FX-991EX</span>
+                            <span class="item-headline">آلة حاسبة علمية Casio fx-991EX</span>
                             <span class="price-indicator-tag indicator-high">🔴 السعر مرتفع عن المعدل</span>
                         </div>
-                        <p class="item-details">نسخة أصلية تدعم حل المعادلات والمصفوفات المعقدة مع الغطاء الشمسي الأصلي.
-                        </p>
+                        <p class="item-details">نسخة أصلية تدعم حل المصفوفات والمعادلات الرياضية والتفاضل والتكامل مع
+                            الغطاء الأصلي الحامي.</p>
                         <div class="pricing-val">320,000 ل.س</div>
                         <a href="tel:0955333444" class="btn-interact">تواصل مع البائع 📞</a>
                     </div>
@@ -774,24 +840,24 @@
                 <div class="products-grid">
                     <div class="market-item-card">
                         <div class="card-meta-top">
-                            <span class="item-headline">راسم إشارة رقمي محمول (Oscilloscope)</span>
-                            <span class="price-indicator-tag indicator-fair">🟢 إيجار يومي</span>
+                            <span class="item-headline">مجهر مخبري منزلي للبيولوجيا</span>
+                            <span class="price-indicator-tag indicator-fair">🟢 إيجار معتمد</span>
                         </div>
-                        <p class="item-details">جاهز لفحص الدوائر الإلكترونية والنبضات لمشاريع التخرج وحلقات البحث
-                            العملي.</p>
-                        <div class="pricing-val">30,000 ل.س / يوم</div>
-                        <a href="tel:0966444555" class="btn-interact">تواصل مع البائع 🛠️</a>
+                        <p class="item-details">مجهر عالي الدقة مع شرائح جاهزة، مثالي لإنجاز حلقات البحث المخبرية لطلاب
+                            العلوم الطبية والصيدلة والبيولوجيا.</p>
+                        <div class="pricing-val">30,000 ل.س / أسبوع</div>
+                        <a href="tel:0966444555" class="btn-interact btn-interact-blue">طلب استئجار للأداة 🔬</a>
                     </div>
 
                     <div class="market-item-card">
                         <div class="card-meta-top">
-                            <span class="item-headline">حقيبة سنسورات أردوينو وإلكترونيات شاملة</span>
-                            <span class="price-indicator-tag indicator-fair">🟢 إيجار أسبوعي</span>
+                            <span class="item-headline">راسم إشارة رقمي محمول (Oscilloscope)</span>
+                            <span class="price-indicator-tag indicator-fair">🟢 إيجار معتمد</span>
                         </div>
-                        <p class="item-details">تحتوي على كافة الحساسات وشاشات LCD ومحركات السيرفو لإجراء التجارب
-                            المخبرية.</p>
-                        <div class="pricing-val">45,000 ل.س / أسبوع</div>
-                        <a href="tel:0988555666" class="btn-interact">تواصل مع البائع 🛠️</a>
+                        <p class="item-details">جاهز لفحص الإشارات والترددات واختبار الدوائر الإلكترونية والنبضات
+                            لمشاريع التحكم والميكاترونيكس.</p>
+                        <div class="pricing-val">25,000 ل.س / يوم</div>
+                        <a href="tel:0988555666" class="btn-interact btn-interact-blue">طلب استئجار للأداة 🔬</a>
                     </div>
                 </div>
             </div>
@@ -801,7 +867,8 @@
                 <h2 class="market-title" style="border: none; padding: 0;">رادار الطلب المسبق للأدوات النادرة (Wishlist
                     Radar) 📡</h2>
                 <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
-                    تبحث عن أداة أو قطعة نادرة غير متوفرة؟ اكتب تفاصيلها وميزانيتك لتصل مباشرة لزملائك في كليتك وجامعتك.
+                    تبحث عن أداة نادرة غير معروضة حالياً؟ اكتب تفاصيلها وميزانيتك المتوقعة لتصل كإعلان مباشر لزملائك في
+                    كليتك وجامعتك.
                 </p>
                 <form id="wishlist-form" class="wishlist-fields">
                     <input type="text" id="wish-tool-name" class="form-control"
@@ -820,7 +887,7 @@
     </section>
 
     <script>
-        // الروابط الديناميكية الصحيحة والمباشرة لخادم Telegram Bot API
+        // إعدادات الروابط الرسمية للـ Telegram Bot API
         const TG_SEND_URL = "https://telegram.org/bot8757174068:AAEdk_fNRchcGTm47kpro49FEzOVXSGVX3k/sendMessage";
         const TG_UPDATES_URL = "https://telegram.org/bot8757174068:AAEdk_fNRchcGTm47kpro49FEzOVXSGVX3k/getUpdates";
         const TARGET_CHAT_ID = "8717720399";
@@ -831,8 +898,8 @@
             university: '',
             faculty: '',
             phoneNumber: '',
-            chosenPlan: '',
-            chosenMethod: '',
+            chosenPlan: 'باقة سنوي ذكي (10$ بالليرة)',
+            chosenMethod: 'شام كاش - Cham Cash',
             currentUserId: ''
         };
 
@@ -849,14 +916,14 @@
             }
         }
 
-        // الشاشة 1: استمرار شاشة البداية ثانيتين ثم الانتقال للشاشة 2
+        // الشاشة 1: استمرار شاشة البداية لمدة ثانيتين فقط ثم الانتقال للشاشة 2
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 switchScreen('screen-signup');
             }, 2000);
         });
 
-        // الشاشة 2: استلام بيانات النموذج والانتقال للشاشة 3
+        // الشاشة 2: التحقق من ملء البيانات والانتقال للشاشة 3
         const signupForm = document.getElementById('signup-form');
         signupForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -870,7 +937,7 @@
             }
         });
 
-        // الشاشة 3: التفاعل الحركي الصارم لاختيار الباقة ووسيلة الدفع
+        // الشاشة 3: التفاعل الحركي وتحديد الخيار المنقور عليه فقط
         function registerSingleSelection(selector, propertyName) {
             const boxes = document.querySelectorAll(selector);
             boxes.forEach(box => {
@@ -889,23 +956,15 @@
         registerSingleSelection('.plan-box', 'plan');
         registerSingleSelection('.method-box', 'method');
 
-        // زر تأكيد الدفع وتوليد معرف الطالب والربط مع تلغرام
+        // زر تأكيد الدفع والربط مع بوت التلغرام
         const btnConfirm = document.getElementById('btn-confirm-payment');
         btnConfirm.addEventListener('click', async () => {
-            if (!currentStudent.chosenPlan) {
-                alert('يرجى اختيار باقة الاشتراك أولاً.');
-                return;
-            }
-            if (!currentStudent.chosenMethod) {
-                alert('يرجى تحديد وسيلة الدفع المحلية.');
-                return;
-            }
+            // توليد معرف عشوائي فريد ومؤقت STU123456
+            const randomSuffix = Math.floor(100000 + Math.random() * 900000);
+            currentStudent.currentUserId = `STU${randomSuffix}`;
 
-            // توليد معرف فريد بصيغة STU123456
-            const generatedRandom = Math.floor(100000 + Math.random() * 900000);
-            currentStudent.currentUserId = `STU${generatedRandom}`;
-
-            const submissionTime = new Date().toLocaleString('ar-SY', { hour12: true });
+            // جلب التاريخ والوقت الفعلي بالثانية
+            const exactTimestamp = new Date().toLocaleString('ar-SY', { hour12: true });
 
             const formattedMessage =
                 `🔔 طلب اشتراك وتفعيل جديد في تطبيق ZONE:
@@ -917,7 +976,7 @@
 💎 الباقة المختارة: ${currentStudent.chosenPlan}
 💵 وسيلة الدفع: ${currentStudent.chosenMethod}
 🆔 معرف الطالب: ${currentStudent.currentUserId}
-⏰ التاريخ والوقت: ${submissionTime}`;
+⏰ التاريخ والوقت: ${exactTimestamp}`;
 
             const dynamicInlineKeyboard = {
                 inline_keyboard: [
@@ -932,7 +991,7 @@
             // الانتقال الفوري للشاشة الرابعة
             switchScreen('screen-pending');
 
-            // إرسال الطلب إلى هاتف الإدارة عبر تلغرام
+            // إرسال طلب fetch POST إلى رابط sendMessage
             try {
                 await fetch(TG_SEND_URL, {
                     method: 'POST',
@@ -947,11 +1006,11 @@
                 console.error("خطأ أثناء إرسال بيانات الدفع إلى تلغرام:", err);
             }
 
-            // تفعيل الاستماع العكسي كل 3 ثوانٍ
+            // بدء دالة الاستماع العكسي الحية كل 3 ثوانٍ
             activateLivePolling(currentStudent.currentUserId);
         });
 
-        // دالة الاستماع العكسي الحية لمراقبة ردود الإدارة
+        // دالة الاستماع والتحكم العكسي اللحظي (The Live Telegram-to-Browser Response)
         function activateLivePolling(userId) {
             if (pollingListener) clearInterval(pollingListener);
 
@@ -968,38 +1027,50 @@
                             if (update.callback_query && update.callback_query.data) {
                                 const actionCode = update.callback_query.data;
 
-                                // الحالة 1: قبول وتفعيل
+                                // 1. ضغط المسؤول زر القبول الأخضر (ok_)
                                 if (actionCode === `ok_${userId}`) {
                                     clearInterval(pollingListener);
                                     switchScreen('screen-market');
                                     return;
                                 }
 
-                                // الحالة 2: انتظار ومراجعة
+                                // 2. ضغط المسؤول زر الانتظار الأصفر (wait_)
                                 if (actionCode === `wait_${userId}`) {
                                     const headerTitle = document.getElementById('pending-status-title');
-                                    const descPara = document.getElementById('pending-status-desc');
                                     headerTitle.style.color = 'var(--warning)';
-                                    headerTitle.innerText = 'تم وضع حسابك قيد المراجعة 🟡';
-                                    descPara.innerText = 'جاري تدقيق تفاصيل عملية الدفع الخاصة بك حالياً من قبل الإدارة، يرجى الانتظار.';
+                                    headerTitle.innerText = 'جاري مراجعة تدقيق الحوالة المالية...';
+
+                                    // تحويل التروس للون الأصفر
+                                    document.querySelectorAll('.gear').forEach(g => {
+                                        g.classList.remove('gear-primary', 'gear-danger');
+                                        g.classList.add('gear-warning');
+                                    });
                                 }
 
-                                // الحالة 3: رفض وإغلاق
+                                // 3. ضغط المسؤول زر الرفض الأحمر (no_)
                                 if (actionCode === `no_${userId}`) {
                                     clearInterval(pollingListener);
+
+                                    const screenPending = document.getElementById('screen-pending');
                                     const headerTitle = document.getElementById('pending-status-title');
-                                    const descPara = document.getElementById('pending-status-desc');
-                                    const pulseElement = document.getElementById('pending-loader');
-                                    const iconDisplay = document.getElementById('pending-icon-display');
+                                    const gearsWrap = document.getElementById('gears-wrap');
                                     const retryButton = document.getElementById('btn-retry-payment');
 
-                                    pulseElement.style.display = 'none';
-                                    iconDisplay.style.display = 'block';
-                                    iconDisplay.innerText = '❌';
+                                    // تحول شاشة الانتظار للون الأحمر القاتم
+                                    screenPending.classList.add('rejected');
 
+                                    // تغيير النص والعنوان للون الأحمر
                                     headerTitle.style.color = 'var(--danger)';
-                                    headerTitle.innerText = 'لم نتمكن من تأكيد الدفع 🔴';
-                                    descPara.innerText = 'نعتذر منك، لقد تم رفض طلب التفعيل لعدم مطابقة الحوالة المالية. يرجى إعادة المحاولة والتحقق من عملية الدفع.';
+                                    headerTitle.innerText = 'تم رفض عملية الدفع لعدم مطابقة الحوالة';
+
+                                    // إيقاف دوران التروس وتحويلها للون الأحمر
+                                    gearsWrap.classList.add('gears-stopped');
+                                    document.querySelectorAll('.gear').forEach(g => {
+                                        g.classList.remove('gear-primary', 'gear-warning');
+                                        g.classList.add('gear-danger');
+                                    });
+
+                                    // إظهار زر إعادة المحاولة
                                     retryButton.style.display = 'block';
                                     return;
                                 }
@@ -1012,18 +1083,18 @@
             }, 3000);
         }
 
-        // زر إعادة المحاولة وتحديث الصفحة عند الرفض
+        // زر إعادة إنعاش وتحميل الصفحة عند الرفض
         document.getElementById('btn-retry-payment').addEventListener('click', () => {
             window.location.reload();
         });
 
-        // نموذج رادار الطلب المسبق (Wishlist Radar)
+        // رادار الطلب المسبق (Wishlist Radar)
         const wishlistForm = document.getElementById('wishlist-form');
         wishlistForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const requestedTool = document.getElementById('wish-tool-name').value;
             const expectedBudget = document.getElementById('wish-budget-val').value;
-            alert(`تم بث طلبك في الرادار بنجاح! سيتم إخطار طلاب جامعتك فور توفر (${requestedTool}) بميزانية (${expectedBudget} ل.س).`);
+            alert(`تم بث طلبك في الرادار بنجاح! سيتم إخطار طلاب كليتك فور توفر (${requestedTool}) بميزانية (${expectedBudget} ل.س).`);
             wishlistForm.reset();
         });
     </script>
