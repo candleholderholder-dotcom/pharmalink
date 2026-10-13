@@ -4,23 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pharma Link - منصة اللوجستيات الطبية الموحدة</title>
-    <!-- Google Fonts: Cairo -->
+    <title>Zone | منصة الطلاب الجامعيين</title>
+    <!-- خط كايرو من Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-main: #ffffff;
-            --primary: #047857;
-            --primary-hover: #065f46;
-            --secondary: #1f2937;
-            --border-color: #6b7280;
-            --bg-light: #f9fafb;
-            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-navy-deep: #060b13;
+            --bg-navy-surface: #0c1524;
+            --bg-navy-card: #132035;
+            --border-navy: #1f3352;
+            --orange-neon: #ff6a00;
+            --orange-neon-hover: #ff7f24;
+            --orange-neon-glow: rgba(255, 106, 0, 0.35);
+            --text-main: #f0f4f8;
+            --text-muted: #8fa0b5;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -32,562 +36,465 @@
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--secondary);
+            background-color: var(--bg-navy-deep);
+            color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Screen Management */
-        .screen {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-        }
-
-        .screen.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        /* ==================== SCREEN 1: WELCOME SCREEN ==================== */
-        #welcome-screen {
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--bg-main);
+        /* ===================================================
+       1. شاشة البداية الترحيبية (Splash Screen)
+       =================================================== */
+        #splash-screen {
             position: fixed;
             inset: 0;
-            z-index: 1000;
-        }
-
-        .welcome-content {
+            background: radial-gradient(circle at center, #0f1d33 0%, var(--bg-navy-deep) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
         }
 
-        .capsule-wrapper {
-            width: 140px;
-            height: 70px;
-            animation: capsuleEntrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, capsuleFloat 3s ease-in-out infinite 0.8s;
+        #splash-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
-        @keyframes capsuleEntrance {
+        .splash-logo-container {
+            text-align: center;
+            animation: splashPulse 2s ease-in-out infinite;
+        }
+
+        .splash-logo-text {
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .splash-logo-text span {
+            color: var(--orange-neon);
+            text-shadow: 0 0 25px var(--orange-neon-glow);
+        }
+
+        .splash-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-top: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .splash-loader {
+            margin-top: 35px;
+            width: 48px;
+            height: 4px;
+            background: var(--border-navy);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .splash-loader::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background: var(--orange-neon);
+            animation: loadBar 1.8s ease-in-out forwards;
+        }
+
+        @keyframes loadBar {
             0% {
-                transform: scale(0.3) rotate(-20deg);
-                opacity: 0;
+                left: -100%;
             }
 
             100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
+                left: 100%;
             }
         }
 
-        @keyframes capsuleFloat {
+        @keyframes splashPulse {
 
             0%,
             100% {
-                transform: translateY(0px);
+                transform: scale(1);
             }
 
             50% {
-                transform: translateY(-8px);
+                transform: scale(1.03);
             }
         }
 
-        .brand-name {
-            margin-top: 24px;
-            font-size: 2.5rem;
-            font-weight: 800;
-            direction: ltr;
-            letter-spacing: -0.5px;
-        }
-
-        .brand-pharma {
-            color: var(--primary);
-        }
-
-        .brand-link {
-            color: var(--secondary);
-        }
-
-        /* Slide & Fade Animation for Screen Transitions */
-        .fade-out {
-            opacity: 0 !important;
-            transform: scale(0.95);
-            pointer-events: none;
-        }
-
-        /* ==================== SCREEN 2: MULTI-STEP FLOATING CARD ==================== */
+        /* ===================================================
+       2. صفحة تسجيل الدخول والبيانات (Auth Screen)
+       =================================================== */
         #auth-screen {
-            justify-content: center;
+            min-height: 100vh;
+            display: flex;
             align-items: center;
-            padding: 20px;
-            background-color: var(--bg-main);
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
-        .floating-card {
-            background-color: #ffffff;
+        #auth-screen.visible {
+            opacity: 1;
+        }
+
+        .auth-card {
+            background: var(--bg-navy-surface);
+            border: 1px solid var(--border-navy);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
             width: 100%;
             max-width: 480px;
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid #f3f4f6;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
             position: relative;
             overflow: hidden;
-            transform: translateY(0);
-            transition: var(--transition);
         }
 
-        .step-container {
-            display: none;
-            animation: slideIn 0.35s ease-out forwards;
-        }
-
-        .step-container.active {
-            display: block;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .step-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        /* Facility Cards Grid */
-        .facility-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .facility-card {
-            border: 2px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 20px 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            background-color: #ffffff;
-        }
-
-        .facility-card:hover {
-            border-color: var(--border-color);
-            background-color: #fafafa;
-        }
-
-        .facility-card.selected {
-            border-color: var(--primary);
-            background-color: #ecfdf5;
-        }
-
-        .facility-card svg {
-            width: 52px;
-            height: 52px;
-            margin-bottom: 12px;
-            fill: none;
-            stroke: var(--secondary);
-            transition: var(--transition);
-        }
-
-        .facility-card.selected svg {
-            stroke: var(--primary);
-        }
-
-        .facility-card span {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        /* Form Controls */
-        .form-group {
-            margin-bottom: 24px;
-            position: relative;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-wrapper svg {
+        .auth-card::before {
+            content: '';
             position: absolute;
-            right: 16px;
-            width: 22px;
-            height: 22px;
-            stroke: var(--border-color);
-            fill: none;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--orange-neon), transparent);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .auth-brand {
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .auth-brand span {
+            color: var(--orange-neon);
+        }
+
+        .auth-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
         }
 
         .form-control {
             width: 100%;
-            padding: 14px 48px 14px 16px;
-            font-size: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
+            background: var(--bg-navy-deep);
+            border: 1px solid var(--border-navy);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
             outline: none;
-            transition: var(--transition);
-            color: var(--secondary);
-            background-color: #ffffff;
         }
 
         .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(4, 120, 87, 0.1);
+            border-color: var(--orange-neon);
+            box-shadow: 0 0 0 3px var(--orange-neon-glow);
         }
 
-        select.form-control {
-            appearance: none;
-            cursor: pointer;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
         }
 
         .btn-primary {
             width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
-            color: #ffffff;
+            background: var(--orange-neon);
+            color: #fff;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 700;
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            font-size: 1.05rem;
+            font-weight: 800;
             cursor: pointer;
-            transition: var(--transition);
+            margin-top: 10px;
+            box-shadow: 0 4px 18px var(--orange-neon-glow);
+            transition: var(--transition-smooth);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
 
-        .btn-primary:hover:not(:disabled) {
-            background-color: var(--primary-hover);
+        .btn-primary:hover {
+            background: var(--orange-neon-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(255, 106, 0, 0.5);
         }
 
-        .btn-primary:disabled {
-            background-color: #d1d5db;
-            cursor: not-allowed;
-            opacity: 0.7;
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
-        /* ==================== SCREEN 3: DYNAMIC DASHBOARD ==================== */
-        #dashboard-screen {
-            flex-direction: column;
-            padding-bottom: 80px;
-            /* Space for Bottom Nav */
-            background-color: #f9fafb;
+        /* ===================================================
+       3. السوق الطلابي (Student Market Screen)
+       =================================================== */
+        #market-screen {
+            display: none;
             min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            flex-direction: column;
         }
 
-        /* Top Header */
-        .dashboard-header {
-            background-color: #ffffff;
-            padding: 16px 24px;
-            border-bottom: 1px solid #e5e7eb;
+        #market-screen.active {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            opacity: 1;
+        }
+
+        /* الهيدر */
+        .market-header {
+            background: rgba(12, 21, 36, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-navy);
             position: sticky;
             top: 0;
             z-index: 100;
+            padding: 16px 24px;
         }
 
-        .header-brand {
-            font-size: 1.25rem;
+        .header-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .logo span {
+            color: var(--orange-neon);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .premium-badge-btn {
+            background: linear-gradient(135deg, #ff6a00 0%, #d84315 100%);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 8px 18px;
+            font-size: 0.88rem;
             font-weight: 800;
-            direction: ltr;
-        }
-
-        .user-badge {
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            background-color: #f3f4f6;
-            padding: 6px 12px;
-            border-radius: 20px;
+            box-shadow: 0 0 15px var(--orange-neon-glow);
+            transition: var(--transition-smooth);
+        }
+
+        .premium-badge-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(255, 106, 0, 0.6);
+        }
+
+        .user-pill {
+            background: var(--bg-navy-card);
+            border: 1px solid var(--border-navy);
+            padding: 6px 14px;
+            border-radius: 30px;
             font-size: 0.85rem;
             font-weight: 600;
-        }
-
-        .user-badge-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--primary);
-            border-radius: 50%;
-        }
-
-        /* Tab Content Area */
-        .dashboard-container {
-            max-width: 1000px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 24px 16px;
-            flex: 1;
-        }
-
-        .tab-content {
+            color: var(--text-muted);
             display: none;
-            animation: fadeIn 0.3s ease-in-out;
         }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        @media (min-width: 768px) {
+            .user-pill {
+                display: block;
             }
         }
 
-        /* Overview Tab Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .stat-title {
-            font-size: 0.875rem;
-            color: var(--border-color);
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--secondary);
-        }
-
-        .stat-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--primary);
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-
-        /* CRUD Table Area */
-        .table-container {
-            background-color: #ffffff;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            overflow-x: auto;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: right;
-            min-width: 600px;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 16px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .data-table th {
-            background-color: #f9fafb;
-            color: var(--secondary);
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .data-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .btn-edit {
-            background-color: #e0e7ff;
-            color: #3730a3;
-        }
-
-        .btn-edit:hover {
-            background-color: #c7d2fe;
-        }
-
-        /* Analytics Chart Container */
-        .chart-card {
-            background-color: #ffffff;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            margin-bottom: 24px;
-        }
-
-        /* Profile Details Card */
-        .profile-card {
-            background-color: #ffffff;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            max-width: 500px;
+        /* محتوى السوق */
+        .market-content {
+            flex: 1;
+            max-width: 1240px;
             margin: 0 auto;
-        }
-
-        .profile-field {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .profile-field:last-of-type {
-            border-bottom: none;
-            margin-bottom: 24px;
-        }
-
-        .profile-label {
-            color: var(--border-color);
-            font-weight: 600;
-        }
-
-        .profile-val {
-            color: var(--secondary);
-            font-weight: 700;
-        }
-
-        .btn-danger {
-            background-color: #dc2626;
-            color: #ffffff;
             width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
+            padding: 32px 24px 60px;
         }
 
-        .btn-danger:hover {
-            background-color: #b91c1c;
-        }
-
-        /* Bottom Navigation Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 68px;
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-item {
+        .section-title-wrap {
+            margin-bottom: 28px;
             display: flex;
             flex-direction: column;
+            gap: 6px;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* شبكة المنتجات (Product Grid) */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .product-card {
+            background: var(--bg-navy-surface);
+            border: 1px solid var(--border-navy);
+            border-radius: var(--radius-md);
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: var(--transition-smooth);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--orange-neon);
+            box-shadow: 0 12px 30px rgba(255, 106, 0, 0.15);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .item-category {
+            background: rgba(255, 106, 0, 0.12);
+            color: var(--orange-neon);
+            border: 1px solid rgba(255, 106, 0, 0.3);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .item-location {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            display: flex;
             align-items: center;
-            justify-content: center;
-            flex: 1;
-            height: 100%;
-            color: var(--border-color);
-            text-decoration: none;
-            cursor: pointer;
-            transition: var(--transition);
-            background: none;
-            border: none;
+            gap: 4px;
         }
 
-        .nav-item svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--border-color);
-            fill: none;
-            transition: var(--transition);
-            margin-bottom: 2px;
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-main);
         }
 
-        .nav-item span {
+        .item-faculty {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-bottom: 18px;
+        }
+
+        .card-footer {
+            border-top: 1px solid var(--border-navy);
+            padding-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .item-price {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-value {
+            color: var(--orange-neon);
+            font-size: 1.25rem;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .price-unit {
+            color: var(--text-muted);
             font-size: 0.75rem;
             font-weight: 600;
-            transition: var(--transition);
         }
 
-        .nav-item.active {
-            color: var(--primary);
+        .btn-contact {
+            background: transparent;
+            color: var(--orange-neon);
+            border: 1px solid var(--orange-neon);
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
         }
 
-        .nav-item.active svg {
-            stroke: var(--primary);
+        .btn-contact:hover {
+            background: var(--orange-neon);
+            color: #fff;
+            box-shadow: 0 0 14px var(--orange-neon-glow);
         }
 
-        /* Modal Overlay for Editing */
+        /* Modal صندوق التواصل والإشعار */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background-color: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
             display: none;
-            justify-content: center;
             align-items: center;
-            z-index: 2000;
-            padding: 16px;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
         }
 
         .modal-overlay.active {
@@ -595,581 +502,333 @@
         }
 
         .modal-box {
-            background-color: #ffffff;
-            border-radius: 20px;
-            padding: 24px;
+            background: var(--bg-navy-surface);
+            border: 1px solid var(--border-navy);
+            border-radius: var(--radius-md);
+            padding: 28px;
+            max-width: 420px;
             width: 100%;
-            max-width: 400px;
-            box-shadow: var(--card-shadow);
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
-        .modal-title {
-            font-size: 1.1rem;
+        .modal-box h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .modal-box p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-close {
+            background: var(--orange-neon);
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: var(--radius-sm);
             font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--secondary);
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ==================== SCREEN 1: WELCOME SCREEN ==================== -->
-    <div id="welcome-screen" class="screen active">
-        <div class="welcome-content">
-            <!-- Horizontal Capsule SVG -->
-            <div class="capsule-wrapper">
-                <svg viewBox="0 0 140 70" width="100%" height="100%">
-                    <defs>
-                        <!-- Left Half Shadow -->
-                        <radialGradient id="leftShadow" cx="30%" cy="30%" r="70%">
-                            <stop offset="0%" stop-color="#374151" />
-                            <stop offset="100%" stop-color="#1f2937" />
-                        </radialGradient>
-                    </defs>
-                    <!-- Left Half (Dark Metallic Gray) -->
-                    <path d="M 35 5 A 30 30 0 0 0 35 65 L 70 65 L 70 5 Z" fill="url(#leftShadow)" />
-                    <!-- Right Half (Dark Emerald Green) -->
-                    <path d="M 70 5 L 70 65 L 105 65 A 30 30 0 0 0 105 5 Z" fill="#047857" />
-                    <!-- Plastic Gloss / Light Reflection Effect -->
-                    <path d="M 15 20 A 20 20 0 0 1 125 20 A 28 28 0 0 0 15 20 Z" fill="#ffffff" opacity="0.25" />
-                    <!-- Center Separator Line -->
-                    <line x1="70" y1="5" x2="70" y2="65" stroke="#ffffff" stroke-width="1.5" opacity="0.3" />
-                </svg>
-            </div>
-            <!-- Brand Name -->
-            <div class="brand-name">
-                <span class="brand-pharma">Pharma</span><span class="brand-link">Link</span>
-            </div>
+    <!-- 1. شاشة البداية الترحيبية (Splash Screen) -->
+    <div id="splash-screen">
+        <div class="splash-logo-container">
+            <div class="splash-logo-text">Z<span>one</span></div>
+            <div class="splash-subtitle">المنصة الشاملة لطلاب الجامعات السورية</div>
+            <div class="splash-loader"></div>
         </div>
     </div>
 
-    <!-- ==================== SCREEN 2: MULTI-STEP AUTH CARD ==================== -->
-    <div id="auth-screen" class="screen">
-        <div class="floating-card">
-
-            <!-- STEP 1: Select Facility Type -->
-            <div id="step-1" class="step-container active">
-                <h2 class="step-title">اختر طبيعة منشأتك في المنصة</h2>
-                <div class="facility-grid">
-                    <!-- Pharmacy Card -->
-                    <div class="facility-card" onclick="selectFacility('pharmacy')">
-                        <!-- Precise Stethoscope SVG -->
-                        <svg viewBox="0 0 64 64" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Earpieces -->
-                            <path d="M 22 10 L 26 10 C 26 18, 22 28, 32 34 C 42 28, 38 18, 38 10 L 42 10" />
-                            <circle cx="22" cy="10" r="2" fill="#1f2937" />
-                            <circle cx="42" cy="10" r="2" fill="#1f2937" />
-                            <!-- Main Hose -->
-                            <path d="M 32 34 L 32 46 C 32 52, 44 52, 44 46 L 44 42" />
-                            <!-- Chestpiece (Diaphragm) -->
-                            <circle cx="44" cy="38" r="6" stroke-width="2.5" />
-                            <circle cx="44" cy="38" r="2" fill="#1f2937" />
-                        </svg>
-                        <span>صيدلي</span>
-                    </div>
-
-                    <!-- Drug Store / Warehouse Card -->
-                    <div class="facility-card" onclick="selectFacility('warehouse')">
-                        <!-- Precise Warehouse SVG -->
-                        <svg viewBox="0 0 64 64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Gable Roof -->
-                            <path d="M 8 24 L 32 8 L 56 24 L 56 56 L 8 56 Z" />
-                            <!-- Medical Cross on Roof -->
-                            <path d="M 32 14 L 32 20 M 29 17 L 35 17" stroke-width="2" />
-                            <!-- Open Gate -->
-                            <rect x="20" y="32" width="24" height="24" stroke-width="2" />
-                            <!-- 3 Stacked Boxes with Inner Crosses -->
-                            <!-- Box 1: Bottom Left -->
-                            <rect x="23" y="45" width="8" height="8" stroke-width="1.5" />
-                            <path d="M 27 47 L 27 51 M 25 49 L 29 49" stroke-width="1" />
-                            <!-- Box 2: Bottom Right -->
-                            <rect x="33" y="45" width="8" height="8" stroke-width="1.5" />
-                            <path d="M 37 47 L 37 51 M 35 49 L 39 49" stroke-width="1" />
-                            <!-- Box 3: Top Center -->
-                            <rect x="28" y="36" width="8" height="8" stroke-width="1.5" />
-                            <path d="M 32 38 L 32 42 M 30 40 L 34 40" stroke-width="1" />
-                        </svg>
-                        <span>مستودع أدوية</span>
-                    </div>
-                </div>
-                <button id="btn-step-1" class="btn-primary" disabled onclick="nextStep(2)">المتابعة</button>
+    <!-- 2. صفحة تسجيل الدخول وتعبئة البيانات (Auth Screen) -->
+    <main id="auth-screen" style="display: none;">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-brand">Z<span>one</span></h1>
+                <p class="auth-desc">يرجى تسجيل بياناتك الجامعية للمتابعة للسوق</p>
             </div>
 
-            <!-- STEP 2: Facility Name -->
-            <div id="step-2" class="step-container">
-                <h2 id="facility-title-label" class="step-title">اسم المنشأة</h2>
+            <form id="student-form">
                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="text" id="facility-name-input" class="form-control"
-                            placeholder="أدخل الاسم الرسمي..." oninput="validateStep2()">
-                        <!-- Commercial Seal SVG Icon -->
-                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 15l-2 5l9-4l-4-9"></path>
-                            <circle cx="12" cy="9" r="6"></circle>
-                        </svg>
-                    </div>
+                    <label for="student-name">الاسم الثلاثي</label>
+                    <input type="text" id="student-name" class="form-control" placeholder="مثال: محمد يحيى" required>
                 </div>
-                <button id="btn-step-2" class="btn-primary" disabled onclick="nextStep(3)">المتابعة</button>
-            </div>
 
-            <!-- STEP 3: Governorate Selection -->
-            <div id="step-3" class="step-container">
-                <h2 class="step-title">الموقع الجغرافي للمنشأة</h2>
-                <div class="form-group">
-                    <div class="input-wrapper">
-                        <select id="governorate-select" class="form-control" onchange="validateStep3()">
-                            <option value="" disabled selected>اختر المحافظة...</option>
-                            <option value="دمشق">دمشق</option>
-                            <option value="ريف دمشق">ريف دمشق</option>
-                            <option value="حلب">حلب</option>
-                            <option value="حمص">حمص</option>
-                            <option value="حماة">حماة</option>
-                            <option value="اللاذقية">اللاذقية</option>
-                            <option value="طرطوس">طرطوس</option>
-                            <option value="إدلب">إدلب</option>
-                            <option value="دير الزور">دير الزور</option>
-                            <option value="الرقة">الرقة</option>
-                            <option value="الحسكة">الحسكة</option>
-                            <option value="درعا">درعا</option>
-                            <option value="السويداء">السويداء</option>
-                            <option value="القنيطرة">القنيطرة</option>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="student-university">الجامعة</label>
+                        <select id="student-university" class="form-control" required>
+                            <option value="" disabled selected>اختر الجامعة</option>
+                            <option value="جامعة دمشق">جامعة دمشق</option>
+                            <option value="جامعة حلب">جامعة حلب</option>
+                            <option value="جامعة تشرين">جامعة تشرين</option>
+                            <option value="جامعة البعث">جامعة البعث</option>
+                            <option value="جامعة طرطوس">جامعة طرطوس</option>
+                            <option value="جامعة حماة">جامعة حماة</option>
+                            <option value="جامعة افتراضية / خاصة">جامعة خاصة / افتراضية</option>
                         </select>
-                        <!-- Location Pin SVG Icon -->
-                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="student-faculty">الكلية / الفرع</label>
+                        <input type="text" id="student-faculty" class="form-control"
+                            placeholder="مثال: هندسة المعلوماتية" required>
                     </div>
                 </div>
-                <button id="btn-step-3" class="btn-primary" disabled onclick="nextStep(4)">المتابعة</button>
-            </div>
 
-            <!-- STEP 4: Phone & Direct Login -->
-            <div id="step-4" class="step-container">
-                <h2 class="step-title">رقم الهاتف للتواصل</h2>
-                <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="tel" id="phone-input" class="form-control" placeholder="09xxxxxxxx"
-                            oninput="validateStep4()">
-                        <!-- Phone Receiver SVG Icon -->
-                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-                            </path>
-                        </svg>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="student-year">السنة الدراسية</label>
+                        <select id="student-year" class="form-control" required>
+                            <option value="السنة الأولى">السنة الأولى</option>
+                            <option value="السنة الثانية">السنة الثانية</option>
+                            <option value="السنة الثالثة">السنة الثالثة</option>
+                            <option value="السنة الرابعة">السنة الرابعة</option>
+                            <option value="السنة الخامسة">السنة الخامسة</option>
+                            <option value="سنة التخرج / دراسات">سنة التخرج / دراسات</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="student-phone">رقم الموبايل</label>
+                        <input type="tel" id="student-phone" class="form-control" placeholder="09xxxxxxxx" required
+                            pattern="[0-9]{10}">
                     </div>
                 </div>
-                <button id="btn-login" class="btn-primary" disabled onclick="performLogin()">تسجيل الدخول</button>
-            </div>
 
+                <button type="submit" class="btn-primary">
+                    <span>تسجيل الدخول</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </form>
         </div>
-    </div>
+    </main>
 
-    <!-- ==================== SCREEN 3: DYNAMIC DASHBOARD ==================== -->
-    <div id="dashboard-screen" class="screen">
-        <!-- Top Sticky Header -->
-        <header class="dashboard-header">
-            <div class="header-brand">
-                <span class="brand-pharma">Pharma</span><span class="brand-link">Link</span>
-            </div>
-            <div class="user-badge">
-                <span class="user-badge-dot"></span>
-                <span id="user-display-name">منشأة طبية</span>
+    <!-- 3. الصفحة الرئيسية لـ السوق الطلابي (Student Market) -->
+    <div id="market-screen">
+        <!-- الهيدر -->
+        <header class="market-header">
+            <div class="header-container">
+                <a href="#" class="logo">Z<span>one</span></a>
+
+                <div class="header-actions">
+                    <div id="user-display-pill" class="user-pill">طالب مسجل</div>
+
+                    <button class="premium-badge-btn" id="premium-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <span>Zone Premium (1$/شهر)</span>
+                    </button>
+                </div>
             </div>
         </header>
 
-        <!-- Main Dashboard Container -->
-        <main class="dashboard-container">
+        <!-- محتوى بطاقات السوق -->
+        <main class="market-content">
+            <div class="section-title-wrap">
+                <h2 class="section-title">السوق الطلابي الجامعي</h2>
+                <p class="section-desc">مستلزمات، ملخصات، وأدوات هندسية وطبية متداولة مباشرة بين الطلاب</p>
+            </div>
 
-            <!-- TAB 1: OVERVIEW / MAIN -->
-            <section id="tab-overview" class="tab-content active">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-title">المبيعات الحالية</div>
-                        <div class="stat-value">1,420,000 ل.س</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">العمولات المستحقة</div>
-                        <div class="stat-value">35,500 ل.س</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">حالة تزامن الخوادم</div>
-                        <div class="stat-status">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            متصل ومزامن (60fps)
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TAB 2: INVENTORY (CRUD) -->
-            <section id="tab-inventory" class="tab-content">
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>المادة الطبية</th>
-                                <th>الكمية المتاحة</th>
-                                <th>السعر (ل.س)</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventory-table-body">
-                            <!-- Populated Dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- TAB 3: SALES ANALYTICS -->
-            <section id="tab-analytics" class="tab-content">
-                <div class="chart-card">
-                    <h3 style="margin-bottom: 16px; font-size: 1.1rem; color: var(--secondary);">مخطط المنحنيات المالية
-                        للبيع اليومي</h3>
-                    <canvas id="salesChart" height="220"></canvas>
-                </div>
-            </section>
-
-            <!-- TAB 4: PROFILE & LOGOUT -->
-            <section id="tab-profile" class="tab-content">
-                <div class="profile-card">
-                    <h3 style="margin-bottom: 20px; font-size: 1.2rem; color: var(--secondary); text-align: center;">
-                        بيانات المنشأة المسجلة</h3>
-                    <div class="profile-field">
-                        <span class="profile-label">طبيعة المنشأة:</span>
-                        <span id="profile-type" class="profile-val">-</span>
-                    </div>
-                    <div class="profile-field">
-                        <span class="profile-label">اسم المنشأة:</span>
-                        <span id="profile-name" class="profile-val">-</span>
-                    </div>
-                    <div class="profile-field">
-                        <span class="profile-label">المحافظة:</span>
-                        <span id="profile-gov" class="profile-val">-</span>
-                    </div>
-                    <div class="profile-field">
-                        <span class="profile-label">رقم الهاتف:</span>
-                        <span id="profile-phone" class="profile-val">-</span>
-                    </div>
-                    <button class="btn-danger" onclick="performLogout()">تسجيل الخروج</button>
-                </div>
-            </section>
-
+            <div class="products-grid" id="products-container">
+                <!-- يتم توليد البطاقات عبر JavaScript -->
+            </div>
         </main>
-
-        <!-- Bottom Navigation Bar -->
-        <nav class="bottom-nav">
-            <button class="nav-item active" onclick="switchTab('overview', this)">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <span>الرئيسية</span>
-            </button>
-            <button class="nav-item" onclick="switchTab('inventory', this)">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                    </path>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                </svg>
-                <span>المخزن</span>
-            </button>
-            <button class="nav-item" onclick="switchTab('analytics', this)">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
-                <span>المبيعات</span>
-            </button>
-            <button class="nav-item" onclick="switchTab('profile', this)">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <span>الملف الشخصي</span>
-            </button>
-        </nav>
     </div>
 
-    <!-- Edit Price Modal -->
-    <div id="edit-modal" class="modal-overlay">
+    <!-- صندوق منبثق للتواصل والاشتراك -->
+    <div class="modal-overlay" id="action-modal">
         <div class="modal-box">
-            <h3 class="modal-title">تعديل سعر المادة</h3>
-            <div class="form-group" style="margin-bottom: 0;">
-                <input type="number" id="modal-price-input" class="form-control" placeholder="أدخل السعر الجديد...">
-            </div>
-            <div class="modal-actions">
-                <button class="btn-primary" style="flex:1;" onclick="savePriceEdit()">حفظ</button>
-                <button class="btn-primary" style="flex:1; background-color: #6b7280;"
-                    onclick="closeModal()">إلغاء</button>
-            </div>
+            <h3 id="modal-title">تواصل مع البائع</h3>
+            <p id="modal-desc">جاري فتح وسيلة الاتصال المباشرة...</p>
+            <button class="btn-close" id="modal-close">إغلاق</button>
         </div>
     </div>
 
-    <!-- ==================== LOGIC & SCRIPTING ==================== -->
+    <!-- تشغيل الوظائف البرمجية -->
     <script>
-        // State Management
-        let appState = {
-            facilityType: '', // 'pharmacy' or 'warehouse'
-            facilityName: '',
-            governorate: '',
-            phone: ''
-        };
-
-        let inventoryData = [
-            { id: 1, name: 'باراسيتامول 500ملغ', quantity: 1200, price: 3500 },
-            { id: 2, name: 'أموكسيسيلين 500ملغ', quantity: 450, price: 8200 },
-            { id: 3, name: 'أوميبرازول 20ملغ', quantity: 300, price: 6500 },
-            { id: 4, name: 'فيتامين C 1000ملغ', quantity: 800, price: 4200 },
-            { id: 5, name: 'إيبوبروفين 400ملغ', quantity: 600, price: 5100 }
+        // بيانات المنتجات الأولية في السوق الطلابي
+        const productsData = [
+            {
+                id: 1,
+                title: "حقيبة أدوات طب أسنان كاملة",
+                category: "أدوات طبية",
+                faculty: "طب الأسنان",
+                city: "دمشق",
+                price: 450000,
+                seller: "طالب سنة رابعة",
+                phone: "0933112233"
+            },
+            {
+                id: 2,
+                title: "فرجار هندسي احترافي ألماني + مسطرة T",
+                category: "أدوات هندسية",
+                faculty: "الهندسة المدنية والعمارة",
+                city: "حلب",
+                price: 180000,
+                seller: "طالب سنة ثانية",
+                phone: "0944556677"
+            },
+            {
+                id: 3,
+                title: "نوطة وملخص التشريح العام الشامل",
+                category: "ملخصات جامعية",
+                faculty: "الطب البشري",
+                city: "حمص",
+                price: 45000,
+                seller: "طالب سنة ثانية",
+                phone: "0955889900"
+            },
+            {
+                id: 4,
+                title: "بورد تجارب Arduino UNO مع ملحقات وحساسات",
+                category: "أدوات هندسية",
+                faculty: "هندسة ميكاترونيكس وحواسيب",
+                city: "حلب",
+                price: 260000,
+                seller: "طالب سنة ثالثة",
+                phone: "0966123456"
+            },
+            {
+                id: 5,
+                title: "سماعة طبيب Littmann Classic أصلية",
+                category: "أدوات طبية",
+                faculty: "الطب البشري",
+                city: "اللاذقية",
+                price: 680000,
+                seller: "طالب ستاجات",
+                phone: "0988765432"
+            },
+            {
+                id: 6,
+                title: "مجموعة مراجع القانون المدني المقارن",
+                category: "كتب وملخصات",
+                faculty: "الحقوق",
+                city: "طرطوس",
+                price: 75000,
+                seller: "طالب دراسات",
+                phone: "0999001122"
+            }
         ];
 
-        let activeEditingId = null;
-        let salesChartInstance = null;
+        document.addEventListener("DOMContentLoaded", () => {
+            const splashScreen = document.getElementById("splash-screen");
+            const authScreen = document.getElementById("auth-screen");
+            const marketScreen = document.getElementById("market-screen");
+            const studentForm = document.getElementById("student-form");
+            const productsContainer = document.getElementById("products-container");
+            const userDisplayPill = document.getElementById("user-display-pill");
 
-        // Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            checkExistingSession();
-        });
+            const modal = document.getElementById("action-modal");
+            const modalTitle = document.getElementById("modal-title");
+            const modalDesc = document.getElementById("modal-desc");
+            const modalClose = document.getElementById("modal-close");
+            const premiumBtn = document.getElementById("premium-btn");
 
-        // Session Check
-        function checkExistingSession() {
-            const savedSession = localStorage.getItem('pharmaLink_session');
-            if (savedSession) {
-                try {
-                    appState = JSON.parse(savedSession);
-                    // Fast bypass to Dashboard
-                    showScreen('dashboard-screen');
-                    initDashboard();
-                    return;
-                } catch (e) {
-                    localStorage.removeItem('pharmaLink_session');
-                }
-            }
-
-            // Welcome Splash Screen Timing (Strict 1.8 seconds max)
+            // 1. إدارة توقيت الشاشة الترحيبية (ثانيتان تماماً ثم Fade Out)
             setTimeout(() => {
-                const welcomeScreen = document.getElementById('welcome-screen');
-                welcomeScreen.classList.add('fade-out');
+                splashScreen.classList.add("fade-out");
+
                 setTimeout(() => {
-                    welcomeScreen.classList.remove('active', 'fade-out');
-                    showScreen('auth-screen');
+                    splashScreen.style.display = "none";
+                    authScreen.style.display = "flex";
+                    // إضافة التأثير السلس لظهور صفحة الدخول
+                    setTimeout(() => authScreen.classList.add("visible"), 20);
+                }, 600); // مدة انتهاء انسياب الـ Fade
+            }, 2000);
+
+            // 2. معالجة نموذج تسجيل بيانات الطالب والانتقال للسوق
+            studentForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const studentName = document.getElementById("student-name").value.trim();
+                const studentUni = document.getElementById("student-university").value;
+                const studentFaculty = document.getElementById("student-faculty").value.trim();
+
+                // تحديث معلومات المستخدم في شريط الهيدر
+                userDisplayPill.textContent = `${studentName} | ${studentUni}`;
+
+                // إخفاء شاشة تسجيل الدخول وإظهار السوق الطلابي بسلاسة
+                authScreen.classList.remove("visible");
+                setTimeout(() => {
+                    authScreen.style.display = "none";
+                    marketScreen.classList.add("active");
+                    renderMarketProducts();
                 }, 400);
-            }, 1800);
-        }
-
-        // Screen Switch Helper
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            const target = document.getElementById(screenId);
-            if (target) {
-                target.classList.add('active');
-            }
-        }
-
-        // Step 1: Select Facility
-        function selectFacility(type) {
-            appState.facilityType = type;
-            const cards = document.querySelectorAll('.facility-card');
-            cards.forEach(card => card.classList.remove('selected'));
-
-            if (type === 'pharmacy') {
-                cards[0].classList.add('selected');
-                document.getElementById('facility-title-label').innerText = 'اسم الصيدلية';
-                document.getElementById('facility-name-input').placeholder = 'أدخل اسم الصيدلية الرسمي...';
-            } else {
-                cards[1].classList.add('selected');
-                document.getElementById('facility-title-label').innerText = 'اسم مستودع الأدوية';
-                document.getElementById('facility-name-input').placeholder = 'أدخل اسم المستودع الرسمي...';
-            }
-
-            document.getElementById('btn-step-1').disabled = false;
-        }
-
-        // Step Transitions
-        function nextStep(stepNumber) {
-            document.querySelectorAll('.step-container').forEach(step => step.classList.remove('active'));
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
-        }
-
-        // Validations
-        function validateStep2() {
-            const val = document.getElementById('facility-name-input').value.trim();
-            appState.facilityName = val;
-            document.getElementById('btn-step-2').disabled = val.length < 3;
-        }
-
-        function validateStep3() {
-            const val = document.getElementById('governorate-select').value;
-            appState.governorate = val;
-            document.getElementById('btn-step-3').disabled = !val;
-        }
-
-        function validateStep4() {
-            const val = document.getElementById('phone-input').value.trim();
-            appState.phone = val;
-            // Validates simple Syrian phone formats (e.g. 09xxxxxxxx - 10 digits)
-            const isValid = /^09\d{8}$/.test(val) || val.length >= 9;
-            document.getElementById('btn-login').disabled = !isValid;
-        }
-
-        // Login Action
-        function performLogin() {
-            localStorage.setItem('pharmaLink_session', JSON.stringify(appState));
-            showScreen('dashboard-screen');
-            initDashboard();
-        }
-
-        // Logout Action
-        function performLogout() {
-            localStorage.removeItem('pharmaLink_session');
-            // Reset state
-            appState = { facilityType: '', facilityName: '', governorate: '', phone: '' };
-
-            // Reset Form Inputs
-            document.getElementById('facility-name-input').value = '';
-            document.getElementById('governorate-select').selectedIndex = 0;
-            document.getElementById('phone-input').value = '';
-            document.querySelectorAll('.facility-card').forEach(c => c.classList.remove('selected'));
-            document.querySelectorAll('.btn-primary').forEach(b => b.disabled = true);
-
-            // Back to Step 1 & Auth Screen
-            nextStep(1);
-            showScreen('auth-screen');
-        }
-
-        // Dashboard Initialization
-        function initDashboard() {
-            document.getElementById('user-display-name').innerText = appState.facilityName || 'منشأة طبية';
-            renderProfile();
-            renderInventory();
-            initChart();
-        }
-
-        // Render Profile Data
-        function renderProfile() {
-            document.getElementById('profile-type').innerText = appState.facilityType === 'pharmacy' ? 'صيدلية' : 'مستودع أدوية';
-            document.getElementById('profile-name').innerText = appState.facilityName || '-';
-            document.getElementById('profile-gov').innerText = appState.governorate || '-';
-            document.getElementById('profile-phone').innerText = appState.phone || '-';
-        }
-
-        // Render Inventory CRUD Table
-        function renderInventory() {
-            const tbody = document.getElementById('inventory-table-body');
-            tbody.innerHTML = '';
-            inventoryData.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${item.name}</strong></td>
-                    <td>${item.quantity.toLocaleString('ar-EG')}</td>
-                    <td>${item.price.toLocaleString('ar-EG')}</td>
-                    <td>
-                        <button class="btn-sm btn-edit" onclick="openEditModal(${item.id}, ${item.price})">تعديل السعر</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
             });
-        }
 
-        // Modal Controls
-        function openEditModal(id, currentPrice) {
-            activeEditingId = id;
-            document.getElementById('modal-price-input').value = currentPrice;
-            document.getElementById('edit-modal').classList.add('active');
-        }
-
-        function closeModal() {
-            activeEditingId = null;
-            document.getElementById('edit-modal').classList.remove('active');
-        }
-
-        function savePriceEdit() {
-            const newPrice = parseFloat(document.getElementById('modal-price-input').value);
-            if (newPrice && activeEditingId) {
-                const item = inventoryData.find(i => i.id === activeEditingId);
-                if (item) {
-                    item.price = newPrice;
-                    renderInventory();
-                }
-            }
-            closeModal();
-        }
-
-        // Tab Switcher
-        function switchTab(tabId, navElement) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-            if (navElement) {
-                navElement.classList.add('active');
+            // 3. بناء وعرض بطاقات المنتجات
+            function renderMarketProducts() {
+                productsContainer.innerHTML = "";
+                productsData.forEach((item) => {
+                    const card = document.createElement("div");
+                    card.className = "product-card";
+                    card.innerHTML = `
+            <div>
+              <div class="card-top">
+                <span class="item-category">${item.category}</span>
+                <span class="item-location">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                  ${item.city}
+                </span>
+              </div>
+              <h3 class="item-title">${item.title}</h3>
+              <p class="item-faculty">${item.faculty}</p>
+            </div>
+            <div class="card-footer">
+              <div class="item-price">
+                <span class="price-value">${item.price.toLocaleString("ar-SY")}</span>
+                <span class="price-unit">ليرة سورية</span>
+              </div>
+              <button class="btn-contact" onclick="openContactModal('${item.title}', '${item.phone}', '${item.seller}')">
+                تواصل مع البائع
+              </button>
+            </div>
+          `;
+                    productsContainer.appendChild(card);
+                });
             }
 
-            if (tabId === 'analytics' && salesChartInstance) {
-                salesChartInstance.resize();
-            }
-        }
+            // 4. النوافذ المنبثقة للتفاعل
+            window.openContactModal = function (title, phone, seller) {
+                modalTitle.textContent = "تواصل مع صاحب الغرض";
+                modalDesc.innerHTML = `
+          <strong>${title}</strong><br>
+          المعلن: ${seller}<br>
+          رقم الهاتف: <span dir="ltr" style="color:var(--orange-neon); font-weight:bold;">${phone}</span><br>
+          (يمكنك الاتصال هاتفياً أو عبر واتساب مباشرة)
+        `;
+                modal.classList.add("active");
+            };
 
-        // Chart.js Setup
-        function initChart() {
-            const ctx = document.getElementById('salesChart');
-            if (!ctx) return;
-
-            if (salesChartInstance) {
-                salesChartInstance.destroy();
-            }
-
-            salesChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
-                    datasets: [{
-                        label: 'المبيعات اليومية (ل.س)',
-                        data: [1200000, 1900000, 1500000, 2200000, 1800000, 2500000, 2100000],
-                        borderColor: '#047857',
-                        backgroundColor: 'rgba(4, 120, 87, 0.08)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.35,
-                        pointBackgroundColor: '#047857',
-                        pointRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                font: { family: 'Cairo', size: 12 }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { font: { family: 'Cairo' } }
-                        },
-                        y: {
-                            ticks: { font: { family: 'Cairo' } }
-                        }
-                    }
-                }
+            premiumBtn.addEventListener("click", () => {
+                modalTitle.textContent = "عضوية Zone Premium";
+                modalDesc.innerHTML = `
+          احصل على تمييز عروضك الجامعية، تثبيت البطاقات في الواجهة الأولى، والتواصل غير المحدود بسعر <strong>1$ شهرياً</strong> أو <strong>10$ سنوياً</strong> عبر وسائل الدفع المحلية.
+        `;
+                modal.classList.add("active");
             });
-        }
+
+            modalClose.addEventListener("click", () => {
+                modal.classList.remove("active");
+            });
+
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) modal.classList.remove("active");
+            });
+        });
     </script>
 </body>
 
