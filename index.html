@@ -109,26 +109,27 @@
         }
 
         .zone-custom-logo-box {
-            width: 118px;
-            height: 118px;
-            background: var(--navy-card);
-            border: 2px solid rgba(249, 115, 22, 0.45);
-            border-radius: 30px;
+            width: 128px;
+            height: 128px;
+            background: linear-gradient(145deg, var(--navy-card), var(--navy-primary));
+            border: 2px solid rgba(249, 115, 22, 0.5);
+            border-radius: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 20px 45px var(--orange-glow);
-            margin-bottom: 1.1rem;
+            box-shadow: 0 22px 50px var(--orange-glow), inset 0 2px 10px rgba(255, 255, 255, 0.06);
+            margin-bottom: 1.15rem;
         }
 
         .zone-svg-logo {
-            width: 82px;
-            height: 82px;
+            width: 96px;
+            height: 96px;
             overflow: visible;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
         }
 
         .splash-title {
-            font-size: 3.6rem;
+            font-size: 3.7rem;
             font-weight: 900;
             letter-spacing: 3px;
             color: var(--text-white);
@@ -172,16 +173,16 @@
         }
 
         .official-logo-badge {
-            width: 68px;
-            height: 68px;
-            background: var(--navy-primary);
+            width: 76px;
+            height: 76px;
+            background: linear-gradient(145deg, var(--navy-primary), var(--navy-elevated));
             border: 1.5px solid var(--orange-main);
-            border-radius: 20px;
+            border-radius: 22px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 0.75rem;
-            box-shadow: 0 10px 25px var(--orange-glow);
+            box-shadow: 0 12px 28px var(--orange-glow);
         }
 
         .section-header h2 {
@@ -571,11 +572,11 @@
         }
 
         .brand-icon-svg-wrap {
-            width: 44px;
-            height: 44px;
+            width: 46px;
+            height: 46px;
             background: var(--navy-card);
             border: 1.5px solid var(--orange-main);
-            border-radius: 12px;
+            border-radius: 13px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -758,7 +759,6 @@
             user-select: none;
             touch-action: pan-y;
             direction: ltr;
-            /* لضمان انزلاق المسار الأفقي بنعومة قياسية */
             cursor: grab;
         }
 
@@ -1508,17 +1508,45 @@
     <div class="toast-box" id="toastBox"></div>
 
     <!-- ====================================================
+         تعريف الشعار الهندسي المطور (True Physical Cutout Gap Split-Z Logo)
+         حرف Z مقسوم فعلياً بمسافة فارغة (من Y=40 إلى Y=80) يمر من قلبها السهمان المتعاكسان دون تراكب
+         ==================================================== -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="zoneBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fb923c" />
+                <stop offset="55%" stop-color="#f97316" />
+                <stop offset="100%" stop-color="#c2410c" />
+            </linearGradient>
+            <linearGradient id="zoneArrowsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#ffedd5" />
+                <stop offset="40%" stop-color="#fb923c" />
+                <stop offset="100%" stop-color="#ea580c" />
+            </linearGradient>
+            <symbol id="zone-split-z-logo" viewBox="0 0 120 120">
+                <!-- الكتلة العلوية الصلبة والممتلئة لحرف Z (تتوقف هندسياً عند Y=40 لتترك الشق الفارغ) -->
+                <path d="M 14 12 H 106 V 32 L 94 40 H 63 L 75 32 H 14 Z" fill="url(#zoneBodyGrad)" />
+
+                <!-- الكتلة السفلية الصلبة والممتلئة لحرف Z (تبدأ هندسياً من Y=80 بعد الشق الفارغ) -->
+                <path d="M 26 80 H 57 L 45 88 H 106 V 108 H 14 V 88 Z" fill="url(#zoneBodyGrad)" />
+
+                <!-- السهم الأول السميك والممتلئ يعبر من قلب الفراغ والقطع الأوسط باتجاه اليمين -->
+                <path d="M 16 46 H 78 V 39 L 104 51.5 L 78 64 V 57 H 16 Z" fill="url(#zoneArrowsGrad)" />
+
+                <!-- السهم الثاني السميك والممتلئ يعبر من قلب الفراغ والقطع الأوسط باتجاه اليسار -->
+                <path d="M 104 74 H 42 V 81 L 16 68.5 L 42 56 V 63 H 104 Z" fill="url(#zoneArrowsGrad)" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- ====================================================
          1. الصفحة الأولى: شاشة الترحيب الثابتة المؤقتة (2 ثانية بدون Typing Effect)
          ==================================================== -->
     <section id="splash-screen" class="screen active">
         <div class="splash-content">
             <div class="zone-custom-logo-box">
-                <svg class="zone-svg-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 26 H76 L63 14 M76 26 L63 38" stroke="#f97316" stroke-width="8" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path d="M72 30 L28 70" stroke="#fb923c" stroke-width="8" stroke-linecap="round" />
-                    <path d="M80 74 H24 L37 62 M24 74 L37 86" stroke="#f97316" stroke-width="8" stroke-linecap="round"
-                        stroke-linejoin="round" />
+                <svg class="zone-svg-logo">
+                    <use href="#zone-split-z-logo"></use>
                 </svg>
             </div>
             <h1 class="splash-title">Zone</h1>
@@ -1531,14 +1559,10 @@
     <section id="data-screen" class="screen">
         <div class="card-container">
             <div class="section-header">
-                <!-- الشعار الرسمي المعتمد (حرف Z المدمج بالسهمين) بدون قبعة تخرج -->
+                <!-- الشعار الرسمي المطور (حرف Z المشقوق فعلياً بالسهمين السميكين) بدون قبعة تخرج -->
                 <div class="official-logo-badge">
-                    <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 26 H76 L63 14 M76 26 L63 38" stroke="#f97316" stroke-width="8.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M72 30 L28 70" stroke="#fb923c" stroke-width="8.5" stroke-linecap="round" />
-                        <path d="M80 74 H24 L37 62 M24 74 L37 86" stroke="#f97316" stroke-width="8.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
+                    <svg width="54" height="54">
+                        <use href="#zone-split-z-logo"></use>
                     </svg>
                 </div>
                 <h2>تسجيل بيانات الطالب</h2>
@@ -1631,12 +1655,8 @@
         <div class="plans-container-card">
             <div class="section-header">
                 <div class="official-logo-badge">
-                    <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 26 H76 L63 14 M76 26 L63 38" stroke="#f97316" stroke-width="8.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M72 30 L28 70" stroke="#fb923c" stroke-width="8.5" stroke-linecap="round" />
-                        <path d="M80 74 H24 L37 62 M24 74 L37 86" stroke="#f97316" stroke-width="8.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
+                    <svg width="54" height="54">
+                        <use href="#zone-split-z-logo"></use>
                     </svg>
                 </div>
                 <h2>اختر باقة اشتراكك في Zone</h2>
@@ -1723,13 +1743,8 @@
             <div class="header-top-row">
                 <a href="#" class="brand-logo" onclick="return false;">
                     <div class="brand-icon-svg-wrap">
-                        <svg width="28" height="28" viewBox="0 0 100 100" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 26 H76 L63 14 M76 26 L63 38" stroke="#f97316" stroke-width="9"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M72 30 L28 70" stroke="#fb923c" stroke-width="9" stroke-linecap="round" />
-                            <path d="M80 74 H24 L37 62 M24 74 L37 86" stroke="#f97316" stroke-width="9"
-                                stroke-linecap="round" stroke-linejoin="round" />
+                        <svg width="34" height="34">
+                            <use href="#zone-split-z-logo"></use>
                         </svg>
                     </div>
                     <span class="brand-name">Zone</span>
@@ -2639,7 +2654,7 @@
         // هـ. إدارة منتجات السوق، عمر المنشور (30 يوماً)، وسلايدر السحب النقي
         // ====================================================
         function initializeProvinceProducts(userProvince, userUni) {
-            const savedItems = localStorage.getItem('zone_market_items_v7');
+            const savedItems = localStorage.getItem('zone_market_items_v9');
             if (savedItems) {
                 marketProducts = JSON.parse(savedItems);
             }
@@ -2745,7 +2760,7 @@
 
                 marketProducts = [...seededForProvince, ...marketProducts];
             }
-            localStorage.setItem('zone_market_items_v7', JSON.stringify(marketProducts));
+            localStorage.setItem('zone_market_items_v9', JSON.stringify(marketProducts));
         }
 
         function getRemainingDaysForPost(createdAt) {
@@ -2928,10 +2943,8 @@
                 let current = prod.currentSlide || 0;
 
                 if (diff < 0) {
-                    // سحب لليسار -> الصورة التالية
                     current = (current + 1) % total;
                 } else {
-                    // سحب لليمين -> الصورة السابقة
                     current = (current - 1 + total) % total;
                 }
 
@@ -3002,14 +3015,12 @@
                 .replace(/^@/, '')
                 .trim();
 
-            // حماية صارمة تمنع التحويل لبوت الموقع نهائياً وتوجه لحساب البائع الشخصي
             if (cleanUsername && cleanUsername.toLowerCase() !== "zonewebsite_bot") {
                 window.open(`https://t.me/${cleanUsername}`, '_blank');
                 closeContactModal();
                 return;
             }
 
-            // إذا لم يدخل البائع معرف تليجرام نصي، نفتح محادثة تليجرام الشخصية الخاصة برقم هاتفه مباشرة
             let rawPhone = (activeContactProduct.sellerPhone || "").replace(/\D/g, '');
             if (rawPhone) {
                 if (rawPhone.startsWith("09")) {
@@ -3030,7 +3041,7 @@
             if (!target) return;
 
             target.sold = !target.sold;
-            localStorage.setItem('zone_market_items_v7', JSON.stringify(marketProducts));
+            localStorage.setItem('zone_market_items_v9', JSON.stringify(marketProducts));
             renderMarketProducts();
             showToast(target.sold ? `تم وسم "${target.title}" بـ (تم البيع بنجاح 🎉)` : `تمت إعادة عرض "${target.title}" للبيع`);
         }
@@ -3160,7 +3171,7 @@
             };
 
             marketProducts.unshift(newPost);
-            localStorage.setItem('zone_market_items_v7', JSON.stringify(marketProducts));
+            localStorage.setItem('zone_market_items_v9', JSON.stringify(marketProducts));
             renderMarketProducts();
             closeAddPostModal();
             document.getElementById('newPostForm').reset();
@@ -3237,7 +3248,7 @@
                     item.seller = `${studentProfile.name} (${studentProfile.major})`;
                 }
             });
-            localStorage.setItem('zone_market_items_v7', JSON.stringify(marketProducts));
+            localStorage.setItem('zone_market_items_v9', JSON.stringify(marketProducts));
 
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             initializeProvinceProducts(studentProfile.province, studentProfile.university);
