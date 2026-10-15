@@ -13,7 +13,7 @@
 
     <style>
         /* ====================================================
-           1. الهوية البصرية الثنائية (الكحلي الفخم + البرتقالي الدافئ)
+           1. الهوية البصرية الثنائية الصارمة (الكحلي الفخم + البرتقالي الدافئ)
            ==================================================== */
         :root {
             --navy-deep: #050a14;
@@ -89,7 +89,7 @@
         }
 
         /* ====================================================
-           3. الشعار المخصص (Z + سهمي التبادل البرتقاليين) وشاشة الترحيب
+           3. الشعار الرسمي (Z + سهمي التبادل) وشاشة الترحيب المؤقتة
            ==================================================== */
         #splash-screen {
             justify-content: center;
@@ -119,7 +119,6 @@
             justify-content: center;
             box-shadow: 0 20px 45px var(--orange-glow);
             margin-bottom: 1.1rem;
-            position: relative;
         }
 
         .zone-svg-logo {
@@ -171,18 +170,17 @@
             margin-bottom: 1.6rem;
         }
 
-        .mini-logo-badge {
-            width: 56px;
-            height: 56px;
-            background: var(--orange-soft);
-            border: 1px solid var(--orange-main);
-            color: var(--orange-main);
-            border-radius: 16px;
+        .official-logo-badge {
+            width: 68px;
+            height: 68px;
+            background: var(--navy-primary);
+            border: 1.5px solid var(--orange-main);
+            border-radius: 20px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 10px 25px var(--orange-glow);
         }
 
         .section-header h2 {
@@ -198,7 +196,7 @@
         }
 
         .form-group {
-            margin-bottom: 1.1rem;
+            margin-bottom: 1.15rem;
         }
 
         .form-group label {
@@ -207,12 +205,6 @@
             font-weight: 700;
             margin-bottom: 0.4rem;
             color: var(--text-white);
-        }
-
-        .form-group label span.optional-tag {
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.78rem;
         }
 
         .input-wrapper {
@@ -234,7 +226,7 @@
             background: var(--navy-primary);
             border: 1.5px solid var(--navy-border);
             border-radius: var(--radius-md);
-            padding: 12px 42px 12px 15px;
+            padding: 13px 42px 13px 15px;
             color: var(--text-white);
             font-size: 0.94rem;
             transition: var(--transition);
@@ -426,7 +418,7 @@
         }
 
         /* ====================================================
-           6. الصفحة الرابعة: واجهة الانتظار الصارمة
+           6. الصفحة الرابعة: واجهة الانتظار والرفض التفاعلي
            ==================================================== */
         #waiting-screen {
             justify-content: center;
@@ -442,7 +434,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            max-width: 480px;
+            max-width: 540px;
             width: 100%;
         }
 
@@ -473,17 +465,49 @@
             color: var(--orange-main);
             font-size: 1.45rem;
             font-weight: 800;
-            line-height: 1.7;
+            line-height: 1.75;
+            transition: var(--transition);
         }
 
         .waiting-status-label.rejected {
             color: var(--reject-color);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             background: rgba(255, 69, 0, 0.1);
             border: 1.5px solid var(--reject-color);
-            padding: 1.5rem;
+            padding: 1.6rem;
             border-radius: var(--radius-lg);
-            box-shadow: 0 15px 35px rgba(255, 69, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(255, 69, 0, 0.22);
+            line-height: 1.85;
+            margin-bottom: 1.4rem;
+            width: 100%;
+        }
+
+        /* زر تعديل البيانات وإعادة المحاولة (يظهر فقط عند الرفض) */
+        .btn-retry-after-reject {
+            display: none;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: var(--text-white);
+            border: none;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 25px var(--orange-glow);
+            transition: var(--transition);
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-retry-after-reject.visible {
+            display: inline-flex;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .btn-retry-after-reject:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
         }
 
         /* ====================================================
@@ -700,7 +724,7 @@
             opacity: 0.92;
         }
 
-        /* سلايدر الصور المصغر (Image Slider / Carousel) على بطاقة المنتج */
+        /* سلايدر الصور المصغر (Image Slider / Carousel) */
         .product-slider-box {
             position: relative;
             height: 205px;
@@ -942,7 +966,6 @@
             padding: 8px 10px;
         }
 
-        /* معاينة الصور الـ 3 في نافذة نشر الإعلان */
         .multi-upload-box {
             background: var(--navy-primary);
             border: 1.5px dashed var(--orange-main);
@@ -1288,19 +1311,15 @@
     <div class="toast-box" id="toastBox"></div>
 
     <!-- ====================================================
-         1. الصفحة الأولى: شاشة الترحيب المؤقتة (2 ثانية) مع شعار Z وسهمي التبادل
+         1. الصفحة الأولى: شاشة الترحيب المؤقتة (2 ثانية) مع الشعار الرسمي (Z + سهمي التبادل)
          ==================================================== -->
     <section id="splash-screen" class="screen active">
         <div class="splash-content">
             <div class="zone-custom-logo-box">
-                <!-- رسم شعار حرف Z مدمج مع سهمين متعاكسين باللون البرتقالي الدافئ -->
                 <svg class="zone-svg-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- السهم العلوي المتجه لليمين + الضلع المائل لحرف Z -->
                     <path d="M20 26 H76 L63 14 M76 26 L63 38" stroke="#f97316" stroke-width="8" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <!-- الخط القطري المائل لحرف Z -->
                     <path d="M72 30 L28 70" stroke="#fb923c" stroke-width="8" stroke-linecap="round" />
-                    <!-- السهم السفلي المعاكس المتجه لليسار (قاعدة حرف Z) -->
                     <path d="M80 74 H24 L37 62 M24 74 L37 86" stroke="#f97316" stroke-width="8" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
@@ -1310,13 +1329,19 @@
     </section>
 
     <!-- ====================================================
-         2. الصفحة الثانية: تعبئة البيانات فقط (زر "التالي" رسمي بدون رموز)
+         2. الصفحة الثانية: تعبئة البيانات فقط (شعار Z الرسمي + بدون حقل بديل + زر التالي رسمي)
          ==================================================== -->
     <section id="data-screen" class="screen">
         <div class="card-container">
             <div class="section-header">
-                <div class="mini-logo-badge">
-                    <i class="fa-solid fa-user-graduate"></i>
+                <div class="official-logo-badge">
+                    <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 26 H76 L63 14 M76 26 L63 38" stroke="#f97316" stroke-width="8.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M72 30 L28 70" stroke="#fb923c" stroke-width="8.5" stroke-linecap="round" />
+                        <path d="M80 74 H24 L37 62 M24 74 L37 86" stroke="#f97316" stroke-width="8.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
                 </div>
                 <h2>بيانات الطالب الجامعية</h2>
                 <p>أدخل معلوماتك لعرض مستلزمات جامعتك ومحافظتك بدقة</p>
@@ -1333,7 +1358,7 @@
                     </div>
                 </div>
 
-                <!-- رقم الهاتف -->
+                <!-- رقم الهاتف بالنص الإرشادي المطلوب حرفياً -->
                 <div class="form-group">
                     <label for="phoneNumber">رقم الهاتف</label>
                     <div class="input-wrapper">
@@ -1387,18 +1412,7 @@
                     </div>
                 </div>
 
-                <!-- معرف التلغرام أو فيسبوك (اختياري) -->
-                <div class="form-group">
-                    <label for="altContactInput">معرّف التليجرام أو حساب الفيسبوك <span
-                            class="optional-tag">(اختياري)</span></label>
-                    <div class="input-wrapper">
-                        <i class="fa-brands fa-telegram"></i>
-                        <input type="text" id="altContactInput" class="form-control"
-                            placeholder="مثال: @username أو رابط الحساب...">
-                    </div>
-                </div>
-
-                <!-- شرط صارم: كلمة "التالي" فقط بدون أي إيموجي أو أسهم -->
+                <!-- زر انتقال رسمي بكلمة "التالي" فقط بدون أي إيموجي -->
                 <button type="submit" class="btn-orange-wide">التالي</button>
             </form>
         </div>
@@ -1410,8 +1424,14 @@
     <section id="subscription-screen" class="screen">
         <div class="plans-container-card">
             <div class="section-header">
-                <div class="mini-logo-badge">
-                    <i class="fa-solid fa-crown"></i>
+                <div class="official-logo-badge">
+                    <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 26 H76 L63 14 M76 26 L63 38" stroke="#f97316" stroke-width="8.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M72 30 L28 70" stroke="#fb923c" stroke-width="8.5" stroke-linecap="round" />
+                        <path d="M80 74 H24 L37 62 M24 74 L37 86" stroke="#f97316" stroke-width="8.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
                 </div>
                 <h2>اختر باقة اشتراكك في Zone</h2>
                 <p>اضغط على الباقة المناسبة لك لإظهار رمز الدفع عبر الشام كاش</p>
@@ -1474,12 +1494,19 @@
     </div>
 
     <!-- ====================================================
-         4. الصفحة الرابعة: واجهة الانتظار الصارمة للتحقق المالي
+         4. الصفحة الرابعة: واجهة الانتظار والرفض التفاعلي
          ==================================================== -->
     <section id="waiting-screen" class="screen">
         <div class="waiting-minimal-wrapper">
             <i id="waitingGearIcon" class="fa-solid fa-gear gear-spinner"></i>
             <p id="waitingStatusText" class="waiting-status-label">جاري التأكد من حالة الدفع</p>
+
+            <!-- يظهر هذا الزر حصرياً تحت رسالة الرفض ليعيد الطالب لتعديل بياناته -->
+            <button type="button" id="retryEditDataBtn" class="btn-retry-after-reject"
+                onclick="returnToEditDataAfterRejection()">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>تعديل البيانات وإعادة المحاولة</span>
+            </button>
         </div>
     </section>
 
@@ -1575,7 +1602,7 @@
                         <span id="profileProvinceText">حلب</span>
                     </div>
                     <div class="profile-detail-row">
-                        <span>الكلية / الفرع:</span>
+                        <span>الكلية / التخصص:</span>
                         <span id="profileMajorText">هندسة ميكاترونيكس</span>
                     </div>
                     <div class="profile-detail-row">
@@ -1583,12 +1610,8 @@
                         <span id="profilePhoneText">0900000000</span>
                     </div>
                     <div class="profile-detail-row">
-                        <span>الباقة المختارة:</span>
+                        <span>الباقة الفعالة:</span>
                         <span id="profilePlanText" style="color: var(--orange-light);">اشتراك شهري (1 دولار)</span>
-                    </div>
-                    <div class="profile-detail-row">
-                        <span>الحساب البديل:</span>
-                        <span id="profileAltText">غير مضاف</span>
                     </div>
                 </div>
 
@@ -1672,8 +1695,8 @@
                         <i class="fa-solid fa-cloud-arrow-up"
                             style="font-size: 1.6rem; color: var(--orange-main); margin-bottom: 4px;"></i>
                         <div style="font-size: 0.85rem; font-weight: 700;">اضغط هنا لاختيار حتى 3 صور للأداة</div>
-                        <div style="font-size: 0.75rem; color: var(--text-muted);">أو اتركها فارغة لاستخدام3 صور توضيحية
-                            تلقائية</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">أو اتركها فارغة لاستخدام 3 صور
+                            توضيحية تلقائية</div>
                         <input type="file" id="postFilesInput" accept="image/*" multiple style="display: none;"
                             onchange="handleMultiImageSelection(event)">
                     </div>
@@ -1726,7 +1749,7 @@
                     <label>رقم الهاتف</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-phone"></i>
-                        <input type="tel" id="editPhone" class="form-control" required>
+                        <input type="tel" id="editPhone" class="form-control" placeholder="مثال: 09xxxxxxxx" required>
                     </div>
                 </div>
 
@@ -1778,7 +1801,7 @@
     </div>
 
     <!-- ====================================================
-         8. المنطق البرمجي الكامل (JavaScript & Telegram API)
+         8. المنطق البرمجي الكامل وغرفة التحكم المتقدمة بالتلغرام (JavaScript)
          ==================================================== -->
     <script>
         // إعدادات بوت التلغرام الإداري (@Zonewebsite_bot)
@@ -1791,6 +1814,9 @@
         let lastUpdateOffset = 0;
         let uploadedSellerImages = [];
 
+        // متغير يحدد ما إذا كان الأدمن قد ضغط على [ رفض ❌ ] والنظام ينتظر منه كتابة سبب الرفض يدوياً في التلغرام
+        let awaitingManualRejectionReplyForStudentId = null;
+
         let studentProfile = {
             id: "",
             name: "",
@@ -1798,15 +1824,16 @@
             province: "حلب",
             university: "جامعة حلب",
             major: "",
-            altContact: "غير مضاف",
-            plan: ""
+            plan: "",
+            waitingCustomNote: "",
+            rejectionMessage: ""
         };
 
         let marketProducts = [];
 
         // توليد منتجات افتراضية بـ 3 صور لكل منتج في محافظة الطالب لتجربة السلايدر فوراً
         function initializeProvinceProducts(userProvince, userUni) {
-            const savedItems = localStorage.getItem('zone_market_items_v2');
+            const savedItems = localStorage.getItem('zone_market_items_v5');
             if (savedItems) {
                 marketProducts = JSON.parse(savedItems);
             }
@@ -1904,7 +1931,7 @@
                 ];
 
                 marketProducts = [...seededForProvince, ...marketProducts];
-                localStorage.setItem('zone_market_items_v2', JSON.stringify(marketProducts));
+                localStorage.setItem('zone_market_items_v5', JSON.stringify(marketProducts));
             }
         }
 
@@ -1922,17 +1949,19 @@
                         studentProfile = JSON.parse(savedProfile);
                     }
 
-                    if (savedStatus === 'approved') {
+                    if (savedStatus === 'approved' && studentProfile.id) {
                         initializeProvinceProducts(studentProfile.province, studentProfile.university);
                         syncProfileToUI();
                         renderMarketProducts();
                         showScreen('app-screen');
+                        // استمرار الاستماع في الخلفية لتمكين الأدمن من استخدام زر [ ⚙️ تصفير الحساب وفك القفل ] في أي وقت
+                        startTelegramPolling(studentProfile.id);
                     } else if (savedStatus === 'rejected') {
                         showScreen('waiting-screen');
-                        applyRejectionUI();
+                        applyRejectionUI(studentProfile.rejectionMessage);
                     } else if (savedStatus === 'pending' && studentProfile.id) {
                         showScreen('waiting-screen');
-                        resetWaitingUI();
+                        resetWaitingUI(studentProfile.waitingCustomNote);
                         startTelegramPolling(studentProfile.id);
                     } else {
                         showScreen('data-screen');
@@ -1961,7 +1990,6 @@
             const province = document.getElementById('provinceSelect').value;
             const university = document.getElementById('universityInput').value.trim();
             const major = document.getElementById('majorInput').value.trim();
-            const altContact = document.getElementById('altContactInput').value.trim() || "غير مضاف";
 
             if (!name || !phone || !province || !university || !major) return;
 
@@ -1970,7 +1998,6 @@
             studentProfile.province = province;
             studentProfile.university = university;
             studentProfile.major = major;
-            studentProfile.altContact = altContact;
 
             showScreen('subscription-screen');
         }
@@ -1986,39 +2013,66 @@
             document.getElementById('shamCashModal').classList.remove('open');
         }
 
-        // 4. إرسال الرسالة العمودية الصارمة إلى التلغرام والانتقال لشاشة الانتظار
+        // بناء لوحة التحكم الإدارية الكاملة (الأزرار الـ 5) للرسالة في تلغرام
+        function buildFullAdminControlKeyboard(studentId) {
+            return {
+                inline_keyboard: [
+                    [
+                        { text: "قبول ✅", callback_data: `approve_${studentId}` },
+                        { text: "رفض ❌", callback_data: `reject_manual_${studentId}` }
+                    ],
+                    [
+                        { text: "⏳ قيد المراجعة المالية", callback_data: `review_${studentId}` }
+                    ],
+                    [
+                        { text: "💸 تفعيل مجاني / منحة", callback_data: `grant_${studentId}` }
+                    ],
+                    [
+                        { text: "⚙️ تصفير الحساب وفك القفل", callback_data: `reset_${studentId}` }
+                    ]
+                ]
+            };
+        }
+
+        // لوحة التحكم التي تبقى بعد القبول لتمكين الأدمن من تصفير الحساب لاحقاً عند انتهاء الاشتراك
+        function buildActiveAccountAdminKeyboard(studentId) {
+            return {
+                inline_keyboard: [
+                    [
+                        { text: "⚙️ تصفير الحساب وفك القفل", callback_data: `reset_${studentId}` }
+                    ]
+                ]
+            };
+        }
+
+        // 4. إرسال الرسالة بالديكور الفخم إلى التلغرام والانتقال لشاشة الانتظار
         async function sendFinalSubscriptionToTelegram() {
             const finalBtn = document.getElementById('finalSubmitBtn');
             finalBtn.disabled = true;
 
             const uniqueStudentId = "stu_" + Date.now();
             studentProfile.id = uniqueStudentId;
+            studentProfile.waitingCustomNote = "";
+            studentProfile.rejectionMessage = "";
+            awaitingManualRejectionReplyForStudentId = null;
 
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'pending');
 
             await syncLatestOffset();
 
-            // صياغة النص عمودياً سطر بسطر باستخدام (\n) لمنع أي تداخل
-            const verticalTelegramMessage = [
-                "🚀 طلب اشتراك جديد في زون",
-                `الاسم: ${studentProfile.name}`,
-                `الهاتف: ${studentProfile.phone}`,
-                `المحافظة: ${studentProfile.province}`,
-                `الجامعة: ${studentProfile.university}`,
-                `الكلية: ${studentProfile.major}`,
-                `الباقة: ${studentProfile.plan}`,
-                `البديل: ${studentProfile.altContact}`
+            // الديكور والشكل الدقيق لرسالة التحكم في تليجرام عمودياً ومتباعداً بـ (\n)
+            const luxuryTelegramMessage = [
+                "🚀 طلب دخول واشتراك جديد - منصة Zone",
+                "━━━━━━━━━━━━━━━━━━",
+                `👤 الاسم الكامل: ${studentProfile.name}`,
+                `📱 رقم الهاتف: ${studentProfile.phone}`,
+                `📍 المحافظة السورية: ${studentProfile.province}`,
+                `🏛️ الجامعة المكتوبة: ${studentProfile.university}`,
+                `🎓 الكلية / التخصص: ${studentProfile.major}`,
+                `💳 الباقة المختارة: ${studentProfile.plan}`,
+                "━━━━━━━━━━━━━━━━━━"
             ].join("\n");
-
-            const inlineKeyboard = {
-                inline_keyboard: [
-                    [
-                        { text: "قبول ✅", callback_data: `approve_${uniqueStudentId}` },
-                        { text: "رفض ❌", callback_data: `reject_${uniqueStudentId}` }
-                    ]
-                ]
-            };
 
             try {
                 await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
@@ -2026,8 +2080,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: TELEGRAM_CHAT_ID,
-                        text: verticalTelegramMessage,
-                        reply_markup: inlineKeyboard
+                        text: luxuryTelegramMessage,
+                        reply_markup: buildFullAdminControlKeyboard(uniqueStudentId)
                     })
                 });
             } catch (err) {
@@ -2053,7 +2107,7 @@
             }
         }
 
-        // 5. الاستماع المستمر لرد البوت كل ثانيتين (getUpdates Polling)
+        // 5. الاستماع المستمر لرد البوت (Long Polling كل ثانيتين لفحص الأزرار والردود المكتوبة يدوياً)
         function startTelegramPolling(targetStudentId) {
             if (pollingIntervalId) {
                 clearInterval(pollingIntervalId);
@@ -2061,7 +2115,7 @@
 
             pollingIntervalId = setInterval(async () => {
                 try {
-                    const url = `${TELEGRAM_API_BASE}/getUpdates?offset=${lastUpdateOffset}&allowed_updates=["callback_query"]`;
+                    const url = `${TELEGRAM_API_BASE}/getUpdates?offset=${lastUpdateOffset}&allowed_updates=["callback_query","message"]`;
                     const response = await fetch(url);
                     const data = await response.json();
 
@@ -2070,27 +2124,91 @@
                     for (const update of data.result) {
                         lastUpdateOffset = update.update_id + 1;
 
+                        // أولاً: معالجة ضغطات الأزرار التفاعلية (Inline Keyboard Callbacks)
                         if (update.callback_query && update.callback_query.data) {
-                            const callbackData = update.callback_query.data;
-                            const callbackId = update.callback_query.id;
+                            const cbData = update.callback_query.data;
+                            const cbId = update.callback_query.id;
                             const msgId = update.callback_query.message?.message_id;
                             const originalText = update.callback_query.message?.text || "";
 
-                            if (callbackData === `approve_${targetStudentId}`) {
-                                clearInterval(pollingIntervalId);
-                                pollingIntervalId = null;
-
-                                acknowledgeTelegramCallback(callbackId, "تم قبول الطالب وتفعيل الحساب ✅", msgId, originalText + "\n\n✅ الحالة: تم القبول");
-                                handleStudentApproved();
-                                break;
+                            // الزر 1: [ قبول ✅ ]
+                            if (cbData === `approve_${targetStudentId}`) {
+                                awaitingManualRejectionReplyForStudentId = null;
+                                await answerCallback(cbId, "تم قبول الطالب وتفعيل الحساب ✅");
+                                await updateTelegramMessageWithKeyboard(
+                                    msgId,
+                                    originalText + "\n\n✅ الحالة: تم القبول والتفعيل الرسمي",
+                                    buildActiveAccountAdminKeyboard(targetStudentId)
+                                );
+                                handleStudentApproved(false);
                             }
 
-                            if (callbackData === `reject_${targetStudentId}`) {
+                            // الزر 2: [ رفض ❌ ] -> تفعيل وضع الاستماع لكتابة سبب الرفض يدوياً
+                            if (cbData === `reject_manual_${targetStudentId}`) {
+                                awaitingManualRejectionReplyForStudentId = targetStudentId;
+                                await answerCallback(cbId, "✍️ اكتب الآن سبب الرفض في رسالة وأرسلها للبوت...");
+                                await sendAdminPromptForManualRejection(studentProfile.name);
+                            }
+
+                            // الزر 3: [ ⏳ قيد المراجعة المالية ]
+                            if (cbData === `review_${targetStudentId}`) {
+                                awaitingManualRejectionReplyForStudentId = null;
+                                const reviewText = "تم استلام طلبك وهو تحت المراجعة من المندوب المالي حالياً";
+                                studentProfile.waitingCustomNote = reviewText;
+                                localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+
+                                const label = document.getElementById('waitingStatusText');
+                                if (label) {
+                                    label.textContent = reviewText;
+                                }
+                                await answerCallback(cbId, "تم تحديث شاشة الطالب إلى: قيد المراجعة المالية ⏳");
+                            }
+
+                            // الزر 4: [ 💸 تفعيل مجاني / منحة ]
+                            if (cbData === `grant_${targetStudentId}`) {
+                                awaitingManualRejectionReplyForStudentId = null;
+                                await answerCallback(cbId, "تم تفعيل الحساب كمنحة مجانية 💸");
+                                await updateTelegramMessageWithKeyboard(
+                                    msgId,
+                                    originalText + "\n\n💸 الحالة: تفعيل مجاني / منحة دراسية",
+                                    buildActiveAccountAdminKeyboard(targetStudentId)
+                                );
+                                handleStudentApproved(true);
+                            }
+
+                            // الزر 5: [ ⚙️ تصفير الحساب وفك القفل ]
+                            if (cbData === `reset_${targetStudentId}`) {
+                                awaitingManualRejectionReplyForStudentId = null;
+                                await answerCallback(cbId, "تم تصفير حساب الطالب وإرجاعه لصفحة الدفع والانتظار ⚙️");
+                                await updateTelegramMessageWithKeyboard(
+                                    msgId,
+                                    originalText + "\n\n⚙️ الحالة: تم تصفير الحساب لانتهاء الاشتراك",
+                                    buildFullAdminControlKeyboard(targetStudentId)
+                                );
+                                resetStudentAccountByAdmin();
+                            }
+                        }
+
+                        // ثانياً: التقاط الرسالة المكتوبة يدوياً من الأدمن عند تفعيل وضع الرفض
+                        if (update.message && update.message.text) {
+                            const incomingChatId = String(update.message.chat.id);
+                            const adminWrittenReason = update.message.text.trim();
+
+                            if (
+                                incomingChatId === TELEGRAM_CHAT_ID &&
+                                awaitingManualRejectionReplyForStudentId === targetStudentId &&
+                                !adminWrittenReason.startsWith("/")
+                            ) {
+                                awaitingManualRejectionReplyForStudentId = null;
                                 clearInterval(pollingIntervalId);
                                 pollingIntervalId = null;
 
-                                acknowledgeTelegramCallback(callbackId, "تم رفض الطلب ❌", msgId, originalText + "\n\n❌ الحالة: تم الرفض");
-                                handleStudentRejected();
+                                const formattedRejectionMessage = `عذراً، تم رفض طلبك للأسباب التالية: ${adminWrittenReason}، يرجى تعديل بياناتك`;
+
+                                // إرسال تأكيد للأدمن في التلغرام بأن السبب وصل لشاشة الطالب
+                                await sendTelegramSimpleNotice(`✅ تم إرسال سبب الرفض إلى شاشة الطالب (${studentProfile.name}):\n"${formattedRejectionMessage}"`);
+
+                                handleStudentRejected(formattedRejectionMessage);
                                 break;
                             }
                         }
@@ -2101,7 +2219,38 @@
             }, 2000);
         }
 
-        async function acknowledgeTelegramCallback(callbackQueryId, toastText, messageId, updatedMessageText) {
+        async function sendAdminPromptForManualRejection(studentName) {
+            try {
+                await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: `✍️ وضع الرفض اليدوي مفعّل للطالب (${studentName}):\nأرسل الآن سبب الرفض كتابةً في رسالة عادية ليظهر فوراً على شاشة الطالب...`,
+                        reply_markup: { force_reply: true }
+                    })
+                });
+            } catch (e) {
+                console.warn("Prompt send error:", e);
+            }
+        }
+
+        async function sendTelegramSimpleNotice(textMsg) {
+            try {
+                await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: textMsg
+                    })
+                });
+            } catch (e) {
+                console.warn("Notice send error:", e);
+            }
+        }
+
+        async function answerCallback(callbackQueryId, toastText) {
             try {
                 await fetch(`${TELEGRAM_API_BASE}/answerCallbackQuery`, {
                     method: 'POST',
@@ -2112,52 +2261,117 @@
                         show_alert: false
                     })
                 });
-
-                if (messageId) {
-                    await fetch(`${TELEGRAM_API_BASE}/editMessageText`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: TELEGRAM_CHAT_ID,
-                            message_id: messageId,
-                            text: updatedMessageText
-                        })
-                    });
-                }
             } catch (e) {
-                console.warn("Callback ack warning:", e);
+                console.warn("answerCallback error:", e);
             }
         }
 
-        function handleStudentApproved() {
+        async function updateTelegramMessageWithKeyboard(messageId, updatedText, replyMarkup) {
+            if (!messageId) return;
+            try {
+                await fetch(`${TELEGRAM_API_BASE}/editMessageText`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        message_id: messageId,
+                        text: updatedText,
+                        reply_markup: replyMarkup
+                    })
+                });
+            } catch (e) {
+                console.warn("editMessageText error:", e);
+            }
+        }
+
+        // تنفيذ القبول (العادي أو المنحة المجانية)
+        function handleStudentApproved(isFreeGrant = false) {
+            if (isFreeGrant) {
+                studentProfile.plan = "منحة مجانية / حساب مؤثرين 🎁";
+            }
+            studentProfile.waitingCustomNote = "";
+            studentProfile.rejectionMessage = "";
+
+            localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'approved');
+
             initializeProvinceProducts(studentProfile.province, studentProfile.university);
             syncProfileToUI();
             renderMarketProducts();
             showScreen('app-screen');
             switchBottomTab('home');
-            showToast(`تم تفعيل اشتراكك بنجاح! أهلاً بك في سوق محافظة ${studentProfile.province}`);
+
+            if (isFreeGrant) {
+                showToast(`تم تفعيل حسابك كمنحة مجانية! أهلاً بك يا ${studentProfile.name}`);
+            } else {
+                showToast(`تم تفعيل اشتراكك بنجاح! أهلاً بك في سوق محافظة ${studentProfile.province}`);
+            }
         }
 
-        function handleStudentRejected() {
+        // دالة تصفير الحساب وفك القفل (لإرجاع الطالب المقبول إلى صفحة الدفع والانتظار عند انتهاء اشتراكه)
+        function resetStudentAccountByAdmin() {
+            studentProfile.waitingCustomNote = "";
+            studentProfile.rejectionMessage = "";
+            localStorage.setItem('zone_status', 'pending');
+            localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+
+            resetWaitingUI();
+            showScreen('subscription-screen');
+            showToast("انتهت مدة اشتراكك أو تم تصفير الحساب من الإدارة، يرجى التجديد للمتابعة.");
+        }
+
+        // تنفيذ الرفض وإظهار السبب المكتوب يدوياً مع زر تعديل البيانات
+        function handleStudentRejected(customRejectionText) {
+            studentProfile.rejectionMessage = customRejectionText;
+            localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'rejected');
-            applyRejectionUI();
+            showScreen('waiting-screen');
+            applyRejectionUI(customRejectionText);
         }
 
-        function resetWaitingUI() {
+        function resetWaitingUI(customNote = "") {
             const gear = document.getElementById('waitingGearIcon');
             const label = document.getElementById('waitingStatusText');
+            const retryBtn = document.getElementById('retryEditDataBtn');
+
             gear.classList.remove('stopped');
             label.classList.remove('rejected');
-            label.textContent = "جاري التأكد من حالة الدفع";
+            label.textContent = customNote || "جاري التأكد من حالة الدفع";
+            retryBtn.classList.remove('visible');
         }
 
-        function applyRejectionUI() {
+        function applyRejectionUI(customRejectionText) {
             const gear = document.getElementById('waitingGearIcon');
             const label = document.getElementById('waitingStatusText');
+            const retryBtn = document.getElementById('retryEditDataBtn');
+
             gear.classList.add('stopped');
             label.classList.add('rejected');
-            label.textContent = "عذراً، لم يتم تأكيد الدفع، يرجى التواصل مع الإدارة";
+            label.textContent = customRejectionText || "عذراً، تم رفض طلبك، يرجى تعديل بياناتك";
+            retryBtn.classList.add('visible');
+        }
+
+        // دالة زر "تعديل البيانات وإعادة المحاولة" من شاشة الرفض
+        function returnToEditDataAfterRejection() {
+            if (pollingIntervalId) {
+                clearInterval(pollingIntervalId);
+                pollingIntervalId = null;
+            }
+            awaitingManualRejectionReplyForStudentId = null;
+            localStorage.removeItem('zone_status');
+
+            // تعبئة الحقول ببيانات الطالب السابقة ليسهل عليه تصحيحها فوراً
+            document.getElementById('fullName').value = studentProfile.name || "";
+            document.getElementById('phoneNumber').value = studentProfile.phone || "";
+            if (studentProfile.province) {
+                document.getElementById('provinceSelect').value = studentProfile.province;
+            }
+            document.getElementById('universityInput').value = studentProfile.university || "";
+            document.getElementById('majorInput').value = studentProfile.major || "";
+
+            resetWaitingUI();
+            showScreen('data-screen');
+            showToast("يمكنك الآن تعديل بياناتك وإعادة إرسال الطلب.");
         }
 
         // 6. مزامنة بيانات الطالب وعرض السوق المفلتر حسب المحافظة مع السلايدر
@@ -2169,7 +2383,6 @@
             document.getElementById('profileMajorText').textContent = studentProfile.major || "الكلية";
             document.getElementById('profilePhoneText').textContent = studentProfile.phone || "";
             document.getElementById('profilePlanText').textContent = studentProfile.plan || "مفعل";
-            document.getElementById('profileAltText').textContent = studentProfile.altContact || "غير مضاف";
             document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
         }
 
@@ -2309,7 +2522,7 @@
             if (!target || target.reserved) return;
 
             target.reserved = true;
-            localStorage.setItem('zone_market_items_v2', JSON.stringify(marketProducts));
+            localStorage.setItem('zone_market_items_v5', JSON.stringify(marketProducts));
             renderMarketProducts();
             showToast(`تم حجز "${target.title}" مؤقتاً لمدة 24 ساعة!`);
         }
@@ -2413,7 +2626,7 @@
             };
 
             marketProducts.unshift(newPost);
-            localStorage.setItem('zone_market_items_v2', JSON.stringify(marketProducts));
+            localStorage.setItem('zone_market_items_v5', JSON.stringify(marketProducts));
             renderMarketProducts();
             closeAddPostModal();
             document.getElementById('newPostForm').reset();
@@ -2481,6 +2694,7 @@
                 clearInterval(pollingIntervalId);
                 pollingIntervalId = null;
             }
+            awaitingManualRejectionReplyForStudentId = null;
             localStorage.removeItem('zone_status');
             localStorage.removeItem('zone_student_profile');
             document.getElementById('studentDataForm').reset();
