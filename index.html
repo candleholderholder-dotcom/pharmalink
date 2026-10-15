@@ -26,7 +26,7 @@
             --orange-hover: #ea580c;
             --orange-light: #fb923c;
             --orange-muted: #9a5b32;
-            --orange-muted-bg: rgba(154, 91, 50, 0.22);
+            --orange-muted-bg: rgba(154, 91, 50, 0.24);
             --orange-soft: rgba(249, 115, 22, 0.14);
             --orange-glow: rgba(249, 115, 22, 0.35);
             --reject-color: #ff4500;
@@ -89,7 +89,7 @@
         }
 
         /* ====================================================
-           3. الشعار الرسمي (Z + سهمي التبادل) وشاشة الترحيب المؤقتة
+           3. الصفحة الأولى: شاشة الترحيب المؤقتة مع Typing Effect
            ==================================================== */
         #splash-screen {
             justify-content: center;
@@ -105,7 +105,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            animation: pulseSplash 1.8s ease-in-out infinite;
         }
 
         .zone-custom-logo-box {
@@ -118,7 +117,8 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 20px 45px var(--orange-glow);
-            margin-bottom: 1.1rem;
+            margin-bottom: 1.2rem;
+            animation: pulseSplash 1.8s ease-in-out infinite;
         }
 
         .zone-svg-logo {
@@ -127,11 +127,42 @@
             overflow: visible;
         }
 
+        .splash-typing-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 4.5rem;
+            direction: ltr;
+        }
+
         .splash-title {
             font-size: 3.6rem;
             font-weight: 900;
             letter-spacing: 3px;
             color: var(--text-white);
+            line-height: 1;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 4px;
+            height: 3.2rem;
+            background-color: var(--orange-main);
+            margin-left: 6px;
+            border-radius: 2px;
+            animation: blinkCursor 0.6s infinite;
+        }
+
+        @keyframes blinkCursor {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
 
         @keyframes pulseSplash {
@@ -167,7 +198,7 @@
 
         .section-header {
             text-align: center;
-            margin-bottom: 1.6rem;
+            margin-bottom: 1.5rem;
         }
 
         .official-logo-badge {
@@ -196,14 +227,14 @@
         }
 
         .form-group {
-            margin-bottom: 1.15rem;
+            margin-bottom: 1.05rem;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             font-weight: 700;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.35rem;
             color: var(--text-white);
         }
 
@@ -226,7 +257,7 @@
             background: var(--navy-primary);
             border: 1.5px solid var(--navy-border);
             border-radius: var(--radius-md);
-            padding: 13px 42px 13px 15px;
+            padding: 12px 42px 12px 15px;
             color: var(--text-white);
             font-size: 0.94rem;
             transition: var(--transition);
@@ -247,6 +278,31 @@
         .form-control:focus {
             border-color: var(--orange-main);
             box-shadow: 0 0 0 3px var(--orange-soft);
+        }
+
+        /* زر الانتقال الرسمي: برتقالي وبخط كحلي داكن متناسق بدون أي إيموجي */
+        .btn-next-official {
+            width: 100%;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-light));
+            color: var(--navy-deep);
+            border: none;
+            padding: 14px;
+            border-radius: var(--radius-md);
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px var(--orange-glow);
+            margin-top: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-next-official:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.06);
         }
 
         .btn-orange-wide {
@@ -414,11 +470,11 @@
             border-radius: 50px;
             font-size: 0.85rem;
             font-weight: 800;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         /* ====================================================
-           6. الصفحة الرابعة: واجهة الانتظار والرفض التفاعلي
+           6. الصفحة الرابعة: واجهة الانتظار الصارمة والرفض التفاعلي
            ==================================================== */
         #waiting-screen {
             justify-content: center;
@@ -482,7 +538,6 @@
             width: 100%;
         }
 
-        /* زر تعديل البيانات وإعادة المحاولة (يظهر فقط عند الرفض) */
         .btn-retry-after-reject {
             display: none;
             background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
@@ -511,7 +566,7 @@
         }
 
         /* ====================================================
-           7. الصفحة الخامسة: السوق الرئيسي والسلايدر للصور المتعددة
+           7. الصفحة الخامسة: السوق الرئيسي والميزات التفاعلية الجديدة
            ==================================================== */
         #app-screen {
             padding-bottom: 90px;
@@ -698,7 +753,7 @@
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
             gap: 1.35rem;
         }
 
@@ -719,18 +774,19 @@
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
         }
 
-        .product-card.reserved-card {
+        .product-card.sold-card {
             border-color: var(--orange-muted);
             opacity: 0.92;
         }
 
-        /* سلايدر الصور المصغر (Image Slider / Carousel) */
+        /* سلايدر الصور المتعددة بدعم سحب الإصبع (Swipe Carousel) */
         .product-slider-box {
             position: relative;
-            height: 205px;
+            height: 210px;
             background: var(--navy-primary);
             overflow: hidden;
             user-select: none;
+            touch-action: pan-y;
         }
 
         .slider-image {
@@ -738,6 +794,7 @@
             height: 100%;
             object-fit: cover;
             display: none;
+            pointer-events: none;
         }
 
         .slider-image.active-slide {
@@ -815,8 +872,31 @@
             border-radius: 10px;
         }
 
+        /* شارة تم البيع بنجاح البرتقالية المطفية على الصورة */
+        .sold-overlay-ribbon {
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 10, 20, 0.65);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .sold-badge-pill {
+            background: var(--orange-muted-bg);
+            color: #f3b186;
+            border: 1.5px solid var(--orange-muted);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 900;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
         .lecture-text-preview {
-            height: 205px;
+            height: 210px;
             background: linear-gradient(145deg, var(--navy-primary), var(--navy-elevated));
             padding: 1.2rem;
             display: flex;
@@ -884,19 +964,44 @@
             flex: 1;
         }
 
+        .card-meta-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 0.55rem;
+        }
+
         .uni-clear-banner {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             background: var(--orange-soft);
             color: var(--orange-light);
-            padding: 4px 10px;
+            padding: 3px 10px;
             border-radius: 8px;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 800;
-            margin-bottom: 0.55rem;
-            width: fit-content;
             border: 1px solid rgba(249, 115, 22, 0.25);
+        }
+
+        /* شارة العد التنازلي لعمر المنشور (30 يوماً) */
+        .expiry-countdown-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--navy-primary);
+            color: var(--text-muted);
+            border: 1px solid var(--navy-border);
+            padding: 3px 9px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .expiry-countdown-tag i {
+            color: var(--orange-main);
         }
 
         .product-title {
@@ -936,34 +1041,88 @@
             color: var(--orange-main);
         }
 
-        .btn-reserve {
-            background: var(--orange-main);
+        /* زر تواصل الذكي مع أيقونة الموبايل المهتزة برمجياً */
+        .btn-contact-seller {
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
             color: var(--text-white);
             border: none;
-            padding: 8px 15px;
+            padding: 8px 16px;
             border-radius: var(--radius-sm);
-            font-size: 0.84rem;
+            font-size: 0.86rem;
             font-weight: 800;
             cursor: pointer;
             transition: var(--transition);
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
             box-shadow: 0 4px 12px var(--orange-glow);
         }
 
-        .btn-reserve:hover {
-            background: var(--orange-hover);
+        .btn-contact-seller:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.06);
         }
 
-        .btn-reserve.reserved-state {
+        .vibrating-phone-icon {
+            display: inline-block;
+            animation: vibratePhone 1.3s ease-in-out infinite;
+        }
+
+        @keyframes vibratePhone {
+
+            0%,
+            100% {
+                transform: rotate(0deg) scale(1);
+            }
+
+            15% {
+                transform: rotate(-16deg) scale(1.1);
+            }
+
+            30% {
+                transform: rotate(16deg) scale(1.1);
+            }
+
+            45% {
+                transform: rotate(-12deg);
+            }
+
+            60% {
+                transform: rotate(12deg);
+            }
+
+            75% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .sold-status-btn {
             background: var(--orange-muted-bg);
             color: #d99b72;
             border: 1px solid var(--orange-muted);
-            box-shadow: none;
-            cursor: not-allowed;
+            padding: 7px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            font-weight: 800;
+            cursor: default;
+        }
+
+        .owner-toggle-sold-btn {
+            width: 100%;
+            margin-top: 8px;
+            background: var(--navy-primary);
+            border: 1px dashed var(--orange-main);
+            color: var(--orange-light);
+            padding: 6px 10px;
+            border-radius: 8px;
             font-size: 0.76rem;
-            padding: 8px 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .owner-toggle-sold-btn:hover {
+            background: var(--orange-soft);
         }
 
         .multi-upload-box {
@@ -1007,14 +1166,44 @@
             object-fit: cover;
         }
 
+        /* خيارات التواصل المنبثقة (واتساب / تليجرام) */
+        .contact-options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        .btn-contact-choice {
+            width: 100%;
+            background: var(--navy-primary);
+            border: 1.5px solid var(--orange-main);
+            color: var(--text-white);
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.98rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-contact-choice:hover {
+            background: var(--orange-main);
+            color: var(--text-white);
+            transform: translateY(-2px);
+        }
+
         /* ====================================================
-           8. قسم الملف الشخصي ("أنا") وشريط التنقل السفلي
+           8. قسم الملف الشخصي ("أنا") وإدارة منشورات البائع
            ==================================================== */
         .profile-card {
             background: var(--navy-card);
             border: 1px solid var(--navy-border);
             border-radius: 24px;
-            max-width: 540px;
+            max-width: 580px;
             margin: 1rem auto;
             padding: 2.2rem 1.6rem;
             text-align: center;
@@ -1086,6 +1275,50 @@
         .profile-detail-row span:last-child {
             font-weight: 800;
             color: var(--text-white);
+        }
+
+        .my-posts-manage-box {
+            background: var(--navy-primary);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .my-posts-manage-box h4 {
+            color: var(--orange-light);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .my-post-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--navy-border);
+            font-size: 0.84rem;
+        }
+
+        .my-post-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .btn-mark-sold-small {
+            background: var(--orange-soft);
+            color: var(--orange-light);
+            border: 1px solid var(--orange-main);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
         }
 
         .profile-actions {
@@ -1311,7 +1544,7 @@
     <div class="toast-box" id="toastBox"></div>
 
     <!-- ====================================================
-         1. الصفحة الأولى: شاشة الترحيب المؤقتة (2 ثانية) مع الشعار الرسمي (Z + سهمي التبادل)
+         1. الصفحة الأولى: شاشة الترحيب التفاعلية المؤقتة (Typing Effect لمدة ثانيتين)
          ==================================================== -->
     <section id="splash-screen" class="screen active">
         <div class="splash-content">
@@ -1324,16 +1557,20 @@
                         stroke-linejoin="round" />
                 </svg>
             </div>
-            <h1 class="splash-title">Zone</h1>
+            <div class="splash-typing-wrapper">
+                <h1 class="splash-title" id="splashTypedText"></h1>
+                <span class="typing-cursor" id="splashCursor"></span>
+            </div>
         </div>
     </section>
 
     <!-- ====================================================
-         2. الصفحة الثانية: تعبئة البيانات فقط (شعار Z الرسمي + بدون حقل بديل + زر التالي رسمي)
+         2. الصفحة الثانية: تعبئة البيانات فقط (بالحقول والنصوص الصارمة)
          ==================================================== -->
     <section id="data-screen" class="screen">
         <div class="card-container">
             <div class="section-header">
+                <!-- الشعار الرسمي المعتمد (حرف Z المدمج بالسهمين) بدون قبعة تخرج -->
                 <div class="official-logo-badge">
                     <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20 26 H76 L63 14 M76 26 L63 38" stroke="#f97316" stroke-width="8.5"
@@ -1343,31 +1580,30 @@
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h2>بيانات الطالب الجامعية</h2>
-                <p>أدخل معلوماتك لعرض مستلزمات جامعتك ومحافظتك بدقة</p>
+                <h2>تسجيل بيانات الطالب</h2>
+                <p>أدخل معلوماتك للانضمام إلى سوق محافظتك وجامعتك في Zone</p>
             </div>
 
             <form id="studentDataForm" onsubmit="goToSubscriptionScreen(event)">
-                <!-- الاسم الكامل -->
+                <!-- حقل الاسم الكامل -->
                 <div class="form-group">
                     <label for="fullName">الاسم الكامل</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" id="fullName" class="form-control" placeholder="أدخل اسمك الكامل..."
-                            required>
+                        <input type="text" id="fullName" class="form-control" placeholder="الاسم الكامل" required>
                     </div>
                 </div>
 
-                <!-- رقم الهاتف بالنص الإرشادي المطلوب حرفياً -->
+                <!-- حقل رقم الهاتف -->
                 <div class="form-group">
                     <label for="phoneNumber">رقم الهاتف</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-phone"></i>
-                        <input type="tel" id="phoneNumber" class="form-control" placeholder="مثال: 09xxxxxxxx" required>
+                        <input type="tel" id="phoneNumber" class="form-control" placeholder="اكتب رقمك هنا" required>
                     </div>
                 </div>
 
-                <!-- المحافظة السورية (الـ 14 محافظة إلزامياً) -->
+                <!-- حقل المحافظة (14 محافظة سورية إلزامياً) -->
                 <div class="form-group">
                     <label for="provinceSelect">المحافظة</label>
                     <div class="input-wrapper">
@@ -1392,7 +1628,7 @@
                     </div>
                 </div>
 
-                <!-- الجامعة أو المعهد (حقل نصي يدوي) -->
+                <!-- حقل الجامعة (نصي يدوي) -->
                 <div class="form-group">
                     <label for="universityInput">الجامعة</label>
                     <div class="input-wrapper">
@@ -1402,18 +1638,27 @@
                     </div>
                 </div>
 
-                <!-- الفرع الدراسي / الكلية -->
+                <!-- حقل الكلية / الفرع -->
                 <div class="form-group">
-                    <label for="majorInput">الفرع الدراسي / الكلية</label>
+                    <label for="majorInput">الكلية / الفرع الدراسي</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-microchip"></i>
-                        <input type="text" id="majorInput" class="form-control"
-                            placeholder="مثال: هندسة ميكاترونيكس، طب بشري..." required>
+                        <input type="text" id="majorInput" class="form-control" placeholder="أدخل فرعك هنا" required>
                     </div>
                 </div>
 
-                <!-- زر انتقال رسمي بكلمة "التالي" فقط بدون أي إيموجي -->
-                <button type="submit" class="btn-orange-wide">التالي</button>
+                <!-- حقل معرف التليجرام الاختياري -->
+                <div class="form-group">
+                    <label for="telegramUserInput">معرف التليجرام للتواصل</label>
+                    <div class="input-wrapper">
+                        <i class="fa-brands fa-telegram"></i>
+                        <input type="text" id="telegramUserInput" class="form-control"
+                            placeholder="معرف التليجرام (اختياري)">
+                    </div>
+                </div>
+
+                <!-- شرط صارم: زر برتقالي مكتوب فيه فقط كلمة "التالي" وبخط كحلي داكن متناسق -->
+                <button type="submit" class="btn-next-official">التالي</button>
             </form>
         </div>
     </section>
@@ -1476,10 +1721,10 @@
 
             <div class="selected-plan-pill" id="popupSelectedPlanText">اشتراك شهري (1 دولار)</div>
 
-            <!-- وسم صورة الـ QR المجهز بالمسار المطلوب حرفياً مع Fallback ذكي لنفس الكود -->
-            <img src="sham_cash_qr.png" alt="Sham Cash QR"
-                style="max-width: 230px; display: block; margin: 10px auto; border-radius: 8px;"
-                onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=230x230&color=1e3a5f&bgcolor=ffffff&margin=10&data=26ee871407869d05ad94223e7b4f1402';">
+            <!-- شرط حماية الصورة والـ QR كود الصارم جداً بأبعاده الأصلية -->
+            <img src="sham_cash_qr.png"
+                style="max-width: 240px; width: 100%; height: auto; display: block; margin: 12px auto; border-radius: 8px;"
+                onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=240x240&color=1e3a5f&bgcolor=ffffff&margin=10&data=26ee871407869d05ad94223e7b4f1402';">
 
             <div class="recipient-verified-line">
                 <span>المستلم الرسمي: محمد يحيى جمال</span>
@@ -1494,17 +1739,16 @@
     </div>
 
     <!-- ====================================================
-         4. الصفحة الرابعة: واجهة الانتظار والرفض التفاعلي
+         4. الصفحة الرابعة: واجهة الانتظار الصارمة وجدار الحماية
          ==================================================== -->
     <section id="waiting-screen" class="screen">
         <div class="waiting-minimal-wrapper">
             <i id="waitingGearIcon" class="fa-solid fa-gear gear-spinner"></i>
             <p id="waitingStatusText" class="waiting-status-label">جاري التأكد من حالة الدفع</p>
 
-            <!-- يظهر هذا الزر حصرياً تحت رسالة الرفض ليعيد الطالب لتعديل بياناته -->
+            <!-- يظهر هذا الزر حصرياً عند وصول نص الرفض اليدوي من الأدمن -->
             <button type="button" id="retryEditDataBtn" class="btn-retry-after-reject"
                 onclick="returnToEditDataAfterRejection()">
-                <i class="fa-solid fa-pen-to-square"></i>
                 <span>تعديل البيانات وإعادة المحاولة</span>
             </button>
         </div>
@@ -1586,7 +1830,7 @@
             <div class="products-grid" id="productsGridContainer"></div>
         </main>
 
-        <!-- التبويب الثاني: "أنا" (الملف الشخصي) -->
+        <!-- التبويب الثاني: "أنا" (الملف الشخصي وإدارة منشورات البائع) -->
         <main id="profile-tab" class="tab-view">
             <div class="profile-card">
                 <div class="profile-avatar-large" id="profileAvatarChar">ط</div>
@@ -1610,9 +1854,19 @@
                         <span id="profilePhoneText">0900000000</span>
                     </div>
                     <div class="profile-detail-row">
+                        <span>معرف التليجرام:</span>
+                        <span id="profileTelegramText">غير مضاف</span>
+                    </div>
+                    <div class="profile-detail-row">
                         <span>الباقة الفعالة:</span>
                         <span id="profilePlanText" style="color: var(--orange-light);">اشتراك شهري (1 دولار)</span>
                     </div>
+                </div>
+
+                <!-- قسم إدارة منشورات الطالب لتحويل حالتها إلى (تم البيع بنجاح 🎉) -->
+                <div class="my-posts-manage-box">
+                    <h4><i class="fa-solid fa-tags"></i> منشوراتي المعروضة في السوق</h4>
+                    <div id="myPublishedPostsList"></div>
                 </div>
 
                 <div class="profile-actions">
@@ -1642,7 +1896,34 @@
     </section>
 
     <!-- ====================================================
-         6. نافذة منبثقة: إضافة منشور جديد (الأقسام الدقيقة + رفع حتى 3 صور)
+         6. نافذة منبثقة: خيارات التواصل مع البائع (واتساب / تليجرام)
+         ==================================================== -->
+    <div class="modal-overlay" id="contactSellerModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-mobile-screen-button"></i> تواصل مع البائع</h3>
+                <button type="button" class="btn-close-modal" onclick="closeContactModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;"
+                id="contactModalProductTitle"></p>
+
+            <div class="contact-options-grid">
+                <button type="button" class="btn-contact-choice" onclick="redirectToSellerWhatsApp()">
+                    <span>تواصل عبر واتساب</span>
+                    <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem; color: var(--orange-light);"></i>
+                </button>
+                <button type="button" class="btn-contact-choice" onclick="redirectToSellerTelegram()">
+                    <span>تواصل عبر تليجرام</span>
+                    <i class="fa-brands fa-telegram" style="font-size: 1.4rem; color: var(--orange-light);"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================
+         7. نافذة منبثقة: إضافة منشور جديد (الأقسام الدقيقة + رفع حتى 3 صور)
          ==================================================== -->
     <div class="modal-overlay" id="addPostModal">
         <div class="modal-card" style="text-align: right;">
@@ -1690,7 +1971,7 @@
 
                 <!-- حقل رفع حتى 3 صور للبائع مع معاينة فورية -->
                 <div class="form-group" id="postImagesUploadGroup">
-                    <label>صور القطعة (يمكنك رفع حتى 3 صور من جهازك لفحص الحالة)</label>
+                    <label>صور القطعة (يمكنك رفع حتى 3 صور وتقليبها بالسحب)</label>
                     <div class="multi-upload-box" onclick="document.getElementById('postFilesInput').click()">
                         <i class="fa-solid fa-cloud-arrow-up"
                             style="font-size: 1.6rem; color: var(--orange-main); margin-bottom: 4px;"></i>
@@ -1725,7 +2006,7 @@
     </div>
 
     <!-- ====================================================
-         7. نافذة منبثقة: تعديل بيانات الطالب
+         8. نافذة منبثقة: تعديل بيانات الطالب
          ==================================================== -->
     <div class="modal-overlay" id="editProfileModal">
         <div class="modal-card" style="text-align: right;">
@@ -1741,7 +2022,7 @@
                     <label>الاسم الكامل</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" id="editName" class="form-control" required>
+                        <input type="text" id="editName" class="form-control" placeholder="الاسم الكامل" required>
                     </div>
                 </div>
 
@@ -1749,7 +2030,7 @@
                     <label>رقم الهاتف</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-phone"></i>
-                        <input type="tel" id="editPhone" class="form-control" placeholder="مثال: 09xxxxxxxx" required>
+                        <input type="tel" id="editPhone" class="form-control" placeholder="اكتب رقمك هنا" required>
                     </div>
                 </div>
 
@@ -1785,10 +2066,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label>الفرع الدراسي / الكلية</label>
+                    <label>الكلية / الفرع</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-graduation-cap"></i>
-                        <input type="text" id="editMajor" class="form-control" required>
+                        <input type="text" id="editMajor" class="form-control" placeholder="أدخل فرعك هنا" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>معرف التليجرام</label>
+                    <div class="input-wrapper">
+                        <i class="fa-brands fa-telegram"></i>
+                        <input type="text" id="editTelegram" class="form-control"
+                            placeholder="معرف التليجرام (اختياري)">
                     </div>
                 </div>
 
@@ -1801,7 +2091,7 @@
     </div>
 
     <!-- ====================================================
-         8. المنطق البرمجي الكامل وغرفة التحكم المتقدمة بالتلغرام (JavaScript)
+         9. المنطق البرمجي الكامل، جدار الحماية، وغرفة التحكم (JavaScript)
          ==================================================== -->
     <script>
         // إعدادات بوت التلغرام الإداري (@Zonewebsite_bot)
@@ -1809,13 +2099,21 @@
         const TELEGRAM_CHAT_ID = "8717720399";
         const TELEGRAM_API_BASE = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
+        // الثوابت الزمنية (48 ساعة للطلبات المعلقة، و30 يوماً لعمر المنشور)
+        const PENDING_TIMEOUT_MS = 48 * 60 * 60 * 1000;
+        const POST_LIFETIME_DAYS = 30;
+        const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
         let activeCategory = "all";
         let pollingIntervalId = null;
         let lastUpdateOffset = 0;
         let uploadedSellerImages = [];
-
-        // متغير يحدد ما إذا كان الأدمن قد ضغط على [ رفض ❌ ] والنظام ينتظر منه كتابة سبب الرفض يدوياً في التلغرام
         let awaitingManualRejectionReplyForStudentId = null;
+        let activeContactProduct = null;
+        let touchStartXMap = {};
+
+        // متغير التوقيع الأمني لمنع فتح السوق عبر التلاعب بالـ Inspect Element
+        let runtimeVerifiedToken = null;
 
         let studentProfile = {
             id: "",
@@ -1824,137 +2122,141 @@
             province: "حلب",
             university: "جامعة حلب",
             major: "",
+            telegramUsername: "",
             plan: "",
+            pendingSince: 0,
             waitingCustomNote: "",
             rejectionMessage: ""
         };
 
         let marketProducts = [];
 
-        // توليد منتجات افتراضية بـ 3 صور لكل منتج في محافظة الطالب لتجربة السلايدر فوراً
-        function initializeProvinceProducts(userProvince, userUni) {
-            const savedItems = localStorage.getItem('zone_market_items_v5');
-            if (savedItems) {
-                marketProducts = JSON.parse(savedItems);
+        // ====================================================
+        // أ. جدار الحماية السري المخفي (Security Token & Anti-Inspect)
+        // ====================================================
+        function generateSecurityHash(studentId) {
+            if (!studentId) return "";
+            const secretSalt = "ZONE_SY_SEC_2026_";
+            let raw = secretSalt + studentId;
+            let hash = 0;
+            for (let i = 0; i < raw.length; i++) {
+                hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+                hash |= 0;
             }
-
-            const hasItemsInProvince = marketProducts.some(item => item.province === userProvince);
-            if (!hasItemsInProvince) {
-                const defaultUni = userUni || `جامعة ${userProvince}`;
-                const seededForProvince = [
-                    {
-                        id: Date.now() + 1,
-                        title: "سماعة طبيب Littmann Classic III الأصلية مع العلبة",
-                        price: 650000,
-                        category: "أدوات طب بشري",
-                        seller: "د. سارة أحمد (طب بشري)",
-                        university: defaultUni,
-                        province: userProvince,
-                        isTextLecture: false,
-                        lectureBody: "",
-                        reserved: false,
-                        currentSlide: 0,
-                        images: [
-                            "https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=600&q=80",
-                            "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80",
-                            "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80"
-                        ]
-                    },
-                    {
-                        id: Date.now() + 2,
-                        title: "طقم قبضات توربين وأدوات حفر وتطبيق سنية",
-                        price: 490000,
-                        category: "أدوات طب أسنان",
-                        seller: "د. ليث محمود (طب أسنان)",
-                        university: defaultUni,
-                        province: userProvince,
-                        isTextLecture: false,
-                        lectureBody: "",
-                        reserved: false,
-                        currentSlide: 0,
-                        images: [
-                            "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80",
-                            "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=600&q=80",
-                            "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80"
-                        ]
-                    },
-                    {
-                        id: Date.now() + 3,
-                        title: "حقيبة Arduino Mega + حساسات وماتورات للمشاريع",
-                        price: 310000,
-                        category: "هندسة معلوماتية",
-                        seller: "مجد الحلبي (هندسة)",
-                        university: defaultUni,
-                        province: userProvince,
-                        isTextLecture: false,
-                        lectureBody: "",
-                        reserved: false,
-                        currentSlide: 0,
-                        images: [
-                            "https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=600&q=80",
-                            "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
-                            "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
-                        ]
-                    },
-                    {
-                        id: Date.now() + 4,
-                        title: "طقم رسم معماري كامل (بورد خشبي + مسطرة T + أقلام تحبير)",
-                        price: 220000,
-                        category: "هندسة عمارة",
-                        seller: "كريم حسن (هندسة عمارة)",
-                        university: defaultUni,
-                        province: userProvince,
-                        isTextLecture: false,
-                        lectureBody: "",
-                        reserved: false,
-                        currentSlide: 0,
-                        images: [
-                            "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80",
-                            "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
-                            "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80"
-                        ]
-                    },
-                    {
-                        id: Date.now() + 5,
-                        title: "محاضرات كيمياء صيدلانية وعقاقير مكتوبة بخط اليد",
-                        price: 45000,
-                        category: "منشور نصي لمحاضرات مكتوبة بخط اليد",
-                        seller: "نور الهدى (كلية الصيدلة)",
-                        university: defaultUni,
-                        province: userProvince,
-                        isTextLecture: true,
-                        lectureBody: "دفتر محاضرات كامل مكتوب بخط يد واضح جداً ومرتب بالألوان، يشمل كافة المعادلات الكيميائية والتراكيب الدوائية مع أسئلة الدورات المحلولة (90 صفحة).",
-                        reserved: false,
-                        currentSlide: 0,
-                        images: []
-                    }
-                ];
-
-                marketProducts = [...seededForProvince, ...marketProducts];
-                localStorage.setItem('zone_market_items_v5', JSON.stringify(marketProducts));
-            }
+            return "zsec_" + Math.abs(hash).toString(36);
         }
 
-        // 1. إدارة شاشة الترحيب المؤقتة (2 ثانية) وفحص localStorage
+        function isSessionCryptographicallyVerified() {
+            const savedStatus = localStorage.getItem('zone_status');
+            const savedSecToken = localStorage.getItem('zone_security_token');
+            const expectedToken = generateSecurityHash(studentProfile.id);
+            return (
+                savedStatus === 'approved' &&
+                studentProfile.id &&
+                savedSecToken === expectedToken &&
+                runtimeVerifiedToken === expectedToken
+            );
+        }
+
+        // منع اختصارات أدوات المطورين والزر الأيمن وحراسة شاشة السوق ضد التلاعب اليدوي
+        (function setupSecurityWall() {
+            document.addEventListener('contextmenu', (e) => e.preventDefault());
+            document.addEventListener('keydown', (e) => {
+                if (
+                    e.key === 'F12' ||
+                    (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'i', 'j', 'c'].includes(e.key)) ||
+                    (e.ctrlKey && ['U', 'u'].includes(e.key))
+                ) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // مراقب مستمر يمنع إظهار #app-screen عبر تعديل الـ DOM يدوياً من المتصفح
+            const appScreenEl = document.getElementById('app-screen');
+            const observer = new MutationObserver(() => {
+                if (appScreenEl.classList.contains('active') || appScreenEl.style.display === 'flex' || appScreenEl.style.display === 'block') {
+                    if (!isSessionCryptographicallyVerified()) {
+                        appScreenEl.classList.remove('active');
+                        appScreenEl.style.display = 'none';
+                        const waitingScreenEl = document.getElementById('waiting-screen');
+                        if (waitingScreenEl && localStorage.getItem('zone_status') === 'pending') {
+                            waitingScreenEl.classList.add('active');
+                        }
+                    }
+                }
+            });
+
+            if (appScreenEl) {
+                observer.observe(appScreenEl, { attributes: true, attributeFilter: ['class', 'style'] });
+            }
+        })();
+
+        // ====================================================
+        // ب. تأثير الكتابة (Typing Effect) ومؤقت الـ 48 ساعة عند بدء التشغيل
+        // ====================================================
+        function runSplashTypingEffect() {
+            const targetText = "Zone";
+            const typedEl = document.getElementById('splashTypedText');
+            typedEl.textContent = "";
+            let idx = 0;
+
+            const typeTimer = setInterval(() => {
+                if (idx < targetText.length) {
+                    typedEl.textContent += targetText.charAt(idx);
+                    idx++;
+                } else {
+                    clearInterval(typeTimer);
+                }
+            }, 240);
+        }
+
+        // فحص مؤقت التنظيف الآلي للطلبات المعلقة (48 ساعة)
+        function checkAndCleanExpiredPendingRequest() {
+            const savedStatus = localStorage.getItem('zone_status');
+            if (savedStatus === 'pending' && studentProfile.pendingSince) {
+                const elapsed = Date.now() - Number(studentProfile.pendingSince);
+                if (elapsed >= PENDING_TIMEOUT_MS) {
+                    localStorage.removeItem('zone_status');
+                    localStorage.removeItem('zone_security_token');
+                    studentProfile.pendingSince = 0;
+                    localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+                    return true;
+                }
+            }
+            return false;
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            runSplashTypingEffect();
+
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 splash.classList.add('fade-out');
 
                 setTimeout(() => {
-                    const savedStatus = localStorage.getItem('zone_status');
                     const savedProfile = localStorage.getItem('zone_student_profile');
-
                     if (savedProfile) {
                         studentProfile = JSON.parse(savedProfile);
                     }
 
-                    if (savedStatus === 'approved' && studentProfile.id) {
+                    // تنظيف الطلب المعلق إذا مر عليه 48 ساعة بدون رد
+                    if (checkAndCleanExpiredPendingRequest()) {
+                        showScreen('data-screen');
+                        showToast("انتهت مهلة الانتظار (48 ساعة)، يمكنك إعادة التسجيل الآن.");
+                        return;
+                    }
+
+                    const savedStatus = localStorage.getItem('zone_status');
+                    const savedSecToken = localStorage.getItem('zone_security_token');
+                    const expectedToken = generateSecurityHash(studentProfile.id);
+
+                    if (savedStatus === 'approved' && studentProfile.id && savedSecToken === expectedToken) {
+                        runtimeVerifiedToken = expectedToken;
                         initializeProvinceProducts(studentProfile.province, studentProfile.university);
                         syncProfileToUI();
                         renderMarketProducts();
                         showScreen('app-screen');
-                        // استمرار الاستماع في الخلفية لتمكين الأدمن من استخدام زر [ ⚙️ تصفير الحساب وفك القفل ] في أي وقت
                         startTelegramPolling(studentProfile.id);
                     } else if (savedStatus === 'rejected') {
                         showScreen('waiting-screen');
@@ -1971,6 +2273,9 @@
         });
 
         function showScreen(screenId) {
+            if (screenId === 'app-screen' && !isSessionCryptographicallyVerified()) {
+                return;
+            }
             document.querySelectorAll('.screen').forEach(scr => {
                 scr.classList.remove('active', 'fade-out');
             });
@@ -1981,7 +2286,9 @@
             }
         }
 
-        // 2. الانتقال من الصفحة الثانية (تعبئة البيانات) إلى الصفحة الثالثة (الاشتراك)
+        // ====================================================
+        // ج. الانتقال بين البيانات والاشتراك وإرسال الرسالة إلى التلغرام
+        // ====================================================
         function goToSubscriptionScreen(event) {
             event.preventDefault();
 
@@ -1990,6 +2297,7 @@
             const province = document.getElementById('provinceSelect').value;
             const university = document.getElementById('universityInput').value.trim();
             const major = document.getElementById('majorInput').value.trim();
+            const telegramUser = document.getElementById('telegramUserInput').value.trim();
 
             if (!name || !phone || !province || !university || !major) return;
 
@@ -1998,11 +2306,11 @@
             studentProfile.province = province;
             studentProfile.university = university;
             studentProfile.major = major;
+            studentProfile.telegramUsername = telegramUser;
 
             showScreen('subscription-screen');
         }
 
-        // 3. فتح النافذة المنبثقة للشام كاش عند اختيار الباقة
         function openShamCashPopup(planTitle) {
             studentProfile.plan = planTitle;
             document.getElementById('popupSelectedPlanText').textContent = planTitle;
@@ -2013,7 +2321,7 @@
             document.getElementById('shamCashModal').classList.remove('open');
         }
 
-        // بناء لوحة التحكم الإدارية الكاملة (الأزرار الـ 5) للرسالة في تلغرام
+        // بناء لوحة أزرار التحكم الإدارية في التلغرام
         function buildFullAdminControlKeyboard(studentId) {
             return {
                 inline_keyboard: [
@@ -2022,9 +2330,7 @@
                         { text: "رفض ❌", callback_data: `reject_manual_${studentId}` }
                     ],
                     [
-                        { text: "⏳ قيد المراجعة المالية", callback_data: `review_${studentId}` }
-                    ],
-                    [
+                        { text: "⏳ قيد المراجعة", callback_data: `review_${studentId}` },
                         { text: "💸 تفعيل مجاني / منحة", callback_data: `grant_${studentId}` }
                     ],
                     [
@@ -2034,7 +2340,6 @@
             };
         }
 
-        // لوحة التحكم التي تبقى بعد القبول لتمكين الأدمن من تصفير الحساب لاحقاً عند انتهاء الاشتراك
         function buildActiveAccountAdminKeyboard(studentId) {
             return {
                 inline_keyboard: [
@@ -2045,23 +2350,25 @@
             };
         }
 
-        // 4. إرسال الرسالة بالديكور الفخم إلى التلغرام والانتقال لشاشة الانتظار
         async function sendFinalSubscriptionToTelegram() {
             const finalBtn = document.getElementById('finalSubmitBtn');
             finalBtn.disabled = true;
 
             const uniqueStudentId = "stu_" + Date.now();
             studentProfile.id = uniqueStudentId;
+            studentProfile.pendingSince = Date.now();
             studentProfile.waitingCustomNote = "";
             studentProfile.rejectionMessage = "";
             awaitingManualRejectionReplyForStudentId = null;
+            runtimeVerifiedToken = null;
 
+            localStorage.removeItem('zone_security_token');
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'pending');
 
             await syncLatestOffset();
 
-            // الديكور والشكل الدقيق لرسالة التحكم في تليجرام عمودياً ومتباعداً بـ (\n)
+            // تنسيق نص الرسالة العمودية في تليجرام كما هو مطلوب بالضبط
             const luxuryTelegramMessage = [
                 "🚀 طلب دخول واشتراك جديد - منصة Zone",
                 "━━━━━━━━━━━━━━━━━━",
@@ -2107,13 +2414,24 @@
             }
         }
 
-        // 5. الاستماع المستمر لرد البوت (Long Polling كل ثانيتين لفحص الأزرار والردود المكتوبة يدوياً)
+        // ====================================================
+        // د. الاستماع المستمر (Polling) والرفض بكتابة السبب يدوياً
+        // ====================================================
         function startTelegramPolling(targetStudentId) {
             if (pollingIntervalId) {
                 clearInterval(pollingIntervalId);
             }
 
             pollingIntervalId = setInterval(async () => {
+                // فحص ما إذا تجاوز الطلب المعلق 48 ساعة أثناء الانتظار
+                if (checkAndCleanExpiredPendingRequest()) {
+                    clearInterval(pollingIntervalId);
+                    pollingIntervalId = null;
+                    showScreen('data-screen');
+                    showToast("انتهت مهلة الانتظار (48 ساعة)، يمكنك المحاولة مجدداً.");
+                    return;
+                }
+
                 try {
                     const url = `${TELEGRAM_API_BASE}/getUpdates?offset=${lastUpdateOffset}&allowed_updates=["callback_query","message"]`;
                     const response = await fetch(url);
@@ -2124,14 +2442,13 @@
                     for (const update of data.result) {
                         lastUpdateOffset = update.update_id + 1;
 
-                        // أولاً: معالجة ضغطات الأزرار التفاعلية (Inline Keyboard Callbacks)
                         if (update.callback_query && update.callback_query.data) {
                             const cbData = update.callback_query.data;
                             const cbId = update.callback_query.id;
                             const msgId = update.callback_query.message?.message_id;
                             const originalText = update.callback_query.message?.text || "";
 
-                            // الزر 1: [ قبول ✅ ]
+                            // الزر الأول: [ قبول ✅ ]
                             if (cbData === `approve_${targetStudentId}`) {
                                 awaitingManualRejectionReplyForStudentId = null;
                                 await answerCallback(cbId, "تم قبول الطالب وتفعيل الحساب ✅");
@@ -2143,14 +2460,14 @@
                                 handleStudentApproved(false);
                             }
 
-                            // الزر 2: [ رفض ❌ ] -> تفعيل وضع الاستماع لكتابة سبب الرفض يدوياً
+                            // الزر الثاني: [ رفض ❌ ] -> تفعيل وضع الاستماع لكتابة سبب الرفض يدوياً
                             if (cbData === `reject_manual_${targetStudentId}`) {
                                 awaitingManualRejectionReplyForStudentId = targetStudentId;
                                 await answerCallback(cbId, "✍️ اكتب الآن سبب الرفض في رسالة وأرسلها للبوت...");
                                 await sendAdminPromptForManualRejection(studentProfile.name);
                             }
 
-                            // الزر 3: [ ⏳ قيد المراجعة المالية ]
+                            // الزر الثالث: [ ⏳ قيد المراجعة ]
                             if (cbData === `review_${targetStudentId}`) {
                                 awaitingManualRejectionReplyForStudentId = null;
                                 const reviewText = "تم استلام طلبك وهو تحت المراجعة من المندوب المالي حالياً";
@@ -2161,22 +2478,22 @@
                                 if (label) {
                                     label.textContent = reviewText;
                                 }
-                                await answerCallback(cbId, "تم تحديث شاشة الطالب إلى: قيد المراجعة المالية ⏳");
+                                await answerCallback(cbId, "تم تحديث شاشة الطالب إلى: تحت المراجعة من المندوب المالي ⏳");
                             }
 
-                            // الزر 4: [ 💸 تفعيل مجاني / منحة ]
+                            // الزر الرابع: [ 💸 تفعيل مجاني / منحة ]
                             if (cbData === `grant_${targetStudentId}`) {
                                 awaitingManualRejectionReplyForStudentId = null;
                                 await answerCallback(cbId, "تم تفعيل الحساب كمنحة مجانية 💸");
                                 await updateTelegramMessageWithKeyboard(
                                     msgId,
-                                    originalText + "\n\n💸 الحالة: تفعيل مجاني / منحة دراسية",
+                                    originalText + "\n\n💸 الحالة: تفعيل مجاني / منحة",
                                     buildActiveAccountAdminKeyboard(targetStudentId)
                                 );
                                 handleStudentApproved(true);
                             }
 
-                            // الزر 5: [ ⚙️ تصفير الحساب وفك القفل ]
+                            // زر [ ⚙️ تصفير الحساب وفك القفل ]
                             if (cbData === `reset_${targetStudentId}`) {
                                 awaitingManualRejectionReplyForStudentId = null;
                                 await answerCallback(cbId, "تم تصفير حساب الطالب وإرجاعه لصفحة الدفع والانتظار ⚙️");
@@ -2189,7 +2506,7 @@
                             }
                         }
 
-                        // ثانياً: التقاط الرسالة المكتوبة يدوياً من الأدمن عند تفعيل وضع الرفض
+                        // التقاط سبب الرفض المكتوب يدوياً من الأدمن وإرساله لشاشة الطالب
                         if (update.message && update.message.text) {
                             const incomingChatId = String(update.message.chat.id);
                             const adminWrittenReason = update.message.text.trim();
@@ -2205,9 +2522,7 @@
 
                                 const formattedRejectionMessage = `عذراً، تم رفض طلبك للأسباب التالية: ${adminWrittenReason}، يرجى تعديل بياناتك`;
 
-                                // إرسال تأكيد للأدمن في التلغرام بأن السبب وصل لشاشة الطالب
                                 await sendTelegramSimpleNotice(`✅ تم إرسال سبب الرفض إلى شاشة الطالب (${studentProfile.name}):\n"${formattedRejectionMessage}"`);
-
                                 handleStudentRejected(formattedRejectionMessage);
                                 break;
                             }
@@ -2226,7 +2541,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: TELEGRAM_CHAT_ID,
-                        text: `✍️ وضع الرفض اليدوي مفعّل للطالب (${studentName}):\nأرسل الآن سبب الرفض كتابةً في رسالة عادية ليظهر فوراً على شاشة الطالب...`,
+                        text: `✍️ اكتب سبب رفض طلب الطالب (${studentName}) وأرسله الآن ليظهر فوراً على شاشته:`,
                         reply_markup: { force_reply: true }
                     })
                 });
@@ -2284,14 +2599,17 @@
             }
         }
 
-        // تنفيذ القبول (العادي أو المنحة المجانية)
         function handleStudentApproved(isFreeGrant = false) {
             if (isFreeGrant) {
-                studentProfile.plan = "منحة مجانية / حساب مؤثرين 🎁";
+                studentProfile.plan = "تفعيل مجاني / منحة 💸";
             }
             studentProfile.waitingCustomNote = "";
             studentProfile.rejectionMessage = "";
 
+            const secToken = generateSecurityHash(studentProfile.id);
+            runtimeVerifiedToken = secToken;
+
+            localStorage.setItem('zone_security_token', secToken);
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'approved');
 
@@ -2301,28 +2619,29 @@
             showScreen('app-screen');
             switchBottomTab('home');
 
-            if (isFreeGrant) {
-                showToast(`تم تفعيل حسابك كمنحة مجانية! أهلاً بك يا ${studentProfile.name}`);
-            } else {
-                showToast(`تم تفعيل اشتراكك بنجاح! أهلاً بك في سوق محافظة ${studentProfile.province}`);
-            }
+            showToast(`تم تفعيل حسابك بنجاح! أهلاً بك في سوق محافظة ${studentProfile.province}`);
         }
 
-        // دالة تصفير الحساب وفك القفل (لإرجاع الطالب المقبول إلى صفحة الدفع والانتظار عند انتهاء اشتراكه)
+        // دالة تصفير الحساب وفك القفل لإرجاع الطالب المقبول إلى صفحة الدفع والانتظار
         function resetStudentAccountByAdmin() {
+            runtimeVerifiedToken = null;
             studentProfile.waitingCustomNote = "";
             studentProfile.rejectionMessage = "";
+            studentProfile.pendingSince = Date.now();
+
+            localStorage.removeItem('zone_security_token');
             localStorage.setItem('zone_status', 'pending');
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
 
             resetWaitingUI();
             showScreen('subscription-screen');
-            showToast("انتهت مدة اشتراكك أو تم تصفير الحساب من الإدارة، يرجى التجديد للمتابعة.");
+            showToast("انتهت مدة اشتراكك أو تم تصفير الحساب من الإدارة، يرجى تجديد الاشتراك.");
         }
 
-        // تنفيذ الرفض وإظهار السبب المكتوب يدوياً مع زر تعديل البيانات
         function handleStudentRejected(customRejectionText) {
+            runtimeVerifiedToken = null;
             studentProfile.rejectionMessage = customRejectionText;
+            localStorage.removeItem('zone_security_token');
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'rejected');
             showScreen('waiting-screen');
@@ -2351,7 +2670,6 @@
             retryBtn.classList.add('visible');
         }
 
-        // دالة زر "تعديل البيانات وإعادة المحاولة" من شاشة الرفض
         function returnToEditDataAfterRejection() {
             if (pollingIntervalId) {
                 clearInterval(pollingIntervalId);
@@ -2359,8 +2677,8 @@
             }
             awaitingManualRejectionReplyForStudentId = null;
             localStorage.removeItem('zone_status');
+            localStorage.removeItem('zone_security_token');
 
-            // تعبئة الحقول ببيانات الطالب السابقة ليسهل عليه تصحيحها فوراً
             document.getElementById('fullName').value = studentProfile.name || "";
             document.getElementById('phoneNumber').value = studentProfile.phone || "";
             if (studentProfile.province) {
@@ -2368,22 +2686,130 @@
             }
             document.getElementById('universityInput').value = studentProfile.university || "";
             document.getElementById('majorInput').value = studentProfile.major || "";
+            document.getElementById('telegramUserInput').value = studentProfile.telegramUsername || "";
 
             resetWaitingUI();
             showScreen('data-screen');
-            showToast("يمكنك الآن تعديل بياناتك وإعادة إرسال الطلب.");
+            showToast("يمكنك الآن تعديل بياناتك وإعادة المحاولة.");
         }
 
-        // 6. مزامنة بيانات الطالب وعرض السوق المفلتر حسب المحافظة مع السلايدر
-        function syncProfileToUI() {
-            document.getElementById('headerProvinceName').textContent = studentProfile.province || "حلب";
-            document.getElementById('profileFullName').textContent = studentProfile.name || "طالب جامعي";
-            document.getElementById('profileUniBadge').textContent = studentProfile.university || "الجامعة";
-            document.getElementById('profileProvinceText').textContent = studentProfile.province || "حلب";
-            document.getElementById('profileMajorText').textContent = studentProfile.major || "الكلية";
-            document.getElementById('profilePhoneText').textContent = studentProfile.phone || "";
-            document.getElementById('profilePlanText').textContent = studentProfile.plan || "مفعل";
-            document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
+        // ====================================================
+        // هـ. إدارة منتجات السوق، عمر المنشور (30 يوماً)، والتواصل الذكي
+        // ====================================================
+        function initializeProvinceProducts(userProvince, userUni) {
+            const savedItems = localStorage.getItem('zone_market_items_v6');
+            if (savedItems) {
+                marketProducts = JSON.parse(savedItems);
+            }
+
+            // تنظيف تلقائي لأي منشور انتهى عمره (مر عليه 30 يوماً)
+            const now = Date.now();
+            marketProducts = marketProducts.filter(item => {
+                const created = item.createdAt || now;
+                const daysElapsed = Math.floor((now - created) / DAY_IN_MS);
+                return daysElapsed < POST_LIFETIME_DAYS;
+            });
+
+            const hasItemsInProvince = marketProducts.some(item => item.province === userProvince);
+            if (!hasItemsInProvince) {
+                const defaultUni = userUni || `جامعة ${userProvince}`;
+                const seededForProvince = [
+                    {
+                        id: Date.now() + 1,
+                        title: "سماعة طبيب Littmann Classic III الأصلية مع العلبة",
+                        price: 650000,
+                        category: "أدوات طب بشري",
+                        seller: "د. سارة أحمد (طب بشري)",
+                        sellerId: "seed_1",
+                        sellerPhone: "0944112233",
+                        sellerTelegram: "Zonewebsite_bot",
+                        university: defaultUni,
+                        province: userProvince,
+                        isTextLecture: false,
+                        lectureBody: "",
+                        sold: false,
+                        createdAt: Date.now(),
+                        currentSlide: 0,
+                        images: [
+                            "https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=600&q=80",
+                            "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80",
+                            "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80"
+                        ]
+                    },
+                    {
+                        id: Date.now() + 2,
+                        title: "طقم قبضات توربين وأدوات حفر وتطبيق سنية",
+                        price: 490000,
+                        category: "أدوات طب أسنان",
+                        seller: "د. ليث محمود (طب أسنان)",
+                        sellerId: "seed_2",
+                        sellerPhone: "0933221144",
+                        sellerTelegram: "Zonewebsite_bot",
+                        university: defaultUni,
+                        province: userProvince,
+                        isTextLecture: false,
+                        lectureBody: "",
+                        sold: false,
+                        createdAt: Date.now() - (2 * DAY_IN_MS),
+                        currentSlide: 0,
+                        images: [
+                            "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80",
+                            "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=600&q=80",
+                            "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80"
+                        ]
+                    },
+                    {
+                        id: Date.now() + 3,
+                        title: "حقيبة Arduino Mega + حساسات وماتورات للمشاريع",
+                        price: 310000,
+                        category: "هندسة معلوماتية",
+                        seller: "مجد الحلبي (هندسة)",
+                        sellerId: "seed_3",
+                        sellerPhone: "0955667788",
+                        sellerTelegram: "Zonewebsite_bot",
+                        university: defaultUni,
+                        province: userProvince,
+                        isTextLecture: false,
+                        lectureBody: "",
+                        sold: false,
+                        createdAt: Date.now() - (5 * DAY_IN_MS),
+                        currentSlide: 0,
+                        images: [
+                            "https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=600&q=80",
+                            "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
+                            "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
+                        ]
+                    },
+                    {
+                        id: Date.now() + 4,
+                        title: "محاضرات كيمياء صيدلانية وعقاقير مكتوبة بخط اليد",
+                        price: 45000,
+                        category: "منشور نصي لمحاضرات مكتوبة بخط اليد",
+                        seller: "نور الهدى (كلية الصيدلة)",
+                        sellerId: "seed_4",
+                        sellerPhone: "0966554433",
+                        sellerTelegram: "Zonewebsite_bot",
+                        university: defaultUni,
+                        province: userProvince,
+                        isTextLecture: true,
+                        lectureBody: "دفتر محاضرات كامل مكتوب بخط يد واضح جداً ومرتب بالألوان، يشمل كافة المعادلات الكيميائية والتراكيب الدوائية مع أسئلة الدورات المحلولة (90 صفحة).",
+                        sold: false,
+                        createdAt: Date.now() - (1 * DAY_IN_MS),
+                        currentSlide: 0,
+                        images: []
+                    }
+                ];
+
+                marketProducts = [...seededForProvince, ...marketProducts];
+            }
+            localStorage.setItem('zone_market_items_v6', JSON.stringify(marketProducts));
+        }
+
+        function getRemainingDaysForPost(createdAt) {
+            const created = createdAt || Date.now();
+            const elapsedDays = Math.floor((Date.now() - created) / DAY_IN_MS);
+            const remaining = Math.max(1, POST_LIFETIME_DAYS - elapsedDays);
+            return remaining;
         }
 
         function formatSYP(amount, category) {
@@ -2397,7 +2823,13 @@
             const container = document.getElementById('productsGridContainer');
             const query = document.getElementById('marketSearchInput').value.trim().toLowerCase();
 
-            // التصفية التلقائية الحتمية حسب محافظة الطالب المختارة
+            // فلترة المنشورات المنتهية (أكثر من 30 يوماً) + التصفية الحتمية حسب محافظة الطالب
+            const now = Date.now();
+            marketProducts = marketProducts.filter(item => {
+                const daysElapsed = Math.floor((now - (item.createdAt || now)) / DAY_IN_MS);
+                return daysElapsed < POST_LIFETIME_DAYS;
+            });
+
             const filtered = marketProducts.filter(item => {
                 const matchProvince = item.province === studentProfile.province;
                 const matchCat = activeCategory === "all" || item.category === activeCategory;
@@ -2408,6 +2840,8 @@
                     (item.lectureBody && item.lectureBody.toLowerCase().includes(query));
                 return matchProvince && matchCat && matchQuery;
             });
+
+            renderMyPublishedPostsInProfile();
 
             if (filtered.length === 0) {
                 container.innerHTML = `
@@ -2425,11 +2859,22 @@
                     ? prod.images
                     : ["https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=600&q=80"];
                 const activeIdx = prod.currentSlide || 0;
+                const daysLeft = getRemainingDaysForPost(prod.createdAt);
+                const isOwner = prod.sellerId === studentProfile.id;
+
+                const soldOverlayHTML = prod.sold ? `
+                    <div class="sold-overlay-ribbon">
+                        <span class="sold-badge-pill">تم البيع بنجاح 🎉</span>
+                    </div>
+                ` : '';
 
                 const sliderHTML = `
-                    <div class="product-slider-box" id="slider_${prod.id}">
+                    <div class="product-slider-box" 
+                         ontouchstart="handleSliderTouchStart(event, ${prod.id})" 
+                         ontouchend="handleSliderTouchEnd(event, ${prod.id})">
                         <span class="badge-category">${prod.category}</span>
                         <span class="badge-province"><i class="fa-solid fa-location-dot"></i> ${prod.province}</span>
+                        ${soldOverlayHTML}
                         ${imgs.map((imgUrl, idx) => `
                             <img src="${imgUrl}" alt="${prod.title}" class="slider-image ${idx === activeIdx ? 'active-slide' : ''}" loading="lazy">
                         `).join('')}
@@ -2453,28 +2898,38 @@
                     ? `<div class="lecture-text-preview">
                            <span class="badge-category">${prod.category}</span>
                            <span class="badge-province"><i class="fa-solid fa-location-dot"></i> ${prod.province}</span>
+                           ${soldOverlayHTML}
                            <i class="fa-solid fa-file-signature bg-watermark"></i>
                            <div class="lecture-text-content">${prod.lectureBody}</div>
                        </div>`
                     : sliderHTML;
 
-                const reserveBtnHTML = prod.reserved
-                    ? `<button class="btn-reserve reserved-state" disabled>
-                           <i class="fa-solid fa-clock"></i>
-                           <span>محجوزة مؤقتاً لمدة 24 ساعة</span>
-                       </button>`
-                    : `<button class="btn-reserve" onclick="reserveItemTemporarily(${prod.id})">
-                           <i class="fa-solid fa-bookmark"></i>
-                           <span>احجز القطعة</span>
+                const actionButtonHTML = prod.sold
+                    ? `<span class="sold-status-btn">تم البيع بنجاح 🎉</span>`
+                    : `<button type="button" class="btn-contact-seller" onclick="openContactSellerModal(${prod.id})">
+                           <i class="fa-solid fa-mobile-screen-button vibrating-phone-icon"></i>
+                           <span>تواصل</span>
                        </button>`;
 
+                const ownerQuickSoldBtn = isOwner ? `
+                    <button type="button" class="owner-toggle-sold-btn" onclick="togglePostSoldStatus(${prod.id})">
+                        ${prod.sold ? 'إعادة عرض القطعة للبيع' : 'تحويل الحالة إلى: تم البيع بنجاح 🎉'}
+                    </button>
+                ` : '';
+
                 return `
-                    <article class="product-card ${prod.reserved ? 'reserved-card' : ''}">
+                    <article class="product-card ${prod.sold ? 'sold-card' : ''}">
                         ${topMediaSection}
                         <div class="product-body">
-                            <div class="uni-clear-banner">
-                                <i class="fa-solid fa-building-columns"></i>
-                                <span>${prod.university}</span>
+                            <div class="card-meta-top-row">
+                                <div class="uni-clear-banner">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                    <span>${prod.university}</span>
+                                </div>
+                                <div class="expiry-countdown-tag">
+                                    <i class="fa-regular fa-clock"></i>
+                                    <span>باقي ${daysLeft} يوماً للاختفاء</span>
+                                </div>
                             </div>
                             <h3 class="product-title">${prod.title}</h3>
                             <div class="product-seller">
@@ -2483,15 +2938,39 @@
                             </div>
                             <div class="product-footer">
                                 <span class="product-price">${formatSYP(prod.price, prod.category)}</span>
-                                ${reserveBtnHTML}
+                                ${actionButtonHTML}
                             </div>
+                            ${ownerQuickSoldBtn}
                         </div>
                     </article>
                 `;
             }).join('');
         }
 
-        // دوال تقليب الصور الثلاث على بطاقة المنتج (Carousel Controls)
+        // دعم سحب الإصبع يميناً ويساراً (Touch Swipe) لتقليب الصور الثلاث
+        function handleSliderTouchStart(event, productId) {
+            if (event.changedTouches && event.changedTouches.length > 0) {
+                touchStartXMap[productId] = event.changedTouches[0].screenX;
+            }
+        }
+
+        function handleSliderTouchEnd(event, productId) {
+            if (!event.changedTouches || event.changedTouches.length === 0) return;
+            const endX = event.changedTouches[0].screenX;
+            const startX = touchStartXMap[productId];
+            if (typeof startX !== 'number') return;
+
+            const diff = endX - startX;
+            if (Math.abs(diff) > 35) {
+                if (diff > 0) {
+                    changeProductSlide(productId, 1);
+                } else {
+                    changeProductSlide(productId, -1);
+                }
+            }
+            delete touchStartXMap[productId];
+        }
+
         function changeProductSlide(productId, direction) {
             const prod = marketProducts.find(item => item.id === productId);
             if (!prod || !prod.images || prod.images.length <= 1) return;
@@ -2516,18 +2995,81 @@
             renderMarketProducts();
         }
 
-        // 7. نظام حجز القطع مؤقتاً لمدة 24 ساعة
-        function reserveItemTemporarily(productId) {
-            const target = marketProducts.find(item => item.id === productId);
-            if (!target || target.reserved) return;
-
-            target.reserved = true;
-            localStorage.setItem('zone_market_items_v5', JSON.stringify(marketProducts));
-            renderMarketProducts();
-            showToast(`تم حجز "${target.title}" مؤقتاً لمدة 24 ساعة!`);
+        // ====================================================
+        // و. نافذة التواصل الذكية (واتساب / تليجرام) وميزة "تم البيع بنجاح"
+        // ====================================================
+        function openContactSellerModal(productId) {
+            const prod = marketProducts.find(item => item.id === productId);
+            if (!prod) return;
+            activeContactProduct = prod;
+            document.getElementById('contactModalProductTitle').textContent = `بخصوص: ${prod.title} (${prod.university})`;
+            document.getElementById('contactSellerModal').classList.add('open');
         }
 
-        // 8. إدارة رفع حتى 3 صور للبائع وإضافة منشور جديد
+        function closeContactModal() {
+            document.getElementById('contactSellerModal').classList.remove('open');
+        }
+
+        function redirectToSellerWhatsApp() {
+            if (!activeContactProduct) return;
+            let rawPhone = (activeContactProduct.sellerPhone || "0900000000").replace(/\D/g, '');
+            if (rawPhone.startsWith("09")) {
+                rawPhone = "963" + rawPhone.substring(1);
+            } else if (!rawPhone.startsWith("963")) {
+                rawPhone = "963" + rawPhone;
+            }
+            const text = encodeURIComponent(`مرحباً، أتواصل معك من تطبيق Zone بخصوص إعلانك: (${activeContactProduct.title})`);
+            window.open(`https://wa.me/${rawPhone}?text=${text}`, '_blank');
+            closeContactModal();
+        }
+
+        function redirectToSellerTelegram() {
+            if (!activeContactProduct) return;
+            let tgUser = (activeContactProduct.sellerTelegram || "").replace(/^@/, '').trim();
+            if (tgUser) {
+                window.open(`https://t.me/${tgUser}`, '_blank');
+            } else {
+                let rawPhone = (activeContactProduct.sellerPhone || "").replace(/\D/g, '');
+                if (rawPhone.startsWith("09")) rawPhone = "+963" + rawPhone.substring(1);
+                window.open(`https://t.me/${rawPhone}`, '_blank');
+            }
+            closeContactModal();
+        }
+
+        // تحويل حالة المنشور إلى (تم البيع بنجاح 🎉)
+        function togglePostSoldStatus(productId) {
+            const target = marketProducts.find(item => item.id === productId);
+            if (!target) return;
+
+            target.sold = !target.sold;
+            localStorage.setItem('zone_market_items_v6', JSON.stringify(marketProducts));
+            renderMarketProducts();
+            showToast(target.sold ? `تم وسم "${target.title}" بـ (تم البيع بنجاح 🎉)` : `تمت إعادة عرض "${target.title}" للبيع`);
+        }
+
+        function renderMyPublishedPostsInProfile() {
+            const listEl = document.getElementById('myPublishedPostsList');
+            if (!listEl) return;
+
+            const myPosts = marketProducts.filter(item => item.sellerId === studentProfile.id);
+            if (myPosts.length === 0) {
+                listEl.innerHTML = `<p style="font-size: 0.82rem; color: var(--text-muted);">لم تقم بنشر أي إعلان بعد. اضغط على "إضافة منشور جديد" لعرض أدواتك للبيع.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = myPosts.map(post => `
+                <div class="my-post-item-row">
+                    <span>${post.title}</span>
+                    <button type="button" class="btn-mark-sold-small" onclick="togglePostSoldStatus(${post.id})">
+                        ${post.sold ? 'تم البيع بنجاح 🎉 (إلغاء)' : 'تحويل إلى: تم البيع 🎉'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // ====================================================
+        // ز. إضافة منشور جديد وتعديل بيانات الطالب
+        // ====================================================
         function handleMultiImageSelection(event) {
             const files = Array.from(event.target.files).slice(0, 3);
             uploadedSellerImages = [];
@@ -2616,26 +3158,41 @@
                 price: isNaN(price) ? 0 : price,
                 category: category,
                 seller: `${studentProfile.name} (${studentProfile.major})`,
+                sellerId: studentProfile.id,
+                sellerPhone: studentProfile.phone,
+                sellerTelegram: studentProfile.telegramUsername || "",
                 university: studentProfile.university,
                 province: studentProfile.province,
                 isTextLecture: isTextLecture,
                 lectureBody: isTextLecture ? lectureBody : "",
-                reserved: false,
+                sold: false,
+                createdAt: Date.now(),
                 currentSlide: 0,
                 images: isTextLecture ? [] : finalImages
             };
 
             marketProducts.unshift(newPost);
-            localStorage.setItem('zone_market_items_v5', JSON.stringify(marketProducts));
+            localStorage.setItem('zone_market_items_v6', JSON.stringify(marketProducts));
             renderMarketProducts();
             closeAddPostModal();
             document.getElementById('newPostForm').reset();
             resetUploadPreviews();
             switchBottomTab('home');
-            showToast(`تم نشر إعلانك في سوق محافظة ${studentProfile.province} بنجاح!`);
+            showToast(`تم نشر إعلانك في سوق محافظة ${studentProfile.province} (صالح لـ 30 يوماً)!`);
         }
 
-        // 9. التبديل بين تبويبات شريط التنقل السفلي (الرئيسية / أنا)
+        function syncProfileToUI() {
+            document.getElementById('headerProvinceName').textContent = studentProfile.province || "حلب";
+            document.getElementById('profileFullName').textContent = studentProfile.name || "طالب جامعي";
+            document.getElementById('profileUniBadge').textContent = studentProfile.university || "الجامعة";
+            document.getElementById('profileProvinceText').textContent = studentProfile.province || "حلب";
+            document.getElementById('profileMajorText').textContent = studentProfile.major || "الكلية";
+            document.getElementById('profilePhoneText').textContent = studentProfile.phone || "";
+            document.getElementById('profileTelegramText').textContent = studentProfile.telegramUsername || "غير مضاف";
+            document.getElementById('profilePlanText').textContent = studentProfile.plan || "مفعل";
+            document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
+        }
+
         function switchBottomTab(tabName) {
             const homeTab = document.getElementById('home-tab');
             const profileTab = document.getElementById('profile-tab');
@@ -2655,17 +3212,18 @@
                 navProfile.classList.add('active');
                 navHome.classList.remove('active');
                 headerControls.style.display = 'none';
+                renderMyPublishedPostsInProfile();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 10. تعديل بيانات الطالب وتسجيل الخروج
         function openEditProfileModal() {
             document.getElementById('editName').value = studentProfile.name || "";
             document.getElementById('editPhone').value = studentProfile.phone || "";
             document.getElementById('editProvince').value = studentProfile.province || "حلب";
             document.getElementById('editUni').value = studentProfile.university || "";
             document.getElementById('editMajor').value = studentProfile.major || "";
+            document.getElementById('editTelegram').value = studentProfile.telegramUsername || "";
             document.getElementById('editProfileModal').classList.add('open');
         }
 
@@ -2680,6 +3238,7 @@
             studentProfile.province = document.getElementById('editProvince').value;
             studentProfile.university = document.getElementById('editUni').value.trim();
             studentProfile.major = document.getElementById('editMajor').value.trim();
+            studentProfile.telegramUsername = document.getElementById('editTelegram').value.trim();
 
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             initializeProvinceProducts(studentProfile.province, studentProfile.university);
@@ -2694,15 +3253,16 @@
                 clearInterval(pollingIntervalId);
                 pollingIntervalId = null;
             }
+            runtimeVerifiedToken = null;
             awaitingManualRejectionReplyForStudentId = null;
             localStorage.removeItem('zone_status');
+            localStorage.removeItem('zone_security_token');
             localStorage.removeItem('zone_student_profile');
             document.getElementById('studentDataForm').reset();
             showScreen('data-screen');
             showToast("تم تسجيل الخروج بنجاح.");
         }
 
-        // 11. نظام التنبيهات العلوية (Toasts)
         function showToast(msg) {
             const box = document.getElementById('toastBox');
             const item = document.createElement('div');
