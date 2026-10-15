@@ -3,52 +3,76 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZONE - السوق الطلابي الذكي في سوريا</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zone | السوق الطلابي الجامعي في سوريا</title>
+    <!-- خط Cairo وأيقونات FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        /* ====================================================
+           1. الهوية البصرية الثنائية (الكحلي الفخم + البرتقالي الدافئ)
+           ==================================================== */
         :root {
-            --bg-dark: #0b132b;
-            --bg-card: #141f3d;
-            --bg-card-hover: #1c2b54;
-            --primary: #ff5a00;
-            --primary-glow: rgba(255, 90, 0, 0.4);
-            --text-light: #f8f9fa;
+            --navy-deep: #060b14;
+            --navy-primary: #0b1322;
+            --navy-card: #121e33;
+            --navy-elevated: #1a2942;
+            --navy-border: rgba(255, 255, 255, 0.09);
+
+            --orange-main: #f97316;
+            --orange-hover: #ea580c;
+            --orange-light: #fb923c;
+            --orange-soft: rgba(249, 115, 22, 0.14);
+            --orange-glow: rgba(249, 115, 22, 0.35);
+            --reject-color: #ff4500;
+
+            --text-white: #f8fafc;
             --text-muted: #94a3b8;
-            --accent-blue: #3a86ff;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --border-color: rgba(255, 255, 255, 0.08);
+
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Cairo', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
+            background-color: var(--navy-deep);
+            color: var(--text-white);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
+        .ambient-glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 85% 10%, rgba(249, 115, 22, 0.10) 0%, transparent 45%),
+                radial-gradient(circle at 15% 90%, rgba(249, 115, 22, 0.07) 0%, transparent 45%);
+        }
+
+        /* ====================================================
+           2. نظام الشاشات والانتقالات (SPA Screens)
+           ==================================================== */
         .screen {
             display: none;
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
-            width: 100%;
             min-height: 100vh;
-            position: relative;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.45s ease, transform 0.45s ease;
         }
 
         .screen.active {
@@ -57,150 +81,322 @@
             opacity: 1;
         }
 
-        /* --- الشاشة 1: الصفحة الترحيبية (Splash Screen) --- */
-        #screen-splash {
+        .screen.fade-out {
+            opacity: 0;
+            transform: scale(0.97);
+        }
+
+        /* ====================================================
+           3. الصفحة الأولى: شاشة الترحيب المؤقتة (2 ثانية)
+           ==================================================== */
+        #splash-screen {
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at center, #141f3d 0%, #0b132b 85%);
+            background: var(--navy-deep);
+            position: fixed;
+            inset: 0;
+            z-index: 500;
         }
 
         .splash-content {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: pulseSplash 1.8s ease-in-out infinite;
         }
 
         .splash-logo {
-            font-size: 5rem;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            border-radius: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.2rem;
+            color: var(--text-white);
+            box-shadow: 0 18px 40px var(--orange-glow);
+            margin-bottom: 1rem;
+        }
+
+        .splash-title {
+            font-size: 3.6rem;
             font-weight: 900;
-            color: var(--primary);
-            letter-spacing: 2px;
-            text-shadow: 0 0 30px var(--primary-glow);
-            animation: pulseScale 1.8s infinite alternate ease-in-out;
+            letter-spacing: 3px;
+            color: var(--text-white);
         }
 
-        .splash-sub {
-            color: var(--text-muted);
-            font-size: 1.15rem;
-            margin-top: 6px;
-            font-weight: 700;
-        }
+        @keyframes pulseSplash {
 
-        .loader-ring {
-            width: 52px;
-            height: 52px;
-            border: 4px solid rgba(255, 90, 0, 0.15);
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            margin: 32px auto 0;
-            animation: spin 0.85s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
+            0%,
             100% {
-                transform: rotate(360deg);
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-7px) scale(1.03);
             }
         }
 
-        @keyframes pulseScale {
-            0% {
-                transform: scale(0.96);
-            }
-
-            100% {
-                transform: scale(1.04);
-            }
-        }
-
-        /* --- الشاشة 2: صفحة تسجيل البيانات (Sign Up) --- */
-        #screen-signup {
+        /* ====================================================
+           4. الصفحة الثانية: تعبئة البيانات والدفع بالشام كاش
+           ==================================================== */
+        #auth-screen {
             justify-content: center;
             align-items: center;
-            padding: 24px;
+            padding: 2rem 1rem;
         }
 
-        .card-box {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 32px 28px;
+        .auth-card {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: 24px;
             width: 100%;
-            max-width: 480px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            max-width: 520px;
+            padding: 2.2rem 1.6rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65);
         }
 
-        .card-header {
+        .auth-header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 1.6rem;
         }
 
-        .card-header h2 {
-            font-size: 1.85rem;
+        .auth-mini-logo {
+            width: 54px;
+            height: 54px;
+            background: var(--orange-soft);
+            border: 1px solid var(--orange-main);
+            color: var(--orange-main);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .auth-header h2 {
+            font-size: 1.55rem;
             font-weight: 800;
-            color: var(--text-light);
+            color: var(--text-white);
         }
 
-        .card-header h2 span {
-            color: var(--primary);
-        }
-
-        .card-header p {
+        .auth-header p {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-top: 6px;
+            font-size: 0.88rem;
+            margin-top: 4px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 1.1rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            font-size: 0.88rem;
             font-weight: 700;
-            font-size: 0.92rem;
-            color: var(--text-light);
+            margin-bottom: 0.4rem;
+            color: var(--text-white);
+        }
+
+        .form-group label span.optional-tag {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            right: 15px;
+            color: var(--orange-main);
+            font-size: 1rem;
+            pointer-events: none;
         }
 
         .form-control {
             width: 100%;
-            padding: 13px 16px;
-            background-color: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-light);
-            font-size: 0.95rem;
-            outline: none;
+            background: var(--navy-primary);
+            border: 1.5px solid var(--navy-border);
+            border-radius: var(--radius-md);
+            padding: 12px 42px 12px 15px;
+            color: var(--text-white);
+            font-size: 0.94rem;
             transition: var(--transition);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-glow);
+            outline: none;
         }
 
         select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff5a00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: left 14px center;
-            background-size: 16px;
+            cursor: pointer;
         }
 
-        select.form-control option {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
+        .form-control:focus {
+            border-color: var(--orange-main);
+            box-shadow: 0 0 0 3px var(--orange-soft);
         }
 
-        .btn-main {
+        /* قسم اختيار باقة الاشتراك */
+        .plans-section-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--orange-light);
+            margin: 1.4rem 0 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+
+        .plan-btn {
+            background: var(--navy-primary);
+            border: 1.5px solid var(--orange-main);
+            color: var(--text-white);
+            padding: 12px 10px;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            text-align: center;
+        }
+
+        .plan-btn span.plan-price {
+            color: var(--orange-main);
+            font-size: 1rem;
+            font-weight: 900;
+        }
+
+        .plan-btn:hover {
+            background: var(--orange-soft);
+        }
+
+        .plan-btn.selected {
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: var(--text-white);
+            box-shadow: 0 8px 20px var(--orange-glow);
+            transform: translateY(-2px);
+        }
+
+        .plan-btn.selected span.plan-price {
+            color: var(--text-white);
+        }
+
+        /* صندوق الدفع وصورة الـ QR للشام كاش */
+        .sham-cash-box {
+            display: none;
+            background: var(--navy-primary);
+            border: 1.5px solid var(--orange-main);
+            border-radius: var(--radius-lg);
+            padding: 1.3rem 1rem;
+            margin-bottom: 1.4rem;
+            text-align: center;
+            animation: fadeIn 0.35s ease;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        .sham-cash-box.visible {
+            display: block;
+        }
+
+        .sham-header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--orange-soft);
+            color: var(--orange-light);
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            margin-bottom: 0.6rem;
+        }
+
+        .recipient-verified-line {
+            margin-top: 12px;
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .verified-badge-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--orange-main);
+            color: var(--text-white);
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: 900;
+            box-shadow: 0 3px 10px var(--orange-glow);
+        }
+
+        .wallet-hash-box {
+            margin-top: 10px;
+            background: var(--navy-card);
+            border: 1px dashed rgba(249, 115, 22, 0.4);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            direction: ltr;
+        }
+
+        .wallet-hash-box code {
+            color: var(--orange-light);
+            font-family: monospace;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-copy-hash {
+            background: var(--orange-soft);
+            color: var(--orange-main);
+            border: 1px solid var(--orange-main);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-orange-wide {
             width: 100%;
-            padding: 15px;
-            background-color: var(--primary);
-            color: #ffffff;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: var(--text-white);
             border: none;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: var(--radius-md);
             font-size: 1.05rem;
             font-weight: 800;
             cursor: pointer;
@@ -208,444 +404,662 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 6px 18px var(--primary-glow);
-            margin-top: 10px;
+            gap: 10px;
+            box-shadow: 0 10px 25px var(--orange-glow);
         }
 
-        .btn-main:hover {
-            opacity: 0.94;
+        .btn-orange-wide:hover {
             transform: translateY(-2px);
+            filter: brightness(1.06);
         }
 
-        .btn-main:active {
-            transform: translateY(0);
+        .btn-orange-wide:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        /* --- الشاشة 3: بوابة الدفع وقفل التطبيق (The Paywall Gate) --- */
-        #screen-paywall {
+        /* ====================================================
+           5. الصفحة الثالثة: واجهة الانتظار النظيفة الصارمة
+           ==================================================== */
+        #waiting-screen {
             justify-content: center;
             align-items: center;
-            padding: 24px;
-        }
-
-        .paywall-wrapper {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 22px;
-            padding: 28px;
-            width: 100%;
-            max-width: 530px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
-        }
-
-        .section-label {
-            font-size: 1rem;
-            font-weight: 800;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .plans-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .selectable-box {
-            background-color: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
+            background-color: var(--navy-deep);
+            padding: 2rem;
+            text-align: center;
             user-select: none;
         }
 
-        .selectable-box:hover {
-            border-color: var(--text-muted);
-        }
-
-        .selectable-box.selected {
-            background-color: var(--primary) !important;
-            border-color: var(--primary) !important;
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px var(--primary-glow);
-        }
-
-        .selectable-box.selected * {
-            color: #ffffff !important;
-        }
-
-        .discount-pill {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.25);
-            color: #ffffff;
-            font-size: 0.65rem;
-            padding: 2px 7px;
-            border-radius: 14px;
-            font-weight: 800;
-        }
-
-        .plan-heading {
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-
-        .plan-cost {
-            font-size: 1.35rem;
-            font-weight: 900;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
-
-        .plan-perks {
-            font-size: 0.76rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        .methods-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        .method-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 13px 10px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        /* --- الشاشة 4: شاشة الانتظار والمراجعة اللحظية النظيفة (Pending Screen) --- */
-        #screen-pending {
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-            text-align: center;
-            transition: background-color 0.4s ease;
-        }
-
-        #screen-pending.rejected {
-            background-color: #2b0b0b !important;
-        }
-
-        .pending-box {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 50px 28px;
-            max-width: 480px;
-            width: 100%;
+        .waiting-minimal-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
-            transition: var(--transition);
+            justify-content: center;
+            max-width: 480px;
+            width: 100%;
         }
 
-        #screen-pending.rejected .pending-box {
-            border-color: var(--danger);
+        .gear-spinner {
+            font-size: 4.8rem;
+            color: var(--orange-main);
+            margin-bottom: 1.6rem;
+            animation: smoothGearSpin 2.4s linear infinite;
+            filter: drop-shadow(0 0 18px var(--orange-glow));
         }
 
-        .pending-header {
-            color: var(--primary);
-            font-size: 1.55rem;
-            font-weight: 800;
-            margin-bottom: 30px;
-            transition: var(--transition);
+        .gear-spinner.stopped {
+            animation: none;
+            display: none;
         }
 
-        /* حاوية وأنيميشن التروس الميكانيكية */
-        .gears-container {
-            position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 30px;
-        }
-
-        .gear {
-            position: absolute;
-            fill: none;
-            stroke-width: 4;
-            transition: stroke 0.4s ease, fill 0.4s ease;
-        }
-
-        .gear-primary {
-            stroke: var(--primary);
-            fill: rgba(255, 90, 0, 0.05);
-        }
-
-        .gear-warning {
-            stroke: var(--warning) !important;
-            fill: rgba(245, 158, 11, 0.05) !important;
-        }
-
-        .gear-danger {
-            stroke: var(--danger) !important;
-            fill: rgba(239, 68, 68, 0.05) !important;
-        }
-
-        .gear-1 {
-            width: 85px;
-            height: 85px;
-            top: 5px;
-            right: 5px;
-            transform-origin: center;
-            animation: rotateCw 4s linear infinite;
-        }
-
-        .gear-2 {
-            width: 65px;
-            height: 65px;
-            bottom: 10px;
-            left: 10px;
-            transform-origin: center;
-            animation: rotateCcw 3.06s linear infinite;
-        }
-
-        .gears-stopped .gear-1,
-        .gears-stopped .gear-2 {
-            animation-play-state: paused !important;
-        }
-
-        @keyframes rotateCw {
-            from {
+        @keyframes smoothGearSpin {
+            0% {
                 transform: rotate(0deg);
             }
 
-            to {
+            100% {
                 transform: rotate(360deg);
             }
         }
 
-        @keyframes rotateCcw {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(-360deg);
-            }
+        .waiting-status-label {
+            color: var(--orange-main);
+            font-size: 1.45rem;
+            font-weight: 800;
+            line-height: 1.7;
         }
 
-        /* --- الشاشة 5: واجهة سوق ZONE الطلابي الرئيسي (Main Premium Market) --- */
-        #screen-market {
-            padding-bottom: 74px;
+        .waiting-status-label.rejected {
+            color: var(--reject-color);
+            font-size: 1.3rem;
+            background: rgba(255, 69, 0, 0.1);
+            border: 1.5px solid var(--reject-color);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 15px 35px rgba(255, 69, 0, 0.2);
         }
 
-        .header-bar {
-            background-color: #0f1a3a;
-            border-bottom: 1px solid var(--border-color);
-            padding: 14px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* ====================================================
+           6. الصفحة الرابعة: السوق الرئيسي والواجهة الداخلية
+           ==================================================== */
+        #app-screen {
+            padding-bottom: 90px;
+        }
+
+        .app-header {
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(6, 11, 20, 0.92);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--navy-border);
+            padding: 1rem 1.2rem;
+        }
+
+        .header-top-row {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.9rem;
         }
 
         .brand-logo {
-            font-size: 1.7rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--orange-main);
+            color: var(--text-white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
             font-weight: 900;
-            color: var(--primary);
+            box-shadow: 0 4px 15px var(--orange-glow);
+        }
+
+        .brand-name {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--orange-main);
             letter-spacing: 1px;
         }
 
-        .active-premium-badge {
-            background-color: rgba(16, 185, 129, 0.15);
-            border: 1px solid var(--success);
-            color: var(--success);
-            font-size: 0.85rem;
+        .btn-add-product-header {
+            background: var(--orange-main);
+            color: var(--text-white);
+            border: none;
+            padding: 9px 16px;
+            border-radius: 50px;
+            font-size: 0.88rem;
             font-weight: 800;
-            padding: 5px 14px;
-            border-radius: 20px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
+            gap: 7px;
+            box-shadow: 0 4px 15px var(--orange-glow);
+            transition: var(--transition);
         }
 
-        .market-body {
-            max-width: 960px;
+        .btn-add-product-header:hover {
+            background: var(--orange-hover);
+            transform: translateY(-2px);
+        }
+
+        .header-search-categories {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 24px 20px;
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            gap: 0.75rem;
+        }
+
+        .search-box {
+            position: relative;
             width: 100%;
         }
 
-        .market-title {
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 16px;
+        .search-box input {
+            width: 100%;
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: 50px;
+            padding: 11px 42px 11px 16px;
+            color: var(--text-white);
+            font-size: 0.92rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--orange-main);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--orange-main);
+        }
+
+        .categories-bar {
             display: flex;
             align-items: center;
             gap: 8px;
-            border-right: 4px solid var(--primary);
-            padding-right: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .categories-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-chip {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            color: var(--text-muted);
+            padding: 7px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .cat-chip.active {
+            background: var(--orange-main);
+            color: var(--text-white);
+            border-color: var(--orange-main);
+            box-shadow: 0 4px 12px var(--orange-glow);
+        }
+
+        .tab-view {
+            display: none;
+            max-width: 1200px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+            gap: 1.25rem;
         }
 
-        .market-item-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 16px;
+        .product-card {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 12px;
             transition: var(--transition);
         }
 
-        .market-item-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 90, 0, 0.35);
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(249, 115, 22, 0.45);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
         }
 
-        .card-meta-top {
+        .product-img-box {
+            position: relative;
+            height: 185px;
+            background: var(--navy-primary);
+            overflow: hidden;
+        }
+
+        .product-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-img-box img {
+            transform: scale(1.06);
+        }
+
+        .badge-category {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(6, 11, 20, 0.85);
+            color: var(--orange-light);
+            border: 1px solid rgba(249, 115, 22, 0.35);
+            padding: 4px 11px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-uni {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: var(--orange-main);
+            color: var(--text-white);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.74rem;
+            font-weight: 800;
+        }
+
+        .product-body {
+            padding: 1.15rem;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
+            flex-direction: column;
+            flex: 1;
         }
 
-        .item-headline {
+        .product-title {
             font-size: 1.05rem;
             font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 0.4rem;
         }
 
-        .price-indicator-tag {
-            font-size: 0.72rem;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 8px;
-            white-space: nowrap;
-        }
-
-        .indicator-fair {
-            background-color: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-        }
-
-        .indicator-high {
-            background-color: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-        }
-
-        .item-details {
-            font-size: 0.86rem;
+        .product-seller {
+            font-size: 0.82rem;
             color: var(--text-muted);
-            line-height: 1.45;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .pricing-val {
-            font-size: 1.2rem;
+        .product-seller i {
+            color: var(--orange-main);
+        }
+
+        .product-footer {
+            margin-top: auto;
+            padding-top: 0.9rem;
+            border-top: 1px solid var(--navy-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .product-price {
+            font-size: 1.15rem;
             font-weight: 900;
-            color: var(--primary);
+            color: var(--orange-main);
         }
 
-        .btn-interact {
-            width: 100%;
-            padding: 10px;
-            background-color: var(--primary);
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.92rem;
+        .btn-order {
+            background: var(--orange-soft);
+            color: var(--orange-light);
+            border: 1px solid var(--orange-main);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
             font-weight: 800;
             cursor: pointer;
             transition: var(--transition);
-            text-align: center;
-            text-decoration: none;
-            display: block;
-        }
-
-        .btn-interact:hover {
-            opacity: 0.92;
-            transform: translateY(-1px);
-        }
-
-        .btn-interact-blue {
-            background-color: var(--accent-blue);
-            box-shadow: 0 4px 14px rgba(58, 134, 255, 0.3);
-        }
-
-        .btn-interact-blue:hover {
-            background-color: #2b74eb;
-        }
-
-        .wishlist-wrapper {
-            background: linear-gradient(135deg, var(--bg-card) 0%, #17244a 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 18px;
-            padding: 22px;
-        }
-
-        .wishlist-fields {
             display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-order:hover {
+            background: var(--orange-main);
+            color: var(--text-white);
+        }
+
+        /* ====================================================
+           7. قسم الملف الشخصي (صفحة "أنا")
+           ==================================================== */
+        .profile-card {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: 24px;
+            max-width: 540px;
+            margin: 1rem auto;
+            padding: 2.2rem 1.6rem;
+            text-align: center;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-avatar-large {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: var(--text-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 25px var(--orange-glow);
+            border: 3px solid var(--navy-elevated);
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-white);
+            margin-bottom: 4px;
+        }
+
+        .profile-uni-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--orange-soft);
+            color: var(--orange-light);
+            border: 1px solid rgba(249, 115, 22, 0.35);
+            padding: 5px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.6rem;
+        }
+
+        .profile-details-list {
+            background: var(--navy-primary);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.2rem;
+            text-align: right;
+            margin-bottom: 1.6rem;
+        }
+
+        .profile-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--navy-border);
+            font-size: 0.92rem;
+        }
+
+        .profile-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .profile-detail-row span:first-child {
+            color: var(--text-muted);
+        }
+
+        .profile-detail-row span:last-child {
+            font-weight: 800;
+            color: var(--text-white);
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
             gap: 12px;
-            margin-top: 14px;
-            flex-wrap: wrap;
         }
 
-        .wishlist-fields input {
-            flex: 1 1 210px;
+        .btn-logout {
+            width: 100%;
+            background: transparent;
+            color: var(--orange-light);
+            border: 1.5px solid var(--orange-main);
+            padding: 13px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .wishlist-fields button {
-            flex: 0 0 auto;
-            width: auto;
-            padding: 12px 24px;
-            margin-top: 0;
+        .btn-logout:hover {
+            background: var(--orange-main);
+            color: var(--text-white);
         }
 
-        .sticky-footer {
+        /* ====================================================
+           8. شريط التنقل السفلي الثابت (Bottom Navigation Bar)
+           ==================================================== */
+        .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
-            background-color: #080e21;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            padding: 14px 16px;
-            font-size: 0.84rem;
-            font-weight: 700;
+            right: 0;
+            height: 70px;
+            background: rgba(11, 19, 34, 0.95);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--navy-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 150;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-tab-btn {
+            flex: 1;
+            height: 100%;
+            background: transparent;
+            border: none;
             color: var(--text-muted);
-            z-index: 99;
-            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-tab-btn i {
+            font-size: 1.3rem;
+            transition: var(--transition);
+        }
+
+        .nav-tab-btn.active {
+            color: var(--orange-main);
+        }
+
+        .nav-tab-btn.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 45px;
+            height: 3px;
+            background: var(--orange-main);
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0 2px 10px var(--orange-glow);
+        }
+
+        /* ====================================================
+           9. النوافذ المنبثقة (Modals) والإشعارات (Toasts)
+           ==================================================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 11, 20, 0.82);
+            backdrop-filter: blur(6px);
+            z-index: 300;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: 22px;
+            width: 100%;
+            max-width: 460px;
+            padding: 1.8rem 1.5rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--navy-border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--orange-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-close-modal {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .toast-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 600;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 90%;
+            max-width: 380px;
+            pointer-events: none;
+        }
+
+        .toast-item {
+            background: var(--navy-elevated);
+            border: 1px solid var(--orange-main);
+            border-right: 5px solid var(--orange-main);
+            color: var(--text-white);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            font-weight: 700;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 600px) {
+            .splash-title {
+                font-size: 3rem;
+            }
 
-            .plans-container,
-            .methods-container {
+            .auth-card {
+                padding: 1.6rem 1.2rem;
+            }
+
+            .products-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .waiting-status-label {
+                font-size: 1.25rem;
             }
         }
     </style>
@@ -653,457 +1067,946 @@
 
 <body>
 
-    <!-- الشاشة 1: الصفحة الترحيبية (Splash Screen) -->
-    <section id="screen-splash" class="screen active">
+    <div class="ambient-glow"></div>
+    <div class="toast-box" id="toastBox"></div>
+
+    <!-- ====================================================
+         1. الصفحة الأولى: شاشة الترحيب المؤقتة (2 ثانية)
+         ==================================================== -->
+    <section id="splash-screen" class="screen active">
         <div class="splash-content">
-            <h1 class="splash-logo">ZONE</h1>
-            <p class="splash-sub">تطبيق السوق الطلابي الأول في سوريا</p>
-            <div class="loader-ring"></div>
+            <div class="splash-logo">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h1 class="splash-title">Zone</h1>
         </div>
     </section>
 
-    <!-- الشاشة 2: صفحة تسجيل البيانات (Sign Up) -->
-    <section id="screen-signup" class="screen">
-        <div class="card-box">
-            <div class="card-header">
-                <h2>مرحباً بك في <span>ZONE</span></h2>
-                <p>سجّل بياناتك الأكاديمية للانضمام لمجتمع جامعتك</p>
+    <!-- ====================================================
+         2. الصفحة الثانية: تعبئة البيانات والدفع بالشام كاش
+         ==================================================== -->
+    <section id="auth-screen" class="screen">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-mini-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2>التسجيل والاشتراك في Zone</h2>
+                <p>السوق الطلابي الجامعي لتبادل وبيع المستلزمات في سوريا</p>
             </div>
-            <form id="signup-form">
+
+            <form id="subscriptionForm" onsubmit="submitSubscriptionRequest(event)">
+                <!-- الاسم الكامل -->
                 <div class="form-group">
-                    <label for="student-name">الاسم الكامل الثلاثي</label>
-                    <input type="text" id="student-name" class="form-control" placeholder="أدخل اسمك الثلاثي..."
-                        required>
+                    <label for="fullName">الاسم الكامل</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="fullName" class="form-control" placeholder="أدخل اسمك الكامل..."
+                            required>
+                    </div>
                 </div>
+
+                <!-- رقم الهاتف -->
                 <div class="form-group">
-                    <label for="student-univ">الجامعة السورية</label>
-                    <select id="student-univ" class="form-control" required>
-                        <option value="" disabled selected>اختر جامعتك...</option>
-                        <option value="جامعة دمشق">جامعة دمشق</option>
-                        <option value="جامعة حلب">جامعة حلب</option>
-                        <option value="جامعة تشرين">جامعة تشرين</option>
-                        <option value="جامعة البعث">جامعة البعث</option>
-                        <option value="جامعة حماة">جامعة حماة</option>
-                        <option value="الجامعة الافتراضية السورية">الجامعة الافتراضية السورية</option>
-                        <option value="الجامعات الخاصة">الجامعات الخاصة</option>
-                    </select>
+                    <label for="phoneNumber">رقم الهاتف</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="tel" id="phoneNumber" class="form-control" placeholder="مثال: 09xxxxxxxx" required>
+                    </div>
                 </div>
+
+                <!-- المحافظة السورية (الـ 14 محافظة إلزامياً) -->
                 <div class="form-group">
-                    <label for="student-faculty">الكلية أو الاختصاص</label>
-                    <input type="text" id="student-faculty" class="form-control"
-                        placeholder="مثال: هندسة الميكاترونيكس، الطب، الاقتصاد..." required>
+                    <label for="provinceSelect">المحافظة</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <select id="provinceSelect" class="form-control" required>
+                            <option value="" disabled selected>اختر محافظتك...</option>
+                            <option value="دمشق">دمشق</option>
+                            <option value="ريف دمشق">ريف دمشق</option>
+                            <option value="حلب">حلب</option>
+                            <option value="حمص">حمص</option>
+                            <option value="حماة">حماة</option>
+                            <option value="اللاذقية">اللاذقية</option>
+                            <option value="طرطوس">طرطوس</option>
+                            <option value="إدلب">إدلب</option>
+                            <option value="دير الزور">دير الزور</option>
+                            <option value="الرقة">الرقة</option>
+                            <option value="الحسكة">الحسكة</option>
+                            <option value="درعا">درعا</option>
+                            <option value="السويداء">السويداء</option>
+                            <option value="القنيطرة">القنيطرة</option>
+                        </select>
+                    </div>
                 </div>
+
+                <!-- الجامعة أو المعهد (إدخال نصي يدوي) -->
                 <div class="form-group">
-                    <label for="student-phone">رقم الموبايل الشخصي</label>
-                    <input type="tel" id="student-phone" class="form-control" placeholder="09xxxxxxxx" required>
+                    <label for="universityInput">الجامعة أو المعهد</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <input type="text" id="universityInput" class="form-control"
+                            placeholder="اكتب اسم جامعتك أو معهدك يدوياً..." required>
+                    </div>
                 </div>
-                <button type="submit" class="btn-main">تسجيل وحفظ البيانات</button>
+
+                <!-- الفرع الدراسي / الكلية -->
+                <div class="form-group">
+                    <label for="majorInput">الفرع الدراسي / الكلية</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-microchip"></i>
+                        <input type="text" id="majorInput" class="form-control"
+                            placeholder="مثال: هندسة ميكاترونيكس، طب بشري، معلوماتية..." required>
+                    </div>
+                </div>
+
+                <!-- معرف التلغرام أو حساب الفيسبوك (اختياري) -->
+                <div class="form-group">
+                    <label for="altContactInput">معرّف التليجرام أو حساب الفيسبوك <span
+                            class="optional-tag">(اختياري)</span></label>
+                    <div class="input-wrapper">
+                        <i class="fa-brands fa-telegram"></i>
+                        <input type="text" id="altContactInput" class="form-control"
+                            placeholder="مثال: @username أو رابط الحساب...">
+                    </div>
+                </div>
+
+                <!-- قسم الدفع واختيار الباقات -->
+                <div class="plans-section-title">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>اختر باقة الاشتراك للدفع عبر الشام كاش:</span>
+                </div>
+
+                <div class="plans-grid">
+                    <button type="button" class="plan-btn" id="planMonthlyBtn"
+                        onclick="selectSubscriptionPlan('اشتراك شهري (1 دولار)', this)">
+                        <span>اشتراك شهري</span>
+                        <span class="plan-price">(1 دولار)</span>
+                    </button>
+                    <button type="button" class="plan-btn" id="planYearlyBtn"
+                        onclick="selectSubscriptionPlan('اشتراك سنوي (10 دولار)', this)">
+                        <span>اشتراك سنوي</span>
+                        <span class="plan-price">(10 دولار)</span>
+                    </button>
+                </div>
+
+                <!-- الصندوق الأنيق للـ QR كود الخاص بالشام كاش -->
+                <div class="sham-cash-box" id="shamCashPaymentBox">
+                    <div class="sham-header-badge">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span id="selectedPlanLabel">امسح الكود عبر تطبيق الشام كاش لإتمام الدفع</span>
+                    </div>
+
+                    <!-- وسم صورة الـ QR كما هو مطلوب حرفياً مع Fallback ذكي لنفس الكود -->
+                    <img src="sham_cash_qr.png" alt="Sham Cash QR Code"
+                        style="max-width: 250px; display: block; margin: 10px auto; border-radius: 8px;"
+                        onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&color=1e3a5f&bgcolor=ffffff&margin=10&data=26ee871407869d05ad94223e7b4f1402';">
+
+                    <div class="recipient-verified-line">
+                        <span>المستلم الرسمي: محمد يحيى جمال</span>
+                        <span class="verified-badge-icon" title="حساب موثق رسمياً">✓</span>
+                    </div>
+
+                    <div class="wallet-hash-box">
+                        <code id="shamWalletCode">26ee871407869d05ad94223e7b4f1402</code>
+                        <button type="button" class="btn-copy-hash" onclick="copyShamHash()">نسخ الرمز</button>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitAuthBtn" class="btn-orange-wide">
+                    <span>إرسال طلب الدخول والاشتراك</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
             </form>
         </div>
     </section>
 
-    <!-- الشاشة 3: بوابة الدفع وقفل التطبيق (The Paywall Gate) -->
-    <section id="screen-paywall" class="screen">
-        <div class="paywall-wrapper">
-            <div class="card-header">
-                <h2>بوابة تفعيل اشتراك <span>ZONE</span></h2>
-                <p>اختر باقتك وطريقة الدفع لتفعيل وتأكيد حسابك الطلابي</p>
-            </div>
-
-            <div class="section-label">1. الباقات المتاحة:</div>
-            <div class="plans-container">
-                <div class="selectable-box plan-box" data-plan="باقة شهري (1$ بالليرة)">
-                    <div class="plan-heading">باقة شهري</div>
-                    <div class="plan-cost">1$ <span style="font-size: 0.8rem; font-weight: normal;">(بالليرة
-                            السورية)</span></div>
-                    <div class="plan-perks">تصفح كامل السوق والتواصل المباشر مع البائعين لمدة شهر كامل.</div>
-                </div>
-                <div class="selectable-box plan-box selected" data-plan="باقة سنوي ذكي (10$ بالليرة)">
-                    <span class="discount-pill">الأكثر توفيراً</span>
-                    <div class="plan-heading">سنوي ذكي</div>
-                    <div class="plan-cost">10$ <span style="font-size: 0.8rem; font-weight: normal;">(بالليرة
-                            السورية)</span></div>
-                    <div class="plan-perks">توفر ثمن شهرين كاملين + تصفح واستخدام غير محدود طوال الفصول الدراسية +
-                        أولوية الحصول على حزم التوريث وأدوات العملي النادرة فور نزولها.</div>
-                </div>
-            </div>
-
-            <div class="section-label">2. وسائل الدفع المحلية:</div>
-            <div class="methods-container">
-                <div class="selectable-box method-box selected" data-method="شام كاش - Cham Cash">
-                    <div class="method-item">
-                        <span>💳</span>
-                        <span>شام كاش</span>
-                    </div>
-                </div>
-                <div class="selectable-box method-box" data-method="سيريتل كاش">
-                    <div class="method-item">
-                        <span>📱</span>
-                        <span>سيريتل كاش</span>
-                    </div>
-                </div>
-                <div class="selectable-box method-box" data-method="إم تي إن كاش">
-                    <div class="method-item">
-                        <span>🟡</span>
-                        <span>إم تي إن كاش</span>
-                    </div>
-                </div>
-            </div>
-
-            <button id="btn-confirm-payment" class="btn-main">تأكيد الدفع وتفعيل الحساب</button>
+    <!-- ====================================================
+         3. الصفحة الثالثة: واجهة الانتظار النظيفة الصارمة
+         ==================================================== -->
+    <section id="waiting-screen" class="screen">
+        <div class="waiting-minimal-wrapper">
+            <i id="waitingGearIcon" class="fa-solid fa-gear gear-spinner"></i>
+            <p id="waitingStatusText" class="waiting-status-label">جاري التأكد من حالة الدفع</p>
         </div>
     </section>
 
-    <!-- الشاشة 4: شاشة الانتظار والمراجعة اللحظية النظيفة (Pending Screen) -->
-    <section id="screen-pending" class="screen">
-        <div class="pending-box">
-            <h3 id="pending-status-title" class="pending-header">جاري معالجة عملية الدفع...</h3>
+    <!-- ====================================================
+         4. الصفحة الرابعة: السوق الرئيسي والواجهة الداخلية
+         ==================================================== -->
+    <section id="app-screen" class="screen">
+        <header class="app-header">
+            <div class="header-top-row">
+                <a href="#" class="brand-logo" onclick="return false;">
+                    <div class="brand-icon">Z</div>
+                    <span class="brand-name">Zone</span>
+                </a>
 
-            <div id="gears-wrap" class="gears-container">
-                <!-- ترس 1 كبير يدور مع عقارب الساعة -->
-                <svg class="gear gear-1 gear-primary" viewBox="0 0 100 100">
-                    <path
-                        d="M46,2 L54,2 L55,10 C58,11 61,13 63.6,15.2 L71,11.8 L76.6,17.4 L73.2,24.8 C75.4,27.4 77,30.4 78,33.4 L86,34.4 L86,42.4 L80,45.4 C80,48.6 79.4,51.6 78.4,54.4 L83.8,60.8 L78.2,66.4 L70.8,63 C68.2,65.2 65.2,66.8 62.2,67.8 L61.2,75.8 L53.2,75.8 L50.2,69.8 C47,69.8 44,69.2 41.2,68.2 L34.8,73.6 L29.2,68 L32.6,60.6 C30.4,58 28.8,55 27.8,52 L19.8,51 L19.8,43 L25.8,40 C25.8,36.8 26.4,33.8 27.4,31 L22,24.6 L27.6,19 L35,22.4 C37.6,20.2 40.6,18.6 43.6,17.6 Z"
-                        stroke-linejoin="round" />
-                    <circle cx="50" cy="45" r="14" />
-                </svg>
-                <!-- ترس 2 صغير متداخل يدور عكس عقارب الساعة -->
-                <svg class="gear gear-2 gear-primary" viewBox="0 0 100 100">
-                    <path
-                        d="M46,2 L54,2 L55,10 C58,11 61,13 63.6,15.2 L71,11.8 L76.6,17.4 L73.2,24.8 C75.4,27.4 77,30.4 78,33.4 L86,34.4 L86,42.4 L80,45.4 C80,48.6 79.4,51.6 78.4,54.4 L83.8,60.8 L78.2,66.4 L70.8,63 C68.2,65.2 65.2,66.8 62.2,67.8 L61.2,75.8 L53.2,75.8 L50.2,69.8 C47,69.8 44,69.2 41.2,68.2 L34.8,73.6 L29.2,68 L32.6,60.6 C30.4,58 28.8,55 27.8,52 L19.8,51 L19.8,43 L25.8,40 C25.8,36.8 26.4,33.8 27.4,31 L22,24.6 L27.6,19 L35,22.4 C37.6,20.2 40.6,18.6 43.6,17.6 Z"
-                        stroke-linejoin="round" />
-                    <circle cx="50" cy="45" r="14" />
-                </svg>
+                <button class="btn-add-product-header" onclick="openAddProductModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>بيع أداة مستعملة</span>
+                </button>
             </div>
 
-            <button id="btn-retry-payment" class="btn-main" style="display: none;">العودة وتجربة الدفع مجدداً</button>
-        </div>
-    </section>
+            <div class="header-search-categories" id="marketHeaderControls">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="marketSearchInput"
+                        placeholder="ابحث عن سماعة طبيب، بوردة أردوينو، كتب جامعية..." oninput="renderMarketProducts()">
+                </div>
 
-    <!-- الشاشة 5: واجهة سوق ZONE الطلابي الرئيسي (Main Premium Market) -->
-    <section id="screen-market" class="screen">
-        <header class="header-bar">
-            <div class="brand-logo">ZONE</div>
-            <div class="active-premium-badge">
-                <span>👑</span>
-                <span>حسابك مفعّل (Premium) ✅</span>
+                <div class="categories-bar">
+                    <button class="cat-chip active" onclick="filterByCategory('all', this)">
+                        <i class="fa-solid fa-border-all"></i> الكل
+                    </button>
+                    <button class="cat-chip" onclick="filterByCategory('أدوات طبية', this)">
+                        <i class="fa-solid fa-stethoscope"></i> أدوات طبية
+                    </button>
+                    <button class="cat-chip" onclick="filterByCategory('قطع إلكترونية', this)">
+                        <i class="fa-solid fa-microchip"></i> قطع إلكترونية
+                    </button>
+                    <button class="cat-chip" onclick="filterByCategory('كتب وملخصات', this)">
+                        <i class="fa-solid fa-book"></i> كتب وملخصات
+                    </button>
+                </div>
             </div>
         </header>
 
-        <main class="market-body">
-            <!-- 1 & 2: قسم السوق الأساسي وحزم التوريث + مؤشر السعر العادل الذكي -->
-            <div>
-                <h2 class="market-title">السوق الأساسي وحزم التوريث (Batch Bundles)</h2>
-                <div class="products-grid">
-                    <div class="market-item-card">
-                        <div class="card-meta-top">
-                            <span class="item-headline">فرجار هندسي احترافي Rotring</span>
-                            <span class="price-indicator-tag indicator-fair">🟢 السعر عادل وممتاز</span>
-                        </div>
-                        <p class="item-details">استعمال فصل دراسي واحد فقط، نظيف جداً وكامل مع كافة الملحقات وعلبة
-                            الرؤوس الإضافية الأصلية.</p>
-                        <div class="pricing-val">50,000 ل.س</div>
-                        <a href="tel:0944111222" class="btn-interact">تواصل مع البائع 📞</a>
-                    </div>
+        <!-- تبويب الرئيسية -->
+        <main id="home-tab" class="tab-view active">
+            <div class="products-grid" id="productsGridContainer"></div>
+        </main>
 
-                    <div class="market-item-card">
-                        <div class="card-meta-top">
-                            <span class="item-headline">حزمة توريث دفعة كاملة (سنة أولى هندسة)</span>
-                            <span class="price-indicator-tag indicator-fair">🟢 السعر عادل وممتاز</span>
-                        </div>
-                        <p class="item-details">حزمة متكاملة: مسطرة حرف T أصلية، مثلثات رسم، بورد خشبي A3، بالإضافة
-                            لمجموع نوط وملخصات امتحانية دورات سابقة.</p>
-                        <div class="pricing-val">190,000 ل.س</div>
-                        <a href="tel:0933222333" class="btn-interact">تواصل مع البائع 📞</a>
-                    </div>
+        <!-- تبويب أنا (الملف الشخصي) -->
+        <main id="profile-tab" class="tab-view">
+            <div class="profile-card">
+                <div class="profile-avatar-large" id="profileAvatarChar">ط</div>
+                <h2 class="profile-name" id="profileFullName">اسم الطالب</h2>
+                <div class="profile-uni-badge">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <span id="profileUniBadge">الجامعة</span>
+                </div>
 
-                    <div class="market-item-card">
-                        <div class="card-meta-top">
-                            <span class="item-headline">آلة حاسبة علمية Casio fx-991EX</span>
-                            <span class="price-indicator-tag indicator-high">🔴 السعر مرتفع عن المعدل</span>
-                        </div>
-                        <p class="item-details">نسخة أصلية تدعم حل المصفوفات والمعادلات الرياضية والتفاضل والتكامل مع
-                            الغطاء الأصلي الحامي.</p>
-                        <div class="pricing-val">320,000 ل.س</div>
-                        <a href="tel:0955333444" class="btn-interact">تواصل مع البائع 📞</a>
+                <div class="profile-details-list">
+                    <div class="profile-detail-row">
+                        <span>المحافظة:</span>
+                        <span id="profileProvinceText">حلب</span>
+                    </div>
+                    <div class="profile-detail-row">
+                        <span>الفرع الدراسي:</span>
+                        <span id="profileMajorText">هندسة ميكاترونيكس</span>
+                    </div>
+                    <div class="profile-detail-row">
+                        <span>رقم الهاتف:</span>
+                        <span id="profilePhoneText">0900000000</span>
+                    </div>
+                    <div class="profile-detail-row">
+                        <span>الباقة المفعلة:</span>
+                        <span id="profilePlanText" style="color: var(--orange-light);">اشتراك شهري (1 دولار)</span>
+                    </div>
+                    <div class="profile-detail-row">
+                        <span>حالة الحساب:</span>
+                        <span style="color: var(--orange-main);">مفعّل ومؤكد ✓</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- 3: قسم تأجير الأدوات المؤقت (Rent My Tools) -->
-            <div>
-                <h2 class="market-title">قسم تأجير الأدوات المؤقت (Rent My Tools)</h2>
-                <div class="products-grid">
-                    <div class="market-item-card">
-                        <div class="card-meta-top">
-                            <span class="item-headline">مجهر مخبري منزلي للبيولوجيا</span>
-                            <span class="price-indicator-tag indicator-fair">🟢 إيجار معتمد</span>
-                        </div>
-                        <p class="item-details">مجهر عالي الدقة مع شرائح جاهزة، مثالي لإنجاز حلقات البحث المخبرية لطلاب
-                            العلوم الطبية والصيدلة والبيولوجيا.</p>
-                        <div class="pricing-val">30,000 ل.س / أسبوع</div>
-                        <a href="tel:0966444555" class="btn-interact btn-interact-blue">طلب استئجار للأداة 🔬</a>
-                    </div>
-
-                    <div class="market-item-card">
-                        <div class="card-meta-top">
-                            <span class="item-headline">راسم إشارة رقمي محمول (Oscilloscope)</span>
-                            <span class="price-indicator-tag indicator-fair">🟢 إيجار معتمد</span>
-                        </div>
-                        <p class="item-details">جاهز لفحص الإشارات والترددات واختبار الدوائر الإلكترونية والنبضات
-                            لمشاريع التحكم والميكاترونيكس.</p>
-                        <div class="pricing-val">25,000 ل.س / يوم</div>
-                        <a href="tel:0988555666" class="btn-interact btn-interact-blue">طلب استئجار للأداة 🔬</a>
-                    </div>
+                <div class="profile-actions">
+                    <button class="btn-orange-wide" onclick="openEditProfileModal()">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>تعديل البيانات</span>
+                    </button>
+                    <button class="btn-logout" onclick="logoutStudent()">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>تسجيل الخروج</span>
+                    </button>
                 </div>
-            </div>
-
-            <!-- 4: قسم الطلب المسبق المستهدف (Wishlist Radar) -->
-            <div class="wishlist-wrapper">
-                <h2 class="market-title" style="border: none; padding: 0;">رادار الطلب المسبق للأدوات النادرة (Wishlist
-                    Radar) 📡</h2>
-                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
-                    تبحث عن أداة نادرة غير معروضة حالياً؟ اكتب تفاصيلها وميزانيتك المتوقعة لتصل كإعلان مباشر لزملائك في
-                    كليتك وجامعتك.
-                </p>
-                <form id="wishlist-form" class="wishlist-fields">
-                    <input type="text" id="wish-tool-name" class="form-control"
-                        placeholder="اسم الأداة أو التجهيزة المطلوبة..." required>
-                    <input type="number" id="wish-budget-val" class="form-control"
-                        placeholder="الميزانية المتوقعة (ل.س)..." required>
-                    <button type="submit" class="btn-main">بث الطلب في الرادار</button>
-                </form>
             </div>
         </main>
 
-        <!-- 6: الفوتر السفلي الثابت -->
-        <footer class="sticky-footer">
-            🛡️ جميع المعاملات وفحص الأغراض مؤمنة بالكامل عبر مكتبة الجامعة (الوسيط المعتمد Safe Hub)
-        </footer>
+        <!-- شريط التنقل السفلي الثابت -->
+        <nav class="bottom-nav">
+            <button class="nav-tab-btn active" id="navBtnHome" onclick="switchBottomTab('home')">
+                <i class="fa-solid fa-house"></i>
+                <span>الرئيسية</span>
+            </button>
+            <button class="nav-tab-btn" id="navBtnProfile" onclick="switchBottomTab('profile')">
+                <i class="fa-solid fa-user"></i>
+                <span>أنا</span>
+            </button>
+        </nav>
     </section>
 
+    <!-- ====================================================
+         5. نافذة منبثقة: إضافة منتج جديد للبيع
+         ==================================================== -->
+    <div class="modal-overlay" id="addProductModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-plus-circle"></i> اعرض أداتك للبيع في Zone</h3>
+                <button class="btn-close-modal" onclick="closeAddProductModal()"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="newProductForm" onsubmit="handleCreateProduct(event)">
+                <div class="form-group">
+                    <label>اسم الأداة أو الكتاب</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-tag"></i>
+                        <input type="text" id="itemTitle" class="form-control"
+                            placeholder="مثال: بوردة أردوينو أونو مع حساسات" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>السعر بالليرة السورية (ل.س)</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-coins"></i>
+                        <input type="number" id="itemPrice" class="form-control" placeholder="مثال: 225000" min="1000"
+                            step="500" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>الفئة</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <select id="itemCategory" class="form-control" required>
+                            <option value="قطع إلكترونية">قطع إلكترونية</option>
+                            <option value="أدوات طبية">أدوات طبية</option>
+                            <option value="كتب وملخصات">كتب وملخصات</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>اختر صورة توضيحية للمنتج</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-image"></i>
+                        <select id="itemImage" class="form-control">
+                            <option
+                                value="https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=600&q=80">
+                                صورة بوردة أردوينو وقطع إلكترونية</option>
+                            <option
+                                value="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=600&q=80">
+                                صورة سماعة طبيب وأدوات طبية</option>
+                            <option
+                                value="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80">
+                                صورة كتب ومراجع جامعية</option>
+                            <option
+                                value="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80">
+                                صورة أدوات هندسية ورسم</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-orange-wide">
+                    <i class="fa-solid fa-check"></i>
+                    <span>نشر المنتج فوراً</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================================================
+         6. نافذة منبثقة: تعديل بيانات الطالب
+         ==================================================== -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-pen"></i> تعديل بيانات حسابي</h3>
+                <button class="btn-close-modal" onclick="closeEditProfileModal()"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="editProfileForm" onsubmit="handleSaveProfile(event)">
+                <div class="form-group">
+                    <label>الاسم الكامل</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="editName" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="tel" id="editPhone" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>المحافظة</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <select id="editProvince" class="form-control" required>
+                            <option value="دمشق">دمشق</option>
+                            <option value="ريف دمشق">ريف دمشق</option>
+                            <option value="حلب">حلب</option>
+                            <option value="حمص">حمص</option>
+                            <option value="حماة">حماة</option>
+                            <option value="اللاذقية">اللاذقية</option>
+                            <option value="طرطوس">طرطوس</option>
+                            <option value="إدلب">إدلب</option>
+                            <option value="دير الزور">دير الزور</option>
+                            <option value="الرقة">الرقة</option>
+                            <option value="الحسكة">الحسكة</option>
+                            <option value="درعا">درعا</option>
+                            <option value="السويداء">السويداء</option>
+                            <option value="القنيطرة">القنيطرة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>الجامعة أو المعهد</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <input type="text" id="editUni" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>الفرع الدراسي</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <input type="text" id="editMajor" class="form-control" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-orange-wide">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>حفظ التعديلات</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================================================
+         7. الكود البرمجي الكامل (JavaScript & Telegram API)
+         ==================================================== -->
     <script>
-        // إعدادات وتكوين Telegram Bot API المباشرة
-        const TG_CONFIG = {
-            token: "8714980380:AAH5TzjGwMyKASdoBDMZNLV8tA0ME8p7ALE",
-            chatId: "8717720399",
-            botUser: "@Zonewebsite_bot",
-            endpoints: [
-                "https://telegram.org"
-            ]
-        };
+        // إعدادات بوت التلغرام الإداري (@Zonewebsite_bot)
+        const TELEGRAM_BOT_TOKEN = "8714980380:AAH5TzjGwMyKASdoBDMZNLV8tA0ME8p7ALE";
+        const TELEGRAM_CHAT_ID = "8717720399";
+        const TELEGRAM_API_BASE = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
-        const currentStudent = {
-            fullName: '',
-            university: '',
-            faculty: '',
-            phoneNumber: '',
-            chosenPlan: 'باقة سنوي ذكي (10$ بالليرة)',
-            chosenMethod: 'شام كاش - Cham Cash',
-            currentUserId: ''
-        };
-
-        let pollingListener = null;
-        let lastKnownUpdateId = 0;
-
-        function switchScreen(targetScreenId) {
-            document.querySelectorAll('.screen').forEach(scr => scr.classList.remove('active'));
-            const destination = document.getElementById(targetScreenId);
-            if (destination) {
-                destination.classList.add('active');
-                window.scrollTo(0, 0);
+        // المنتجات التجريبية في السوق السوري
+        const defaultMarketProducts = [
+            {
+                id: 101,
+                title: "سماعة طبيب Littmann Classic III بحالة ممتازة",
+                price: 640000,
+                category: "أدوات طبية",
+                seller: "د. ريم الحسن (سنة خامسة طب)",
+                university: "جامعة دمشق",
+                image: "https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 102,
+                title: "حقيبة Arduino Uno R3 متكاملة مع حساسات وماتورات",
+                price: 275000,
+                category: "قطع إلكترونية",
+                seller: "مجد الحلبي (هندسة ميكاترونيكس)",
+                university: "جامعة حلب",
+                image: "https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 103,
+                title: "مرجع التشريح Gray's Anatomy للطلاب (نسخة ملونة)",
+                price: 155000,
+                category: "كتب وملخصات",
+                seller: "سامر ديب (سنة ثانية طب بشري)",
+                university: "جامعة تشرين",
+                image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 104,
+                title: "علبة محضرات نسج مرضي كاملة (25 شريحة مجهرية)",
+                price: 185000,
+                category: "أدوات طبية",
+                seller: "لينا الخطيب (سنة ثالثة طب)",
+                university: "جامعة البعث",
+                image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 105,
+                title: "طقم رسم هندسي Rotring مع مسطرة T وحقيبة",
+                price: 135000,
+                category: "قطع إلكترونية",
+                seller: "ياسر العبدالله (هندسة همك)",
+                university: "جامعة حلب",
+                image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 106,
+                title: "ملخصات شاملة لرياضيات وفيزياء السنة الأولى هندسة",
+                price: 60000,
+                category: "كتب وملخصات",
+                seller: "نور الدين (هندسة معلوماتية)",
+                university: "جامعة دمشق",
+                image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80"
             }
-        }
+        ];
 
-        // الشاشة 1: استمرار شاشة البداية لمدة ثانيتين فقط ثم الانتقال للشاشة 2
+        let marketProducts = [...defaultMarketProducts];
+        let activeCategory = "all";
+        let selectedPlan = "";
+        let pollingIntervalId = null;
+        let lastUpdateOffset = 0;
+
+        let studentProfile = {
+            id: "",
+            name: "",
+            phone: "",
+            province: "",
+            university: "",
+            major: "",
+            altContact: "",
+            plan: ""
+        };
+
+        // 1. إدارة شاشة الترحيب المؤقتة (2 ثانية) وفحص حالة التفعيل المحفوظة
         window.addEventListener('DOMContentLoaded', () => {
+            renderMarketProducts();
+
             setTimeout(() => {
-                switchScreen('screen-signup');
+                const splash = document.getElementById('splash-screen');
+                splash.classList.add('fade-out');
+
+                setTimeout(() => {
+                    const savedStatus = localStorage.getItem('zone_status');
+                    const savedProfile = localStorage.getItem('zone_student_profile');
+
+                    if (savedProfile) {
+                        studentProfile = JSON.parse(savedProfile);
+                    }
+
+                    if (savedStatus === 'approved') {
+                        syncProfileToUI();
+                        showScreen('app-screen');
+                    } else if (savedStatus === 'rejected') {
+                        showScreen('waiting-screen');
+                        applyRejectionUI();
+                    } else if (savedStatus === 'pending' && studentProfile.id) {
+                        showScreen('waiting-screen');
+                        resetWaitingUI();
+                        startTelegramPolling(studentProfile.id);
+                    } else {
+                        showScreen('auth-screen');
+                    }
+                }, 450);
             }, 2000);
         });
 
-        // الشاشة 2: التحقق من ملء البيانات والانتقال للشاشة 3
-        const signupForm = document.getElementById('signup-form');
-        signupForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            currentStudent.fullName = document.getElementById('student-name').value.trim();
-            currentStudent.university = document.getElementById('student-univ').value;
-            currentStudent.faculty = document.getElementById('student-faculty').value.trim();
-            currentStudent.phoneNumber = document.getElementById('student-phone').value.trim();
-
-            if (currentStudent.fullName && currentStudent.university && currentStudent.faculty && currentStudent.phoneNumber) {
-                switchScreen('screen-paywall');
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(scr => {
+                scr.classList.remove('active', 'fade-out');
+            });
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-        });
+        }
 
-        // الشاشة 3: التفاعل الحركي وتحديد الخيار المنقور عليه فقط
-        function registerSingleSelection(selector, propertyName) {
-            const boxes = document.querySelectorAll(selector);
-            boxes.forEach(box => {
-                box.addEventListener('click', () => {
-                    boxes.forEach(b => b.classList.remove('selected'));
-                    box.classList.add('selected');
-                    if (propertyName === 'plan') {
-                        currentStudent.chosenPlan = box.getAttribute('data-plan');
-                    } else if (propertyName === 'method') {
-                        currentStudent.chosenMethod = box.getAttribute('data-method');
-                    }
-                });
+        // 2. اختيار باقة الاشتراك وإظهار صندوق QR الشام كاش
+        function selectSubscriptionPlan(planName, btnElement) {
+            selectedPlan = planName;
+            document.querySelectorAll('.plan-btn').forEach(btn => btn.classList.remove('selected'));
+            btnElement.classList.add('selected');
+
+            const shamBox = document.getElementById('shamCashPaymentBox');
+            const label = document.getElementById('selectedPlanLabel');
+            label.textContent = `الباقة المختارة: ${planName} — امسح الكود للدفع`;
+            shamBox.classList.add('visible');
+        }
+
+        function copyShamHash() {
+            const hashText = "26ee871407869d05ad94223e7b4f1402";
+            navigator.clipboard.writeText(hashText).then(() => {
+                showToast("تم نسخ رمز محفظة الشام كاش بنجاح!");
             });
         }
 
-        registerSingleSelection('.plan-box', 'plan');
-        registerSingleSelection('.method-box', 'method');
+        // 3. إرسال البيانات الفعلية إلى بوت التلغرام مع أزرار القبول والرفض
+        async function submitSubscriptionRequest(event) {
+            event.preventDefault();
 
-        // آلية استدعاء مرنة ونظيفة تضمن خروج البيانات وتجاوز قيود CORS المحلية
-        async function robustTelegramFetch(methodName, payload = null) {
-            for (const base of TG_CONFIG.endpoints) {
-                try {
-                    let url = `${base}/bot${TG_CONFIG.token}/${methodName}`;
-                    let options = {
-                        method: payload ? 'POST' : 'GET',
-                        mode: 'cors',
-                        cache: 'no-cache'
-                    };
-
-                    if (payload) {
-                        options.headers = { 'Content-Type': 'application/json' };
-                        options.body = JSON.stringify(payload);
-                    }
-
-                    const response = await fetch(url, options);
-                    if (response.ok) {
-                        return await response.json();
-                    }
-                } catch (err) {
-                    continue;
-                }
+            if (!selectedPlan) {
+                showToast("يرجى اختيار باقة الاشتراك (شهري أو سنوي) أولاً!");
+                return;
             }
-            return null;
-        }
 
-        // زر تأكيد الدفع والربط مع بوت التلغرام
-        const btnConfirm = document.getElementById('btn-confirm-payment');
-        btnConfirm.addEventListener('click', async () => {
-            // توليد معرف عشوائي فريد ومؤقت STU123456
-            const randomSuffix = Math.floor(100000 + Math.random() * 900000);
-            currentStudent.currentUserId = `STU${randomSuffix}`;
+            const name = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+            const province = document.getElementById('provinceSelect').value;
+            const university = document.getElementById('universityInput').value.trim();
+            const major = document.getElementById('majorInput').value.trim();
+            const altContact = document.getElementById('altContactInput').value.trim() || "غير مضاف";
 
-            // جلب التاريخ والوقت الفعلي بالثانية
-            const exactTimestamp = new Date().toLocaleString('ar-SY', { hour12: true });
+            if (!name || !phone || !province || !university || !major) return;
 
-            const formattedMessage =
-                `🔔 طلب اشتراك وتفعيل جديد في تطبيق ZONE:
+            const uniqueStudentId = "stu_" + Date.now();
 
-👤 اسم الطالب: ${currentStudent.fullName}
-🏛️ الجامعة: ${currentStudent.university}
-📚 الكلية / الاختصاص: ${currentStudent.faculty}
-📞 رقم الموبايل: ${currentStudent.phoneNumber}
-💎 الباقة المختارة: ${currentStudent.chosenPlan}
-💵 وسيلة الدفع: ${currentStudent.chosenMethod}
-🆔 معرف الطالب: ${currentStudent.currentUserId}
-⏰ التاريخ والوقت: ${exactTimestamp}`;
+            studentProfile = {
+                id: uniqueStudentId,
+                name,
+                phone,
+                province,
+                university,
+                major,
+                altContact,
+                plan: selectedPlan
+            };
 
-            const dynamicInlineKeyboard = {
+            localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+            localStorage.setItem('zone_status', 'pending');
+
+            const submitBtn = document.getElementById('submitAuthBtn');
+            submitBtn.disabled = true;
+
+            await syncLatestOffset();
+
+            // تنسيق الرسالة المطلوب حرفياً
+            const telegramMessage = `(🚀 طلب جديد في Zone | الاسم: ${name} | الهاتف: ${phone} | المحافظة: ${province} | الجامعة: ${university} | التخصص: ${major} | الباقة المختارة: ${selectedPlan} | الحساب البديل: ${altContact})`;
+
+            const inlineKeyboard = {
                 inline_keyboard: [
                     [
-                        { text: "🟢 قبول وتفعيل", callback_data: `ok_${currentStudent.currentUserId}` },
-                        { text: "🟡 انتظار ومراجعة", callback_data: `wait_${currentStudent.currentUserId}` },
-                        { text: "🔴 رفض وإغلاق", callback_data: `no_${currentStudent.currentUserId}` }
+                        { text: "قبول ✅", callback_data: `approve_${uniqueStudentId}` },
+                        { text: "رفض ❌", callback_data: `reject_${uniqueStudentId}` }
                     ]
                 ]
             };
 
-            // الانتقال الفوري للشاشة الرابعة
-            switchScreen('screen-pending');
+            try {
+                await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: telegramMessage,
+                        reply_markup: inlineKeyboard
+                    })
+                });
+            } catch (err) {
+                console.error("Telegram API Send Error:", err);
+            } finally {
+                submitBtn.disabled = false;
+                resetWaitingUI();
+                showScreen('waiting-screen');
+                startTelegramPolling(uniqueStudentId);
+            }
+        }
 
-            // إرسال البيانات المنسقة مباشرة
-            await robustTelegramFetch('sendMessage', {
-                chat_id: TG_CONFIG.chatId,
-                text: formattedMessage,
-                reply_markup: dynamicInlineKeyboard
-            });
+        async function syncLatestOffset() {
+            try {
+                const res = await fetch(`${TELEGRAM_API_BASE}/getUpdates?offset=-1`);
+                const data = await res.json();
+                if (data.ok && data.result.length > 0) {
+                    lastUpdateOffset = data.result[0].update_id + 1;
+                }
+            } catch (e) {
+                console.warn("Offset sync warning:", e);
+            }
+        }
 
-            // بدء دالة الاستماع العكسي الحية كل 3 ثوانٍ
-            activateLivePolling(currentStudent.currentUserId);
-        });
+        // 4. دالة الاستماع المستمرة (Long Polling كل ثانيتين)
+        function startTelegramPolling(targetStudentId) {
+            if (pollingIntervalId) {
+                clearInterval(pollingIntervalId);
+            }
 
-        // دالة الاستماع والتحكم العكسي اللحظي
-        function activateLivePolling(userId) {
-            if (pollingListener) clearInterval(pollingListener);
+            pollingIntervalId = setInterval(async () => {
+                try {
+                    const url = `${TELEGRAM_API_BASE}/getUpdates?offset=${lastUpdateOffset}&allowed_updates=["callback_query"]`;
+                    const response = await fetch(url);
+                    const data = await response.json();
 
-            pollingListener = setInterval(async () => {
-                const queryParam = lastKnownUpdateId ? `getUpdates?offset=${lastKnownUpdateId + 1}` : 'getUpdates';
-                const updateData = await robustTelegramFetch(queryParam);
+                    if (!data.ok || !data.result) return;
 
-                if (updateData && updateData.ok && Array.isArray(updateData.result)) {
-                    for (const update of updateData.result) {
-                        lastKnownUpdateId = update.update_id;
+                    for (const update of data.result) {
+                        lastUpdateOffset = update.update_id + 1;
 
                         if (update.callback_query && update.callback_query.data) {
-                            const actionCode = update.callback_query.data;
+                            const callbackData = update.callback_query.data;
+                            const callbackId = update.callback_query.id;
+                            const msgId = update.callback_query.message?.message_id;
+                            const originalText = update.callback_query.message?.text || "";
 
-                            // 1. ضغط المسؤول زر القبول الأخضر
-                            if (actionCode === `ok_${userId}`) {
-                                clearInterval(pollingListener);
-                                switchScreen('screen-market');
-                                return;
+                            if (callbackData === `approve_${targetStudentId}`) {
+                                clearInterval(pollingIntervalId);
+                                pollingIntervalId = null;
+
+                                acknowledgeTelegramCallback(callbackId, "تم تفعيل اشتراك الطالب بنجاح ✅", msgId, originalText + "\n\n✅ الحالة: تم القبول والتفعيل");
+                                handleStudentApproved();
+                                break;
                             }
 
-                            // 2. ضغط المسؤول زر الانتظار الأصفر
-                            if (actionCode === `wait_${userId}`) {
-                                const headerTitle = document.getElementById('pending-status-title');
-                                headerTitle.style.color = 'var(--warning)';
-                                headerTitle.innerText = 'جاري مراجعة تدقيق الحوالة المالية...';
+                            if (callbackData === `reject_${targetStudentId}`) {
+                                clearInterval(pollingIntervalId);
+                                pollingIntervalId = null;
 
-                                document.querySelectorAll('.gear').forEach(g => {
-                                    g.classList.remove('gear-primary', 'gear-danger');
-                                    g.classList.add('gear-warning');
-                                });
-                            }
-
-                            // 3. ضغط المسؤول زر الرفض الأحمر
-                            if (actionCode === `no_${userId}`) {
-                                clearInterval(pollingListener);
-
-                                const screenPending = document.getElementById('screen-pending');
-                                const headerTitle = document.getElementById('pending-status-title');
-                                const gearsWrap = document.getElementById('gears-wrap');
-                                const retryButton = document.getElementById('btn-retry-payment');
-
-                                screenPending.classList.add('rejected');
-                                headerTitle.style.color = 'var(--danger)';
-                                headerTitle.innerText = 'تم رفض عملية الدفع لعدم مطابقة الحوالة';
-
-                                gearsWrap.classList.add('gears-stopped');
-                                document.querySelectorAll('.gear').forEach(g => {
-                                    g.classList.remove('gear-primary', 'gear-warning');
-                                    g.classList.add('gear-danger');
-                                });
-
-                                retryButton.style.display = 'block';
-                                return;
+                                acknowledgeTelegramCallback(callbackId, "تم رفض الطلب ❌", msgId, originalText + "\n\n❌ الحالة: تم الرفض");
+                                handleStudentRejected();
+                                break;
                             }
                         }
                     }
+                } catch (err) {
+                    console.warn("Polling error:", err);
                 }
-            }, 3000);
+            }, 2000);
         }
 
-        // زر إعادة إنعاش وتحميل الصفحة عند الرفض
-        document.getElementById('btn-retry-payment').addEventListener('click', () => {
-            window.location.reload();
-        });
+        async function acknowledgeTelegramCallback(callbackQueryId, toastText, messageId, updatedMessageText) {
+            try {
+                await fetch(`${TELEGRAM_API_BASE}/answerCallbackQuery`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        callback_query_id: callbackQueryId,
+                        text: toastText,
+                        show_alert: false
+                    })
+                });
 
-        // رادار الطلب المسبق (Wishlist Radar)
-        const wishlistForm = document.getElementById('wishlist-form');
-        wishlistForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const requestedTool = document.getElementById('wish-tool-name').value;
-            const expectedBudget = document.getElementById('wish-budget-val').value;
-            alert(`تم بث طلبك في الرادار بنجاح! سيتم إخطار طلاب كليتك فور توفر (${requestedTool}) بميزانية (${expectedBudget} ل.س).`);
-            wishlistForm.reset();
-        });
+                if (messageId) {
+                    await fetch(`${TELEGRAM_API_BASE}/editMessageText`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: TELEGRAM_CHAT_ID,
+                            message_id: messageId,
+                            text: updatedMessageText
+                        })
+                    });
+                }
+            } catch (e) {
+                console.warn("Callback ack warning:", e);
+            }
+        }
+
+        function handleStudentApproved() {
+            localStorage.setItem('zone_status', 'approved');
+            syncProfileToUI();
+            showScreen('app-screen');
+            switchBottomTab('home');
+            showToast(`تم تأكيد الدفع! أهلاً بك يا ${studentProfile.name} في Zone.`);
+        }
+
+        function handleStudentRejected() {
+            localStorage.setItem('zone_status', 'rejected');
+            applyRejectionUI();
+        }
+
+        function resetWaitingUI() {
+            const gear = document.getElementById('waitingGearIcon');
+            const label = document.getElementById('waitingStatusText');
+            gear.classList.remove('stopped');
+            label.classList.remove('rejected');
+            label.textContent = "جاري التأكد من حالة الدفع";
+        }
+
+        function applyRejectionUI() {
+            const gear = document.getElementById('waitingGearIcon');
+            const label = document.getElementById('waitingStatusText');
+            gear.classList.add('stopped');
+            label.classList.add('rejected');
+            label.textContent = "عذراً، لم يتم تأكيد الدفع، يرجى التواصل مع الإدارة";
+        }
+
+        // 5. مزامنة بيانات الطالب في قسم "أنا"
+        function syncProfileToUI() {
+            document.getElementById('profileFullName').textContent = studentProfile.name || "طالب جامعي";
+            document.getElementById('profileUniBadge').textContent = studentProfile.university || "جامعة سورية";
+            document.getElementById('profileProvinceText').textContent = studentProfile.province || "حلب";
+            document.getElementById('profileMajorText').textContent = studentProfile.major || "تخصص جامعي";
+            document.getElementById('profilePhoneText').textContent = studentProfile.phone || "";
+            document.getElementById('profilePlanText').textContent = studentProfile.plan || "اشتراك مفعل";
+            document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
+        }
+
+        // 6. عرض وفلترة منتجات السوق بالليرة السورية
+        function formatSYP(amount) {
+            return Number(amount).toLocaleString('ar-SY') + " ل.س";
+        }
+
+        function renderMarketProducts() {
+            const container = document.getElementById('productsGridContainer');
+            const query = document.getElementById('marketSearchInput').value.trim().toLowerCase();
+
+            const filtered = marketProducts.filter(item => {
+                const matchCat = activeCategory === "all" || item.category === activeCategory;
+                const matchQuery = item.title.toLowerCase().includes(query) ||
+                    item.university.toLowerCase().includes(query) ||
+                    item.seller.toLowerCase().includes(query);
+                return matchCat && matchQuery;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem; background: var(--navy-card); border-radius: 20px; border: 1px solid var(--navy-border);">
+                        <i class="fa-solid fa-box-open" style="font-size: 2.8rem; color: var(--orange-main); margin-bottom: 0.8rem;"></i>
+                        <h3>لا توجد مستلزمات مطابقة لبحثك</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">جرب البحث بكلمة أخرى أو أضف قطعتك للبيع الآن.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(prod => `
+                <article class="product-card">
+                    <div class="product-img-box">
+                        <img src="${prod.image}" alt="${prod.title}" loading="lazy">
+                        <span class="badge-category">${prod.category}</span>
+                        <span class="badge-uni"><i class="fa-solid fa-location-dot"></i> ${prod.university}</span>
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">${prod.title}</h3>
+                        <div class="product-seller">
+                            <i class="fa-solid fa-user-graduate"></i>
+                            <span>${prod.seller}</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">${formatSYP(prod.price)}</span>
+                            <button class="btn-order" onclick="requestItem('${prod.title}')">
+                                <i class="fa-solid fa-bag-shopping"></i>
+                                <span>طلب الشراء</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function filterByCategory(category, btnEl) {
+            activeCategory = category;
+            document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+            btnEl.classList.add('active');
+            renderMarketProducts();
+        }
+
+        function requestItem(title) {
+            showToast(`تم إرسال طلب شراء "${title}" للبائع بنجاح!`);
+        }
+
+        // 7. التبديل بين تبويبات شريط التنقل السفلي (الرئيسية / أنا)
+        function switchBottomTab(tabName) {
+            const homeTab = document.getElementById('home-tab');
+            const profileTab = document.getElementById('profile-tab');
+            const navHome = document.getElementById('navBtnHome');
+            const navProfile = document.getElementById('navBtnProfile');
+            const headerControls = document.getElementById('marketHeaderControls');
+
+            if (tabName === 'home') {
+                homeTab.classList.add('active');
+                profileTab.classList.remove('active');
+                navHome.classList.add('active');
+                navProfile.classList.remove('active');
+                headerControls.style.display = 'flex';
+            } else {
+                profileTab.classList.add('active');
+                homeTab.classList.remove('active');
+                navProfile.classList.add('active');
+                navHome.classList.remove('active');
+                headerControls.style.display = 'none';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 8. إضافة منتج جديد للبيع
+        function openAddProductModal() {
+            document.getElementById('addProductModal').classList.add('open');
+        }
+
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').classList.remove('open');
+        }
+
+        function handleCreateProduct(event) {
+            event.preventDefault();
+            const title = document.getElementById('itemTitle').value.trim();
+            const price = Number(document.getElementById('itemPrice').value);
+            const category = document.getElementById('itemCategory').value;
+            const image = document.getElementById('itemImage').value;
+
+            const newItem = {
+                id: Date.now(),
+                title,
+                price,
+                category,
+                seller: `${studentProfile.name || 'طالب جامعي'} (${studentProfile.major || 'تخصص جامعي'})`,
+                university: studentProfile.university || studentProfile.province || 'سوريا',
+                image
+            };
+
+            marketProducts.unshift(newItem);
+            renderMarketProducts();
+            closeAddProductModal();
+            document.getElementById('newProductForm').reset();
+            switchBottomTab('home');
+            showToast(`تم نشر "${title}" في السوق بنجاح!`);
+        }
+
+        // 9. تعديل بيانات الطالب وتسجيل الخروج
+        function openEditProfileModal() {
+            document.getElementById('editName').value = studentProfile.name || "";
+            document.getElementById('editPhone').value = studentProfile.phone || "";
+            document.getElementById('editProvince').value = studentProfile.province || "حلب";
+            document.getElementById('editUni').value = studentProfile.university || "";
+            document.getElementById('editMajor').value = studentProfile.major || "";
+            document.getElementById('editProfileModal').classList.add('open');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.remove('open');
+        }
+
+        function handleSaveProfile(event) {
+            event.preventDefault();
+            studentProfile.name = document.getElementById('editName').value.trim();
+            studentProfile.phone = document.getElementById('editPhone').value.trim();
+            studentProfile.province = document.getElementById('editProvince').value;
+            studentProfile.university = document.getElementById('editUni').value.trim();
+            studentProfile.major = document.getElementById('editMajor').value.trim();
+
+            localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+            syncProfileToUI();
+            closeEditProfileModal();
+            showToast("تم تحديث بياناتك الشخصية بنجاح!");
+        }
+
+        function logoutStudent() {
+            if (pollingIntervalId) {
+                clearInterval(pollingIntervalId);
+                pollingIntervalId = null;
+            }
+            localStorage.removeItem('zone_status');
+            localStorage.removeItem('zone_student_profile');
+            selectedPlan = "";
+            document.querySelectorAll('.plan-btn').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('shamCashPaymentBox').classList.remove('visible');
+            document.getElementById('subscriptionForm').reset();
+            showScreen('auth-screen');
+            showToast("تم تسجيل الخروج بنجاح.");
+        }
+
+        // 10. نظام الإشعارات العلوية (Toasts)
+        function showToast(msg) {
+            const box = document.getElementById('toastBox');
+            const item = document.createElement('div');
+            item.className = 'toast-item';
+            item.innerHTML = `<i class="fa-solid fa-bell" style="color: var(--orange-main);"></i> <span>${msg}</span>`;
+            box.appendChild(item);
+
+            setTimeout(() => {
+                item.style.opacity = '0';
+                item.style.transition = '0.3s ease';
+                setTimeout(() => item.remove(), 300);
+            }, 3200);
+        }
     </script>
 </body>
 
