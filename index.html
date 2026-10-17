@@ -26,7 +26,7 @@
             --orange-hover: #ea580c;
             --orange-light: #fb923c;
             --orange-soft: rgba(249, 115, 22, 0.14);
-            --orange-glow: rgba(249, 115, 22, 0.35);
+            --orange-glow: rgba(249, 115, 22, 0.38);
 
             --pure-green: #10b981;
             --gold-crown: #fbbf24;
@@ -68,7 +68,7 @@
         }
 
         /* ====================================================
-           2. نظام الشاشات الخمس (SPA Screens)
+           2. نظام الشاشات الخمس (SPA Screens) + حلقة التحميل العصرية (تعديل 4)
            ==================================================== */
         .screen {
             display: none;
@@ -87,6 +87,63 @@
         .screen.fade-out {
             opacity: 0;
             transform: scale(0.97);
+        }
+
+        /* (تعديل 4): حلقة تحميل متحركة وعصرية (Loader / Spinner) بألوان الهوية */
+        .modern-loader-ring {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255, 255, 255, 0.22);
+            border-top-color: var(--navy-deep);
+            border-right-color: var(--navy-deep);
+            border-radius: 50%;
+            animation: spinModernLoader 0.75s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+            vertical-align: middle;
+        }
+
+        .modern-loader-ring.light-spinner {
+            border: 3px solid rgba(249, 115, 22, 0.22);
+            border-top-color: var(--orange-main);
+            border-right-color: var(--orange-light);
+        }
+
+        /* طبقة التحميل العامة السريعة عند العمليات السحابية */
+        .global-loading-pill {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--navy-card);
+            border: 1.5px solid var(--orange-main);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 18px var(--orange-glow);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 550;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--text-white);
+        }
+
+        .global-loading-pill.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @keyframes spinModernLoader {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* ====================================================
@@ -150,7 +207,7 @@
         }
 
         /* ====================================================
-           4. الصفحة الثانية: سجل بياناتك الآن + زر ربط التليجرام الرسمي
+           4. الصفحة الثانية: سجل بياناتك الآن + أيقونة العين (تعديل 5) + القائمة المخصصة للمحافظات (تعديل 13)
            ==================================================== */
         #data-screen {
             justify-content: center;
@@ -254,12 +311,36 @@
             align-items: center;
         }
 
-        .input-wrapper i {
+        .input-wrapper i.field-right-icon {
             position: absolute;
             right: 15px;
             color: var(--orange-main);
             font-size: 1rem;
             pointer-events: none;
+            z-index: 2;
+        }
+
+        /* (تعديل 5): تصميم أيقونة "العين" (Show/Hide Password) بداخل حقل كلمة السر */
+        .password-toggle-btn {
+            position: absolute;
+            left: 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            cursor: pointer;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 3;
+        }
+
+        .password-toggle-btn:hover,
+        .password-toggle-btn.active-eye {
+            color: var(--orange-main);
+            transform: scale(1.08);
         }
 
         .form-control {
@@ -272,6 +353,10 @@
             font-size: 0.94rem;
             transition: var(--transition);
             outline: none;
+        }
+
+        .form-control.has-eye-btn {
+            padding-left: 44px;
         }
 
         textarea.form-control {
@@ -290,7 +375,142 @@
             box-shadow: 0 0 0 3px var(--orange-soft);
         }
 
-        /* (شرط 1): زر ربط التليجرام في صفحة تعبئة المعلومات والحالة الرسمية الخضراء */
+        /* ====================================================
+           (تعديل 13): القائمة المنسدلة المخصصة للمحافظات (Custom Dropdown) مع Glow Effect
+           ==================================================== */
+        .custom-dropdown-container {
+            position: relative;
+            width: 100%;
+            user-select: none;
+        }
+
+        .custom-dropdown-trigger {
+            width: 100%;
+            background: var(--navy-primary);
+            border: 1.5px solid var(--navy-border);
+            border-radius: var(--radius-md);
+            padding: 12px 42px 12px 16px;
+            color: var(--text-white);
+            font-size: 0.94rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .custom-dropdown-trigger .trigger-right-icon {
+            position: absolute;
+            right: 15px;
+            color: var(--orange-main);
+            font-size: 1rem;
+        }
+
+        .custom-dropdown-trigger .trigger-arrow-icon {
+            color: var(--orange-light);
+            font-size: 0.85rem;
+            transition: transform 0.3s ease;
+        }
+
+        .custom-dropdown-trigger.placeholder-style span {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* تأثير الإضاءة الخفيف (Glow Effect) بلون التطبيق الأساسي عند فتح القائمة أو اختيار المحافظة */
+        .custom-dropdown-container.open .custom-dropdown-trigger,
+        .custom-dropdown-trigger.has-value-glow {
+            border-color: var(--orange-main);
+            box-shadow: 0 0 0 3px var(--orange-soft), 0 0 18px var(--orange-glow);
+        }
+
+        .custom-dropdown-container.open .trigger-arrow-icon {
+            transform: rotate(180deg);
+            color: var(--orange-main);
+        }
+
+        .custom-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--navy-card);
+            border: 1.5px solid var(--orange-main);
+            border-radius: var(--radius-md);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8), 0 0 22px var(--orange-glow);
+            max-height: 230px;
+            overflow-y: auto;
+            z-index: 220;
+            display: none;
+            padding: 6px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--orange-main) var(--navy-primary);
+        }
+
+        .custom-dropdown-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-dropdown-menu::-webkit-scrollbar-track {
+            background: var(--navy-primary);
+            border-radius: 8px;
+        }
+
+        .custom-dropdown-menu::-webkit-scrollbar-thumb {
+            background: var(--orange-main);
+            border-radius: 8px;
+        }
+
+        .custom-dropdown-container.open .custom-dropdown-menu {
+            display: block;
+            animation: dropdownGlowOpen 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes dropdownGlowOpen {
+            from {
+                opacity: 0;
+                transform: translateY(-8px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .custom-dropdown-option {
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            color: var(--text-white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+            margin-bottom: 2px;
+        }
+
+        .custom-dropdown-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .custom-dropdown-option:hover {
+            background: var(--orange-soft);
+            color: var(--orange-light);
+            padding-right: 18px;
+        }
+
+        .custom-dropdown-option.selected-province {
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: var(--text-white);
+            box-shadow: 0 4px 14px var(--orange-glow);
+        }
+
+        /* زر ربط التليجرام في صفحة تعبئة المعلومات والحالة الرسمية الخضراء */
         .telegram-bind-field-wrapper {
             margin-bottom: 1.1rem;
         }
@@ -357,9 +577,7 @@
             color: var(--orange-main);
         }
 
-        /* ====================================================
-           (شرط 2): تبطيء حركة تلوين الحواف الخضر للمربعات (Sequential Transition)
-           ==================================================== */
+        /* تلوين الحواف الخضر للمربعات (Sequential Transition) */
         .code-verify-instruction {
             font-size: 0.96rem;
             color: var(--orange-light);
@@ -390,7 +608,6 @@
             text-align: center;
             outline: none;
             box-shadow: none;
-            /* انتقال مبطأ ومدروس للحواف الخارجية فقط يحاكي سرعة تطبيق التليجرام الرسمي */
             transition: border-color 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
@@ -399,7 +616,6 @@
             background-color: var(--navy-primary) !important;
         }
 
-        /* تلوين الحواف الخارجية فقط باللون الأخضر الصافي مع بقاء الداخل بلونه الطبيعي تماماً */
         .digit-box-input.seq-green-border {
             border-color: var(--pure-green) !important;
             background-color: var(--navy-primary) !important;
@@ -421,6 +637,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 10px;
             box-shadow: 0 10px 25px var(--orange-glow);
             margin-top: 0.7rem;
             letter-spacing: 0.5px;
@@ -429,6 +646,11 @@
         .btn-next-official:hover {
             transform: translateY(-2px);
             filter: brightness(1.06);
+        }
+
+        .btn-next-official:disabled {
+            opacity: 0.85;
+            cursor: wait;
         }
 
         .btn-orange-wide {
@@ -690,7 +912,7 @@
         }
 
         /* ====================================================
-           7. الصفحة الخامسة: السوق الرئيسي، إخفاء الأزرار في "أنا"، والدائرة العائمة
+           7. الصفحة الخامسة: السوق الرئيسي، المشاركة الموحدة (تعديل 11)، زر العودة للأعلى (تعديل 8)، والـ Snackbar (تعديل 12)
            ==================================================== */
         #app-screen {
             padding-bottom: 90px;
@@ -756,6 +978,7 @@
             gap: 6px;
         }
 
+        /* (تعديل 6): الإبقاء على تصميم زر إضافة منشور كما هو تماماً */
         .btn-add-product-header {
             background: var(--orange-main);
             color: var(--text-white);
@@ -1225,15 +1448,16 @@
             }
         }
 
-        .btn-share-whatsapp-card {
+        /* (تعديل 11): زر المشاركة العام الموحد (Share Sheet) أسفل كل منشور */
+        .btn-unified-share-sheet {
             width: 100%;
             margin-top: 10px;
             background: var(--navy-primary);
-            border: 1px solid rgba(249, 115, 22, 0.4);
+            border: 1.5px solid rgba(249, 115, 22, 0.45);
             color: var(--orange-light);
-            padding: 8px 12px;
+            padding: 9px 14px;
             border-radius: var(--radius-sm);
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 800;
             cursor: pointer;
             transition: var(--transition);
@@ -1243,10 +1467,11 @@
             gap: 8px;
         }
 
-        .btn-share-whatsapp-card:hover {
+        .btn-unified-share-sheet:hover {
             background: var(--orange-main);
             color: var(--text-white);
             border-color: var(--orange-main);
+            box-shadow: 0 6px 16px var(--orange-glow);
         }
 
         .owner-delete-sold-btn {
@@ -1301,6 +1526,131 @@
 
         .floating-telegram-support.hidden-in-profile {
             display: none !important;
+        }
+
+        /* (تعديل 8): زر ناعم وعائم للعودة للأعلى (Back to Top) يظهر عند النزول لمسافة بعيدة */
+        .floating-back-to-top {
+            position: fixed;
+            bottom: 88px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--navy-card);
+            border: 2px solid var(--orange-main);
+            color: var(--orange-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px var(--orange-glow);
+            z-index: 140;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.85);
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .floating-back-to-top.visible-scroll {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .floating-back-to-top:hover {
+            background: var(--orange-main);
+            color: var(--text-white);
+            transform: translateY(-4px) scale(1.06);
+        }
+
+        /* ====================================================
+           (تعديل 12): تصميم رسالة التراجع عن الحذف أسفل الشاشة (Brand Snackbar)
+           ==================================================== */
+        .brand-snackbar {
+            position: fixed;
+            bottom: 84px;
+            left: 50%;
+            transform: translateX(-50%) translateY(40px);
+            background: linear-gradient(135deg, var(--navy-card), var(--navy-elevated));
+            border: 1.5px solid var(--orange-main);
+            border-radius: 16px;
+            padding: 12px 18px;
+            width: 92%;
+            max-width: 420px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85), 0 0 22px var(--orange-glow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            z-index: 650;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: hidden;
+        }
+
+        .brand-snackbar.show-snackbar {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .snackbar-text-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--text-white);
+        }
+
+        .snackbar-text-wrap i {
+            color: var(--orange-main);
+            font-size: 1.1rem;
+        }
+
+        .btn-snackbar-undo {
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: var(--text-white);
+            border: none;
+            padding: 7px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 4px 14px var(--orange-glow);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-snackbar-undo:hover {
+            transform: scale(1.05);
+            filter: brightness(1.08);
+        }
+
+        .snackbar-progress-bar {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: 3px;
+            background: var(--orange-main);
+            width: 100%;
+            transform-origin: right;
+        }
+
+        .brand-snackbar.show-snackbar .snackbar-progress-bar {
+            animation: snackbarTimer 5s linear forwards;
+        }
+
+        @keyframes snackbarTimer {
+            from {
+                transform: scaleX(1);
+            }
+
+            to {
+                transform: scaleX(0);
+            }
         }
 
         .multi-upload-box {
@@ -1769,6 +2119,22 @@
     <div class="ambient-glow"></div>
     <div class="toast-box" id="toastBox"></div>
 
+    <!-- (تعديل 4): شريط حلقة التحميل العصرية أثناء العمليات السحابية -->
+    <div class="global-loading-pill" id="globalLoaderPill">
+        <span class="modern-loader-ring light-spinner"></span>
+        <span id="globalLoaderText">جاري المعالجة...</span>
+    </div>
+
+    <!-- (تعديل 12): رسالة التراجع عن الحذف أسفل الشاشة (Snackbar) بألوان الهوية الفخمة لمدة 5 ثوانٍ -->
+    <div class="brand-snackbar" id="undoDeleteSnackbar">
+        <div class="snackbar-text-wrap">
+            <i class="fa-solid fa-trash-arrow-up"></i>
+            <span>تم حذف المنشور.. تراجع؟</span>
+        </div>
+        <button type="button" class="btn-snackbar-undo" onclick="undoLastDeletedPost()">تراجع</button>
+        <div class="snackbar-progress-bar" id="snackbarProgressBar"></div>
+    </div>
+
     <!-- ====================================================
          تعريف الشعار الهندسي المطور (True Physical Cutout Gap Split-Z Logo)
          ==================================================== -->
@@ -1808,7 +2174,7 @@
     </section>
 
     <!-- ====================================================
-         2. الصفحة الثانية: (سجل بياناتك الآن) + حقل ربط التليجرام الرسمي + (تسجيل الدخول)
+         2. الصفحة الثانية: (سجل بياناتك الآن) + القائمة المخصصة للمحافظات (تعديل 13) + أيقونة العين (تعديل 5)
          ==================================================== -->
     <section id="data-screen" class="screen">
         <div class="card-container">
@@ -1834,7 +2200,7 @@
                 <div class="form-group">
                     <label for="fullName">الاسم الكامل</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user field-right-icon"></i>
                         <input type="text" id="fullName" class="form-control" placeholder="الاسم الكامل" required>
                     </div>
                 </div>
@@ -1843,81 +2209,106 @@
                 <div class="form-group">
                     <label for="phoneNumber">رقم الهاتف</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-phone"></i>
+                        <i class="fa-solid fa-phone field-right-icon"></i>
                         <input type="tel" id="phoneNumber" inputmode="numeric" pattern="[0-9+]*" class="form-control"
                             placeholder="اكتب رقمك هنا" required>
                     </div>
                 </div>
 
+                <!-- (تعديل 5): حقل كلمة المرور مع أيقونة "العين" لإظهار وإخفاء الرمز -->
                 <div class="form-group">
                     <label for="registerPassword">كلمة المرور</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="registerPassword" class="form-control"
+                        <i class="fa-solid fa-lock field-right-icon"></i>
+                        <input type="password" id="registerPassword" class="form-control has-eye-btn"
                             placeholder="عيّن كلمة مرور لحسابك..." required>
+                        <button type="button" class="password-toggle-btn"
+                            onclick="togglePasswordVisibility('registerPassword', this)"
+                            title="إظهار / إخفاء كلمة المرور">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
                     </div>
                 </div>
 
+                <!-- (تعديل 13): قائمة المحافظات المخصصة بالكامل (Custom Dropdown) بألوان الهوية وتأثير Glow -->
                 <div class="form-group">
-                    <label for="provinceSelect">المحافظة</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        <select id="provinceSelect" class="form-control" required>
-                            <option value="" disabled selected>اختر محافظتك...</option>
-                            <option value="دمشق">دمشق</option>
-                            <option value="ريف دمشق">ريف دمشق</option>
-                            <option value="حلب">حلب</option>
-                            <option value="حمص">حمص</option>
-                            <option value="حماة">حماة</option>
-                            <option value="اللاذقية">اللاذقية</option>
-                            <option value="طرطوس">طرطوس</option>
-                            <option value="إدلب">إدلب</option>
-                            <option value="دير الزور">دير الزور</option>
-                            <option value="الرقة">الرقة</option>
-                            <option value="الحسكة">الحسكة</option>
-                            <option value="درعا">درعا</option>
-                            <option value="السويداء">السويداء</option>
-                            <option value="القنيطرة">القنيطرة</option>
-                        </select>
+                    <label>المحافظة</label>
+                    <input type="hidden" id="provinceSelect" value="">
+                    <div class="custom-dropdown-container" id="registerProvinceDropdown">
+                        <div class="custom-dropdown-trigger placeholder-style" id="registerProvinceTrigger"
+                            onclick="toggleCustomProvinceDropdown('registerProvinceDropdown')">
+                            <i class="fa-solid fa-map-location-dot trigger-right-icon"></i>
+                            <span id="registerProvinceSelectedText">اختر محافظتك...</span>
+                            <i class="fa-solid fa-chevron-down trigger-arrow-icon"></i>
+                        </div>
+                        <div class="custom-dropdown-menu" id="registerProvinceMenu">
+                            <!-- يتم توليد المحافظات الـ 14 بتصميم مخصص متوهج -->
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'دمشق', this)"><span>دمشق</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'ريف دمشق', this)"><span>ريف دمشق</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('register', 'حلب', this)">
+                                <span>حلب</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('register', 'حمص', this)">
+                                <span>حمص</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'حماة', this)"><span>حماة</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'اللاذقية', this)"><span>اللاذقية</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'طرطوس', this)"><span>طرطوس</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'إدلب', this)"><span>إدلب</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'دير الزور', this)"><span>دير الزور</span>
+                            </div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'الرقة', this)"><span>الرقة</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'الحسكة', this)"><span>الحسكة</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'درعا', this)"><span>درعا</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'السويداء', this)"><span>السويداء</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('register', 'القنيطرة', this)"><span>القنيطرة</span></div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="universityInput">الجامعة</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-building-columns"></i>
+                        <i class="fa-solid fa-building-columns field-right-icon"></i>
                         <input type="text" id="universityInput" class="form-control"
                             placeholder="اكتب اسم جامعتك أو معهدك يدوياً..." required>
                     </div>
                 </div>
 
-                <!-- (شرط 8): جملة (الفرع الدراسي) فقط بدل كلمة الكلية -->
                 <div class="form-group">
                     <label for="majorInput">الفرع الدراسي</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-microchip"></i>
+                        <i class="fa-solid fa-microchip field-right-icon"></i>
                         <input type="text" id="majorInput" class="form-control" placeholder="أدخل فرعك هنا" required>
                     </div>
                 </div>
 
-                <!-- حقل معرف التليجرام الاختياري العادي -->
                 <div class="form-group">
                     <label for="telegramUserInput">معرف التليجرام للتواصل</label>
                     <div class="input-wrapper">
-                        <i class="fa-brands fa-telegram"></i>
+                        <i class="fa-brands fa-telegram field-right-icon"></i>
                         <input type="text" id="telegramUserInput" class="form-control"
                             placeholder="معرف التليجرام (اختياري)">
                     </div>
                 </div>
 
-                <!-- (شرط 1 الصارم): حقل وزر ربط حساب التليجرام الرسمي في حال نسيان كلمة المرور -->
+                <!-- حقل وزر ربط حساب التليجرام الرسمي في حال نسيان كلمة المرور -->
                 <div class="telegram-bind-field-wrapper">
                     <button type="button" id="btnRegisterBindTelegram" class="btn-bind-telegram-official"
                         onclick="startRegistrationTelegramBinding()">
                         <i class="fa-brands fa-telegram"></i>
                         <span>ربط حساب التليجرام في حال نسيان كلمة المرور</span>
                     </button>
-                    <!-- يظهر مكان الزر فور ضغط الطالب على /start في التليجرام باللون الأخضر الصافي وأيقونة صح كلاسيكية بدون أي إيموجي -->
                     <div id="registerTelegramBoundBadge" class="telegram-bound-success-text">
                         <i class="fa-solid fa-check"></i>
                         <span>تم ربط حسابك بنجاح</span>
@@ -1927,23 +2318,29 @@
                 <button type="submit" class="btn-next-official">التالي</button>
             </form>
 
-            <!-- ب) نموذج تسجيل الدخول الفوري ومزامنة الجلسة -->
+            <!-- ب) نموذج تسجيل الدخول الفوري (مع تعديل 1 و 4 و 5) -->
             <form id="studentLoginForm" style="display: none;" onsubmit="handleSessionSyncLogin(event)">
                 <div class="form-group">
                     <label for="loginPhoneInput">رقم الهاتف المسجل</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-phone"></i>
+                        <i class="fa-solid fa-phone field-right-icon"></i>
                         <input type="tel" id="loginPhoneInput" inputmode="numeric" pattern="[0-9+]*"
                             class="form-control" placeholder="اكتب رقمك هنا" required>
                     </div>
                 </div>
 
+                <!-- (تعديل 5): حقل كلمة المرور في شاشة الدخول مع أيقونة "العين" -->
                 <div class="form-group">
                     <label for="loginPasswordInput">كلمة المرور</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="loginPasswordInput" class="form-control"
+                        <i class="fa-solid fa-lock field-right-icon"></i>
+                        <input type="password" id="loginPasswordInput" class="form-control has-eye-btn"
                             placeholder="أدخل كلمة المرور..." required>
+                        <button type="button" class="password-toggle-btn"
+                            onclick="togglePasswordVisibility('loginPasswordInput', this)"
+                            title="إظهار / إخفاء كلمة المرور">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
                     </div>
                     <div class="forgot-pass-row">
                         <button type="button" class="btn-forgot-pass-link" onclick="openForgotPasswordModal()">هل نسيت
@@ -1951,13 +2348,15 @@
                     </div>
                 </div>
 
-                <button type="submit" id="loginSyncSubmitBtn" class="btn-next-official">تسجيل الدخول</button>
+                <button type="submit" id="loginSyncSubmitBtn" class="btn-next-official">
+                    <span>تسجيل الدخول</span>
+                </button>
             </form>
         </div>
     </section>
 
     <!-- ====================================================
-         (شرط 2 و 4 و 5): نافذة استعادة كلمة المرور للطالب نفسه (بدون كلمة OTP + تلوين تتابعي مبطأ للحواف الخضراء)
+         نافذة استعادة كلمة المرور للطالب نفسه (مع أيقونة العين في المرحلة 3)
          ==================================================== -->
     <div class="modal-overlay" id="forgotPasswordModal">
         <div class="modal-card" style="text-align: right;">
@@ -1968,15 +2367,14 @@
                 </button>
             </div>
 
-            <!-- مربع التنبيه الصارم إذا كان الرقم غير مسجل أو الرمز خاطئ -->
             <div id="verifyErrorAlert" class="verify-alert-box"></div>
 
-            <!-- المرحلة 1: إدخال رقم الهاتف لفحصه في قاعدة البيانات وإرسال الرمز للطالب نفسه عبر Chat ID الخاص به -->
+            <!-- المرحلة 1: إدخال رقم الهاتف -->
             <div id="recoveryStep1Phone">
                 <div class="form-group">
                     <label>رقم الهاتف</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-phone"></i>
+                        <i class="fa-solid fa-phone field-right-icon"></i>
                         <input type="tel" id="recoveryPhoneInput" inputmode="numeric" pattern="[0-9+]*"
                             class="form-control" placeholder="اكتب رقمك هنا">
                     </div>
@@ -1988,7 +2386,7 @@
                 </button>
             </div>
 
-            <!-- المرحلة 2: النص المباشر المطلوب فقط + الـ 5 مربعات المنفصلة التي تتلون حوافها الخارجية تتابعياً بالأخضر الصافي عند اكتمال الكود الصحيح -->
+            <!-- المرحلة 2: الـ 5 مربعات المنفصلة التي تتلون حوافها الخارجية تتابعياً بالأخضر الصافي -->
             <div id="recoveryStep2Boxes" style="display: none;">
                 <p class="code-verify-instruction">تم ارسال رمز التحقق. ادخل الرمز لتعيين كلمة مرور جديدة</p>
 
@@ -2011,14 +2409,19 @@
                 </div>
             </div>
 
-            <!-- المرحلة 3: تفتح تلقائياً فور اكتمال التلوين التتابعي للمربعات الخمسة لتعيين كلمة مرور جديدة -->
+            <!-- المرحلة 3: تعيين كلمة مرور جديدة مع أيقونة العين (تعديل 5) -->
             <div id="recoveryStep3NewPass" style="display: none;">
                 <div class="form-group">
                     <label>كلمة المرور الجديدة</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="recoveryNewPasswordInput" class="form-control"
+                        <i class="fa-solid fa-lock field-right-icon"></i>
+                        <input type="password" id="recoveryNewPasswordInput" class="form-control has-eye-btn"
                             placeholder="أدخل كلمة المرور الجديدة...">
+                        <button type="button" class="password-toggle-btn"
+                            onclick="togglePasswordVisibility('recoveryNewPasswordInput', this)"
+                            title="إظهار / إخفاء كلمة المرور">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
                     </div>
                 </div>
                 <button type="button" id="saveNewPassBtn" class="btn-orange-wide" onclick="saveNewRecoveredPassword()">
@@ -2035,7 +2438,6 @@
     <section id="subscription-screen" class="screen">
         <div class="plans-container-card">
             <div class="section-header">
-                <!-- (شرط 6): أيقونة التاج الذهبي الملكي 👑 الفخم بدون جرايد وبدون زر دعم -->
                 <div class="royal-crown-badge">
                     <i class="fa-solid fa-crown"></i>
                 </div>
@@ -2066,7 +2468,7 @@
         </div>
     </section>
 
-    <!-- (شرط 6): نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
+    <!-- نافذة معلومات الدفع تحت صورة الـ QR كود -->
     <div class="modal-overlay" id="shamCashModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -2078,12 +2480,10 @@
 
             <div class="selected-plan-pill" id="popupSelectedPlanText">اشتراك شهري (1 دولار)</div>
 
-            <!-- صورة الـ QR كود المحمية -->
             <img src="sham_cash_qr.png"
                 style="max-width: 240px; width: 100%; height: auto; display: block; margin: 12px auto; border-radius: 8px;"
                 onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=240x240&color=1e3a5f&bgcolor=ffffff&margin=10&data=26ee871407869d05ad94223e7b4f1402';">
 
-            <!-- الصياغة الحصرية المطلوبة تحت الكيو آر كود -->
             <div class="qr-certified-company-line">معتمد من شركة Zone</div>
             <div class="recipient-verified-line">
                 <span>المستلم الرسمي المعتمد: محمد يحيى جمال</span>
@@ -2132,7 +2532,7 @@
                     <span>سوق Zone العام • <strong id="headerProvinceName">حلب</strong></span>
                 </div>
 
-                <!-- (شرط 7): زر "إضافة منشور جديد" يظهر فقط في الرئيسية ويختفي تماماً بداخل صفحة "أنا" -->
+                <!-- (تعديل 6): زر إضافة منشور جديد بتصميمه الأصلي ويختفي في صفحة "أنا" -->
                 <button type="button" id="headerAddPostBtn" class="btn-add-product-header" onclick="openAddPostModal()">
                     <i class="fa-solid fa-plus"></i>
                     <span>إضافة منشور جديد</span>
@@ -2183,17 +2583,15 @@
             <div class="products-grid" id="productsGridContainer"></div>
         </main>
 
-        <!-- (شرط 6 و 8): التبويب الثاني "أنا" بالمصطلحات المحدثة (المحافظة / التخصص) والأزرار الدائرية -->
+        <!-- التبويب الثاني: "أنا" -->
         <main id="profile-tab" class="tab-view">
             <div class="profile-card">
                 <div class="profile-circular-actions-bar">
-                    <!-- زر الإعدادات الوحيد في التطبيق (⚙️) -->
                     <button type="button" class="btn-luxury-circle" onclick="openSettingsModal()"
                         title="إعدادات الإشعارات وتحديد الكليات">
                         <i class="fa-solid fa-gear"></i>
                     </button>
 
-                    <!-- زر تعديل البيانات الدائري الفخم بأيقونة القلم (✏️) -->
                     <button type="button" class="btn-luxury-circle" onclick="openEditProfileModal()"
                         title="تعديل البيانات">
                         <i class="fa-solid fa-pen"></i>
@@ -2208,12 +2606,10 @@
                 </div>
 
                 <div class="profile-details-list">
-                    <!-- (شرط 8): كلمة (المحافظة) فقط دون أي سلاش أو نطاق السوق -->
                     <div class="profile-detail-row">
                         <span>المحافظة</span>
                         <span id="profileProvinceText">حلب</span>
                     </div>
-                    <!-- (شرط 8): كلمة (التخصص) فقط دون كلمة الكلية -->
                     <div class="profile-detail-row">
                         <span>التخصص</span>
                         <span id="profileMajorText">هندسة ميكاترونيكس</span>
@@ -2241,11 +2637,17 @@
             </div>
         </main>
 
-        <!-- (شرط 7): الدائرة البرتقالية العائمة للدعم بالرئيسية فقط وتختفي تماماً في صفحة "أنا" -->
+        <!-- الدائرة البرتقالية العائمة للدعم بالرئيسية فقط -->
         <a href="https://t.me/zoneapplication" target="_blank" rel="noopener noreferrer" id="floatingSupportCircle"
             class="floating-telegram-support" onclick="openDirectSupportTelegram(event)" title="الدعم الفني المباشر">
             <i class="fa-brands fa-telegram"></i>
         </a>
+
+        <!-- (تعديل 8): زر ناعم وعائم للعودة للأعلى (Back to Top) يظهر عند التمرير لأسفل -->
+        <button type="button" id="backToTopBtn" class="floating-back-to-top" onclick="scrollToTopSmoothly()"
+            title="العودة للأعلى">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
 
         <!-- شريط التنقل السفلي الثابت -->
         <nav class="bottom-nav">
@@ -2348,7 +2750,7 @@
     </div>
 
     <!-- ====================================================
-         8. نافذة منبثقة: إضافة منشور جديد (مع ضغط الصور التلقائي وكيبورد الأرقام للسعر)
+         8. نافذة منبثقة: إضافة منشور جديد
          ==================================================== -->
     <div class="modal-overlay" id="addPostModal">
         <div class="modal-card" style="text-align: right;">
@@ -2363,7 +2765,7 @@
                 <div class="form-group">
                     <label>القسم الفرعي / نوع الإعلان</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-layer-group"></i>
+                        <i class="fa-solid fa-layer-group field-right-icon"></i>
                         <select id="postCategorySelect" class="form-control" onchange="handlePostTypeChange()" required>
                             <option value="أدوات طب بشري">أدوات طب بشري</option>
                             <option value="أدوات طب أسنان">أدوات طب أسنان</option>
@@ -2381,7 +2783,7 @@
                 <div class="form-group">
                     <label>عنوان المنشور أو اسم القطعة</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-tag"></i>
+                        <i class="fa-solid fa-tag field-right-icon"></i>
                         <input type="text" id="postTitleInput" class="form-control"
                             placeholder="مثال: سماعة طبيب / بورد أردوينو / طقم حفر أسنان..." required>
                     </div>
@@ -2411,11 +2813,10 @@
                     </div>
                 </div>
 
-                <!-- كيبورد الأرقام التلقائي لخانة السعر -->
                 <div class="form-group" id="postPriceGroup">
                     <label>السعر بالليرة السورية (ل.س)</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-coins"></i>
+                        <i class="fa-solid fa-coins field-right-icon"></i>
                         <input type="tel" inputmode="numeric" pattern="[0-9]*" id="postPriceInput" class="form-control"
                             placeholder="مثال: 250000" required>
                     </div>
@@ -2430,7 +2831,7 @@
     </div>
 
     <!-- ====================================================
-         9. نافذة منبثقة: تعديل بيانات الطالب (تفتح من الزر الدائري ✏️ وترسل إشعاراً فوريًا للبوت)
+         9. نافذة منبثقة: تعديل بيانات الطالب (مع القائمة المخصصة للمحافظات تعديل 13)
          ==================================================== -->
     <div class="modal-overlay" id="editProfileModal">
         <div class="modal-card" style="text-align: right;">
@@ -2445,7 +2846,7 @@
                 <div class="form-group">
                     <label>الاسم الكامل</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user field-right-icon"></i>
                         <input type="text" id="editName" class="form-control" placeholder="الاسم الكامل" required>
                     </div>
                 </div>
@@ -2453,39 +2854,60 @@
                 <div class="form-group">
                     <label>رقم الهاتف</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-phone"></i>
+                        <i class="fa-solid fa-phone field-right-icon"></i>
                         <input type="tel" inputmode="numeric" pattern="[0-9+]*" id="editPhone" class="form-control"
                             placeholder="اكتب رقمك هنا" required>
                     </div>
                 </div>
 
+                <!-- (تعديل 13): قائمة المحافظات المخصصة في نافذة التعديل أيضاً مع Glow Effect -->
                 <div class="form-group">
                     <label>المحافظة</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        <select id="editProvince" class="form-control" required>
-                            <option value="دمشق">دمشق</option>
-                            <option value="ريف دمشق">ريف دمشق</option>
-                            <option value="حلب">حلب</option>
-                            <option value="حمص">حمص</option>
-                            <option value="حماة">حماة</option>
-                            <option value="اللاذقية">اللاذقية</option>
-                            <option value="طرطوس">طرطوس</option>
-                            <option value="إدلب">إدلب</option>
-                            <option value="دير الزور">دير الزور</option>
-                            <option value="الرقة">الرقة</option>
-                            <option value="الحسكة">الحسكة</option>
-                            <option value="درعا">درعا</option>
-                            <option value="السويداء">السويداء</option>
-                            <option value="القنيطرة">القنيطرة</option>
-                        </select>
+                    <input type="hidden" id="editProvince" value="حلب">
+                    <div class="custom-dropdown-container" id="editProvinceDropdown">
+                        <div class="custom-dropdown-trigger has-value-glow" id="editProvinceTrigger"
+                            onclick="toggleCustomProvinceDropdown('editProvinceDropdown')">
+                            <i class="fa-solid fa-map-location-dot trigger-right-icon"></i>
+                            <span id="editProvinceSelectedText">حلب</span>
+                            <i class="fa-solid fa-chevron-down trigger-arrow-icon"></i>
+                        </div>
+                        <div class="custom-dropdown-menu" id="editProvinceMenu">
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'دمشق', this)">
+                                <span>دمشق</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('edit', 'ريف دمشق', this)"><span>ريف دمشق</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'حلب', this)">
+                                <span>حلب</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'حمص', this)">
+                                <span>حمص</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'حماة', this)">
+                                <span>حماة</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('edit', 'اللاذقية', this)"><span>اللاذقية</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'طرطوس', this)">
+                                <span>طرطوس</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'إدلب', this)">
+                                <span>إدلب</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('edit', 'دير الزور', this)"><span>دير الزور</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'الرقة', this)">
+                                <span>الرقة</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'الحسكة', this)">
+                                <span>الحسكة</span></div>
+                            <div class="custom-dropdown-option" onclick="selectCustomProvince('edit', 'درعا', this)">
+                                <span>درعا</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('edit', 'السويداء', this)"><span>السويداء</span></div>
+                            <div class="custom-dropdown-option"
+                                onclick="selectCustomProvince('edit', 'القنيطرة', this)"><span>القنيطرة</span></div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>الجامعة</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-building-columns"></i>
+                        <i class="fa-solid fa-building-columns field-right-icon"></i>
                         <input type="text" id="editUni" class="form-control" required>
                     </div>
                 </div>
@@ -2493,7 +2915,7 @@
                 <div class="form-group">
                     <label>الفرع الدراسي</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-graduation-cap"></i>
+                        <i class="fa-solid fa-graduation-cap field-right-icon"></i>
                         <input type="text" id="editMajor" class="form-control" placeholder="أدخل فرعك هنا" required>
                     </div>
                 </div>
@@ -2501,7 +2923,7 @@
                 <div class="form-group">
                     <label>معرف التليجرام الشخصي</label>
                     <div class="input-wrapper">
-                        <i class="fa-brands fa-telegram"></i>
+                        <i class="fa-brands fa-telegram field-right-icon"></i>
                         <input type="text" id="editTelegram" class="form-control"
                             placeholder="معرف التليجرام (اختياري)">
                     </div>
@@ -2515,7 +2937,7 @@
         </div>
     </div>
     <!-- ====================================================
-         10. المنطق البرمجي الكامل والشامل + ربط التليجرام الفوري + التلوين التتابعي للمربعات + fetchPosts العالمي (JavaScript)
+         10. المنطق البرمجي الشامل + تشغيل كافة التعديلات الـ 13 (JavaScript)
          ==================================================== -->
     <script>
         // إعدادات بوت التلغرام الرسمي المعتمد
@@ -2527,18 +2949,18 @@
         // المعرف الرسمي المباشر للدائرة العائمة للدعم
         const OFFICIAL_SUPPORT_TELEGRAM_USERNAME = "zoneapplication";
 
-        // (شرط 3): الجدول السحابي العام والموحد المفتوح للمنشورات (Global Unified Posts Table) بدون أي فلترة userId
+        // الجدول السحابي العام والموحد المفتوح للمنشورات (Global Unified Posts Table) بدون أي فلترة userId
         const GLOBAL_UNIFIED_POSTS_ENDPOINTS = [
-            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_public_posts_table_v8",
-            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_public_posts_table_v8"
+            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_public_posts_table_v9",
+            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_public_posts_table_v9"
         ];
         // جدول الحسابات السحابي لحفظ ربط رقم الهاتف بالـ Chat ID الخاص بكل طالب
         const GLOBAL_USERS_DB_ENDPOINTS = [
-            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_users_directory_v8",
-            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_users_directory_v8"
+            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_users_directory_v9",
+            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_users_directory_v9"
         ];
 
-        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v8') : null;
+        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v9') : null;
 
         const PENDING_TIMEOUT_MS = 48 * 60 * 60 * 1000;
         const POST_LIFETIME_DAYS = 30;
@@ -2563,7 +2985,11 @@
         let recoveryTargetPhone = null;
         let isSequentialAnimationRunning = false;
 
-        // البيانات الشخصية مستقلة لكل حساب بشكل كامل بدون أي تداخل
+        // متغيرات شريط التراجع عن الحذف (Snackbar - تعديل 12)
+        let lastDeletedPostBackup = null;
+        let lastDeletedPostIndex = 0;
+        let snackbarTimeoutId = null;
+
         let studentProfile = {
             id: "",
             name: "",
@@ -2573,7 +2999,7 @@
             university: "جامعة حلب",
             major: "",
             telegramUsername: "",
-            studentTelegramChatId: "", // الـ Chat ID الخاص بالطالب نفسه والمربوط برقم هاتفه في السيرفر
+            studentTelegramChatId: "",
             plan: "",
             status: "none",
             pendingSince: 0,
@@ -2593,8 +3019,107 @@
         }
 
         // ====================================================
-        // أ. فتح رابط تشات الدعم المباشر في التليجرام (@zoneapplication)
+        // أ. (تعديل 4، 5، 8، 13): دوال الواجهة التفاعلية (العين، القائمة المخصصة، اللودر، العودة للأعلى)
         // ====================================================
+        // (تعديل 4): إظهار وإخفاء حلقة التحميل العصرية
+        function showGlobalLoader(text = "جاري المعالجة...") {
+            const pill = document.getElementById('globalLoaderPill');
+            const label = document.getElementById('globalLoaderText');
+            if (label) label.textContent = text;
+            if (pill) pill.classList.add('active');
+        }
+
+        function hideGlobalLoader() {
+            const pill = document.getElementById('globalLoaderPill');
+            if (pill) pill.classList.remove('active');
+        }
+
+        // (تعديل 5): تبديل إظهار وإخفاء كلمة السر عبر أيقونة "العين"
+        function togglePasswordVisibility(inputId, btnEl) {
+            const inputEl = document.getElementById(inputId);
+            if (!inputEl) return;
+            const iconEl = btnEl.querySelector('i');
+
+            if (inputEl.type === 'password') {
+                inputEl.type = 'text';
+                btnEl.classList.add('active-eye');
+                if (iconEl) iconEl.className = 'fa-regular fa-eye-slash';
+            } else {
+                inputEl.type = 'password';
+                btnEl.classList.remove('active-eye');
+                if (iconEl) iconEl.className = 'fa-regular fa-eye';
+            }
+        }
+
+        // (تعديل 13): إدارة القائمة المنسدلة المخصصة للمحافظات (Custom Dropdown) مع تأثير الإضاءة (Glow Effect)
+        function toggleCustomProvinceDropdown(dropdownId) {
+            const container = document.getElementById(dropdownId);
+            if (!container) return;
+            const isOpen = container.classList.contains('open');
+
+            document.querySelectorAll('.custom-dropdown-container').forEach(el => el.classList.remove('open'));
+            if (!isOpen) {
+                container.classList.add('open');
+            }
+        }
+
+        function selectCustomProvince(contextType, provinceName, optionEl) {
+            if (contextType === 'register') {
+                document.getElementById('provinceSelect').value = provinceName;
+                const textEl = document.getElementById('registerProvinceSelectedText');
+                const triggerEl = document.getElementById('registerProvinceTrigger');
+                const container = document.getElementById('registerProvinceDropdown');
+
+                if (textEl) textEl.textContent = provinceName;
+                if (triggerEl) {
+                    triggerEl.classList.remove('placeholder-style');
+                    triggerEl.classList.add('has-value-glow');
+                }
+                if (container) {
+                    container.querySelectorAll('.custom-dropdown-option').forEach(opt => opt.classList.remove('selected-province'));
+                    if (optionEl) optionEl.classList.add('selected-province');
+                    container.classList.remove('open');
+                }
+            } else if (contextType === 'edit') {
+                document.getElementById('editProvince').value = provinceName;
+                const textEl = document.getElementById('editProvinceSelectedText');
+                const triggerEl = document.getElementById('editProvinceTrigger');
+                const container = document.getElementById('editProvinceDropdown');
+
+                if (textEl) textEl.textContent = provinceName;
+                if (triggerEl) triggerEl.classList.add('has-value-glow');
+                if (container) {
+                    container.querySelectorAll('.custom-dropdown-option').forEach(opt => opt.classList.remove('selected-province'));
+                    if (optionEl) optionEl.classList.add('selected-province');
+                    container.classList.remove('open');
+                }
+            }
+        }
+
+        // إغلاق القائمة المخصصة عند النقر خارجها
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.custom-dropdown-container')) {
+                document.querySelectorAll('.custom-dropdown-container').forEach(el => el.classList.remove('open'));
+            }
+        });
+
+        // (تعديل 8): مراقبة التمرير لإظهار زر العودة للأعلى (Back to Top) عند النزول لمسافة بعيدة
+        window.addEventListener('scroll', () => {
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            const appScreen = document.getElementById('app-screen');
+            if (!backToTopBtn || !appScreen) return;
+
+            if (appScreen.classList.contains('active') && window.scrollY > 360) {
+                backToTopBtn.classList.add('visible-scroll');
+            } else {
+                backToTopBtn.classList.remove('visible-scroll');
+            }
+        });
+
+        function scrollToTopSmoothly() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function openDirectSupportTelegram(event) {
             if (event) event.preventDefault();
             const cleanSupportHandle = OFFICIAL_SUPPORT_TELEGRAM_USERNAME.replace(/^@/, '').trim();
@@ -2661,16 +3186,14 @@
         })();
 
         // ====================================================
-        // ج. (شرط 1 الصارم): زر ربط التليجرام في صفحة "تعبئة المعلومات" والاستماع الفوري لـ (/start)
+        // ج. زر ربط التليجرام في صفحة "تعبئة المعلومات" والاستماع الفوري لـ (/start)
         // ====================================================
         function startRegistrationTelegramBinding() {
             const rawPhone = document.getElementById('phoneNumber').value.trim();
             const normPhone = normalizeSyrianPhone(rawPhone);
 
-            // إنشاء رمز ربط فريد للجلسة الحالية
             currentRegistrationBindToken = "bind_" + (normPhone || Date.now()) + "_" + Math.floor(1000 + Math.random() * 9000);
 
-            // فتح محادثة البوت الرسمي المعتمد تلقائياً مع تمرير رمز الربط
             const botDeepLink = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=${currentRegistrationBindToken}`;
             window.open(botDeepLink, '_blank', 'noopener,noreferrer');
 
@@ -2678,7 +3201,6 @@
                 clearInterval(registrationBindPollingId);
             }
 
-            // الاستماع الفوري لإشارة (/start) من الطالب في التليجرام لتحديث الواجهة مباشرة
             registrationBindPollingId = setInterval(async () => {
                 try {
                     const res = await fetch(`${TELEGRAM_API_BASE}/getUpdates?limit=50`);
@@ -2706,18 +3228,15 @@
                             boundRegistrationChatId = chatIdStr;
                             studentProfile.studentTelegramChatId = chatIdStr;
 
-                            // إذا لم يكن الطالب قد كتب المعرف الاختياري وكان لحسابه معرف، نملؤه تلقائياً
                             if (!document.getElementById('telegramUserInput').value && msg.from?.username) {
                                 document.getElementById('telegramUserInput').value = "@" + msg.from.username;
                             }
 
-                            // إخفاء الزر وإظهار النص الرسمي باللون الأخضر الصافي وأيقونة صح كلاسيكية بدون أي سمايلات
                             const bindBtn = document.getElementById('btnRegisterBindTelegram');
                             const successBadge = document.getElementById('registerTelegramBoundBadge');
                             if (bindBtn) bindBtn.style.display = 'none';
                             if (successBadge) successBadge.classList.add('visible');
 
-                            // إرسال رسالة تأكيد رسمية للطالب داخل التليجرام
                             await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
@@ -2736,7 +3255,7 @@
         }
 
         // ====================================================
-        // د. إدارة قاعدة بيانات الحسابات السحابية ومزامنة الجلسات (Session Sync)
+        // د. إدارة الحسابات السحابية وتطبيق (تعديل 1 و 2 و 4) في شاشة تسجيل الدخول
         // ====================================================
         async function fetchCloudUsersDirectory() {
             for (const endpoint of GLOBAL_USERS_DB_ENDPOINTS) {
@@ -2745,14 +3264,14 @@
                     if (res.ok) {
                         const data = await res.json();
                         if (data && typeof data === 'object') {
-                            localStorage.setItem('zone_cached_users_dir_v8', JSON.stringify(data));
+                            localStorage.setItem('zone_cached_users_dir_v9', JSON.stringify(data));
                             return data;
                         }
                     }
                 } catch (e) { }
             }
 
-            const localDir = localStorage.getItem('zone_cached_users_dir_v8');
+            const localDir = localStorage.getItem('zone_cached_users_dir_v9');
             if (localDir) {
                 try { return JSON.parse(localDir); } catch (e) { }
             }
@@ -2773,7 +3292,7 @@
                 updatedAt: Date.now()
             };
 
-            localStorage.setItem('zone_cached_users_dir_v8', JSON.stringify(directory));
+            localStorage.setItem('zone_cached_users_dir_v9', JSON.stringify(directory));
             const payload = JSON.stringify(directory);
 
             for (const endpoint of GLOBAL_USERS_DB_ENDPOINTS) {
@@ -2787,7 +3306,6 @@
             }
         }
 
-        // البحث في رسائل البوت عن الـ Chat ID الخاص بالطالب إذا لم يكن محفوظاً مسبقاً
         async function syncStudentTelegramChatIdFromBotUpdates(userRecord, normPhone) {
             if (!userRecord) return null;
             if (userRecord.studentTelegramChatId) {
@@ -2846,6 +3364,7 @@
             }
         }
 
+        // (تعديل 1، 2، 4): استبدال العبارة بـ "جاري تسجيل الدخول..." مع حلقة التحميل، وتعديل رسالة النجاح إلى "أهلاً بك يا [اسم المستخدم]، تم فتح حسابك" بدون كلمة فوراً
         async function handleSessionSyncLogin(event) {
             event.preventDefault();
             const phoneVal = document.getElementById('loginPhoneInput').value.trim();
@@ -2854,13 +3373,13 @@
 
             const loginBtn = document.getElementById('loginSyncSubmitBtn');
             loginBtn.disabled = true;
-            loginBtn.textContent = "جاري مزامنة الجلسة...";
+            loginBtn.innerHTML = `<span class="modern-loader-ring"></span> <span>جاري تسجيل الدخول...</span>`;
 
             const directory = await fetchCloudUsersDirectory();
             const matchedAccount = directory[normPhone];
 
             loginBtn.disabled = false;
-            loginBtn.textContent = "تسجيل الدخول";
+            loginBtn.innerHTML = `<span>تسجيل الدخول</span>`;
 
             if (!matchedAccount) {
                 showToast("عذراً، هذا الرقم غير مسجل لدينا، يرجى إنشاء حساب جديد");
@@ -2886,7 +3405,8 @@
                 switchBottomTab('home');
                 startGlobalLiveFeedSync();
                 startTelegramPolling(studentProfile.id);
-                showToast(`أهلاً بعودتك يا ${studentProfile.name}! تم فتح حسابك فوراً.`);
+                // (تعديل 2): الرسالة بالفصحى وبدون كلمة "فوراً" تماماً
+                showToast(`أهلاً بك يا ${studentProfile.name}، تم فتح حسابك`);
             } else if (matchedAccount.status === 'pending') {
                 localStorage.setItem('zone_status', 'pending');
                 resetWaitingUI(studentProfile.waitingCustomNote);
@@ -2902,7 +3422,7 @@
         }
 
         // ====================================================
-        // هـ. (شرط 2 و 4 و 5): إرسال رمز التحقق للطالب نفسه + التلوين التتابعي المبطأ للحواف الخضراء (Sequential Transition)
+        // هـ. إرسال رمز التحقق للطالب نفسه + التلوين التتابعي المبطأ للحواف الخضراء
         // ====================================================
         function openForgotPasswordModal() {
             const loginPhone = document.getElementById('loginPhoneInput').value.trim();
@@ -2943,36 +3463,33 @@
             const normPhone = normalizeSyrianPhone(rawPhone);
             const sendBtn = document.getElementById('sendRecoveryCodeBtn');
             sendBtn.disabled = true;
+            sendBtn.innerHTML = `<span class="modern-loader-ring"></span> <span>جاري الفحص والإرسال...</span>`;
 
             const directory = await fetchCloudUsersDirectory();
             const existingUser = directory[normPhone];
 
-            // إذا كان الرقم غير مسجل مسبقاً
             if (!existingUser) {
                 sendBtn.disabled = false;
+                sendBtn.innerHTML = `<i class="fa-brands fa-telegram"></i> <span>إرسال رمز التحقق</span>`;
                 alertBox.textContent = "عذراً، هذا الرقم غير مسجل لدينا، يرجى إنشاء حساب جديد";
                 alertBox.classList.add('show');
                 showToast("عذراً، هذا الرقم غير مسجل لدينا، يرجى إنشاء حساب جديد");
                 return;
             }
 
-            // جلب الـ Chat ID المخزن والمربوط برقم هاتف الطالب في قاعدة البيانات
             const studentPrivateChatId = await syncStudentTelegramChatIdFromBotUpdates(existingUser, normPhone);
 
             if (!studentPrivateChatId) {
                 sendBtn.disabled = false;
-                alertBox.textContent = "لم يتم ربط هذا الرقم بالتليجرام بعد. يرجى الضغط على زر ربط حساب التليجرام أولاً.";
+                sendBtn.innerHTML = `<i class="fa-brands fa-telegram"></i> <span>إرسال رمز التحقق</span>`;
+                alertBox.textContent = "لم يتم ربط هذا الرقم بالتليجرام بعد. يرجى ربط حساب التليجرام أولاً.";
                 alertBox.classList.add('show');
                 return;
             }
 
-            // توليد رمز تحقق عشوائي مكون من 5 أرقام حصراً (10000 - 99999)
             generated5DigitCode = String(Math.floor(10000 + Math.random() * 90000));
             recoveryTargetPhone = normPhone;
 
-            // الصياغة الثابتة والمختصرة حصراً (يرسل إلى حساب التليجرام الخاص بالطالب نفسه، وممنوع إرساله لبوت الإدارة):
-            // Zone Verification Code
-            // [الرمز المكون من 5 أرقام]
             const strictVerificationMessage = `Zone Verification Code\n${generated5DigitCode}`;
 
             try {
@@ -2989,6 +3506,7 @@
             }
 
             sendBtn.disabled = false;
+            sendBtn.innerHTML = `<i class="fa-brands fa-telegram"></i> <span>إرسال رمز التحقق</span>`;
             document.getElementById('recoveryStep1Phone').style.display = 'none';
             document.getElementById('recoveryStep2Boxes').style.display = 'block';
             document.getElementById('recoveryStep3NewPass').style.display = 'none';
@@ -2998,7 +3516,6 @@
             if (firstBox) setTimeout(() => firstBox.focus(), 100);
         }
 
-        // أثناء الكتابة تظل المربعات برتقالية مع Auto-advance
         function handleDigitBoxInput(event, index) {
             if (isSequentialAnimationRunning) return;
 
@@ -3051,7 +3568,6 @@
             checkIfAllFiveDigitsCompleted();
         }
 
-        // (شرط 2 الصارم): عند كتابة الرقم الخامس والتحقق أن الرمز صحيح، تتلون الحواف الخارجية فقط للمربعات الخمسة باللون الأخضر الصافي بشكل تتابعي وتدريجي (مربع تلو الآخر من اليسار إلى اليمين) وبسرعة مدروسة ومبطأة قليلاً تحاكي تطبيق التليجرام الرسمي، ثم تفتح واجهة تعيين كلمة المرور الجديدة
         function checkIfAllFiveDigitsCompleted() {
             const boxes = Array.from(document.querySelectorAll('#fiveDigitsContainer .digit-box-input'));
             const enteredCode = boxes.map(b => b.value).join('');
@@ -3064,7 +3580,6 @@
 
                     boxes.forEach(b => b.blur());
 
-                    // التلوين التتابعي المدروس والمبطأ قليلاً من اليسار إلى اليمين (مربع 0 -> 1 -> 2 -> 3 -> 4) بفارق 190ms بين كل مربع والذي يليه
                     const stepDelayMs = 190;
                     boxes.forEach((boxEl, idx) => {
                         setTimeout(() => {
@@ -3072,7 +3587,6 @@
                         }, idx * stepDelayMs);
                     });
 
-                    // بعد اكتمال تلوين المربع الخامس والأخير ورؤية النتيجة بوضوح، ينتقل التطبيق لواجهة تعيين كلمة المرور الجديدة تلقائياً
                     const totalTransitionTime = (boxes.length * stepDelayMs) + 550;
                     setTimeout(() => {
                         isSequentialAnimationRunning = false;
@@ -3104,6 +3618,7 @@
 
             const saveBtn = document.getElementById('saveNewPassBtn');
             saveBtn.disabled = true;
+            saveBtn.innerHTML = `<span class="modern-loader-ring"></span> <span>جاري حفظ كلمة المرور...</span>`;
 
             const directory = await fetchCloudUsersDirectory();
             if (directory[recoveryTargetPhone]) {
@@ -3117,6 +3632,7 @@
             }
 
             saveBtn.disabled = false;
+            saveBtn.innerHTML = `<i class="fa-solid fa-check-double"></i> <span>حفظ كلمة المرور الجديدة</span>`;
             generated5DigitCode = null;
             closeForgotPasswordModal();
             switchAuthMode('login');
@@ -3126,7 +3642,7 @@
         }
 
         // ====================================================
-        // و. (شرط 3 الصارم): دالة الاستعلام البرمجي العام المفتوح (fetchPosts) بدون أي فلترة userId
+        // و. دالة الاستعلام البرمجي العام المفتوح (fetchPosts) بدون أي فلترة userId
         // ====================================================
         function cleanExpired30DaysPosts(list) {
             const now = Date.now();
@@ -3137,7 +3653,6 @@
             });
         }
 
-        // دالة fetchPosts العامة التي تجلب كافة الإعلانات من الجدول الموحد لجميع المستخدمين على كوكب الأرض لايف بدون أي فلترة بحسب userId
         async function fetchPosts(silent = true) {
             for (const endpoint of GLOBAL_UNIFIED_POSTS_ENDPOINTS) {
                 try {
@@ -3164,7 +3679,7 @@
 
                             lastKnownPostCount = cleaned.length;
                             marketProducts = cleaned;
-                            localStorage.setItem('zone_global_public_posts_cache_v8', JSON.stringify(marketProducts));
+                            localStorage.setItem('zone_global_public_posts_cache_v9', JSON.stringify(marketProducts));
                             renderMarketProducts();
                             return;
                         }
@@ -3172,7 +3687,7 @@
                 } catch (err) { }
             }
 
-            const cached = localStorage.getItem('zone_global_public_posts_cache_v8');
+            const cached = localStorage.getItem('zone_global_public_posts_cache_v9');
             if (cached) {
                 try {
                     marketProducts = cleanExpired30DaysPosts(JSON.parse(cached));
@@ -3191,7 +3706,7 @@
             marketProducts = cleaned;
             lastKnownPostCount = cleaned.length;
             const serialized = JSON.stringify(cleaned);
-            localStorage.setItem('zone_global_public_posts_cache_v8', serialized);
+            localStorage.setItem('zone_global_public_posts_cache_v9', serialized);
 
             if (broadcastChannel) {
                 broadcastChannel.postMessage({ type: 'SYNC_POSTS', payload: cleaned });
@@ -3248,7 +3763,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // حذف كافة العروض والصور الوهمية القديمة نهائياً
             [
                 'zone_market_items', 'zone_market_items_v2', 'zone_market_items_v3',
                 'zone_market_items_v4', 'zone_market_items_v5', 'zone_market_items_v6',
@@ -3338,10 +3852,19 @@
             const major = document.getElementById('majorInput').value.trim();
             const telegramUser = document.getElementById('telegramUserInput').value.trim().replace(/^@/, '');
 
-            if (!name || !phone || !password || !province || !university || !major) return;
+            if (!province) {
+                showToast("يرجى اختيار المحافظة من القائمة أولاً.");
+                toggleCustomProvinceDropdown('registerProvinceDropdown');
+                return;
+            }
 
+            if (!name || !phone || !password || !university || !major) return;
+
+            showGlobalLoader("جاري التحقق من الحساب...");
             const normPhone = normalizeSyrianPhone(phone);
             const directory = await fetchCloudUsersDirectory();
+            hideGlobalLoader();
+
             if (directory[normPhone] && directory[normPhone].status === 'approved') {
                 studentProfile = { ...directory[normPhone] };
                 if (boundRegistrationChatId) {
@@ -3359,7 +3882,8 @@
                 switchBottomTab('home');
                 startGlobalLiveFeedSync();
                 startTelegramPolling(studentProfile.id);
-                showToast(`تم التعرف على جلستك المفعّلة مسبقاً! أهلاً بك يا ${studentProfile.name}`);
+                // (تعديل 2): رسالة الترحيب بالفصحى بدون كلمة "فوراً"
+                showToast(`أهلاً بك يا ${studentProfile.name}، تم فتح حسابك`);
                 return;
             }
 
@@ -3418,6 +3942,7 @@
         async function sendFinalSubscriptionToTelegram() {
             const finalBtn = document.getElementById('finalSubmitBtn');
             finalBtn.disabled = true;
+            finalBtn.innerHTML = `<span class="modern-loader-ring"></span> <span>جاري إرسال الطلب...</span>`;
 
             const uniqueStudentId = "stu_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6);
             studentProfile.id = uniqueStudentId;
@@ -3462,6 +3987,7 @@
                 console.error("Telegram Send Error:", err);
             } finally {
                 finalBtn.disabled = false;
+                finalBtn.innerHTML = `<span>إرسال طلب الدخول والاشتراك</span>`;
                 closeShamCashPopup();
                 resetWaitingUI();
                 showScreen('waiting-screen');
@@ -3672,7 +4198,8 @@
             switchBottomTab('home');
             startGlobalLiveFeedSync();
 
-            showToast(`تم تفعيل حسابك بنجاح! أهلاً بك في سوق Zone.`);
+            // (تعديل 2): رسالة التفعيل بالفصحى بدون كلمة "فوراً"
+            showToast(`أهلاً بك يا ${studentProfile.name}، تم فتح حسابك`);
         }
 
         async function resetStudentAccountByAdmin() {
@@ -3741,7 +4268,7 @@
             document.getElementById('phoneNumber').value = studentProfile.phone || "";
             document.getElementById('registerPassword').value = studentProfile.password || "";
             if (studentProfile.province) {
-                document.getElementById('provinceSelect').value = studentProfile.province;
+                selectCustomProvince('register', studentProfile.province, null);
             }
             document.getElementById('universityInput').value = studentProfile.university || "";
             document.getElementById('majorInput').value = studentProfile.major || "";
@@ -3753,7 +4280,7 @@
         }
 
         // ====================================================
-        // ي. عرض المنشورات العامة للجميع بدون أي فلترة userId + واجهة "المجلد فاضي"
+        // ي. عرض المنشورات العامة + زر المشاركة العام الموحد (تعديل 11) + شريط التراجع عن الحذف (تعديل 12)
         // ====================================================
         function getRemainingDaysForPost(createdAt) {
             const created = createdAt || Date.now();
@@ -3775,7 +4302,6 @@
 
             marketProducts = cleanExpired30DaysPosts(marketProducts);
 
-            // (شرط 3): لا توجد أي فلترة حسب userId؛ جميع الإعلانات في الجدول العام تظهر للجميع لايف
             const filtered = marketProducts.filter(item => {
                 const matchCat = activeCategory === "all" || item.category === activeCategory;
                 const matchQuery = item.title.toLowerCase().includes(query) ||
@@ -3787,7 +4313,6 @@
                 return matchCat && matchQuery;
             });
 
-            // (شرط 5): واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-folder-panel">
@@ -3851,7 +4376,7 @@
                 const ownerDeleteSoldBtn = isOwner ? `
                     <button type="button" class="owner-delete-sold-btn" onclick="markAsSoldAndDeletePost(${prod.id})">
                         <i class="fa-solid fa-trash-can"></i>
-                        <span>تم البيع (حذف الإعلان فوراً)</span>
+                        <span>تم البيع (حذف الإعلان)</span>
                     </button>
                 ` : '';
 
@@ -3882,9 +4407,10 @@
                                 </button>
                             </div>
 
-                            <button type="button" class="btn-share-whatsapp-card" onclick="sharePostOnWhatsApp(${prod.id})">
-                                <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem;"></i>
-                                <span>مشاركة على الواتساب</span>
+                            <!-- (تعديل 11): أيقونة وزر مشاركة عام موحد (Share Sheet) يفتح قائمة المشاركة الرسمية الخاصة بالنظام -->
+                            <button type="button" class="btn-unified-share-sheet" onclick="openNativeShareSheet(${prod.id})">
+                                <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
+                                <span>مشاركة المنشور</span>
                             </button>
 
                             ${ownerDeleteSoldBtn}
@@ -3963,20 +4489,20 @@
             renderMarketProducts();
         }
 
-        async function sharePostOnWhatsApp(productId) {
+        // (تعديل 11): فتح قائمة المشاركة الرسمية الموحدة الخاصة بالنظام (Native Share Sheet)
+        async function openNativeShareSheet(productId) {
             const prod = marketProducts.find(item => item.id === productId);
             if (!prod) return;
 
             const formattedPrice = formatSYP(prod.price, prod.category);
             const shareText = [
-                `📢 *عرض جامعي في منصة Zone*`,
-                `🔹 *الإعلان:* ${prod.title}`,
-                `🏛️ *الجامعة:* ${prod.university} (${prod.province})`,
-                `🎓 *القسم:* ${prod.category}`,
-                `💰 *السعر:* ${formattedPrice}`,
-                `👤 *الناشر:* ${prod.seller}`,
-                `📱 *للتواصل مع البائع:* ${prod.sellerPhone || 'عبر تطبيق Zone'}`,
-                `🔗 تصفح السوق الطلابي عبر تطبيق Zone الآن!`
+                `📢 عرض جامعي في منصة Zone`,
+                `🔹 الإعلان: ${prod.title}`,
+                `🏛️ الجامعة: ${prod.university} (${prod.province})`,
+                `🎓 القسم: ${prod.category}`,
+                `💰 السعر: ${formattedPrice}`,
+                `👤 الناشر: ${prod.seller}`,
+                `📱 للتواصل مع البائع: ${prod.sellerPhone || 'عبر تطبيق Zone'}`
             ].join("\n");
 
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -3985,37 +4511,92 @@
                 } catch (e) { }
             }
 
-            if (navigator.share && prod.images && prod.images.length > 0 && prod.images[0].startsWith('data:image')) {
+            if (navigator.share) {
                 try {
-                    const res = await fetch(prod.images[0]);
-                    const blob = await res.blob();
-                    const imageFile = new File([blob], "zone_offer.jpg", { type: blob.type || "image/jpeg" });
-                    if (navigator.canShare && navigator.canShare({ files: [imageFile] })) {
-                        await navigator.share({
-                            title: prod.title,
-                            text: shareText,
-                            files: [imageFile]
-                        });
-                        return;
+                    if (prod.images && prod.images.length > 0 && prod.images[0].startsWith('data:image')) {
+                        const res = await fetch(prod.images[0]);
+                        const blob = await res.blob();
+                        const imageFile = new File([blob], "zone_offer.jpg", { type: blob.type || "image/jpeg" });
+                        if (navigator.canShare && navigator.canShare({ files: [imageFile] })) {
+                            await navigator.share({
+                                title: prod.title,
+                                text: shareText,
+                                files: [imageFile]
+                            });
+                            return;
+                        }
                     }
-                } catch (err) { }
+                    await navigator.share({
+                        title: `منصة Zone | ${prod.title}`,
+                        text: shareText,
+                        url: window.location.href
+                    });
+                    return;
+                } catch (err) {
+                    if (err && err.name === 'AbortError') return;
+                }
             }
 
+            // في حال فتح الموقع من متصفح سطح مكتب لا يدعم نافذة النظام، يفتح المشاركة السريعة
             const waShareUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
             window.open(waShareUrl, '_blank');
-            showToast("تم نسخ تفاصيل العرض وفتح الواتساب للمشاركة!");
+            showToast("تم نسخ تفاصيل المنشور للمشاركة!");
         }
 
-        // (شرط 8): حذف المنشور كلياً وفوراً من المتجر وقاعدة البيانات عند الضغط على (تم البيع)
+        // (تعديل 12): حذف المنشور مع إظهار رسالة التراجع الفخمة (Snackbar: "تم حذف المنشور.. تراجع؟") لمدة 5 ثوانٍ
         async function markAsSoldAndDeletePost(productId) {
             const targetIndex = marketProducts.findIndex(item => item.id === productId);
             if (targetIndex === -1) return;
 
-            const removedTitle = marketProducts[targetIndex].title;
+            // حفظ نسخة احتياطية مؤقتة لإمكانية التراجع خلال 5 ثوانٍ
+            lastDeletedPostBackup = { ...marketProducts[targetIndex] };
+            lastDeletedPostIndex = targetIndex;
+
             marketProducts.splice(targetIndex, 1);
             renderMarketProducts();
+            showUndoDeleteSnackbar();
             await pushGlobalLivePostsToCloud(marketProducts);
-            showToast(`تم البيع! حُذف الإعلان "${removedTitle}" كلياً وفوراً من المتجر.`);
+        }
+
+        function showUndoDeleteSnackbar() {
+            const snackbar = document.getElementById('undoDeleteSnackbar');
+            if (!snackbar) return;
+
+            if (snackbarTimeoutId) {
+                clearTimeout(snackbarTimeoutId);
+            }
+
+            // إعادة تفعيل أنيميشن الشريط التنازلي لـ 5 ثوانٍ
+            snackbar.classList.remove('show-snackbar');
+            void snackbar.offsetWidth;
+            snackbar.classList.add('show-snackbar');
+
+            snackbarTimeoutId = setTimeout(() => {
+                snackbar.classList.remove('show-snackbar');
+                lastDeletedPostBackup = null;
+            }, 5000);
+        }
+
+        async function undoLastDeletedPost() {
+            if (!lastDeletedPostBackup) return;
+
+            if (snackbarTimeoutId) {
+                clearTimeout(snackbarTimeoutId);
+                snackbarTimeoutId = null;
+            }
+
+            const snackbar = document.getElementById('undoDeleteSnackbar');
+            if (snackbar) snackbar.classList.remove('show-snackbar');
+
+            const insertPos = Math.min(lastDeletedPostIndex, marketProducts.length);
+            marketProducts.splice(insertPos, 0, lastDeletedPostBackup);
+            lastDeletedPostBackup = null;
+
+            renderMarketProducts();
+            showGlobalLoader("جاري استعادة المنشور...");
+            await pushGlobalLivePostsToCloud(marketProducts);
+            hideGlobalLoader();
+            showToast("تم التراجع واستعادة المنشور بنجاح!");
         }
 
         // ====================================================
@@ -4135,6 +4716,7 @@
             event.preventDefault();
             const publishBtn = document.getElementById('publishPostSubmitBtn');
             publishBtn.disabled = true;
+            publishBtn.innerHTML = `<span class="modern-loader-ring"></span> <span>جاري النشر للجميع...</span>`;
 
             const category = document.getElementById('postCategorySelect').value;
             const title = document.getElementById('postTitleInput').value.trim();
@@ -4166,6 +4748,7 @@
             await pushGlobalLivePostsToCloud(marketProducts);
 
             publishBtn.disabled = false;
+            publishBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>نشر الإعلان فوراً للجميع</span>`;
             renderMarketProducts();
             closeAddPostModal();
             document.getElementById('newPostForm').reset();
@@ -4276,7 +4859,6 @@
             document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
         }
 
-        // (شرط 7): إخفاء زر "إضافة منشور جديد" والدائرة البرتقالية العائمة داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
         function switchBottomTab(tabName) {
             const homeTab = document.getElementById('home-tab');
             const profileTab = document.getElementById('profile-tab');
@@ -4309,7 +4891,8 @@
         function openEditProfileModal() {
             document.getElementById('editName').value = studentProfile.name || "";
             document.getElementById('editPhone').value = studentProfile.phone || "";
-            document.getElementById('editProvince').value = studentProfile.province || "حلب";
+            const currentProv = studentProfile.province || "حلب";
+            selectCustomProvince('edit', currentProv, null);
             document.getElementById('editUni').value = studentProfile.university || "";
             document.getElementById('editMajor').value = studentProfile.major || "";
             document.getElementById('editTelegram').value = studentProfile.telegramUsername || "";
@@ -4320,16 +4903,18 @@
             document.getElementById('editProfileModal').classList.remove('open');
         }
 
-        // (شرط 7): إرسال إشعار تلقائي لبوت التليجرام في غرفة تحكم الإدارة عند قيام أي طالب بتعديل بياناته الشخصية
         async function handleSaveProfile(event) {
             event.preventDefault();
             const saveBtn = document.getElementById('saveProfileChangesBtn');
-            if (saveBtn) saveBtn.disabled = true;
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = `<span class="modern-loader-ring"></span> <span>جاري الحفظ...</span>`;
+            }
 
             const oldAccountLabel = studentProfile.name || studentProfile.phone || "طالب";
             studentProfile.name = document.getElementById('editName').value.trim();
             studentProfile.phone = document.getElementById('editPhone').value.trim();
-            studentProfile.province = document.getElementById('editProvince').value;
+            studentProfile.province = document.getElementById('editProvince').value || "حلب";
             studentProfile.university = document.getElementById('editUni').value.trim();
             studentProfile.major = document.getElementById('editMajor').value.trim();
             studentProfile.telegramUsername = document.getElementById('editTelegram').value.trim().replace(/^@/, '');
@@ -4368,7 +4953,10 @@
 
             syncProfileToUI();
             renderMarketProducts();
-            if (saveBtn) saveBtn.disabled = false;
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> <span>حفظ التعديلات</span>`;
+            }
             closeEditProfileModal();
             showToast(`تم تحديث بياناتك ومزامنتها سحابياً بنجاح!`);
         }
@@ -4397,7 +4985,7 @@
 
             switchAuthMode('login');
             showScreen('data-screen');
-            showToast("تم تسجيل الخروج بنجاح. يمكنك الدخول من أي جهاز بنفس رقمك.");
+            showToast("تم تسجيل الخروج بنجاح.");
         }
 
         function showToast(msg) {
