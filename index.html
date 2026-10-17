@@ -148,7 +148,7 @@
         }
 
         /* ====================================================
-           4. الصفحة الثانية: تعبئة المعلومات (سجل بياناتك الآن)
+           4. الصفحة الثانية: تعبئة المعلومات / تسجيل الدخول المزامن سحابياً
            ==================================================== */
         #data-screen {
             justify-content: center;
@@ -168,7 +168,7 @@
 
         .section-header {
             text-align: center;
-            margin-bottom: 1.4rem;
+            margin-bottom: 1.2rem;
         }
 
         .official-logo-badge {
@@ -184,19 +184,19 @@
             box-shadow: 0 12px 28px var(--orange-glow);
         }
 
-        /* أيقونة التاج الملكي الفخم في واجهة الاشتراك */
+        /* أيقونة التاج الذهبي الملكي 👑 في واجهة الاشتراك */
         .royal-crown-badge {
-            width: 76px;
-            height: 76px;
-            background: linear-gradient(145deg, rgba(249, 115, 22, 0.18), rgba(251, 191, 36, 0.12));
+            width: 78px;
+            height: 78px;
+            background: linear-gradient(145deg, rgba(249, 115, 22, 0.18), rgba(251, 191, 36, 0.14));
             border: 2px solid var(--gold-crown);
             border-radius: 22px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 0.75rem;
-            box-shadow: 0 12px 30px rgba(251, 191, 36, 0.28);
-            font-size: 2.2rem;
+            box-shadow: 0 12px 30px rgba(251, 191, 36, 0.3);
+            font-size: 2.25rem;
             color: var(--gold-crown);
         }
 
@@ -206,8 +206,38 @@
             color: var(--text-white);
         }
 
+        /* مفتاح التبديل بين (حساب جديد) و (تسجيل الدخول لمزامنة الجلسة) */
+        .auth-mode-switcher {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: var(--navy-primary);
+            padding: 6px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--navy-border);
+            margin-bottom: 1.3rem;
+        }
+
+        .auth-mode-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 9px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .auth-mode-btn.active {
+            background: var(--orange-main);
+            color: var(--text-white);
+            box-shadow: 0 4px 12px var(--orange-glow);
+        }
+
         .form-group {
-            margin-bottom: 1.05rem;
+            margin-bottom: 1rem;
         }
 
         .form-group label {
@@ -258,6 +288,27 @@
         .form-control:focus {
             border-color: var(--orange-main);
             box-shadow: 0 0 0 3px var(--orange-soft);
+        }
+
+        .forgot-pass-row {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 6px;
+        }
+
+        .btn-forgot-pass-link {
+            background: transparent;
+            border: none;
+            color: var(--orange-light);
+            font-size: 0.83rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 2px 0;
+        }
+
+        .btn-forgot-pass-link:hover {
+            color: var(--orange-main);
         }
 
         .btn-next-official {
@@ -1515,6 +1566,23 @@
             cursor: pointer;
         }
 
+        .otp-alert-box {
+            background: rgba(255, 69, 0, 0.14);
+            border: 1.5px solid var(--reject-color);
+            color: var(--orange-light);
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: none;
+            line-height: 1.6;
+        }
+
+        .otp-alert-box.show {
+            display: block;
+        }
+
         .toast-box {
             position: fixed;
             top: 20px;
@@ -1639,7 +1707,7 @@
     </section>
 
     <!-- ====================================================
-         2. الصفحة الثانية: تعبئة المعلومات (سجل بياناتك الآن + الفرع الدراسي)
+         2. الصفحة الثانية: (سجل بياناتك الآن) + (تسجيل الدخول ومزامنة الجلسة) + (استعادة كلمة المرور OTP)
          ==================================================== -->
     <section id="data-screen" class="screen">
         <div class="card-container">
@@ -1649,10 +1717,19 @@
                         <use href="#zone-split-z-logo"></use>
                     </svg>
                 </div>
-                <!-- (شرط 5): العنوان الرئيسي بالخط العريض (سجل بياناتك الآن) -->
-                <h2>سجل بياناتك الآن</h2>
+                <!-- (شرط 9): العنوان الرئيسي بالخط العريض (سجل بياناتك الآن) -->
+                <h2 id="authMainHeading">سجل بياناتك الآن</h2>
             </div>
 
+            <!-- التبديل بين التسجيل الجديد وتسجيل الدخول لمزامنة الجلسات بين الموبايل واللابتوب -->
+            <div class="auth-mode-switcher">
+                <button type="button" class="auth-mode-btn active" id="tabRegisterBtn"
+                    onclick="switchAuthMode('register')">حساب جديد</button>
+                <button type="button" class="auth-mode-btn" id="tabLoginBtn" onclick="switchAuthMode('login')">تسجيل
+                    الدخول</button>
+            </div>
+
+            <!-- أ) نموذج تسجيل بيانات طالب جديد -->
             <form id="studentDataForm" onsubmit="goToSubscriptionScreen(event)">
                 <div class="form-group">
                     <label for="fullName">الاسم الكامل</label>
@@ -1662,13 +1739,23 @@
                     </div>
                 </div>
 
-                <!-- كيبورد الأرقام التلقائي لرقم الهاتف -->
+                <!-- (شرط 4): كيبورد الأرقام التلقائي لرقم الهاتف -->
                 <div class="form-group">
                     <label for="phoneNumber">رقم الهاتف</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-phone"></i>
                         <input type="tel" id="phoneNumber" inputmode="numeric" pattern="[0-9+]*" class="form-control"
                             placeholder="اكتب رقمك هنا" required>
+                    </div>
+                </div>
+
+                <!-- كلمة المرور لحماية الحساب ومزامنة الجلسة -->
+                <div class="form-group">
+                    <label for="registerPassword">كلمة المرور</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="registerPassword" class="form-control"
+                            placeholder="عيّن كلمة مرور لحسابك..." required>
                     </div>
                 </div>
 
@@ -1705,7 +1792,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 5): حذف كلمة الكلية وجعل المكتوب جملة (الفرع الدراسي) فقط -->
+                <!-- (شرط 9): جملة (الفرع الدراسي) فقط بدل كلمة الكلية -->
                 <div class="form-group">
                     <label for="majorInput">الفرع الدراسي</label>
                     <div class="input-wrapper">
@@ -1725,8 +1812,99 @@
 
                 <button type="submit" class="btn-next-official">التالي</button>
             </form>
+
+            <!-- ب) نموذج تسجيل الدخول الفوري ومزامنة الجلسة (Session Sync) من أي جهاز آخر -->
+            <form id="studentLoginForm" style="display: none;" onsubmit="handleSessionSyncLogin(event)">
+                <div class="form-group">
+                    <label for="loginPhoneInput">رقم الهاتف المسجل</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="tel" id="loginPhoneInput" inputmode="numeric" pattern="[0-9+]*"
+                            class="form-control" placeholder="اكتب رقمك هنا" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPasswordInput">كلمة المرور</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="loginPasswordInput" class="form-control"
+                            placeholder="أدخل كلمة المرور..." required>
+                    </div>
+                    <div class="forgot-pass-row">
+                        <button type="button" class="btn-forgot-pass-link" onclick="openForgotPasswordModal()">هل نسيت
+                            كلمة المرور؟</button>
+                    </div>
+                </div>
+
+                <button type="submit" id="loginSyncSubmitBtn" class="btn-next-official">تسجيل الدخول</button>
+            </form>
         </div>
     </section>
+
+    <!-- ====================================================
+         نافذة استعادة كلمة المرور وفحص الرقم (Telegram OTP)
+         ==================================================== -->
+    <div class="modal-overlay" id="forgotPasswordModal">
+        <div class="modal-card" style="text-align: right;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-key"></i> استعادة كلمة المرور (OTP)</h3>
+                <button type="button" class="btn-close-modal" onclick="closeForgotPasswordModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- مربع التنبيه الصارم إذا كان الرقم غير مسجل -->
+            <div id="otpErrorAlert" class="otp-alert-box"></div>
+
+            <!-- الخطوة 1: إدخال رقم الهاتف لفحصه في قاعدة البيانات -->
+            <div id="otpStep1Phone">
+                <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    أدخل رقم هاتفك المسجل في المنصة ليتم فحصه وإرسال رمز التحقق المجاني عبر بوت التليجرام الرسمي:
+                </p>
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="tel" id="otpPhoneCheckInput" inputmode="numeric" pattern="[0-9+]*"
+                            class="form-control" placeholder="اكتب رقمك هنا">
+                    </div>
+                </div>
+                <button type="button" id="sendOtpBtn" class="btn-orange-wide" onclick="verifyPhoneAndSendTelegramOTP()">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span>فحص الرقم وإرسال رمز التحقق</span>
+                </button>
+            </div>
+
+            <!-- الخطوة 2: إدخال رمز التحقق وتعيين كلمة مرور جديدة -->
+            <div id="otpStep2Verify" style="display: none;">
+                <p style="font-size: 0.85rem; color: var(--orange-light); margin-bottom: 1rem; font-weight: 700;">
+                    تم إرسال رمز التحقق (OTP) بنجاح عبر بوت التليجرام الرسمي! أدخل الرمز أدناه لتعيين كلمة مرور جديدة:
+                </p>
+                <div class="form-group">
+                    <label>رمز التحقق المكون من 6 أرقام</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <input type="tel" id="otpCodeInput" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+                            class="form-control" placeholder="أدخل الرمز المرسل...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور الجديدة</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="otpNewPasswordInput" class="form-control"
+                            placeholder="أدخل كلمة المرور الجديدة...">
+                    </div>
+                </div>
+                <button type="button" id="confirmNewPassBtn" class="btn-orange-wide"
+                    onclick="confirmOtpAndUpdatePassword()">
+                    <i class="fa-solid fa-check-double"></i>
+                    <span>تأكيد وحفظ كلمة المرور الجديدة</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ====================================================
          3. الصفحة الثالثة: واجهة الاشتراك (الباقات) بأيقونة التاج الملكي الفخم 👑
@@ -1734,7 +1912,7 @@
     <section id="subscription-screen" class="screen">
         <div class="plans-container-card">
             <div class="section-header">
-                <!-- (شرط 6): حذف شعار التطبيق ووضع أيقونة التاج الذهبي الملكي 👑 الفخم -->
+                <!-- (شرط 5): أيقونة التاج الذهبي الملكي 👑 الفخم بدون جرايد وبدون زر دعم -->
                 <div class="royal-crown-badge">
                     <i class="fa-solid fa-crown"></i>
                 </div>
@@ -1765,7 +1943,7 @@
         </div>
     </section>
 
-    <!-- نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
+    <!-- (شرط 6): نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
     <div class="modal-overlay" id="shamCashModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -1782,7 +1960,7 @@
                 style="max-width: 240px; width: 100%; height: auto; display: block; margin: 12px auto; border-radius: 8px;"
                 onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=240x240&color=1e3a5f&bgcolor=ffffff&margin=10&data=26ee871407869d05ad94223e7b4f1402';">
 
-            <!-- النص الأول والنص الثاني تحته حصراً بالفصحى -->
+            <!-- الصياغة الحصرية المطلوبة تحت الكيو آر كود -->
             <div class="qr-certified-company-line">معتمد من شركة Zone</div>
             <div class="recipient-verified-line">
                 <span>المستلم الرسمي المعتمد: محمد يحيى جمال</span>
@@ -1831,7 +2009,7 @@
                     <span>سوق محافظة: <strong id="headerProvinceName">حلب</strong></span>
                 </div>
 
-                <!-- (شرط 3): زر "إضافة منشور جديد" يظهر فقط في الرئيسية ويختفي تماماً بداخل صفحة "أنا" -->
+                <!-- (شرط 8): زر "إضافة منشور جديد" يظهر فقط في الرئيسية ويختفي تماماً بداخل صفحة "أنا" (بدون أيقونة إعدادات بجانبه) -->
                 <button type="button" id="headerAddPostBtn" class="btn-add-product-header" onclick="openAddPostModal()">
                     <i class="fa-solid fa-plus"></i>
                     <span>إضافة منشور جديد</span>
@@ -1882,7 +2060,7 @@
             <div class="products-grid" id="productsGridContainer"></div>
         </main>
 
-        <!-- (شرط 4 و 8): التبويب الثاني "أنا" بالمصطلحات المحدثة (المحافظة / التخصص) والأزرار الدائرية -->
+        <!-- (شرط 7 و 9): التبويب الثاني "أنا" بالمصطلحات المحدثة (المحافظة / التخصص) والأزرار الدائرية -->
         <main id="profile-tab" class="tab-view">
             <div class="profile-card">
                 <div class="profile-circular-actions-bar">
@@ -1907,26 +2085,26 @@
                 </div>
 
                 <div class="profile-details-list">
-                    <!-- (شرط 4): كلمة (المحافظة) فقط دون أي سلاش أو نطاق السوق -->
+                    <!-- (شرط 9): كلمة (المحافظة) فقط دون أي سلاش أو نطاق السوق -->
                     <div class="profile-detail-row">
-                        <span>المحافظة:</span>
+                        <span>المحافظة</span>
                         <span id="profileProvinceText">حلب</span>
                     </div>
-                    <!-- (شرط 4): كلمة (التخصص) فقط دون كلمة الكلية -->
+                    <!-- (شرط 9): كلمة (التخصص) فقط دون كلمة الكلية -->
                     <div class="profile-detail-row">
-                        <span>التخصص:</span>
+                        <span>التخصص</span>
                         <span id="profileMajorText">هندسة ميكاترونيكس</span>
                     </div>
                     <div class="profile-detail-row">
-                        <span>رقم الهاتف:</span>
+                        <span>رقم الهاتف</span>
                         <span id="profilePhoneText">0900000000</span>
                     </div>
                     <div class="profile-detail-row">
-                        <span>معرف التليجرام الشخصي:</span>
+                        <span>معرف التليجرام الشخصي</span>
                         <span id="profileTelegramText">غير مضاف</span>
                     </div>
                     <div class="profile-detail-row">
-                        <span>الباقة الفعالة:</span>
+                        <span>الباقة الفعالة</span>
                         <span id="profilePlanText" style="color: var(--orange-light);">اشتراك شهري (1 دولار)</span>
                     </div>
                 </div>
@@ -1940,10 +2118,9 @@
             </div>
         </main>
 
-        <!-- (شرط 1 و 3): الدائرة البرتقالية العائمة بشعار التليجرام تفتح محادثة تشات الدعم المباشر وتختفي في صفحة "أنا" -->
+        <!-- (شرط 8 و 10): الدائرة البرتقالية العائمة للدعم بالرئيسية فقط وتختفي تماماً في صفحة "أنا" -->
         <a href="https://t.me/zoneapplication" target="_blank" rel="noopener noreferrer" id="floatingSupportCircle"
-            class="floating-telegram-support" onclick="openDirectSupportTelegram(event)"
-            title="التحدث المباشر مع الدعم الفني">
+            class="floating-telegram-support" onclick="openDirectSupportTelegram(event)" title="الدعم الفني المباشر">
             <i class="fa-brands fa-telegram"></i>
         </a>
 
@@ -2111,7 +2288,7 @@
                     </div>
                 </div>
 
-                <!-- كيبورد الأرقام التلقائي لخانة السعر -->
+                <!-- (شرط 4): كيبورد الأرقام التلقائي لخانة السعر -->
                 <div class="form-group" id="postPriceGroup">
                     <label>السعر بالليرة السورية (ل.س)</label>
                     <div class="input-wrapper">
@@ -2216,10 +2393,10 @@
     </div>
 
     <!-- ====================================================
-         10. المنطق البرمجي الكامل والشامل + المزامنة السحابية العالمية (JavaScript)
+         10. المنطق البرمجي الكامل والشامل + مزامنة الجلسات + OTP التليجرام (JavaScript)
          ==================================================== -->
     <script>
-        // إعدادات بوت التلغرام الإداري
+        // إعدادات بوت التلغرام الإداري والرسمي
         const TELEGRAM_BOT_TOKEN = "8714980380:AAH5TzjGwMyKASdoBDMZNLV8tA0ME8p7ALE";
         const TELEGRAM_CHAT_ID = "8717720399";
         const TELEGRAM_API_BASE = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
@@ -2227,9 +2404,13 @@
         // حساب الدعم الفني الرسمي المباشر على التليجرام
         const OFFICIAL_SUPPORT_TELEGRAM_USERNAME = "zoneapplication";
 
-        // (شرط 7): نقطة الاتصال السحابية العالمية الحية للمنشورات (Global Live Cloud Feed)
-        const GLOBAL_CLOUD_FEED_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_global_live_posts_v2";
-        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v2') : null;
+        // نقاط الاتصال السحابية الحية:
+        // 1) جدول المنشورات العام لجميع الأجهزة (Global Live Feed)
+        const GLOBAL_CLOUD_FEED_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_global_live_posts_v3";
+        // 2) جدول الحسابات والجلسات السحابي لمزامنة الدخول واستعادة كلمة المرور (Session Sync & OTP DB)
+        const GLOBAL_CLOUD_USERS_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_cloud_users_db_v1";
+
+        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v3') : null;
 
         const PENDING_TIMEOUT_MS = 48 * 60 * 60 * 1000;
         const POST_LIFETIME_DAYS = 30;
@@ -2246,33 +2427,45 @@
         let runtimeVerifiedToken = null;
         let lastKnownPostCount = 0;
 
-        // بيانات الطالب الشخصية معزولة ومحمية في جهازه بشكل مستقل تماماً
+        // متغيرات نظام استعادة كلمة المرور (Telegram OTP)
+        let generatedOtpCode = null;
+        let otpTargetPhone = null;
+
         let studentProfile = {
             id: "",
             name: "",
             phone: "",
+            password: "",
             province: "حلب",
             university: "جامعة حلب",
             major: "",
             telegramUsername: "",
             plan: "",
+            status: "none",
             pendingSince: 0,
             waitingCustomNote: "",
             rejectionMessage: "",
             subscribedColleges: []
         };
 
-        // المتجر يبدأ نظيفاً وصافياً بدون أي عروض وهمية
         let marketProducts = [];
 
+        // توحيد صيغة رقم الهاتف للمقارنة الدقيقة بين الموبايل واللابتوب
+        function normalizeSyrianPhone(rawPhone) {
+            let digits = String(rawPhone || "").replace(/\D/g, '');
+            if (digits.startsWith("963")) {
+                digits = "0" + digits.substring(3);
+            }
+            return digits;
+        }
+
         // ====================================================
-        // أ. (شرط 1): فتح رابط تشات الدعم المباشر في التليجرام (وليس الرسائل المحفوظة)
+        // أ. فتح رابط تشات الدعم المباشر في التليجرام
         // ====================================================
         function openDirectSupportTelegram(event) {
             if (event) event.preventDefault();
             const cleanSupportHandle = OFFICIAL_SUPPORT_TELEGRAM_USERNAME.replace(/^@/, '').trim();
-            const directChatUrl = `https://t.me/${cleanSupportHandle}`;
-            window.open(directChatUrl, '_blank', 'noopener,noreferrer');
+            window.open(`https://t.me/${cleanSupportHandle}`, '_blank', 'noopener,noreferrer');
         }
 
         // ====================================================
@@ -2335,7 +2528,250 @@
         })();
 
         // ====================================================
-        // ج. (شرط 7): محرك المزامنة السحابي العالمي الحي للمنشورات (Global Live Feed)
+        // ج. (شرط 1 و 2): إدارة قاعدة بيانات الحسابات السحابية (Session Sync & OTP Check)
+        // ====================================================
+        async function fetchCloudUsersDirectory() {
+            try {
+                const res = await fetch(GLOBAL_CLOUD_USERS_URL, { method: 'GET', cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && typeof data === 'object') {
+                        localStorage.setItem('zone_cached_users_dir', JSON.stringify(data));
+                        return data;
+                    }
+                }
+            } catch (e) { }
+
+            const localDir = localStorage.getItem('zone_cached_users_dir');
+            if (localDir) {
+                try { return JSON.parse(localDir); } catch (e) { }
+            }
+            return {};
+        }
+
+        async function saveAccountToCloudDirectory(profileObj) {
+            if (!profileObj || !profileObj.phone) return;
+            const normPhone = normalizeSyrianPhone(profileObj.phone);
+            const directory = await fetchCloudUsersDirectory();
+            directory[normPhone] = {
+                ...profileObj,
+                normalizedPhone: normPhone,
+                updatedAt: Date.now()
+            };
+            localStorage.setItem('zone_cached_users_dir', JSON.stringify(directory));
+
+            try {
+                await fetch(GLOBAL_CLOUD_USERS_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(directory)
+                });
+            } catch (err) {
+                console.warn("Cloud user sync fallback:", err);
+            }
+        }
+
+        // التبديل بين تبويب "حساب جديد" وتبويب "تسجيل الدخول"
+        function switchAuthMode(mode) {
+            const regForm = document.getElementById('studentDataForm');
+            const loginForm = document.getElementById('studentLoginForm');
+            const regBtn = document.getElementById('tabRegisterBtn');
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const heading = document.getElementById('authMainHeading');
+
+            if (mode === 'register') {
+                regForm.style.display = 'block';
+                loginForm.style.display = 'none';
+                regBtn.classList.add('active');
+                loginBtn.classList.remove('active');
+                heading.textContent = "سجل بياناتك الآن";
+            } else {
+                regForm.style.display = 'none';
+                loginForm.style.display = 'block';
+                loginBtn.classList.add('active');
+                regBtn.classList.remove('active');
+                heading.textContent = "تسجيل الدخول";
+            }
+        }
+
+        // (شرط 2): تسجيل الدخول الفوري ومزامنة الجلسة بين الموبايل واللابتوب بنفس الرقم
+        async function handleSessionSyncLogin(event) {
+            event.preventDefault();
+            const phoneVal = document.getElementById('loginPhoneInput').value.trim();
+            const passVal = document.getElementById('loginPasswordInput').value;
+            const normPhone = normalizeSyrianPhone(phoneVal);
+
+            const loginBtn = document.getElementById('loginSyncSubmitBtn');
+            loginBtn.disabled = true;
+            loginBtn.textContent = "جاري التحقق ومزامنة الجلسة...";
+
+            const directory = await fetchCloudUsersDirectory();
+            const matchedAccount = directory[normPhone];
+
+            loginBtn.disabled = false;
+            loginBtn.textContent = "تسجيل الدخول";
+
+            if (!matchedAccount) {
+                showToast("عذراً، هذا الرقم غير مسجل لدينا، يرجى إنشاء حساب جديد");
+                return;
+            }
+
+            if (matchedAccount.password && matchedAccount.password !== passVal) {
+                showToast("كلمة المرور غير صحيحة! يمكنك استعادتها عبر زر (هل نسيت كلمة المرور؟)");
+                return;
+            }
+
+            studentProfile = { ...matchedAccount };
+            localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+
+            // إذا كان الحساب مفعلاً مسبقاً على الموبايل، يفتح له الرئيسية فوراً على اللابتوب دون إعادة إدخال البيانات
+            if (matchedAccount.status === 'approved') {
+                const secToken = generateSecurityHash(studentProfile.id);
+                runtimeVerifiedToken = secToken;
+                localStorage.setItem('zone_security_token', secToken);
+                localStorage.setItem('zone_status', 'approved');
+
+                syncProfileToUI();
+                showScreen('app-screen');
+                switchBottomTab('home');
+                startGlobalLiveFeedSync();
+                startTelegramPolling(studentProfile.id);
+                showToast(`مرحباً بعودتك يا ${studentProfile.name}! تمت مزامنة جلستك بنجاح.`);
+            } else if (matchedAccount.status === 'pending') {
+                localStorage.setItem('zone_status', 'pending');
+                resetWaitingUI(studentProfile.waitingCustomNote);
+                showScreen('waiting-screen');
+                startTelegramPolling(studentProfile.id);
+                showToast("حسابك قيد المراجعة حالياً، تم نقلك لشاشة المتابعة.");
+            } else if (matchedAccount.status === 'rejected') {
+                localStorage.setItem('zone_status', 'rejected');
+                showScreen('waiting-screen');
+                applyRejectionUI(studentProfile.rejectionMessage);
+            } else {
+                showScreen('subscription-screen');
+            }
+        }
+
+        // ====================================================
+        // د. (شرط 1): نظام استعادة كلمة المرور وفحص الرقم (Telegram OTP)
+        // ====================================================
+        function openForgotPasswordModal() {
+            const loginPhone = document.getElementById('loginPhoneInput').value.trim();
+            document.getElementById('otpPhoneCheckInput').value = loginPhone;
+            document.getElementById('otpErrorAlert').classList.remove('show');
+            document.getElementById('otpStep1Phone').style.display = 'block';
+            document.getElementById('otpStep2Verify').style.display = 'none';
+            document.getElementById('forgotPasswordModal').classList.add('open');
+        }
+
+        function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.remove('open');
+        }
+
+        async function verifyPhoneAndSendTelegramOTP() {
+            const rawPhone = document.getElementById('otpPhoneCheckInput').value.trim();
+            const alertBox = document.getElementById('otpErrorAlert');
+            alertBox.classList.remove('show');
+
+            if (!rawPhone) {
+                alertBox.textContent = "يرجى إدخال رقم الهاتف أولاً.";
+                alertBox.classList.add('show');
+                return;
+            }
+
+            const normPhone = normalizeSyrianPhone(rawPhone);
+            const sendBtn = document.getElementById('sendOtpBtn');
+            sendBtn.disabled = true;
+
+            const directory = await fetchCloudUsersDirectory();
+            const existingUser = directory[normPhone];
+
+            // إذا كان الرقم غير مسجل مسبقاً في قاعدة البيانات
+            if (!existingUser) {
+                sendBtn.disabled = false;
+                alertBox.textContent = "عذراً، هذا الرقم غير مسجل لدينا، يرجى إنشاء حساب جديد";
+                alertBox.classList.add('show');
+                showToast("عذراً، هذا الرقم غير مسجل لدينا، يرجى إنشاء حساب جديد");
+                return;
+            }
+
+            // إذا كان الرقم مسجلاً مسبقاً: توليد رمز تحقق عشوائي (6 أرقام) وإرساله عبر بوت التليجرام الرسمي
+            generatedOtpCode = String(Math.floor(100000 + Math.random() * 900000));
+            otpTargetPhone = normPhone;
+
+            const otpTelegramMsg = [
+                "🔐 رمز استعادة كلمة المرور (OTP) - منصة Zone",
+                "━━━━━━━━━━━━━━━━━━",
+                `👤 الطالب: ${existingUser.name}`,
+                `📱 رقم الهاتف: ${existingUser.phone}`,
+                `🔑 رمز التحقق المجاني: ${generatedOtpCode}`,
+                "━━━━━━━━━━━━━━━━━━"
+            ].join("\n");
+
+            try {
+                // إرسال الرمز عبر بوت التليجرام الرسمي للتطبيق
+                await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: otpTelegramMsg
+                    })
+                });
+            } catch (e) {
+                console.warn("OTP Telegram send warning:", e);
+            }
+
+            sendBtn.disabled = false;
+            document.getElementById('otpStep1Phone').style.display = 'none';
+            document.getElementById('otpStep2Verify').style.display = 'block';
+            showToast("تم إرسال رمز التحقق (OTP) عبر بوت التليجرام الرسمي!");
+        }
+
+        async function confirmOtpAndUpdatePassword() {
+            const enteredCode = document.getElementById('otpCodeInput').value.trim();
+            const newPass = document.getElementById('otpNewPasswordInput').value;
+            const alertBox = document.getElementById('otpErrorAlert');
+            alertBox.classList.remove('show');
+
+            if (!enteredCode || enteredCode !== generatedOtpCode) {
+                alertBox.textContent = "رمز التحقق غير صحيح، يرجى التأكد من الرمز المرسل.";
+                alertBox.classList.add('show');
+                return;
+            }
+
+            if (!newPass || newPass.length < 3) {
+                alertBox.textContent = "يرجى إدخال كلمة مرور جديدة صالحة.";
+                alertBox.classList.add('show');
+                return;
+            }
+
+            const confirmBtn = document.getElementById('confirmNewPassBtn');
+            confirmBtn.disabled = true;
+
+            const directory = await fetchCloudUsersDirectory();
+            if (directory[otpTargetPhone]) {
+                directory[otpTargetPhone].password = newPass;
+                await saveAccountToCloudDirectory(directory[otpTargetPhone]);
+
+                // إذا كان الحساب مفتوحاً محلياً نحدّثه أيضاً
+                if (normalizeSyrianPhone(studentProfile.phone) === otpTargetPhone) {
+                    studentProfile.password = newPass;
+                    localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+                }
+            }
+
+            confirmBtn.disabled = false;
+            generatedOtpCode = null;
+            closeForgotPasswordModal();
+            switchAuthMode('login');
+            document.getElementById('loginPhoneInput').value = otpTargetPhone;
+            document.getElementById('loginPasswordInput').value = newPass;
+            showToast("تم تعيين كلمة المرور الجديدة بنجاح! يمكنك تسجيل الدخول الآن.");
+        }
+
+        // ====================================================
+        // هـ. محرك المزامنة السحابي العالمي الحي للمنشورات (Global Live Feed)
         // ====================================================
         function cleanExpired30DaysPosts(list) {
             const now = Date.now();
@@ -2365,19 +2801,19 @@
                                 Array.isArray(studentProfile.subscribedColleges) &&
                                 studentProfile.subscribedColleges.includes(newestPost.category)
                             ) {
-                                showToast(`🔔 عرض جديد في كليتك (${newestPost.category}): ${newestPost.title}`);
+                                showToast(`🔔 عرض جديد في تخصصك (${newestPost.category}): ${newestPost.title}`);
                             }
                         }
                         lastKnownPostCount = cleaned.length;
                         marketProducts = cleaned;
-                        localStorage.setItem('zone_global_cached_posts_v2', JSON.stringify(marketProducts));
+                        localStorage.setItem('zone_global_cached_posts_v3', JSON.stringify(marketProducts));
                         renderMarketProducts();
                         return;
                     }
                 }
             } catch (err) { }
 
-            const cached = localStorage.getItem('zone_global_cached_posts_v2');
+            const cached = localStorage.getItem('zone_global_cached_posts_v3');
             if (cached) {
                 try {
                     marketProducts = cleanExpired30DaysPosts(JSON.parse(cached));
@@ -2395,7 +2831,7 @@
             const cleaned = cleanExpired30DaysPosts(updatedList);
             marketProducts = cleaned;
             lastKnownPostCount = cleaned.length;
-            localStorage.setItem('zone_global_cached_posts_v2', JSON.stringify(cleaned));
+            localStorage.setItem('zone_global_cached_posts_v3', JSON.stringify(cleaned));
 
             if (broadcastChannel) {
                 broadcastChannel.postMessage({ type: 'SYNC_POSTS', payload: cleaned });
@@ -2432,7 +2868,7 @@
         }
 
         // ====================================================
-        // د. شاشة الترحيب الثابتة (2 ثانية) وتنظيف العروض الوهمية القديمة
+        // و. شاشة الترحيب الثابتة (2 ثانية) وفحص الجلسة السحابية تلقائياً
         // ====================================================
         function checkAndCleanExpiredPendingRequest() {
             const savedStatus = localStorage.getItem('zone_status');
@@ -2450,7 +2886,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // حذف كافة المفاتيح القديمة التي كانت تحتوي على عروض وهمية
+            // (شرط 3): حذف كافة العروض والصور الوهمية القديمة نهائياً
             [
                 'zone_market_items', 'zone_market_items_v2', 'zone_market_items_v3',
                 'zone_market_items_v4', 'zone_market_items_v5', 'zone_market_items_v6',
@@ -2462,10 +2898,24 @@
                 const splash = document.getElementById('splash-screen');
                 splash.classList.add('fade-out');
 
-                setTimeout(() => {
+                setTimeout(async () => {
                     const savedProfile = localStorage.getItem('zone_student_profile');
                     if (savedProfile) {
                         studentProfile = JSON.parse(savedProfile);
+                    }
+
+                    // مزامنة تلقائية لحالة الحساب من السحابة إذا كان لديه رقم مسجل
+                    if (studentProfile.phone) {
+                        const cloudDir = await fetchCloudUsersDirectory();
+                        const norm = normalizeSyrianPhone(studentProfile.phone);
+                        if (cloudDir[norm] && cloudDir[norm].status === 'approved') {
+                            studentProfile = { ...cloudDir[norm] };
+                            const secToken = generateSecurityHash(studentProfile.id);
+                            runtimeVerifiedToken = secToken;
+                            localStorage.setItem('zone_security_token', secToken);
+                            localStorage.setItem('zone_status', 'approved');
+                            localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+                        }
                     }
 
                     if (checkAndCleanExpiredPendingRequest()) {
@@ -2514,22 +2964,44 @@
         }
 
         // ====================================================
-        // هـ. الانتقال بين البيانات والاشتراك وإرسال الرسالة إلى التلغرام
+        // ز. الانتقال بين البيانات والاشتراك وإرسال الرسالة إلى التلغرام
         // ====================================================
-        function goToSubscriptionScreen(event) {
+        async function goToSubscriptionScreen(event) {
             event.preventDefault();
 
             const name = document.getElementById('fullName').value.trim();
             const phone = document.getElementById('phoneNumber').value.trim();
+            const password = document.getElementById('registerPassword').value;
             const province = document.getElementById('provinceSelect').value;
             const university = document.getElementById('universityInput').value.trim();
             const major = document.getElementById('majorInput').value.trim();
             const telegramUser = document.getElementById('telegramUserInput').value.trim().replace(/^@/, '');
 
-            if (!name || !phone || !province || !university || !major) return;
+            if (!name || !phone || !password || !province || !university || !major) return;
+
+            // فحص ما إذا كان الرقم مفعلاً مسبقاً في السحابة (Session Sync تلقائي حتى لو ضغط التالي)
+            const normPhone = normalizeSyrianPhone(phone);
+            const directory = await fetchCloudUsersDirectory();
+            if (directory[normPhone] && directory[normPhone].status === 'approved') {
+                studentProfile = { ...directory[normPhone] };
+                const secToken = generateSecurityHash(studentProfile.id);
+                runtimeVerifiedToken = secToken;
+                localStorage.setItem('zone_security_token', secToken);
+                localStorage.setItem('zone_status', 'approved');
+                localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+
+                syncProfileToUI();
+                showScreen('app-screen');
+                switchBottomTab('home');
+                startGlobalLiveFeedSync();
+                startTelegramPolling(studentProfile.id);
+                showToast(`تم التعرف على رقمك المفعّل مسبقاً! أهلاً بك يا ${studentProfile.name}`);
+                return;
+            }
 
             studentProfile.name = name;
             studentProfile.phone = phone;
+            studentProfile.password = password;
             studentProfile.province = province;
             studentProfile.university = university;
             studentProfile.major = major;
@@ -2582,6 +3054,7 @@
 
             const uniqueStudentId = "stu_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6);
             studentProfile.id = uniqueStudentId;
+            studentProfile.status = "pending";
             studentProfile.pendingSince = Date.now();
             studentProfile.waitingCustomNote = "";
             studentProfile.rejectionMessage = "";
@@ -2592,6 +3065,8 @@
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'pending');
 
+            // حفظ الحساب في السحابة لتمكين مزامنة الجلسات واستعادة كلمة المرور
+            await saveAccountToCloudDirectory(studentProfile);
             await syncLatestOffset();
 
             const luxuryTelegramMessage = [
@@ -2634,13 +3109,11 @@
                 if (data.ok && data.result.length > 0) {
                     lastUpdateOffset = data.result[0].update_id + 1;
                 }
-            } catch (e) {
-                console.warn("Offset sync warning:", e);
-            }
+            } catch (e) { }
         }
 
         // ====================================================
-        // و. الاستماع المستمر لرد البوت (Polling) والرفض بالرد اليدوي
+        // ح. الاستماع المستمر لرد البوت (Polling) والرفض بالرد اليدوي
         // ====================================================
         function startTelegramPolling(targetStudentId) {
             if (pollingIntervalId) {
@@ -2680,7 +3153,7 @@
                                     originalText + "\n\n✅ الحالة: تم القبول والتفعيل الرسمي",
                                     buildActiveAccountAdminKeyboard(targetStudentId)
                                 );
-                                handleStudentApproved(false);
+                                await handleStudentApproved(false);
                             }
 
                             if (cbData === `reject_manual_${targetStudentId}`) {
@@ -2694,6 +3167,7 @@
                                 const reviewText = "تم استلام طلبك وهو تحت المراجعة من المندوب المالي حالياً";
                                 studentProfile.waitingCustomNote = reviewText;
                                 localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+                                await saveAccountToCloudDirectory(studentProfile);
 
                                 const label = document.getElementById('waitingStatusText');
                                 if (label) {
@@ -2710,7 +3184,7 @@
                                     originalText + "\n\n💸 الحالة: تفعيل مجاني / منحة",
                                     buildActiveAccountAdminKeyboard(targetStudentId)
                                 );
-                                handleStudentApproved(true);
+                                await handleStudentApproved(true);
                             }
 
                             if (cbData === `reset_${targetStudentId}`) {
@@ -2721,7 +3195,7 @@
                                     originalText + "\n\n⚙️ الحالة: تم تصفير الحساب لانتهاء الاشتراك",
                                     buildFullAdminControlKeyboard(targetStudentId)
                                 );
-                                resetStudentAccountByAdmin();
+                                await resetStudentAccountByAdmin();
                             }
                         }
 
@@ -2741,7 +3215,7 @@
                                 const formattedRejectionMessage = `عذراً، تم رفض طلبك للأسباب التالية: ${adminWrittenReason}، يرجى تعديل بياناتك`;
 
                                 await sendTelegramSimpleNotice(`✅ تم إرسال سبب الرفض إلى شاشة الطالب (${studentProfile.name}):\n"${formattedRejectionMessage}"`);
-                                handleStudentRejected(formattedRejectionMessage);
+                                await handleStudentRejected(formattedRejectionMessage);
                                 break;
                             }
                         }
@@ -2809,10 +3283,11 @@
             } catch (e) { }
         }
 
-        function handleStudentApproved(isFreeGrant = false) {
+        async function handleStudentApproved(isFreeGrant = false) {
             if (isFreeGrant) {
                 studentProfile.plan = "تفعيل مجاني / منحة 💸";
             }
+            studentProfile.status = "approved";
             studentProfile.waitingCustomNote = "";
             studentProfile.rejectionMessage = "";
 
@@ -2823,6 +3298,9 @@
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'approved');
 
+            // حفظ حالة التفعيل في السحابة لتمكين الدخول من أي جهاز آخر (Session Sync)
+            await saveAccountToCloudDirectory(studentProfile);
+
             syncProfileToUI();
             showScreen('app-screen');
             switchBottomTab('home');
@@ -2831,8 +3309,9 @@
             showToast(`تم تفعيل حسابك بنجاح! أهلاً بك في سوق محافظة ${studentProfile.province}`);
         }
 
-        function resetStudentAccountByAdmin() {
+        async function resetStudentAccountByAdmin() {
             runtimeVerifiedToken = null;
+            studentProfile.status = "pending";
             studentProfile.waitingCustomNote = "";
             studentProfile.rejectionMessage = "";
             studentProfile.pendingSince = Date.now();
@@ -2840,18 +3319,22 @@
             localStorage.removeItem('zone_security_token');
             localStorage.setItem('zone_status', 'pending');
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+            await saveAccountToCloudDirectory(studentProfile);
 
             resetWaitingUI();
             showScreen('subscription-screen');
             showToast("انتهت مدة اشتراكك أو تم تصفير الحساب من الإدارة، يرجى تجديد الاشتراك.");
         }
 
-        function handleStudentRejected(customRejectionText) {
+        async function handleStudentRejected(customRejectionText) {
             runtimeVerifiedToken = null;
+            studentProfile.status = "rejected";
             studentProfile.rejectionMessage = customRejectionText;
             localStorage.removeItem('zone_security_token');
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'rejected');
+            await saveAccountToCloudDirectory(studentProfile);
+
             showScreen('waiting-screen');
             applyRejectionUI(customRejectionText);
         }
@@ -2887,8 +3370,10 @@
             localStorage.removeItem('zone_status');
             localStorage.removeItem('zone_security_token');
 
+            switchAuthMode('register');
             document.getElementById('fullName').value = studentProfile.name || "";
             document.getElementById('phoneNumber').value = studentProfile.phone || "";
+            document.getElementById('registerPassword').value = studentProfile.password || "";
             if (studentProfile.province) {
                 document.getElementById('provinceSelect').value = studentProfile.province;
             }
@@ -2902,7 +3387,7 @@
         }
 
         // ====================================================
-        // ز. عرض المنشورات الحية، واجهة "المجلد فاضي"، والحذف الفوري عند (تم البيع)
+        // ط. عرض المنشورات الحية، واجهة "المجلد فاضي"، والحذف الفوري عند (تم البيع)
         // ====================================================
         function getRemainingDaysForPost(createdAt) {
             const created = createdAt || Date.now();
@@ -2935,7 +3420,7 @@
                 return matchProvince && matchCat && matchQuery;
             });
 
-            // واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
+            // (شرط 3): واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-folder-panel">
@@ -2952,7 +3437,7 @@
                 const hasUploadedImgs = Array.isArray(prod.images) && prod.images.length > 0;
                 const activeIdx = prod.currentSlide || 0;
                 const daysLeft = getRemainingDaysForPost(prod.createdAt);
-                const isOwner = prod.sellerId === studentProfile.id;
+                const isOwner = prod.sellerId === studentProfile.id || (prod.sellerPhone && normalizeSyrianPhone(prod.sellerPhone) === normalizeSyrianPhone(studentProfile.phone));
 
                 const sliderHTML = hasUploadedImgs ? `
                     <div class="product-slider-box" 
@@ -3154,7 +3639,7 @@
             showToast("تم نسخ تفاصيل العرض وفتح الواتساب للمشاركة!");
         }
 
-        // حذف المنشور كلياً وفوراً من قاعدة البيانات والمتجر عند الضغط على (تم البيع)
+        // حذف المنشور كلياً وفوراً من المتجر وقاعدة البيانات عند الضغط على (تم البيع)
         async function markAsSoldAndDeletePost(productId) {
             const targetIndex = marketProducts.findIndex(item => item.id === productId);
             if (targetIndex === -1) return;
@@ -3167,7 +3652,7 @@
         }
 
         // ====================================================
-        // ح. ضغط الصور تلقائياً بالخلفية ونشر الإعلان لايف للجميع
+        // ي. ضغط الصور تلقائياً بالخلفية ونشر الإعلان لايف للجميع
         // ====================================================
         function compressImageFileInBackground(file, maxWidth = 720, quality = 0.62) {
             return new Promise((resolve, reject) => {
@@ -3323,7 +3808,7 @@
         }
 
         // ====================================================
-        // ط. إعدادات الإشعارات وتحديد الكليات (من زر ⚙️ الوحيد في صفحة "أنا")
+        // ك. إعدادات الإشعارات وتحديد الكليات + تعديل البيانات وإشعار البوت
         // ====================================================
         function openSettingsModal() {
             const savedColleges = Array.isArray(studentProfile.subscribedColleges)
@@ -3342,7 +3827,7 @@
             document.getElementById('settingsGearModal').classList.remove('open');
         }
 
-        function saveNotificationSettings(event) {
+        async function saveNotificationSettings(event) {
             event.preventDefault();
             const selected = [];
             const checkboxes = document.querySelectorAll('input[name="notifCollege"]:checked');
@@ -3350,6 +3835,7 @@
 
             studentProfile.subscribedColleges = selected;
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+            await saveAccountToCloudDirectory(studentProfile);
             closeSettingsModal();
 
             if (selected.length > 0) {
@@ -3359,9 +3845,6 @@
             }
         }
 
-        // ====================================================
-        // ي. التواصل مع البائع، إخفاء الأزرار في "أنا"، وإشعار التلغرام عند تعديل البيانات
-        // ====================================================
         function openContactSellerModal(productId) {
             const prod = marketProducts.find(item => item.id === productId);
             if (!prod) return;
@@ -3426,7 +3909,7 @@
             document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
         }
 
-        // (شرط 3): إخفاء زر "إضافة منشور جديد" والدائرة البرتقالية العائمة داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
+        // (شرط 8): إخفاء زر "إضافة منشور جديد" والدائرة البرتقالية العائمة داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
         function switchBottomTab(tabName) {
             const homeTab = document.getElementById('home-tab');
             const profileTab = document.getElementById('profile-tab');
@@ -3470,13 +3953,13 @@
             document.getElementById('editProfileModal').classList.remove('open');
         }
 
-        // (شرط 2): إرسال تنبيه فوري لبوت التليجرام عند قيام المستخدم بتعديل معلومات حسابه الشخصية
+        // (شرط 10): إرسال إشعار تلقائي لبوت التليجرام في غرفة التحكم عند قيام أي طالب بتعديل بياناته
         async function handleSaveProfile(event) {
             event.preventDefault();
             const saveBtn = document.getElementById('saveProfileChangesBtn');
             if (saveBtn) saveBtn.disabled = true;
 
-            const oldName = studentProfile.name || "غير معروف";
+            const oldAccountLabel = studentProfile.name || studentProfile.phone || "طالب";
             studentProfile.name = document.getElementById('editName').value.trim();
             studentProfile.phone = document.getElementById('editPhone').value.trim();
             studentProfile.province = document.getElementById('editProvince').value;
@@ -3484,11 +3967,10 @@
             studentProfile.major = document.getElementById('editMajor').value.trim();
             studentProfile.telegramUsername = document.getElementById('editTelegram').value.trim().replace(/^@/, '');
 
-            // إرسال الإشعار الفوري لغرفة تحكم التليجرام بالنص المطلوب
             const editNotificationMessage = [
-                `تم تعديل المعلومات للحساب (${oldName}) ✏️`,
+                `تم تعديل المعلومات للحساب (${oldAccountLabel}) ✏️`,
                 "━━━━━━━━━━━━━━━━━━",
-                `👤 الاسم الجديد: ${studentProfile.name}`,
+                `👤 الاسم الكامل: ${studentProfile.name}`,
                 `📱 رقم الهاتف: ${studentProfile.phone}`,
                 `📍 المحافظة: ${studentProfile.province}`,
                 `🏛️ الجامعة: ${studentProfile.university}`,
@@ -3515,11 +3997,13 @@
             }
 
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+            await saveAccountToCloudDirectory(studentProfile);
+
             syncProfileToUI();
             renderMarketProducts();
             if (saveBtn) saveBtn.disabled = false;
             closeEditProfileModal();
-            showToast(`تم تحديث بياناتك الشخصية وإشعار الإدارة بنجاح!`);
+            showToast(`تم تحديث بياناتك ومزامنتها سحابياً بنجاح!`);
         }
 
         function logoutStudent() {
@@ -3537,8 +4021,9 @@
             localStorage.removeItem('zone_security_token');
             localStorage.removeItem('zone_student_profile');
             document.getElementById('studentDataForm').reset();
+            switchAuthMode('login');
             showScreen('data-screen');
-            showToast("تم تسجيل الخروج بنجاح.");
+            showToast("تم تسجيل الخروج بنجاح. يمكنك الدخول من أي جهاز بنفس رقمك.");
         }
 
         function showToast(msg) {
