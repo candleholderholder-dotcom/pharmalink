@@ -206,7 +206,6 @@
             color: var(--text-white);
         }
 
-        /* مفتاح التبديل بين (حساب جديد) و (تسجيل الدخول لمزامنة الجلسة) */
         .auth-mode-switcher {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -309,6 +308,52 @@
 
         .btn-forgot-pass-link:hover {
             color: var(--orange-main);
+        }
+
+        /* ====================================================
+           تصميم الـ 5 مربعات المنفصلة لرمز التحقق (5-Digit Boxes)
+           ==================================================== */
+        .code-verify-instruction {
+            font-size: 0.95rem;
+            color: var(--orange-light);
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .five-digits-boxes-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            direction: ltr;
+            margin: 1rem 0 1.4rem;
+        }
+
+        .digit-box-input {
+            width: 52px;
+            height: 58px;
+            background: var(--navy-primary);
+            border: 2px solid var(--navy-border);
+            border-radius: var(--radius-md);
+            color: var(--orange-main);
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .digit-box-input:focus {
+            border-color: var(--orange-main);
+            box-shadow: 0 0 0 4px var(--orange-soft);
+            transform: translateY(-2px);
+        }
+
+        .digit-box-input.filled {
+            border-color: var(--orange-light);
+            background: rgba(249, 115, 22, 0.08);
         }
 
         .btn-next-official {
@@ -1566,7 +1611,7 @@
             cursor: pointer;
         }
 
-        .otp-alert-box {
+        .verify-alert-box {
             background: rgba(255, 69, 0, 0.14);
             border: 1.5px solid var(--reject-color);
             color: var(--orange-light);
@@ -1577,9 +1622,10 @@
             margin-bottom: 1rem;
             display: none;
             line-height: 1.6;
+            text-align: center;
         }
 
-        .otp-alert-box.show {
+        .verify-alert-box.show {
             display: block;
         }
 
@@ -1659,6 +1705,12 @@
             .colleges-checkbox-grid {
                 grid-template-columns: 1fr;
             }
+
+            .digit-box-input {
+                width: 46px;
+                height: 54px;
+                font-size: 1.35rem;
+            }
         }
     </style>
 </head>
@@ -1707,7 +1759,7 @@
     </section>
 
     <!-- ====================================================
-         2. الصفحة الثانية: (سجل بياناتك الآن) + (تسجيل الدخول ومزامنة الجلسة) + (استعادة كلمة المرور OTP)
+         2. الصفحة الثانية: (سجل بياناتك الآن) + (تسجيل الدخول ومزامنة الجلسة)
          ==================================================== -->
     <section id="data-screen" class="screen">
         <div class="card-container">
@@ -1717,7 +1769,7 @@
                         <use href="#zone-split-z-logo"></use>
                     </svg>
                 </div>
-                <!-- (شرط 9): العنوان الرئيسي بالخط العريض (سجل بياناتك الآن) -->
+                <!-- (شرط 10): العنوان الرئيسي العريض (سجل بياناتك الآن) -->
                 <h2 id="authMainHeading">سجل بياناتك الآن</h2>
             </div>
 
@@ -1739,7 +1791,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 4): كيبورد الأرقام التلقائي لرقم الهاتف -->
+                <!-- (شرط 5): كيبورد الأرقام التلقائي لرقم الهاتف -->
                 <div class="form-group">
                     <label for="phoneNumber">رقم الهاتف</label>
                     <div class="input-wrapper">
@@ -1749,7 +1801,6 @@
                     </div>
                 </div>
 
-                <!-- كلمة المرور لحماية الحساب ومزامنة الجلسة -->
                 <div class="form-group">
                     <label for="registerPassword">كلمة المرور</label>
                     <div class="input-wrapper">
@@ -1792,7 +1843,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 9): جملة (الفرع الدراسي) فقط بدل كلمة الكلية -->
+                <!-- (شرط 10): جملة (الفرع الدراسي) فقط بدل كلمة الكلية -->
                 <div class="form-group">
                     <label for="majorInput">الفرع الدراسي</label>
                     <div class="input-wrapper">
@@ -1813,7 +1864,7 @@
                 <button type="submit" class="btn-next-official">التالي</button>
             </form>
 
-            <!-- ب) نموذج تسجيل الدخول الفوري ومزامنة الجلسة (Session Sync) من أي جهاز آخر -->
+            <!-- ب) نموذج تسجيل الدخول الفوري ومزامنة الجلسة (Session Sync) -->
             <form id="studentLoginForm" style="display: none;" onsubmit="handleSessionSyncLogin(event)">
                 <div class="form-group">
                     <label for="loginPhoneInput">رقم الهاتف المسجل</label>
@@ -1833,7 +1884,7 @@
                     </div>
                     <div class="forgot-pass-row">
                         <button type="button" class="btn-forgot-pass-link" onclick="openForgotPasswordModal()">هل نسيت
-                            كلمة المرور؟</button>
+                            كلمة المرور</button>
                     </div>
                 </div>
 
@@ -1843,64 +1894,73 @@
     </section>
 
     <!-- ====================================================
-         نافذة استعادة كلمة المرور وفحص الرقم (Telegram OTP)
+         (شرط 1 و 2): نافذة استعادة كلمة المرور (بدون كلمة OTP + 5 مربعات تلقائية)
          ==================================================== -->
     <div class="modal-overlay" id="forgotPasswordModal">
         <div class="modal-card" style="text-align: right;">
             <div class="modal-header">
-                <h3><i class="fa-solid fa-key"></i> استعادة كلمة المرور (OTP)</h3>
+                <h3><i class="fa-solid fa-key"></i> استعادة كلمة المرور</h3>
                 <button type="button" class="btn-close-modal" onclick="closeForgotPasswordModal()">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- مربع التنبيه الصارم إذا كان الرقم غير مسجل -->
-            <div id="otpErrorAlert" class="otp-alert-box"></div>
+            <!-- مربع التنبيه الصارم إذا كان الرقم غير مسجل أو الرمز خاطئ -->
+            <div id="verifyErrorAlert" class="verify-alert-box"></div>
 
-            <!-- الخطوة 1: إدخال رقم الهاتف لفحصه في قاعدة البيانات -->
-            <div id="otpStep1Phone">
-                <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1rem;">
-                    أدخل رقم هاتفك المسجل في المنصة ليتم فحصه وإرسال رمز التحقق المجاني عبر بوت التليجرام الرسمي:
-                </p>
+            <!-- المرحلة 1: إدخال رقم الهاتف لفحصه في قاعدة البيانات -->
+            <div id="recoveryStep1Phone">
                 <div class="form-group">
                     <label>رقم الهاتف</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-phone"></i>
-                        <input type="tel" id="otpPhoneCheckInput" inputmode="numeric" pattern="[0-9+]*"
+                        <input type="tel" id="recoveryPhoneInput" inputmode="numeric" pattern="[0-9+]*"
                             class="form-control" placeholder="اكتب رقمك هنا">
                     </div>
                 </div>
-                <button type="button" id="sendOtpBtn" class="btn-orange-wide" onclick="verifyPhoneAndSendTelegramOTP()">
+                <button type="button" id="sendRecoveryCodeBtn" class="btn-orange-wide"
+                    onclick="verifyPhoneAndSend5DigitCode()">
                     <i class="fa-brands fa-telegram"></i>
-                    <span>فحص الرقم وإرسال رمز التحقق</span>
+                    <span>إرسال رمز التحقق</span>
                 </button>
             </div>
 
-            <!-- الخطوة 2: إدخال رمز التحقق وتعيين كلمة مرور جديدة -->
-            <div id="otpStep2Verify" style="display: none;">
-                <p style="font-size: 0.85rem; color: var(--orange-light); margin-bottom: 1rem; font-weight: 700;">
-                    تم إرسال رمز التحقق (OTP) بنجاح عبر بوت التليجرام الرسمي! أدخل الرمز أدناه لتعيين كلمة مرور جديدة:
-                </p>
-                <div class="form-group">
-                    <label>رمز التحقق المكون من 6 أرقام</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <input type="tel" id="otpCodeInput" inputmode="numeric" pattern="[0-9]*" maxlength="6"
-                            class="form-control" placeholder="أدخل الرمز المرسل...">
-                    </div>
+            <!-- المرحلة 2: النص المباشر المطلوب + الـ 5 مربعات المنفصلة مع Auto-focus / Auto-advance -->
+            <div id="recoveryStep2Boxes" style="display: none;">
+                <p class="code-verify-instruction">تم ارسال رمز التحقق. ادخل الرمز لتعيين كلمة مرور جديدة</p>
+
+                <div class="five-digits-boxes-container" id="fiveDigitsContainer">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box-input"
+                        data-index="0" oninput="handleDigitBoxInput(event, 0)"
+                        onkeydown="handleDigitBoxKeydown(event, 0)" onpaste="handleDigitBoxPaste(event)">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box-input"
+                        data-index="1" oninput="handleDigitBoxInput(event, 1)"
+                        onkeydown="handleDigitBoxKeydown(event, 1)" onpaste="handleDigitBoxPaste(event)">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box-input"
+                        data-index="2" oninput="handleDigitBoxInput(event, 2)"
+                        onkeydown="handleDigitBoxKeydown(event, 2)" onpaste="handleDigitBoxPaste(event)">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box-input"
+                        data-index="3" oninput="handleDigitBoxInput(event, 3)"
+                        onkeydown="handleDigitBoxKeydown(event, 3)" onpaste="handleDigitBoxPaste(event)">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="digit-box-input"
+                        data-index="4" oninput="handleDigitBoxInput(event, 4)"
+                        onkeydown="handleDigitBoxKeydown(event, 4)" onpaste="handleDigitBoxPaste(event)">
                 </div>
+            </div>
+
+            <!-- المرحلة 3: تفتح تلقائياً فور اكتمال الـ 5 أرقام بشكل صحيح لتعيين كلمة مرور جديدة -->
+            <div id="recoveryStep3NewPass" style="display: none;">
                 <div class="form-group">
                     <label>كلمة المرور الجديدة</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="otpNewPasswordInput" class="form-control"
+                        <input type="password" id="recoveryNewPasswordInput" class="form-control"
                             placeholder="أدخل كلمة المرور الجديدة...">
                     </div>
                 </div>
-                <button type="button" id="confirmNewPassBtn" class="btn-orange-wide"
-                    onclick="confirmOtpAndUpdatePassword()">
+                <button type="button" id="saveNewPassBtn" class="btn-orange-wide" onclick="saveNewRecoveredPassword()">
                     <i class="fa-solid fa-check-double"></i>
-                    <span>تأكيد وحفظ كلمة المرور الجديدة</span>
+                    <span>حفظ كلمة المرور الجديدة</span>
                 </button>
             </div>
         </div>
@@ -1912,7 +1972,7 @@
     <section id="subscription-screen" class="screen">
         <div class="plans-container-card">
             <div class="section-header">
-                <!-- (شرط 5): أيقونة التاج الذهبي الملكي 👑 الفخم بدون جرايد وبدون زر دعم -->
+                <!-- (شرط 6): أيقونة التاج الذهبي الملكي 👑 الفخم بدون جرايد وبدون زر دعم -->
                 <div class="royal-crown-badge">
                     <i class="fa-solid fa-crown"></i>
                 </div>
@@ -1943,7 +2003,7 @@
         </div>
     </section>
 
-    <!-- (شرط 6): نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
+    <!-- (شرط 7): نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
     <div class="modal-overlay" id="shamCashModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -2009,7 +2069,7 @@
                     <span>سوق محافظة: <strong id="headerProvinceName">حلب</strong></span>
                 </div>
 
-                <!-- (شرط 8): زر "إضافة منشور جديد" يظهر فقط في الرئيسية ويختفي تماماً بداخل صفحة "أنا" (بدون أيقونة إعدادات بجانبه) -->
+                <!-- (شرط 9): زر "إضافة منشور جديد" يظهر فقط في الرئيسية ويختفي تماماً بداخل صفحة "أنا" -->
                 <button type="button" id="headerAddPostBtn" class="btn-add-product-header" onclick="openAddPostModal()">
                     <i class="fa-solid fa-plus"></i>
                     <span>إضافة منشور جديد</span>
@@ -2060,7 +2120,7 @@
             <div class="products-grid" id="productsGridContainer"></div>
         </main>
 
-        <!-- (شرط 7 و 9): التبويب الثاني "أنا" بالمصطلحات المحدثة (المحافظة / التخصص) والأزرار الدائرية -->
+        <!-- (شرط 8 و 10): التبويب الثاني "أنا" بالمصطلحات المحدثة (المحافظة / التخصص) والأزرار الدائرية -->
         <main id="profile-tab" class="tab-view">
             <div class="profile-card">
                 <div class="profile-circular-actions-bar">
@@ -2085,12 +2145,12 @@
                 </div>
 
                 <div class="profile-details-list">
-                    <!-- (شرط 9): كلمة (المحافظة) فقط دون أي سلاش أو نطاق السوق -->
+                    <!-- (شرط 10): كلمة (المحافظة) فقط دون أي سلاش أو نطاق السوق -->
                     <div class="profile-detail-row">
                         <span>المحافظة</span>
                         <span id="profileProvinceText">حلب</span>
                     </div>
-                    <!-- (شرط 9): كلمة (التخصص) فقط دون كلمة الكلية -->
+                    <!-- (شرط 10): كلمة (التخصص) فقط دون كلمة الكلية -->
                     <div class="profile-detail-row">
                         <span>التخصص</span>
                         <span id="profileMajorText">هندسة ميكاترونيكس</span>
@@ -2118,7 +2178,7 @@
             </div>
         </main>
 
-        <!-- (شرط 8 و 10): الدائرة البرتقالية العائمة للدعم بالرئيسية فقط وتختفي تماماً في صفحة "أنا" -->
+        <!-- (شرط 9 و 11): الدائرة البرتقالية العائمة للدعم بالرئيسية فقط وتختفي تماماً في صفحة "أنا" -->
         <a href="https://t.me/zoneapplication" target="_blank" rel="noopener noreferrer" id="floatingSupportCircle"
             class="floating-telegram-support" onclick="openDirectSupportTelegram(event)" title="الدعم الفني المباشر">
             <i class="fa-brands fa-telegram"></i>
@@ -2288,7 +2348,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 4): كيبورد الأرقام التلقائي لخانة السعر -->
+                <!-- (شرط 5): كيبورد الأرقام التلقائي لخانة السعر -->
                 <div class="form-group" id="postPriceGroup">
                     <label>السعر بالليرة السورية (ل.س)</label>
                     <div class="input-wrapper">
@@ -2393,10 +2453,10 @@
     </div>
 
     <!-- ====================================================
-         10. المنطق البرمجي الكامل والشامل + مزامنة الجلسات + OTP التليجرام (JavaScript)
+         10. المنطق البرمجي الكامل والشامل + الـ 5 مربعات التلقائية + مزامنة الجلسات (JavaScript)
          ==================================================== -->
     <script>
-        // إعدادات بوت التلغرام الإداري والرسمي
+        // إعدادات بوت التلغرام الرسمي للتطبيق
         const TELEGRAM_BOT_TOKEN = "8714980380:AAH5TzjGwMyKASdoBDMZNLV8tA0ME8p7ALE";
         const TELEGRAM_CHAT_ID = "8717720399";
         const TELEGRAM_API_BASE = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
@@ -2405,12 +2465,12 @@
         const OFFICIAL_SUPPORT_TELEGRAM_USERNAME = "zoneapplication";
 
         // نقاط الاتصال السحابية الحية:
-        // 1) جدول المنشورات العام لجميع الأجهزة (Global Live Feed)
-        const GLOBAL_CLOUD_FEED_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_global_live_posts_v3";
-        // 2) جدول الحسابات والجلسات السحابي لمزامنة الدخول واستعادة كلمة المرور (Session Sync & OTP DB)
-        const GLOBAL_CLOUD_USERS_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_cloud_users_db_v1";
+        // 1) جدول المنشورات العام لجميع الأجهزة على كوكب الأرض لايف (Global Live Feed)
+        const GLOBAL_CLOUD_FEED_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_global_live_posts_v4";
+        // 2) جدول الحسابات والجلسات السحابي لمزامنة الدخول واستعادة كلمة المرور (Session Sync & Recovery DB)
+        const GLOBAL_CLOUD_USERS_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_cloud_users_db_v2";
 
-        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v3') : null;
+        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v4') : null;
 
         const PENDING_TIMEOUT_MS = 48 * 60 * 60 * 1000;
         const POST_LIFETIME_DAYS = 30;
@@ -2427,9 +2487,9 @@
         let runtimeVerifiedToken = null;
         let lastKnownPostCount = 0;
 
-        // متغيرات نظام استعادة كلمة المرور (Telegram OTP)
-        let generatedOtpCode = null;
-        let otpTargetPhone = null;
+        // متغيرات استعادة كلمة المرور (5 أرقام حصراً)
+        let generated5DigitCode = null;
+        let recoveryTargetPhone = null;
 
         let studentProfile = {
             id: "",
@@ -2450,7 +2510,6 @@
 
         let marketProducts = [];
 
-        // توحيد صيغة رقم الهاتف للمقارنة الدقيقة بين الموبايل واللابتوب
         function normalizeSyrianPhone(rawPhone) {
             let digits = String(rawPhone || "").replace(/\D/g, '');
             if (digits.startsWith("963")) {
@@ -2460,7 +2519,7 @@
         }
 
         // ====================================================
-        // أ. فتح رابط تشات الدعم المباشر في التليجرام
+        // أ. فتح رابط تشات الدعم المباشر في التليجرام (@zoneapplication)
         // ====================================================
         function openDirectSupportTelegram(event) {
             if (event) event.preventDefault();
@@ -2528,7 +2587,7 @@
         })();
 
         // ====================================================
-        // ج. (شرط 1 و 2): إدارة قاعدة بيانات الحسابات السحابية (Session Sync & OTP Check)
+        // ج. (شرط 3): إدارة قاعدة بيانات الحسابات السحابية ومزامنة الجلسات (Session Sync)
         // ====================================================
         async function fetchCloudUsersDirectory() {
             try {
@@ -2536,13 +2595,13 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data && typeof data === 'object') {
-                        localStorage.setItem('zone_cached_users_dir', JSON.stringify(data));
+                        localStorage.setItem('zone_cached_users_dir_v2', JSON.stringify(data));
                         return data;
                     }
                 }
             } catch (e) { }
 
-            const localDir = localStorage.getItem('zone_cached_users_dir');
+            const localDir = localStorage.getItem('zone_cached_users_dir_v2');
             if (localDir) {
                 try { return JSON.parse(localDir); } catch (e) { }
             }
@@ -2558,7 +2617,7 @@
                 normalizedPhone: normPhone,
                 updatedAt: Date.now()
             };
-            localStorage.setItem('zone_cached_users_dir', JSON.stringify(directory));
+            localStorage.setItem('zone_cached_users_dir_v2', JSON.stringify(directory));
 
             try {
                 await fetch(GLOBAL_CLOUD_USERS_URL, {
@@ -2571,7 +2630,6 @@
             }
         }
 
-        // التبديل بين تبويب "حساب جديد" وتبويب "تسجيل الدخول"
         function switchAuthMode(mode) {
             const regForm = document.getElementById('studentDataForm');
             const loginForm = document.getElementById('studentLoginForm');
@@ -2594,7 +2652,7 @@
             }
         }
 
-        // (شرط 2): تسجيل الدخول الفوري ومزامنة الجلسة بين الموبايل واللابتوب بنفس الرقم
+        // تسجيل الدخول الفوري ومزامنة الجلسة بين الموبايل واللابتوب بنفس الرقم
         async function handleSessionSyncLogin(event) {
             event.preventDefault();
             const phoneVal = document.getElementById('loginPhoneInput').value.trim();
@@ -2603,7 +2661,7 @@
 
             const loginBtn = document.getElementById('loginSyncSubmitBtn');
             loginBtn.disabled = true;
-            loginBtn.textContent = "جاري التحقق ومزامنة الجلسة...";
+            loginBtn.textContent = "جاري مزامنة الجلسة...";
 
             const directory = await fetchCloudUsersDirectory();
             const matchedAccount = directory[normPhone];
@@ -2617,14 +2675,13 @@
             }
 
             if (matchedAccount.password && matchedAccount.password !== passVal) {
-                showToast("كلمة المرور غير صحيحة! يمكنك استعادتها عبر زر (هل نسيت كلمة المرور؟)");
+                showToast("كلمة المرور غير صحيحة! اضغط على (هل نسيت كلمة المرور)");
                 return;
             }
 
             studentProfile = { ...matchedAccount };
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
 
-            // إذا كان الحساب مفعلاً مسبقاً على الموبايل، يفتح له الرئيسية فوراً على اللابتوب دون إعادة إدخال البيانات
             if (matchedAccount.status === 'approved') {
                 const secToken = generateSecurityHash(studentProfile.id);
                 runtimeVerifiedToken = secToken;
@@ -2636,13 +2693,12 @@
                 switchBottomTab('home');
                 startGlobalLiveFeedSync();
                 startTelegramPolling(studentProfile.id);
-                showToast(`مرحباً بعودتك يا ${studentProfile.name}! تمت مزامنة جلستك بنجاح.`);
+                showToast(`أهلاً بعودتك يا ${studentProfile.name}! تم فتح حسابك فوراً.`);
             } else if (matchedAccount.status === 'pending') {
                 localStorage.setItem('zone_status', 'pending');
                 resetWaitingUI(studentProfile.waitingCustomNote);
                 showScreen('waiting-screen');
                 startTelegramPolling(studentProfile.id);
-                showToast("حسابك قيد المراجعة حالياً، تم نقلك لشاشة المتابعة.");
             } else if (matchedAccount.status === 'rejected') {
                 localStorage.setItem('zone_status', 'rejected');
                 showScreen('waiting-screen');
@@ -2653,14 +2709,16 @@
         }
 
         // ====================================================
-        // د. (شرط 1): نظام استعادة كلمة المرور وفحص الرقم (Telegram OTP)
+        // د. (شرط 1 و 2): استعادة كلمة المرور برمز من 5 أرقام حصراً + 5 مربعات Auto-advance
         // ====================================================
         function openForgotPasswordModal() {
             const loginPhone = document.getElementById('loginPhoneInput').value.trim();
-            document.getElementById('otpPhoneCheckInput').value = loginPhone;
-            document.getElementById('otpErrorAlert').classList.remove('show');
-            document.getElementById('otpStep1Phone').style.display = 'block';
-            document.getElementById('otpStep2Verify').style.display = 'none';
+            document.getElementById('recoveryPhoneInput').value = loginPhone;
+            document.getElementById('verifyErrorAlert').classList.remove('show');
+            document.getElementById('recoveryStep1Phone').style.display = 'block';
+            document.getElementById('recoveryStep2Boxes').style.display = 'none';
+            document.getElementById('recoveryStep3NewPass').style.display = 'none';
+            clearFiveDigitBoxes();
             document.getElementById('forgotPasswordModal').classList.add('open');
         }
 
@@ -2668,9 +2726,17 @@
             document.getElementById('forgotPasswordModal').classList.remove('open');
         }
 
-        async function verifyPhoneAndSendTelegramOTP() {
-            const rawPhone = document.getElementById('otpPhoneCheckInput').value.trim();
-            const alertBox = document.getElementById('otpErrorAlert');
+        function clearFiveDigitBoxes() {
+            const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
+            boxes.forEach(box => {
+                box.value = "";
+                box.classList.remove('filled');
+            });
+        }
+
+        async function verifyPhoneAndSend5DigitCode() {
+            const rawPhone = document.getElementById('recoveryPhoneInput').value.trim();
+            const alertBox = document.getElementById('verifyErrorAlert');
             alertBox.classList.remove('show');
 
             if (!rawPhone) {
@@ -2680,13 +2746,13 @@
             }
 
             const normPhone = normalizeSyrianPhone(rawPhone);
-            const sendBtn = document.getElementById('sendOtpBtn');
+            const sendBtn = document.getElementById('sendRecoveryCodeBtn');
             sendBtn.disabled = true;
 
             const directory = await fetchCloudUsersDirectory();
             const existingUser = directory[normPhone];
 
-            // إذا كان الرقم غير مسجل مسبقاً في قاعدة البيانات
+            // إذا كان الرقم غير مسجل مسبقاً
             if (!existingUser) {
                 sendBtn.disabled = false;
                 alertBox.textContent = "عذراً، هذا الرقم غير مسجل لدينا، يرجى إنشاء حساب جديد";
@@ -2695,50 +2761,116 @@
                 return;
             }
 
-            // إذا كان الرقم مسجلاً مسبقاً: توليد رمز تحقق عشوائي (6 أرقام) وإرساله عبر بوت التليجرام الرسمي
-            generatedOtpCode = String(Math.floor(100000 + Math.random() * 900000));
-            otpTargetPhone = normPhone;
+            // إذا كان الرقم مسجلاً مسبقاً: توليد رمز عشوائي مكون من 5 أرقام حصراً (10000 - 99999)
+            generated5DigitCode = String(Math.floor(10000 + Math.random() * 90000));
+            recoveryTargetPhone = normPhone;
 
-            const otpTelegramMsg = [
-                "🔐 رمز استعادة كلمة المرور (OTP) - منصة Zone",
-                "━━━━━━━━━━━━━━━━━━",
-                `👤 الطالب: ${existingUser.name}`,
-                `📱 رقم الهاتف: ${existingUser.phone}`,
-                `🔑 رمز التحقق المجاني: ${generatedOtpCode}`,
-                "━━━━━━━━━━━━━━━━━━"
-            ].join("\n");
+            // الصياغة الصارمة للرسالة بدون أي حشو أو أسماء:
+            // Zone Verification Code
+            // [الرمز المكون من 5 أرقام]
+            const strictVerificationMessage = `Zone Verification Code\n${generated5DigitCode}`;
 
             try {
-                // إرسال الرمز عبر بوت التليجرام الرسمي للتطبيق
                 await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: TELEGRAM_CHAT_ID,
-                        text: otpTelegramMsg
+                        text: strictVerificationMessage
                     })
                 });
             } catch (e) {
-                console.warn("OTP Telegram send warning:", e);
+                console.warn("Telegram code send warning:", e);
             }
 
             sendBtn.disabled = false;
-            document.getElementById('otpStep1Phone').style.display = 'none';
-            document.getElementById('otpStep2Verify').style.display = 'block';
-            showToast("تم إرسال رمز التحقق (OTP) عبر بوت التليجرام الرسمي!");
+            document.getElementById('recoveryStep1Phone').style.display = 'none';
+            document.getElementById('recoveryStep2Boxes').style.display = 'block';
+            document.getElementById('recoveryStep3NewPass').style.display = 'none';
+            clearFiveDigitBoxes();
+
+            // تركيز المؤشر تلقائياً في المربع الأول
+            const firstBox = document.querySelector('#fiveDigitsContainer .digit-box-input[data-index="0"]');
+            if (firstBox) setTimeout(() => firstBox.focus(), 100);
         }
 
-        async function confirmOtpAndUpdatePassword() {
-            const enteredCode = document.getElementById('otpCodeInput').value.trim();
-            const newPass = document.getElementById('otpNewPasswordInput').value;
-            const alertBox = document.getElementById('otpErrorAlert');
+        // التعبئة التلقائية والانتقال السلس بين الـ 5 مربعات (Auto-focus / Auto-advance)
+        function handleDigitBoxInput(event, index) {
+            const input = event.target;
+            const digit = input.value.replace(/\D/g, '').slice(-1);
+            input.value = digit;
+
+            const alertBox = document.getElementById('verifyErrorAlert');
             alertBox.classList.remove('show');
 
-            if (!enteredCode || enteredCode !== generatedOtpCode) {
-                alertBox.textContent = "رمز التحقق غير صحيح، يرجى التأكد من الرمز المرسل.";
-                alertBox.classList.add('show');
-                return;
+            const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
+
+            if (digit) {
+                input.classList.add('filled');
+                // الانتقال التلقائي الفوري للمربع الذي يليه
+                if (index < 4 && boxes[index + 1]) {
+                    boxes[index + 1].focus();
+                }
+            } else {
+                input.classList.remove('filled');
             }
+
+            checkIfAllFiveDigitsCompleted();
+        }
+
+        function handleDigitBoxKeydown(event, index) {
+            const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
+            if (event.key === 'Backspace' && !event.target.value && index > 0) {
+                boxes[index - 1].value = "";
+                boxes[index - 1].classList.remove('filled');
+                boxes[index - 1].focus();
+            }
+        }
+
+        function handleDigitBoxPaste(event) {
+            event.preventDefault();
+            const pasted = (event.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 5);
+            if (!pasted) return;
+
+            const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
+            for (let i = 0; i < 5; i++) {
+                if (pasted[i]) {
+                    boxes[i].value = pasted[i];
+                    boxes[i].classList.add('filled');
+                }
+            }
+            const nextEmptyIndex = Math.min(pasted.length, 4);
+            boxes[nextEmptyIndex].focus();
+            checkIfAllFiveDigitsCompleted();
+        }
+
+        // فحص تلقائي فور اكتمال الـ 5 أرقام لفتح واجهة تعيين كلمة المرور الجديدة تلقائياً
+        function checkIfAllFiveDigitsCompleted() {
+            const boxes = Array.from(document.querySelectorAll('#fiveDigitsContainer .digit-box-input'));
+            const enteredCode = boxes.map(b => b.value).join('');
+
+            if (enteredCode.length === 5) {
+                const alertBox = document.getElementById('verifyErrorAlert');
+                if (enteredCode === generated5DigitCode) {
+                    alertBox.classList.remove('show');
+                    document.getElementById('recoveryStep2Boxes').style.display = 'none';
+                    document.getElementById('recoveryStep3NewPass').style.display = 'block';
+                    const newPassInput = document.getElementById('recoveryNewPasswordInput');
+                    if (newPassInput) {
+                        newPassInput.value = "";
+                        setTimeout(() => newPassInput.focus(), 100);
+                    }
+                } else {
+                    alertBox.textContent = "رمز التحقق غير صحيح، يرجى التأكد والمحاولة مجدداً.";
+                    alertBox.classList.add('show');
+                }
+            }
+        }
+
+        async function saveNewRecoveredPassword() {
+            const newPass = document.getElementById('recoveryNewPasswordInput').value;
+            const alertBox = document.getElementById('verifyErrorAlert');
+            alertBox.classList.remove('show');
 
             if (!newPass || newPass.length < 3) {
                 alertBox.textContent = "يرجى إدخال كلمة مرور جديدة صالحة.";
@@ -2746,28 +2878,27 @@
                 return;
             }
 
-            const confirmBtn = document.getElementById('confirmNewPassBtn');
-            confirmBtn.disabled = true;
+            const saveBtn = document.getElementById('saveNewPassBtn');
+            saveBtn.disabled = true;
 
             const directory = await fetchCloudUsersDirectory();
-            if (directory[otpTargetPhone]) {
-                directory[otpTargetPhone].password = newPass;
-                await saveAccountToCloudDirectory(directory[otpTargetPhone]);
+            if (directory[recoveryTargetPhone]) {
+                directory[recoveryTargetPhone].password = newPass;
+                await saveAccountToCloudDirectory(directory[recoveryTargetPhone]);
 
-                // إذا كان الحساب مفتوحاً محلياً نحدّثه أيضاً
-                if (normalizeSyrianPhone(studentProfile.phone) === otpTargetPhone) {
+                if (normalizeSyrianPhone(studentProfile.phone) === recoveryTargetPhone) {
                     studentProfile.password = newPass;
                     localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
                 }
             }
 
-            confirmBtn.disabled = false;
-            generatedOtpCode = null;
+            saveBtn.disabled = false;
+            generated5DigitCode = null;
             closeForgotPasswordModal();
             switchAuthMode('login');
-            document.getElementById('loginPhoneInput').value = otpTargetPhone;
+            document.getElementById('loginPhoneInput').value = recoveryTargetPhone;
             document.getElementById('loginPasswordInput').value = newPass;
-            showToast("تم تعيين كلمة المرور الجديدة بنجاح! يمكنك تسجيل الدخول الآن.");
+            showToast("تم تعيين كلمة المرور الجديدة بنجاح!");
         }
 
         // ====================================================
@@ -2806,14 +2937,14 @@
                         }
                         lastKnownPostCount = cleaned.length;
                         marketProducts = cleaned;
-                        localStorage.setItem('zone_global_cached_posts_v3', JSON.stringify(marketProducts));
+                        localStorage.setItem('zone_global_cached_posts_v4', JSON.stringify(marketProducts));
                         renderMarketProducts();
                         return;
                     }
                 }
             } catch (err) { }
 
-            const cached = localStorage.getItem('zone_global_cached_posts_v3');
+            const cached = localStorage.getItem('zone_global_cached_posts_v4');
             if (cached) {
                 try {
                     marketProducts = cleanExpired30DaysPosts(JSON.parse(cached));
@@ -2831,7 +2962,7 @@
             const cleaned = cleanExpired30DaysPosts(updatedList);
             marketProducts = cleaned;
             lastKnownPostCount = cleaned.length;
-            localStorage.setItem('zone_global_cached_posts_v3', JSON.stringify(cleaned));
+            localStorage.setItem('zone_global_cached_posts_v4', JSON.stringify(cleaned));
 
             if (broadcastChannel) {
                 broadcastChannel.postMessage({ type: 'SYNC_POSTS', payload: cleaned });
@@ -2886,7 +3017,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // (شرط 3): حذف كافة العروض والصور الوهمية القديمة نهائياً
+            // (شرط 4): حذف كافة العروض والصور الوهمية القديمة نهائياً
             [
                 'zone_market_items', 'zone_market_items_v2', 'zone_market_items_v3',
                 'zone_market_items_v4', 'zone_market_items_v5', 'zone_market_items_v6',
@@ -2979,7 +3110,7 @@
 
             if (!name || !phone || !password || !province || !university || !major) return;
 
-            // فحص ما إذا كان الرقم مفعلاً مسبقاً في السحابة (Session Sync تلقائي حتى لو ضغط التالي)
+            // (شرط 3): إذا كان الرقم مسجلاً ومفعلاً مسبقاً في السحابة، ينتقل للرئيسية فوراً دون إعادة الدفع
             const normPhone = normalizeSyrianPhone(phone);
             const directory = await fetchCloudUsersDirectory();
             if (directory[normPhone] && directory[normPhone].status === 'approved') {
@@ -2995,7 +3126,7 @@
                 switchBottomTab('home');
                 startGlobalLiveFeedSync();
                 startTelegramPolling(studentProfile.id);
-                showToast(`تم التعرف على رقمك المفعّل مسبقاً! أهلاً بك يا ${studentProfile.name}`);
+                showToast(`تم التعرف على جلستك المفعّلة مسبقاً! أهلاً بك يا ${studentProfile.name}`);
                 return;
             }
 
@@ -3065,7 +3196,6 @@
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'pending');
 
-            // حفظ الحساب في السحابة لتمكين مزامنة الجلسات واستعادة كلمة المرور
             await saveAccountToCloudDirectory(studentProfile);
             await syncLatestOffset();
 
@@ -3298,7 +3428,6 @@
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'approved');
 
-            // حفظ حالة التفعيل في السحابة لتمكين الدخول من أي جهاز آخر (Session Sync)
             await saveAccountToCloudDirectory(studentProfile);
 
             syncProfileToUI();
@@ -3420,7 +3549,7 @@
                 return matchProvince && matchCat && matchQuery;
             });
 
-            // (شرط 3): واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
+            // (شرط 4): واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-folder-panel">
@@ -3639,7 +3768,7 @@
             showToast("تم نسخ تفاصيل العرض وفتح الواتساب للمشاركة!");
         }
 
-        // حذف المنشور كلياً وفوراً من المتجر وقاعدة البيانات عند الضغط على (تم البيع)
+        // (شرط 11): حذف المنشور كلياً وفوراً من المتجر وقاعدة البيانات عند الضغط على (تم البيع)
         async function markAsSoldAndDeletePost(productId) {
             const targetIndex = marketProducts.findIndex(item => item.id === productId);
             if (targetIndex === -1) return;
@@ -3909,7 +4038,7 @@
             document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
         }
 
-        // (شرط 8): إخفاء زر "إضافة منشور جديد" والدائرة البرتقالية العائمة داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
+        // (شرط 9): إخفاء زر "إضافة منشور جديد" والدائرة البرتقالية العائمة داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
         function switchBottomTab(tabName) {
             const homeTab = document.getElementById('home-tab');
             const profileTab = document.getElementById('profile-tab');
@@ -3953,7 +4082,7 @@
             document.getElementById('editProfileModal').classList.remove('open');
         }
 
-        // (شرط 10): إرسال إشعار تلقائي لبوت التليجرام في غرفة التحكم عند قيام أي طالب بتعديل بياناته
+        // (شرط 11): إرسال إشعار تلقائي لبوت التليجرام في غرفة التحكم عند قيام أي طالب بتعديل بياناته
         async function handleSaveProfile(event) {
             event.preventDefault();
             const saveBtn = document.getElementById('saveProfileChangesBtn');
