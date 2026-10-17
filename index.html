@@ -68,14 +68,14 @@
         }
 
         /* ====================================================
-           2. نظام الشاشات والخلفيات وحلقة التحميل
+           2. نظام الشاشات (SPA Screens) وإلغاء المساحات البيضاء
            ==================================================== */
         .screen {
             display: none;
             min-height: 100vh;
             width: 100%;
             opacity: 0;
-            transition: opacity 0.45s ease, transform 0.45s ease;
+            transition: opacity 0.35s ease;
         }
 
         .screen.active {
@@ -139,7 +139,7 @@
         }
 
         /* ====================================================
-           3. الصفحة الأولى: شاشة الترحيب الثابتة المؤقتة
+           3. الصفحة الأولى: شاشة الترحيب الثابتة
            ==================================================== */
         #splash-screen {
             justify-content: center;
@@ -199,7 +199,7 @@
         }
 
         /* ====================================================
-           4. الصفحة الثانية والثالثة والرابعة
+           4. واجهة البيانات والتسجيل
            ==================================================== */
         #data-screen {
             justify-content: center;
@@ -543,6 +543,9 @@
             color: var(--orange-main);
         }
 
+        /* ====================================================
+           (شرط الصارم): حواف المربعات الخضراء فقط عند النجاح (Outer Borders Only)
+           ==================================================== */
         .code-verify-instruction {
             font-size: 0.96rem;
             color: var(--orange-light);
@@ -573,7 +576,7 @@
             text-align: center;
             outline: none;
             box-shadow: none;
-            transition: border-color 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: border-color 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .digit-box-input:focus {
@@ -581,7 +584,8 @@
             background-color: var(--navy-primary) !important;
         }
 
-        .digit-box-input.seq-green-border {
+        /* الحواف الخارجية فقط تصبح خضراء عند النجاح التام مع بقاء الداخل بلونه الطبيعي */
+        .digit-box-input.outer-success-green {
             border-color: var(--pure-green) !important;
             background-color: var(--navy-primary) !important;
             color: var(--text-white) !important;
@@ -865,7 +869,7 @@
         }
 
         /* ====================================================
-           5. الصفحة الخامسة: السوق الرئيسي + واجهة الشبح البرتقالي (تعديل 2 الجديد)
+           5. الصفحة الخامسة: واجهة الشبح البرتقالي للقسم الفارغ (Orange Cute Ghost Empty State)
            ==================================================== */
         #app-screen {
             padding-bottom: 95px;
@@ -1035,9 +1039,7 @@
             gap: 1.35rem;
         }
 
-        /* ====================================================
-           (تعديل 2 الجديد): واجهة الشبح البرتقالي للقسم الفارغ (Orange Cute Ghost Empty State)
-           ==================================================== */
+        /* (شرط صارم): واجهة الشبح البرتقالي للقسم الفارغ بالحواف السوداء الدقيقة والنحيفة */
         .orange-ghost-empty-panel {
             grid-column: 1 / -1;
             max-width: 520px;
@@ -1068,7 +1070,6 @@
             margin-bottom: 1.2rem;
         }
 
-        /* رسمة الشبح الكرتوني اللطيف باللون البرتقالي الصافي ذو حواف سوداء دقيقة ونحيفة ويهتز بحركة خفيفة */
         .orange-cartoon-ghost-svg {
             width: 102px;
             height: 112px;
@@ -1121,7 +1122,6 @@
             }
         }
 
-        /* عبارة بالخط العريض الحر باللون البرتقالي الدافئ تحت الشبح البرتقالي */
         .orange-ghost-caption-pill {
             background: rgba(5, 10, 20, 0.72);
             border: 2px solid var(--orange-main);
@@ -1441,15 +1441,15 @@
             }
         }
 
-        .btn-share-whatsapp-card {
+        .btn-unified-share-sheet {
             width: 100%;
             margin-top: 10px;
             background: var(--navy-primary);
-            border: 1px solid rgba(249, 115, 22, 0.4);
+            border: 1.5px solid rgba(249, 115, 22, 0.45);
             color: var(--orange-light);
-            padding: 8px 12px;
+            padding: 9px 14px;
             border-radius: var(--radius-sm);
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 800;
             cursor: pointer;
             transition: var(--transition);
@@ -1459,10 +1459,11 @@
             gap: 8px;
         }
 
-        .btn-share-whatsapp-card:hover {
+        .btn-unified-share-sheet:hover {
             background: var(--orange-main);
             color: var(--text-white);
             border-color: var(--orange-main);
+            box-shadow: 0 6px 16px var(--orange-glow);
         }
 
         .owner-delete-sold-btn {
@@ -1516,6 +1517,178 @@
 
         .floating-telegram-support.hidden-in-profile {
             display: none !important;
+        }
+
+        .floating-back-to-top {
+            position: fixed;
+            bottom: 160px;
+            right: 27px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--navy-card);
+            border: 2px solid var(--orange-main);
+            color: var(--orange-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px var(--orange-glow);
+            z-index: 140;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.85);
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .floating-back-to-top.visible-scroll {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .floating-back-to-top:hover {
+            background: var(--orange-main);
+            color: var(--text-white);
+            transform: translateY(-4px) scale(1.06);
+        }
+
+        .smart-add-post-fab {
+            position: fixed;
+            bottom: 86px;
+            right: 20px;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 12px 30px var(--orange-glow), 0 4px 12px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 145;
+            transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.35s ease,
+                box-shadow 0.35s ease,
+                right 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, right;
+        }
+
+        .smart-add-post-fab svg.thin-plus-svg {
+            width: 30px;
+            height: 30px;
+            stroke: #ffffff;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            transition: transform 0.35s ease;
+        }
+
+        .smart-add-post-fab:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 16px 36px var(--orange-glow);
+        }
+
+        .smart-add-post-fab:hover svg.thin-plus-svg {
+            transform: rotate(90deg);
+        }
+
+        .smart-add-post-fab.scrolling-down-docked {
+            transform: translateX(36px) scale(0.62);
+            opacity: 0.72;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .smart-add-post-fab.hidden-in-profile {
+            display: none !important;
+        }
+
+        .brand-snackbar {
+            position: fixed;
+            bottom: 84px;
+            left: 50%;
+            transform: translateX(-50%) translateY(40px);
+            background: linear-gradient(135deg, var(--navy-card), var(--navy-elevated));
+            border: 1.5px solid var(--orange-main);
+            border-radius: 16px;
+            padding: 12px 18px;
+            width: 92%;
+            max-width: 420px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85), 0 0 22px var(--orange-glow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            z-index: 650;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: hidden;
+        }
+
+        .brand-snackbar.show-snackbar {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .snackbar-text-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--text-white);
+        }
+
+        .snackbar-text-wrap i {
+            color: var(--orange-main);
+            font-size: 1.1rem;
+        }
+
+        .btn-snackbar-undo {
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: var(--text-white);
+            border: none;
+            padding: 7px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 4px 14px var(--orange-glow);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-snackbar-undo:hover {
+            transform: scale(1.05);
+            filter: brightness(1.08);
+        }
+
+        .snackbar-progress-bar {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: 3px;
+            background: var(--orange-main);
+            width: 100%;
+            transform-origin: right;
+        }
+
+        .brand-snackbar.show-snackbar .snackbar-progress-bar {
+            animation: snackbarTimer 5s linear forwards;
+        }
+
+        @keyframes snackbarTimer {
+            from {
+                transform: scaleX(1);
+            }
+
+            to {
+                transform: scaleX(0);
+            }
         }
 
         .multi-upload-box {
@@ -1588,9 +1761,7 @@
             transform: translateY(-2px);
         }
 
-        /* ====================================================
-           8. قسم الملف الشخصي ("أنا") والأزرار الدائرية الفخمة (⚙️ و ✏️)
-           ==================================================== */
+        /* 8. قسم الملف الشخصي ("أنا") */
         .profile-card {
             background: var(--navy-card);
             border: 1px solid var(--navy-border);
@@ -1815,9 +1986,6 @@
             box-shadow: 0 2px 10px var(--orange-glow);
         }
 
-        /* ====================================================
-           9. النوافذ المنبثقة (Modals) والإشعارات
-           ==================================================== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -2002,7 +2170,6 @@
         <div class="snackbar-progress-bar" id="snackbarProgressBar"></div>
     </div>
 
-    <!-- تعريف الشعار الهندسي المطور (True Physical Cutout Gap Split-Z Logo) -->
     <svg width="0" height="0" style="position:absolute">
         <defs>
             <linearGradient id="zoneBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -2024,7 +2191,7 @@
         </defs>
     </svg>
 
-    <!-- 1. الصفحة الأولى: شاشة الترحيب الثابتة -->
+    <!-- 1. شاشة الترحيب -->
     <section id="splash-screen" class="screen active">
         <div class="splash-content">
             <div class="zone-custom-logo-box">
@@ -2036,7 +2203,7 @@
         </div>
     </section>
 
-    <!-- 2. الصفحة الثانية: تعبئة البيانات (سجل بياناتك الآن) -->
+    <!-- 2. شاشة تسجيل البيانات -->
     <section id="data-screen" class="screen">
         <div class="card-container">
             <div class="section-header">
@@ -2279,7 +2446,7 @@
         </div>
     </div>
 
-    <!-- 3. الصفحة الثالثة: واجهة الاشتراك (التاج الملكي 👑) -->
+    <!-- 3. شاشة الاشتراك -->
     <section id="subscription-screen" class="screen">
         <div class="plans-container-card">
             <div class="section-header">
@@ -2313,7 +2480,7 @@
         </div>
     </section>
 
-    <!-- نافذة معلومات الدفع الشام كاش -->
+    <!-- نافذة الدفع -->
     <div class="modal-overlay" id="shamCashModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -2342,7 +2509,7 @@
         </div>
     </div>
 
-    <!-- 4. الصفحة الرابعة: واجهة الانتظار الصارمة -->
+    <!-- 4. شاشة الانتظار -->
     <section id="waiting-screen" class="screen">
         <div class="waiting-minimal-wrapper">
             <i id="waitingGearIcon" class="fa-solid fa-gear gear-spinner"></i>
@@ -2355,7 +2522,7 @@
         </div>
     </section>
 
-    <!-- 5. الصفحة الخامسة: السوق الرئيسي + الزر العائم الذكي (FAB) + واجهة الشبح البرتقالي -->
+    <!-- 5. شاشة السوق الرئيسي -->
     <section id="app-screen" class="screen">
         <header class="app-header">
             <div class="header-top-row">
@@ -2472,7 +2639,7 @@
             </div>
         </main>
 
-        <!-- زر إضافة منشور جديد الدائري الفخم والعائم (Smart FAB) -->
+        <!-- زر إضافة منشور جديد الدائري الفخم والعائم -->
         <button type="button" id="smartAddPostFab" class="smart-add-post-fab" onclick="openAddPostModal()"
             title="إضافة منشور جديد">
             <svg class="thin-plus-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2506,7 +2673,7 @@
         </nav>
     </section>
 
-    <!-- نافذة الإعدادات (⚙️) -->
+    <!-- نافذة الإعدادات -->
     <div class="modal-overlay" id="settingsGearModal">
         <div class="modal-card" style="text-align: right;">
             <div class="modal-header">
@@ -2564,7 +2731,7 @@
         </div>
     </div>
 
-    <!-- نافذة التواصل المباشر مع البائع -->
+    <!-- نافذة التواصل المباشر -->
     <div class="modal-overlay" id="contactSellerModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -2589,7 +2756,7 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة منشور جديد -->
+    <!-- نافذة إضافة منشور -->
     <div class="modal-overlay" id="addPostModal">
         <div class="modal-card" style="text-align: right;">
             <div class="modal-header">
@@ -2771,7 +2938,7 @@
         </div>
     </div>
     <!-- ====================================================
-         10. المنطق البرمجي الكامل + fetchPosts العالمي المفتوح + الشبح البرتقالي (JavaScript)
+         10. المنطق البرمجي الشامل المحدث والمصحح بنسبة 100% (JavaScript)
          ==================================================== -->
     <script>
         // إعدادات بوت التلغرام الرسمي المعتمد
@@ -2783,18 +2950,18 @@
         // المعرف الرسمي المباشر للدائرة العائمة للدعم
         const OFFICIAL_SUPPORT_TELEGRAM_USERNAME = "zoneapplication";
 
-        // (شرط 1): الجدول السحابي العام والموحد المفتوح للمنشورات (Global Unified Posts Table) بدون أي فلترة userId أو localStorage
+        // (شرط 2): جدول المنشورات السحابي العام المفتوح والموحد لجميع الأجهزة على كوكب الأرض (Global Unified Posts Table) بدون أي فلترة userId
         const GLOBAL_UNIFIED_POSTS_ENDPOINTS = [
-            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_public_posts_table_v10",
-            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_public_posts_table_v10"
+            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_public_posts_table_v11",
+            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_public_posts_table_v11"
         ];
         // جدول الحسابات السحابي لحفظ ربط رقم الهاتف بالـ Chat ID الخاص بكل طالب
         const GLOBAL_USERS_DB_ENDPOINTS = [
-            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_users_directory_v10",
-            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_users_directory_v10"
+            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_users_directory_v11",
+            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_users_directory_v11"
         ];
 
-        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v10') : null;
+        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v11') : null;
 
         const PENDING_TIMEOUT_MS = 48 * 60 * 60 * 1000;
         const POST_LIFETIME_DAYS = 30;
@@ -2857,7 +3024,7 @@
         }
 
         // ====================================================
-        // أ. دوال الواجهة التفاعلية + حركة الزر العائم الذكي (FAB)
+        // أ. دوال الواجهة التفاعلية الفورية (إصلاح الكبسات بنسبة 100%)
         // ====================================================
         function showGlobalLoader(text = "جاري المعالجة...") {
             const pill = document.getElementById('globalLoaderPill');
@@ -2937,7 +3104,6 @@
             }
         });
 
-        // حركة تقليص الزر العائم وإدخاله لجانب الشاشة عند النزول (Scroll Down)، وإعادته عند التوقف أو الصعود
         window.addEventListener('scroll', () => {
             const backToTopBtn = document.getElementById('backToTopBtn');
             const smartFabBtn = document.getElementById('smartAddPostFab');
@@ -3120,14 +3286,14 @@
                     if (res.ok) {
                         const data = await res.json();
                         if (data && typeof data === 'object') {
-                            localStorage.setItem('zone_cached_users_dir_v10', JSON.stringify(data));
+                            localStorage.setItem('zone_cached_users_dir_v11', JSON.stringify(data));
                             return data;
                         }
                     }
                 } catch (e) { }
             }
 
-            const localDir = localStorage.getItem('zone_cached_users_dir_v10');
+            const localDir = localStorage.getItem('zone_cached_users_dir_v11');
             if (localDir) {
                 try { return JSON.parse(localDir); } catch (e) { }
             }
@@ -3148,7 +3314,7 @@
                 updatedAt: Date.now()
             };
 
-            localStorage.setItem('zone_cached_users_dir_v10', JSON.stringify(directory));
+            localStorage.setItem('zone_cached_users_dir_v11', JSON.stringify(directory));
             const payload = JSON.stringify(directory);
 
             for (const endpoint of GLOBAL_USERS_DB_ENDPOINTS) {
@@ -3276,7 +3442,7 @@
         }
 
         // ====================================================
-        // هـ. (شرط 2 و 4): إرسال رمز التحقق للطالب نفسه حصراً عبر الـ Chat ID المخزن + تلوين تتابعي للحواف الخضراء
+        // هـ. إرسال رمز التحقق للطالب نفسه حصراً + التلوين التتابعي للحواف الخضراء فقط عند النجاح
         // ====================================================
         function openForgotPasswordModal() {
             const loginPhone = document.getElementById('loginPhoneInput').value.trim();
@@ -3299,7 +3465,7 @@
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
             boxes.forEach(box => {
                 box.value = "";
-                box.classList.remove('seq-green-border');
+                box.classList.remove('outer-success-green');
             });
         }
 
@@ -3317,12 +3483,11 @@
             const normPhone = normalizeSyrianPhone(rawPhone);
             const sendBtn = document.getElementById('sendRecoveryCodeBtn');
             sendBtn.disabled = true;
-            sendBtn.innerHTML = `<span class="modern-loader-ring"></span> <span>جاري الفحص والإرسال للطالب...</span>`;
+            sendBtn.innerHTML = `<span class="modern-loader-ring"></span> <span>جاري الفحص وإرسال الرمز للطالب...</span>`;
 
             const directory = await fetchCloudUsersDirectory();
             const existingUser = directory[normPhone];
 
-            // إذا كان الرقم غير مسجل مسبقاً
             if (!existingUser) {
                 sendBtn.disabled = false;
                 sendBtn.innerHTML = `<i class="fa-brands fa-telegram"></i> <span>إرسال رمز التحقق</span>`;
@@ -3332,13 +3497,12 @@
                 return;
             }
 
-            // فحص وجلب الـ Chat ID الخاص بحساب الطالب نفسه المربوط برقم هاتفه في السيرفر
             const studentPrivateChatId = await syncStudentTelegramChatIdFromBotUpdates(existingUser, normPhone);
 
             if (!studentPrivateChatId) {
                 sendBtn.disabled = false;
                 sendBtn.innerHTML = `<i class="fa-brands fa-telegram"></i> <span>إرسال رمز التحقق</span>`;
-                alertBox.textContent = "لم يتم ربط رقم هاتفك بحساب التليجرام الخاص بك بعد. يرجى ربط حسابك من صفحة التسجيل أو الإعدادات أولاً.";
+                alertBox.textContent = "لم يتم ربط هذا الرقم بالتليجرام بعد. يرجى ربط حساب التليجرام أولاً.";
                 alertBox.classList.add('show');
                 return;
             }
@@ -3346,9 +3510,6 @@
             generated5DigitCode = String(Math.floor(10000 + Math.random() * 90000));
             recoveryTargetPhone = normPhone;
 
-            // (شرط 2 الصارم): إرسال الكود حصراً إلى حساب التليجرام الخاص بالطالب نفسه عبر Chat ID المخزن وبصياغة ثابتة ومختصرة هكذا حصراً (ممنوع إرساله لبوت الإدارة):
-            // Zone Verification Code
-            // [الرمز المكون من 5 أرقام]
             const strictVerificationMessage = `Zone Verification Code\n${generated5DigitCode}`;
 
             try {
@@ -3386,7 +3547,7 @@
             alertBox.classList.remove('show');
 
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
-            boxes.forEach(b => b.classList.remove('seq-green-border'));
+            boxes.forEach(b => b.classList.remove('outer-success-green'));
 
             if (digit && index < 4 && boxes[index + 1]) {
                 boxes[index + 1].focus();
@@ -3399,7 +3560,7 @@
             if (isSequentialAnimationRunning) return;
 
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
-            boxes.forEach(b => b.classList.remove('seq-green-border'));
+            boxes.forEach(b => b.classList.remove('outer-success-green'));
 
             if (event.key === 'Backspace' && !event.target.value && index > 0) {
                 boxes[index - 1].value = "";
@@ -3415,7 +3576,7 @@
             if (!pasted) return;
 
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
-            boxes.forEach(b => b.classList.remove('seq-green-border'));
+            boxes.forEach(b => b.classList.remove('outer-success-green'));
 
             for (let i = 0; i < 5; i++) {
                 if (pasted[i]) {
@@ -3442,7 +3603,7 @@
                     const stepDelayMs = 190;
                     boxes.forEach((boxEl, idx) => {
                         setTimeout(() => {
-                            boxEl.classList.add('seq-green-border');
+                            boxEl.classList.add('outer-success-green');
                         }, idx * stepDelayMs);
                     });
 
@@ -3501,7 +3662,7 @@
         }
 
         // ====================================================
-        // و. (شرط 1 الصارم): دالة الاستعلام البرمجي الموحد العام المفتوح (fetchPosts) بدون أي فلترة userId
+        // و. (شرط 2 المحدث): دالة الاستعلام البرمجي العام المفتوح (fetchPosts) بدون أي فلترة userId أو localStorage
         // ====================================================
         function cleanExpired30DaysPosts(list) {
             const now = Date.now();
@@ -3522,7 +3683,6 @@
                     if (response.ok) {
                         const allGlobalPosts = await response.json();
                         if (Array.isArray(allGlobalPosts)) {
-                            // (شرط 1): حذف أي فلترة بحسب userId أو الـ localStorage المحلي؛ الإعلانات عامة لجميع أجهزة كوكب الأرض لايف
                             const cleaned = cleanExpired30DaysPosts(allGlobalPosts);
 
                             if (lastKnownPostCount > 0 && cleaned.length > lastKnownPostCount) {
@@ -3539,7 +3699,7 @@
 
                             lastKnownPostCount = cleaned.length;
                             marketProducts = cleaned;
-                            localStorage.setItem('zone_global_public_posts_cache_v10', JSON.stringify(marketProducts));
+                            localStorage.setItem('zone_global_public_posts_cache_v11', JSON.stringify(marketProducts));
                             renderMarketProducts();
                             return;
                         }
@@ -3547,7 +3707,7 @@
                 } catch (err) { }
             }
 
-            const cached = localStorage.getItem('zone_global_public_posts_cache_v10');
+            const cached = localStorage.getItem('zone_global_public_posts_cache_v11');
             if (cached) {
                 try {
                     marketProducts = cleanExpired30DaysPosts(JSON.parse(cached));
@@ -3566,7 +3726,7 @@
             marketProducts = cleaned;
             lastKnownPostCount = cleaned.length;
             const serialized = JSON.stringify(cleaned);
-            localStorage.setItem('zone_global_public_posts_cache_v10', serialized);
+            localStorage.setItem('zone_global_public_posts_cache_v11', serialized);
 
             if (broadcastChannel) {
                 broadcastChannel.postMessage({ type: 'SYNC_POSTS', payload: cleaned });
@@ -3605,7 +3765,7 @@
         }
 
         // ====================================================
-        // ز. شاشة الترحيب الثابتة (2 ثانية) وفحص الجلسة السحابية تلقائياً
+        // ز. فحص الجلسة السحابية تلقائياً
         // ====================================================
         function checkAndCleanExpiredPendingRequest() {
             const savedStatus = localStorage.getItem('zone_status');
@@ -3627,7 +3787,7 @@
                 'zone_market_items', 'zone_market_items_v2', 'zone_market_items_v3',
                 'zone_market_items_v4', 'zone_market_items_v5', 'zone_market_items_v6',
                 'zone_market_items_v7', 'zone_market_items_v8', 'zone_market_items_v9',
-                'zone_real_market_items'
+                'zone_market_items_v10', 'zone_real_market_items'
             ].forEach(k => localStorage.removeItem(k));
 
             setTimeout(() => {
@@ -3699,7 +3859,7 @@
         }
 
         // ====================================================
-        // ح. الانتقال بين البيانات والاشتراك وإرسال الرسالة إلى التلغرام
+        // ح. التنقل والمزامنة ودعم الأزرار بنسبة 100%
         // ====================================================
         async function goToSubscriptionScreen(event) {
             event.preventDefault();
@@ -3864,9 +4024,6 @@
             } catch (e) { }
         }
 
-        // ====================================================
-        // ط. الاستماع المستمر لرد البوت (Polling) والرفض بالرد اليدوي
-        // ====================================================
         function startTelegramPolling(targetStudentId) {
             if (pollingIntervalId) {
                 clearInterval(pollingIntervalId);
@@ -3877,7 +4034,7 @@
                     clearInterval(pollingIntervalId);
                     pollingIntervalId = null;
                     showScreen('data-screen');
-                    showToast("انتهت مهلة الانتظار (48 ساعة)، يمكنك المحاولة مجدداً.");
+                    showToast("انتهت مهلة الانتظار (48 ساعة)، يمكنك إعادة التسجيل مجدداً.");
                     return;
                 }
 
@@ -4138,11 +4295,11 @@
         }
 
         // ====================================================
-        // ك. (تعديل 2): عرض المنشورات العامة للجميع + واجهة الشبح البرتقالي اللطيف
+        // ك. عرض المنشورات ومشاركة الواتساب والحذف الفوري
         // ====================================================
         function getRemainingDaysForPost(createdAt) {
             const created = createdAt || Date.now();
-            const elapsedDays = Math.floor((now - created) / DAY_IN_MS);
+            const elapsedDays = Math.floor((Date.now() - created) / DAY_IN_MS);
             return Math.max(1, POST_LIFETIME_DAYS - elapsedDays);
         }
 
@@ -4171,7 +4328,6 @@
                 return matchCat && matchQuery;
             });
 
-            // (تعديل 2): واجهة الشبح البرتقالي للقسم الفارغ بالنص الحرفي الدقيق
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="orange-ghost-empty-panel">
@@ -4184,20 +4340,15 @@
                                         <stop offset="100%" stop-color="#ea580c"/>
                                     </linearGradient>
                                 </defs>
-                                <!-- جسم الشبح الكرتوني اللطيف بلون برتقالي صافٍ ذو حواف سوداء دقيقة ونحيفة -->
                                 <path d="M24 58 C24 28, 96 28, 96 58 L96 108 C96 114, 88 114, 84 107 C80 100, 73 100, 69 107 C65 114, 55 114, 51 107 C47 100, 40 100, 36 107 C32 114, 24 114, 24 108 Z" fill="url(#solidOrangeGhostGrad)" stroke="#050a14" stroke-width="2.2" stroke-linejoin="round"/>
-                                <!-- يدا الشبح الصغيرتان -->
                                 <ellipse cx="19" cy="68" rx="7" ry="4.5" transform="rotate(-22 19 68)" fill="#fb923c" stroke="#050a14" stroke-width="1.8"/>
                                 <ellipse cx="101" cy="68" rx="7" ry="4.5" transform="rotate(22 101 68)" fill="#fb923c" stroke="#050a14" stroke-width="1.8"/>
-                                <!-- العيون الكرتونية اللطيفة السوداء مع لمعة بيضاء -->
                                 <circle cx="46" cy="57" r="5.5" fill="#050a14"/>
                                 <circle cx="44" cy="55" r="2" fill="#ffffff"/>
                                 <circle cx="74" cy="57" r="5.5" fill="#050a14"/>
                                 <circle cx="72" cy="55" r="2" fill="#ffffff"/>
-                                <!-- خدود دافئة -->
                                 <ellipse cx="37" cy="64" rx="4.5" ry="2.4" fill="rgba(255, 255, 255, 0.35)"/>
                                 <ellipse cx="83" cy="64" rx="4.5" ry="2.4" fill="rgba(255, 255, 255, 0.35)"/>
-                                <!-- فم كرتوني صغير لطيف -->
                                 <path d="M55 64 Q60 69 65 64" stroke="#050a14" stroke-width="2.4" stroke-linecap="round" fill="none"/>
                             </svg>
                             <div class="orange-ghost-floor-shadow"></div>
@@ -4293,7 +4444,7 @@
                                 </button>
                             </div>
 
-                            <button type="button" class="btn-share-whatsapp-card" onclick="openNativeShareSheet(${prod.id})">
+                            <button type="button" class="btn-unified-share-sheet" onclick="openNativeShareSheet(${prod.id})">
                                 <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
                                 <span>مشاركة المنشور</span>
                             </button>
@@ -4479,9 +4630,6 @@
             showToast("تم التراجع واستعادة المنشور بنجاح!");
         }
 
-        // ====================================================
-        // ل. ضغط الصور الفائق ونشر الإعلان في الجدول العام للجميع
-        // ====================================================
         function compressImageFileInBackground(file, maxWidth = 460, quality = 0.50) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -4637,9 +4785,6 @@
             showToast(`تم نشر إعلانك لايف في الجدول العام لجميع المستخدمين!`);
         }
 
-        // ====================================================
-        // م. إعدادات الإشعارات وتحديد الكليات + تعديل البيانات وإشعار البوت
-        // ====================================================
         function openSettingsModal() {
             const savedColleges = Array.isArray(studentProfile.subscribedColleges)
                 ? studentProfile.subscribedColleges
