@@ -27,6 +27,7 @@
             --orange-light: #fb923c;
             --orange-soft: rgba(249, 115, 22, 0.14);
             --orange-glow: rgba(249, 115, 22, 0.35);
+            --gold-crown: #fbbf24;
             --reject-color: #ff4500;
 
             --text-white: #f8fafc;
@@ -147,7 +148,7 @@
         }
 
         /* ====================================================
-           4. الصفحة الثانية: تعبئة البيانات فقط
+           4. الصفحة الثانية: تعبئة المعلومات (سجل بياناتك الآن)
            ==================================================== */
         #data-screen {
             justify-content: center;
@@ -183,9 +184,25 @@
             box-shadow: 0 12px 28px var(--orange-glow);
         }
 
+        /* أيقونة التاج الملكي الفخم في واجهة الاشتراك */
+        .royal-crown-badge {
+            width: 76px;
+            height: 76px;
+            background: linear-gradient(145deg, rgba(249, 115, 22, 0.18), rgba(251, 191, 36, 0.12));
+            border: 2px solid var(--gold-crown);
+            border-radius: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 12px 30px rgba(251, 191, 36, 0.28);
+            font-size: 2.2rem;
+            color: var(--gold-crown);
+        }
+
         .section-header h2 {
-            font-size: 1.55rem;
-            font-weight: 800;
+            font-size: 1.65rem;
+            font-weight: 900;
             color: var(--text-white);
         }
 
@@ -298,7 +315,7 @@
         }
 
         /* ====================================================
-           5. الصفحة الثالثة: اختيار الباقة المختصرة والنظيفة جداً + الدفع
+           5. الصفحة الثالثة: اختيار الباقة بالتاج الملكي الفخم 👑
            ==================================================== */
         #subscription-screen {
             justify-content: center;
@@ -390,7 +407,6 @@
             color: var(--orange-light);
         }
 
-        /* النصوص الحصرية تحت صورة الـ QR كود */
         .qr-certified-company-line {
             margin-top: 10px;
             font-size: 1.02rem;
@@ -527,7 +543,7 @@
         }
 
         /* ====================================================
-           7. الصفحة الخامسة: السوق الرئيسي، واجهة "المجلد فاضي"، والدائرة العائمة
+           7. الصفحة الخامسة: السوق الرئيسي، إخفاء الأزرار في "أنا"، والدائرة العائمة
            ==================================================== */
         #app-screen {
             padding-bottom: 90px;
@@ -612,6 +628,10 @@
         .btn-add-product-header:hover {
             background: var(--orange-hover);
             transform: translateY(-2px);
+        }
+
+        .btn-add-product-header.hidden-in-profile {
+            display: none !important;
         }
 
         .header-search-categories {
@@ -1060,7 +1080,6 @@
             }
         }
 
-        /* زر مشاركة على الواتساب أسفل كل إعلان */
         .btn-share-whatsapp-card {
             width: 100%;
             margin-top: 10px;
@@ -1085,7 +1104,6 @@
             border-color: var(--orange-main);
         }
 
-        /* زر "تم البيع" لراعي الإعلان للحذف الكلي والفوري */
         .owner-delete-sold-btn {
             width: 100%;
             margin-top: 7px;
@@ -1109,7 +1127,7 @@
             color: var(--text-white);
         }
 
-        /* (شرط 9): الدائرة البرتقالية العائمة للدعم الفني (@zoneapplication) في الرئيسية فقط */
+        /* الدائرة البرتقالية العائمة للدعم الفني المباشر في الرئيسية فقط */
         .floating-telegram-support {
             position: fixed;
             bottom: 86px;
@@ -1127,6 +1145,7 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
             z-index: 140;
             text-decoration: none;
+            cursor: pointer;
             transition: var(--transition);
         }
 
@@ -1135,7 +1154,7 @@
             filter: brightness(1.08);
         }
 
-        .floating-telegram-support.hidden-fab {
+        .floating-telegram-support.hidden-in-profile {
             display: none !important;
         }
 
@@ -1224,7 +1243,6 @@
             position: relative;
         }
 
-        /* شريط الأزرار الدائرية العلوية داخل بطاقة "أنا" (زر الإعدادات الوحيد ⚙️ + زر القلم ✏️) */
         .profile-circular-actions-bar {
             display: flex;
             align-items: center;
@@ -1322,7 +1340,6 @@
             color: var(--text-white);
         }
 
-        /* قائمة تحديد الكليات والإشعارات داخل نافذة الإعدادات ⚙️ */
         .colleges-checkbox-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1622,7 +1639,7 @@
     </section>
 
     <!-- ====================================================
-         2. الصفحة الثانية: تعبئة البيانات فقط (مع كيبورد الأرقام التلقائي)
+         2. الصفحة الثانية: تعبئة المعلومات (سجل بياناتك الآن + الفرع الدراسي)
          ==================================================== -->
     <section id="data-screen" class="screen">
         <div class="card-container">
@@ -1632,7 +1649,8 @@
                         <use href="#zone-split-z-logo"></use>
                     </svg>
                 </div>
-                <h2>تسجيل بيانات الطالب</h2>
+                <!-- (شرط 5): العنوان الرئيسي بالخط العريض (سجل بياناتك الآن) -->
+                <h2>سجل بياناتك الآن</h2>
             </div>
 
             <form id="studentDataForm" onsubmit="goToSubscriptionScreen(event)">
@@ -1644,7 +1662,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 4): كيبورد الأرقام التلقائي لرقم الهاتف -->
+                <!-- كيبورد الأرقام التلقائي لرقم الهاتف -->
                 <div class="form-group">
                     <label for="phoneNumber">رقم الهاتف</label>
                     <div class="input-wrapper">
@@ -1687,8 +1705,9 @@
                     </div>
                 </div>
 
+                <!-- (شرط 5): حذف كلمة الكلية وجعل المكتوب جملة (الفرع الدراسي) فقط -->
                 <div class="form-group">
-                    <label for="majorInput">الكلية / الفرع الدراسي</label>
+                    <label for="majorInput">الفرع الدراسي</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-microchip"></i>
                         <input type="text" id="majorInput" class="form-control" placeholder="أدخل فرعك هنا" required>
@@ -1710,15 +1729,14 @@
     </section>
 
     <!-- ====================================================
-         3. الصفحة الثالثة: اختيار باقة الاشتراك (مختصرة ونظيفة جداً بدون نصوص طويلة وبدون زر دعم)
+         3. الصفحة الثالثة: واجهة الاشتراك (الباقات) بأيقونة التاج الملكي الفخم 👑
          ==================================================== -->
     <section id="subscription-screen" class="screen">
         <div class="plans-container-card">
             <div class="section-header">
-                <div class="official-logo-badge">
-                    <svg width="54" height="54">
-                        <use href="#zone-split-z-logo"></use>
-                    </svg>
+                <!-- (شرط 6): حذف شعار التطبيق ووضع أيقونة التاج الذهبي الملكي 👑 الفخم -->
+                <div class="royal-crown-badge">
+                    <i class="fa-solid fa-crown"></i>
                 </div>
                 <h2>اختر باقة الاشتراك</h2>
             </div>
@@ -1747,7 +1765,7 @@
         </div>
     </section>
 
-    <!-- (شرط 6): نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
+    <!-- نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
     <div class="modal-overlay" id="shamCashModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -1764,7 +1782,7 @@
                 style="max-width: 240px; width: 100%; height: auto; display: block; margin: 12px auto; border-radius: 8px;"
                 onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=240x240&color=1e3a5f&bgcolor=ffffff&margin=10&data=26ee871407869d05ad94223e7b4f1402';">
 
-            <!-- النص الأول والنص الثاني تحته حصراً كما طُلب -->
+            <!-- النص الأول والنص الثاني تحته حصراً بالفصحى -->
             <div class="qr-certified-company-line">معتمد من شركة Zone</div>
             <div class="recipient-verified-line">
                 <span>المستلم الرسمي المعتمد: محمد يحيى جمال</span>
@@ -1813,8 +1831,8 @@
                     <span>سوق محافظة: <strong id="headerProvinceName">حلب</strong></span>
                 </div>
 
-                <!-- (شرط 8): تم حذف أيقونة الإعدادات الزائدة من جانب زر إضافة منشور جديد -->
-                <button type="button" class="btn-add-product-header" onclick="openAddPostModal()">
+                <!-- (شرط 3): زر "إضافة منشور جديد" يظهر فقط في الرئيسية ويختفي تماماً بداخل صفحة "أنا" -->
+                <button type="button" id="headerAddPostBtn" class="btn-add-product-header" onclick="openAddPostModal()">
                     <i class="fa-solid fa-plus"></i>
                     <span>إضافة منشور جديد</span>
                 </button>
@@ -1824,7 +1842,7 @@
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" id="marketSearchInput"
-                        placeholder="ابحث في محافظتك عن مستلزمات كليتك أو محاضرات..." oninput="renderMarketProducts()">
+                        placeholder="ابحث في محافظتك عن مستلزمات تخصصك أو محاضرات..." oninput="renderMarketProducts()">
                 </div>
 
                 <div class="categories-bar">
@@ -1864,7 +1882,7 @@
             <div class="products-grid" id="productsGridContainer"></div>
         </main>
 
-        <!-- (شرط 7 و 8): التبويب الثاني "أنا" (يحتوي على زر الإعدادات الوحيد ⚙️ + زر تعديل البيانات الدائري بالقلم ✏️، بدون قسم منشوراتي وبدون زر دعم) -->
+        <!-- (شرط 4 و 8): التبويب الثاني "أنا" بالمصطلحات المحدثة (المحافظة / التخصص) والأزرار الدائرية -->
         <main id="profile-tab" class="tab-view">
             <div class="profile-card">
                 <div class="profile-circular-actions-bar">
@@ -1889,12 +1907,14 @@
                 </div>
 
                 <div class="profile-details-list">
+                    <!-- (شرط 4): كلمة (المحافظة) فقط دون أي سلاش أو نطاق السوق -->
                     <div class="profile-detail-row">
-                        <span>المحافظة (نطاق السوق):</span>
+                        <span>المحافظة:</span>
                         <span id="profileProvinceText">حلب</span>
                     </div>
+                    <!-- (شرط 4): كلمة (التخصص) فقط دون كلمة الكلية -->
                     <div class="profile-detail-row">
-                        <span>الكلية / التخصص:</span>
+                        <span>التخصص:</span>
                         <span id="profileMajorText">هندسة ميكاترونيكس</span>
                     </div>
                     <div class="profile-detail-row">
@@ -1920,9 +1940,10 @@
             </div>
         </main>
 
-        <!-- (شرط 9): الدائرة البرتقالية العائمة للتواصل مع الدعم (@zoneapplication) تظهر فقط في الصفحة الرئيسية وتختفي في صفحة "أنا" -->
+        <!-- (شرط 1 و 3): الدائرة البرتقالية العائمة بشعار التليجرام تفتح محادثة تشات الدعم المباشر وتختفي في صفحة "أنا" -->
         <a href="https://t.me/zoneapplication" target="_blank" rel="noopener noreferrer" id="floatingSupportCircle"
-            class="floating-telegram-support" title="التواصل مع الدعم الفني (@zoneapplication)">
+            class="floating-telegram-support" onclick="openDirectSupportTelegram(event)"
+            title="التحدث المباشر مع الدعم الفني">
             <i class="fa-brands fa-telegram"></i>
         </a>
 
@@ -2090,7 +2111,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 4): كيبورد الأرقام التلقائي لخانة السعر -->
+                <!-- كيبورد الأرقام التلقائي لخانة السعر -->
                 <div class="form-group" id="postPriceGroup">
                     <label>السعر بالليرة السورية (ل.س)</label>
                     <div class="input-wrapper">
@@ -2109,7 +2130,7 @@
     </div>
 
     <!-- ====================================================
-         9. نافذة منبثقة: تعديل بيانات الطالب (تفتح من الزر الدائري ✏️)
+         9. نافذة منبثقة: تعديل بيانات الطالب (تفتح من الزر الدائري ✏️ وترسل إشعاراً فوريًا للبوت)
          ==================================================== -->
     <div class="modal-overlay" id="editProfileModal">
         <div class="modal-card" style="text-align: right;">
@@ -2129,7 +2150,6 @@
                     </div>
                 </div>
 
-                <!-- (شرط 4): كيبورد الأرقام التلقائي لرقم الهاتف -->
                 <div class="form-group">
                     <label>رقم الهاتف</label>
                     <div class="input-wrapper">
@@ -2140,7 +2160,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>المحافظة (سيتم تحديث السوق حسبها)</label>
+                    <label>المحافظة</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-map-location-dot"></i>
                         <select id="editProvince" class="form-control" required>
@@ -2171,7 +2191,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>الكلية / الفرع</label>
+                    <label>الفرع الدراسي</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-graduation-cap"></i>
                         <input type="text" id="editMajor" class="form-control" placeholder="أدخل فرعك هنا" required>
@@ -2187,7 +2207,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-orange-wide">
+                <button type="submit" id="saveProfileChangesBtn" class="btn-orange-wide">
                     <i class="fa-solid fa-floppy-disk"></i>
                     <span>حفظ التعديلات</span>
                 </button>
@@ -2204,10 +2224,12 @@
         const TELEGRAM_CHAT_ID = "8717720399";
         const TELEGRAM_API_BASE = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
-        // (شرط 1): نقطة الاتصال السحابية العالمية الحية للمنشورات (Global Live Cloud Feed)
-        // تتيح ظهور أي منشور جديد فوراً عند جميع الأجهزة في العالم مع بقاء الحسابات الشخصية مستقلة تماماً
-        const GLOBAL_CLOUD_FEED_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_global_live_posts_v1";
-        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel') : null;
+        // حساب الدعم الفني الرسمي المباشر على التليجرام
+        const OFFICIAL_SUPPORT_TELEGRAM_USERNAME = "zoneapplication";
+
+        // (شرط 7): نقطة الاتصال السحابية العالمية الحية للمنشورات (Global Live Cloud Feed)
+        const GLOBAL_CLOUD_FEED_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_global_live_posts_v2";
+        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v2') : null;
 
         const PENDING_TIMEOUT_MS = 48 * 60 * 60 * 1000;
         const POST_LIFETIME_DAYS = 30;
@@ -2224,7 +2246,7 @@
         let runtimeVerifiedToken = null;
         let lastKnownPostCount = 0;
 
-        // بيانات الطالب الشخصية معزولة ومستقلة تماماً في جهازه فقط
+        // بيانات الطالب الشخصية معزولة ومحمية في جهازه بشكل مستقل تماماً
         let studentProfile = {
             id: "",
             name: "",
@@ -2240,11 +2262,21 @@
             subscribedColleges: []
         };
 
-        // (شرط 2): المتجر يبدأ نظيفاً وصافياً بدون أي عروض وهمية أو تجريبية
+        // المتجر يبدأ نظيفاً وصافياً بدون أي عروض وهمية
         let marketProducts = [];
 
         // ====================================================
-        // أ. جدار الحماية السري المخفي (Security Token & Anti-Inspect)
+        // أ. (شرط 1): فتح رابط تشات الدعم المباشر في التليجرام (وليس الرسائل المحفوظة)
+        // ====================================================
+        function openDirectSupportTelegram(event) {
+            if (event) event.preventDefault();
+            const cleanSupportHandle = OFFICIAL_SUPPORT_TELEGRAM_USERNAME.replace(/^@/, '').trim();
+            const directChatUrl = `https://t.me/${cleanSupportHandle}`;
+            window.open(directChatUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        // ====================================================
+        // ب. جدار الحماية السري المخفي (Security Token & Anti-Inspect)
         // ====================================================
         function generateSecurityHash(studentId) {
             if (!studentId) return "";
@@ -2303,7 +2335,7 @@
         })();
 
         // ====================================================
-        // ب. (شرط 1): محرك المزامنة السحابي العالمي الحي (Global Live Feed Engine)
+        // ج. (شرط 7): محرك المزامنة السحابي العالمي الحي للمنشورات (Global Live Feed)
         // ====================================================
         function cleanExpired30DaysPosts(list) {
             const now = Date.now();
@@ -2324,7 +2356,6 @@
                     const cloudData = await response.json();
                     if (Array.isArray(cloudData)) {
                         const cleaned = cleanExpired30DaysPosts(cloudData);
-                        // فحص ما إذا ورد منشور جديد في كلية الطالب المشترك بإشعاراتها
                         if (lastKnownPostCount > 0 && cleaned.length > lastKnownPostCount) {
                             const newestPost = cleaned[0];
                             if (
@@ -2339,16 +2370,14 @@
                         }
                         lastKnownPostCount = cleaned.length;
                         marketProducts = cleaned;
-                        localStorage.setItem('zone_global_cached_posts', JSON.stringify(marketProducts));
+                        localStorage.setItem('zone_global_cached_posts_v2', JSON.stringify(marketProducts));
                         renderMarketProducts();
                         return;
                     }
                 }
-            } catch (err) {
-                // في حال ضعف الإنترنت اللحظي، يعرض آخر نسخة متزامنة محلياً ريثما يعود الاتصال
-            }
+            } catch (err) { }
 
-            const cached = localStorage.getItem('zone_global_cached_posts');
+            const cached = localStorage.getItem('zone_global_cached_posts_v2');
             if (cached) {
                 try {
                     marketProducts = cleanExpired30DaysPosts(JSON.parse(cached));
@@ -2366,7 +2395,7 @@
             const cleaned = cleanExpired30DaysPosts(updatedList);
             marketProducts = cleaned;
             lastKnownPostCount = cleaned.length;
-            localStorage.setItem('zone_global_cached_posts', JSON.stringify(cleaned));
+            localStorage.setItem('zone_global_cached_posts_v2', JSON.stringify(cleaned));
 
             if (broadcastChannel) {
                 broadcastChannel.postMessage({ type: 'SYNC_POSTS', payload: cleaned });
@@ -2379,7 +2408,7 @@
                     body: JSON.stringify(cleaned)
                 });
             } catch (err) {
-                console.warn("Cloud sync push fallback:", err);
+                console.warn("Cloud sync push warning:", err);
             }
         }
 
@@ -2390,7 +2419,7 @@
                 if (isSessionCryptographicallyVerified()) {
                     fetchGlobalLivePostsFromCloud(true);
                 }
-            }, 4000);
+            }, 3500);
         }
 
         if (broadcastChannel) {
@@ -2403,7 +2432,7 @@
         }
 
         // ====================================================
-        // ج. شاشة الترحيب الثابتة (2 ثانية) وتنظيف أي بقايا قديمة
+        // د. شاشة الترحيب الثابتة (2 ثانية) وتنظيف العروض الوهمية القديمة
         // ====================================================
         function checkAndCleanExpiredPendingRequest() {
             const savedStatus = localStorage.getItem('zone_status');
@@ -2421,7 +2450,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // (شرط 2): مسح كافة مفاتيح العروض الوهمية القديمة نهائياً
+            // حذف كافة المفاتيح القديمة التي كانت تحتوي على عروض وهمية
             [
                 'zone_market_items', 'zone_market_items_v2', 'zone_market_items_v3',
                 'zone_market_items_v4', 'zone_market_items_v5', 'zone_market_items_v6',
@@ -2485,7 +2514,7 @@
         }
 
         // ====================================================
-        // د. الانتقال بين البيانات والاشتراك وإرسال الرسالة إلى التلغرام
+        // هـ. الانتقال بين البيانات والاشتراك وإرسال الرسالة إلى التلغرام
         // ====================================================
         function goToSubscriptionScreen(event) {
             event.preventDefault();
@@ -2572,7 +2601,7 @@
                 `📱 رقم الهاتف: ${studentProfile.phone}`,
                 `📍 المحافظة السورية: ${studentProfile.province}`,
                 `🏛️ الجامعة المكتوبة: ${studentProfile.university}`,
-                `🎓 الكلية / التخصص: ${studentProfile.major}`,
+                `🎓 الفرع الدراسي: ${studentProfile.major}`,
                 `💳 الباقة المختارة: ${studentProfile.plan}`,
                 "━━━━━━━━━━━━━━━━━━"
             ].join("\n");
@@ -2611,7 +2640,7 @@
         }
 
         // ====================================================
-        // هـ. الاستماع المستمر لرد البوت (Polling) والرفض بالرد اليدوي
+        // و. الاستماع المستمر لرد البوت (Polling) والرفض بالرد اليدوي
         // ====================================================
         function startTelegramPolling(targetStudentId) {
             if (pollingIntervalId) {
@@ -2734,9 +2763,7 @@
                         reply_markup: { force_reply: true }
                     })
                 });
-            } catch (e) {
-                console.warn("Prompt send error:", e);
-            }
+            } catch (e) { }
         }
 
         async function sendTelegramSimpleNotice(textMsg) {
@@ -2749,9 +2776,7 @@
                         text: textMsg
                     })
                 });
-            } catch (e) {
-                console.warn("Notice send error:", e);
-            }
+            } catch (e) { }
         }
 
         async function answerCallback(callbackQueryId, toastText) {
@@ -2765,9 +2790,7 @@
                         show_alert: false
                     })
                 });
-            } catch (e) {
-                console.warn("answerCallback error:", e);
-            }
+            } catch (e) { }
         }
 
         async function updateTelegramMessageWithKeyboard(messageId, updatedText, replyMarkup) {
@@ -2783,9 +2806,7 @@
                         reply_markup: replyMarkup
                     })
                 });
-            } catch (e) {
-                console.warn("editMessageText error:", e);
-            }
+            } catch (e) { }
         }
 
         function handleStudentApproved(isFreeGrant = false) {
@@ -2881,7 +2902,7 @@
         }
 
         // ====================================================
-        // و. عرض المنشورات الحية، واجهة "المجلد فاضي"، والحذف الفوري عند (تم البيع)
+        // ز. عرض المنشورات الحية، واجهة "المجلد فاضي"، والحذف الفوري عند (تم البيع)
         // ====================================================
         function getRemainingDaysForPost(createdAt) {
             const created = createdAt || Date.now();
@@ -2914,7 +2935,7 @@
                 return matchProvince && matchCat && matchQuery;
             });
 
-            // (شرط 3): واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
+            // واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-folder-panel">
@@ -2975,7 +2996,6 @@
                        </div>`
                     : sliderHTML;
 
-                // (شرط 10): زر (تم البيع) لراعي الإعلان يحذف المنشور كلياً وفوراً من المتجر وقاعدة البيانات
                 const ownerDeleteSoldBtn = isOwner ? `
                     <button type="button" class="owner-delete-sold-btn" onclick="markAsSoldAndDeletePost(${prod.id})">
                         <i class="fa-solid fa-trash-can"></i>
@@ -3010,7 +3030,6 @@
                                 </button>
                             </div>
 
-                            <!-- (شرط 10): زر مشاركة على الواتساب أسفل كل إعلان -->
                             <button type="button" class="btn-share-whatsapp-card" onclick="sharePostOnWhatsApp(${prod.id})">
                                 <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem;"></i>
                                 <span>مشاركة على الواتساب</span>
@@ -3092,7 +3111,6 @@
             renderMarketProducts();
         }
 
-        // (شرط 10): مشاركة الإعلان وصورته على الواتساب بضغطة زر
         async function sharePostOnWhatsApp(productId) {
             const prod = marketProducts.find(item => item.id === productId);
             if (!prod) return;
@@ -3136,7 +3154,7 @@
             showToast("تم نسخ تفاصيل العرض وفتح الواتساب للمشاركة!");
         }
 
-        // (شرط 10): حذف الإعلان كلياً وفوراً من المتجر وقاعدة البيانات السحابية عند الضغط على (تم البيع)
+        // حذف المنشور كلياً وفوراً من قاعدة البيانات والمتجر عند الضغط على (تم البيع)
         async function markAsSoldAndDeletePost(productId) {
             const targetIndex = marketProducts.findIndex(item => item.id === productId);
             if (targetIndex === -1) return;
@@ -3149,7 +3167,7 @@
         }
 
         // ====================================================
-        // ز. ضغط الصور تلقائياً بالخلفية ونشر الإعلان لايف للجميع
+        // ح. ضغط الصور تلقائياً بالخلفية ونشر الإعلان لايف للجميع
         // ====================================================
         function compressImageFileInBackground(file, maxWidth = 720, quality = 0.62) {
             return new Promise((resolve, reject) => {
@@ -3291,7 +3309,6 @@
                 images: isTextLecture ? [] : [...uploadedSellerImages]
             };
 
-            // جلب أحدث قائمة عالمية أولاً ثم إضافة المنشور الجديد في المقدمة ومزامنته للجميع لايف
             await fetchGlobalLivePostsFromCloud(true);
             marketProducts.unshift(newPost);
             await pushGlobalLivePostsToCloud(marketProducts);
@@ -3306,7 +3323,7 @@
         }
 
         // ====================================================
-        // ح. إعدادات الإشعارات وتحديد الكليات (من زر ⚙️ الوحيد في صفحة "أنا")
+        // ط. إعدادات الإشعارات وتحديد الكليات (من زر ⚙️ الوحيد في صفحة "أنا")
         // ====================================================
         function openSettingsModal() {
             const savedColleges = Array.isArray(studentProfile.subscribedColleges)
@@ -3343,7 +3360,7 @@
         }
 
         // ====================================================
-        // ط. التواصل المباشر مع البائع، تبديل التبويبات، وإخفاء دائرة الدعم في صفحة "أنا"
+        // ي. التواصل مع البائع، إخفاء الأزرار في "أنا"، وإشعار التلغرام عند تعديل البيانات
         // ====================================================
         function openContactSellerModal(productId) {
             const prod = marketProducts.find(item => item.id === productId);
@@ -3402,20 +3419,21 @@
             document.getElementById('profileFullName').textContent = studentProfile.name || "طالب جامعي";
             document.getElementById('profileUniBadge').textContent = studentProfile.university || "الجامعة";
             document.getElementById('profileProvinceText').textContent = studentProfile.province || "حلب";
-            document.getElementById('profileMajorText').textContent = studentProfile.major || "الكلية";
+            document.getElementById('profileMajorText').textContent = studentProfile.major || "التخصص";
             document.getElementById('profilePhoneText').textContent = studentProfile.phone || "";
             document.getElementById('profileTelegramText').textContent = studentProfile.telegramUsername ? `@${studentProfile.telegramUsername.replace(/^@/, '')}` : "غير مضاف";
             document.getElementById('profilePlanText').textContent = studentProfile.plan || "مفعل";
             document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
         }
 
-        // (شرط 9): إظهار الدائرة البرتقالية العائمة في الصفحة الرئيسية فقط وإخفاؤها تماماً عند الضغط على "أنا"
+        // (شرط 3): إخفاء زر "إضافة منشور جديد" والدائرة البرتقالية العائمة داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
         function switchBottomTab(tabName) {
             const homeTab = document.getElementById('home-tab');
             const profileTab = document.getElementById('profile-tab');
             const navHome = document.getElementById('navBtnHome');
             const navProfile = document.getElementById('navBtnProfile');
             const headerControls = document.getElementById('marketHeaderControls');
+            const headerAddPostBtn = document.getElementById('headerAddPostBtn');
             const floatingSupportCircle = document.getElementById('floatingSupportCircle');
 
             if (tabName === 'home') {
@@ -3424,14 +3442,16 @@
                 navHome.classList.add('active');
                 navProfile.classList.remove('active');
                 headerControls.style.display = 'flex';
-                if (floatingSupportCircle) floatingSupportCircle.classList.remove('hidden-fab');
+                if (headerAddPostBtn) headerAddPostBtn.classList.remove('hidden-in-profile');
+                if (floatingSupportCircle) floatingSupportCircle.classList.remove('hidden-in-profile');
             } else {
                 profileTab.classList.add('active');
                 homeTab.classList.remove('active');
                 navProfile.classList.add('active');
                 navHome.classList.remove('active');
                 headerControls.style.display = 'none';
-                if (floatingSupportCircle) floatingSupportCircle.classList.add('hidden-fab');
+                if (headerAddPostBtn) headerAddPostBtn.classList.add('hidden-in-profile');
+                if (floatingSupportCircle) floatingSupportCircle.classList.add('hidden-in-profile');
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -3450,14 +3470,34 @@
             document.getElementById('editProfileModal').classList.remove('open');
         }
 
+        // (شرط 2): إرسال تنبيه فوري لبوت التليجرام عند قيام المستخدم بتعديل معلومات حسابه الشخصية
         async function handleSaveProfile(event) {
             event.preventDefault();
+            const saveBtn = document.getElementById('saveProfileChangesBtn');
+            if (saveBtn) saveBtn.disabled = true;
+
+            const oldName = studentProfile.name || "غير معروف";
             studentProfile.name = document.getElementById('editName').value.trim();
             studentProfile.phone = document.getElementById('editPhone').value.trim();
             studentProfile.province = document.getElementById('editProvince').value;
             studentProfile.university = document.getElementById('editUni').value.trim();
             studentProfile.major = document.getElementById('editMajor').value.trim();
             studentProfile.telegramUsername = document.getElementById('editTelegram').value.trim().replace(/^@/, '');
+
+            // إرسال الإشعار الفوري لغرفة تحكم التليجرام بالنص المطلوب
+            const editNotificationMessage = [
+                `تم تعديل المعلومات للحساب (${oldName}) ✏️`,
+                "━━━━━━━━━━━━━━━━━━",
+                `👤 الاسم الجديد: ${studentProfile.name}`,
+                `📱 رقم الهاتف: ${studentProfile.phone}`,
+                `📍 المحافظة: ${studentProfile.province}`,
+                `🏛️ الجامعة: ${studentProfile.university}`,
+                `🎓 الفرع الدراسي: ${studentProfile.major}`,
+                `✈️ معرف التليجرام: ${studentProfile.telegramUsername ? '@' + studentProfile.telegramUsername : 'غير مضاف'}`,
+                "━━━━━━━━━━━━━━━━━━"
+            ].join("\n");
+
+            sendTelegramSimpleNotice(editNotificationMessage);
 
             let updatedAnyPost = false;
             marketProducts.forEach(item => {
@@ -3477,8 +3517,9 @@
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             syncProfileToUI();
             renderMarketProducts();
+            if (saveBtn) saveBtn.disabled = false;
             closeEditProfileModal();
-            showToast(`تم تحديث بياناتك الشخصية وعرض سوق محافظة ${studentProfile.province}!`);
+            showToast(`تم تحديث بياناتك الشخصية وإشعار الإدارة بنجاح!`);
         }
 
         function logoutStudent() {
