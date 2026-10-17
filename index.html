@@ -68,7 +68,7 @@
         }
 
         /* ====================================================
-           2. نظام الشاشات الخمس (SPA Screens) + حلقة التحميل العصرية (تعديل 4)
+           2. نظام الشاشات الخمس (SPA Screens) + حلقة التحميل العصرية
            ==================================================== */
         .screen {
             display: none;
@@ -89,7 +89,6 @@
             transform: scale(0.97);
         }
 
-        /* (تعديل 4): حلقة تحميل متحركة وعصرية (Loader / Spinner) بألوان الهوية */
         .modern-loader-ring {
             display: inline-block;
             width: 22px;
@@ -108,7 +107,6 @@
             border-right-color: var(--orange-light);
         }
 
-        /* طبقة التحميل العامة السريعة عند العمليات السحابية */
         .global-loading-pill {
             position: fixed;
             bottom: 90px;
@@ -207,7 +205,7 @@
         }
 
         /* ====================================================
-           4. الصفحة الثانية: سجل بياناتك الآن + أيقونة العين (تعديل 5) + القائمة المخصصة للمحافظات (تعديل 13)
+           4. الصفحة الثانية: سجل بياناتك الآن + أيقونة العين + القائمة المخصصة للمحافظات
            ==================================================== */
         #data-screen {
             justify-content: center;
@@ -320,7 +318,6 @@
             z-index: 2;
         }
 
-        /* (تعديل 5): تصميم أيقونة "العين" (Show/Hide Password) بداخل حقل كلمة السر */
         .password-toggle-btn {
             position: absolute;
             left: 12px;
@@ -375,9 +372,7 @@
             box-shadow: 0 0 0 3px var(--orange-soft);
         }
 
-        /* ====================================================
-           (تعديل 13): القائمة المنسدلة المخصصة للمحافظات (Custom Dropdown) مع Glow Effect
-           ==================================================== */
+        /* القائمة المنسدلة المخصصة للمحافظات (Custom Dropdown) مع Glow Effect */
         .custom-dropdown-container {
             position: relative;
             width: 100%;
@@ -419,7 +414,6 @@
             font-weight: 600;
         }
 
-        /* تأثير الإضاءة الخفيف (Glow Effect) بلون التطبيق الأساسي عند فتح القائمة أو اختيار المحافظة */
         .custom-dropdown-container.open .custom-dropdown-trigger,
         .custom-dropdown-trigger.has-value-glow {
             border-color: var(--orange-main);
@@ -510,7 +504,6 @@
             box-shadow: 0 4px 14px var(--orange-glow);
         }
 
-        /* زر ربط التليجرام في صفحة تعبئة المعلومات والحالة الرسمية الخضراء */
         .telegram-bind-field-wrapper {
             margin-bottom: 1.1rem;
         }
@@ -577,7 +570,6 @@
             color: var(--orange-main);
         }
 
-        /* تلوين الحواف الخضر للمربعات (Sequential Transition) */
         .code-verify-instruction {
             font-size: 0.96rem;
             color: var(--orange-light);
@@ -912,10 +904,10 @@
         }
 
         /* ====================================================
-           7. الصفحة الخامسة: السوق الرئيسي، المشاركة الموحدة (تعديل 11)، زر العودة للأعلى (تعديل 8)، والـ Snackbar (تعديل 12)
+           7. الصفحة الخامسة: السوق الرئيسي + التعديلين الجديدين (الـ FAB الذكي + الشبح الكرتوني)
            ==================================================== */
         #app-screen {
-            padding-bottom: 90px;
+            padding-bottom: 95px;
         }
 
         .app-header {
@@ -969,39 +961,174 @@
             background: var(--orange-soft);
             border: 1px solid var(--orange-main);
             color: var(--orange-light);
-            padding: 5px 12px;
+            padding: 5px 14px;
             border-radius: 50px;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 800;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
 
-        /* (تعديل 6): الإبقاء على تصميم زر إضافة منشور كما هو تماماً */
-        .btn-add-product-header {
-            background: var(--orange-main);
-            color: var(--text-white);
-            border: none;
-            padding: 9px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            cursor: pointer;
+        /* ====================================================
+           (تعديل 1 الجديد): زر إضافة منشور جديد الدائري الفخم والعائم (Smart Floating Action Button)
+           ==================================================== */
+        .smart-add-post-fab {
+            position: fixed;
+            bottom: 86px;
+            right: 20px;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-hover));
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 12px 30px var(--orange-glow), 0 4px 12px rgba(0, 0, 0, 0.6);
             display: flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 15px var(--orange-glow);
-            transition: var(--transition);
+            justify-content: center;
+            cursor: pointer;
+            z-index: 145;
+            transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.35s ease,
+                box-shadow 0.35s ease,
+                right 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, right;
         }
 
-        .btn-add-product-header:hover {
-            background: var(--orange-hover);
-            transform: translateY(-2px);
+        /* إشارة زائد (+) بيضاء نحيفة وعصرية بداخل الزر الدائري */
+        .smart-add-post-fab svg.thin-plus-svg {
+            width: 30px;
+            height: 30px;
+            stroke: #ffffff;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            transition: transform 0.35s ease;
         }
 
-        .btn-add-product-header.hidden-in-profile {
+        .smart-add-post-fab:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 16px 36px var(--orange-glow);
+        }
+
+        .smart-add-post-fab:hover svg.thin-plus-svg {
+            transform: rotate(90deg);
+        }
+
+        /* شرط برمجي حركي: عند النزول للأسفل (Scroll Down) يتقلص حجم الزر ويدخل إلى جانب الشاشة تلقائياً حتى لا يغطي على القراءة */
+        .smart-add-post-fab.scrolling-down-docked {
+            transform: translateX(36px) scale(0.62);
+            opacity: 0.72;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .smart-add-post-fab.hidden-in-profile {
             display: none !important;
+        }
+
+        /* ====================================================
+           (تعديل 2 الجديد): واجهة القسم الفارغ الكرتونية اللطيفة (الشبح الأبيض الشفاف المهتز + النص الكحلي العريض)
+           ==================================================== */
+        .cute-ghost-empty-state {
+            grid-column: 1 / -1;
+            max-width: 520px;
+            width: 100%;
+            margin: 2.2rem auto;
+            padding: 3rem 1.6rem 2.6rem;
+            background: radial-gradient(circle at 50% 25%, rgba(255, 255, 255, 0.06) 0%, var(--navy-card) 75%);
+            border: 1.5px solid var(--navy-border);
+            border-radius: 28px;
+            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cute-ghost-figure-wrap {
+            position: relative;
+            width: 120px;
+            height: 135px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+
+        /* رسمة الشبح الكرتوني الصغير واللطيف باللون الأبيض الشفاف والناعم وعم يهتز بحركة خفيفة */
+        .cute-cartoon-ghost-svg {
+            width: 98px;
+            height: 110px;
+            overflow: visible;
+            filter: drop-shadow(0 10px 22px rgba(255, 255, 255, 0.18));
+            animation: ghostFloatWobble 2.8s ease-in-out infinite;
+        }
+
+        .ghost-floor-shadow {
+            width: 64px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 50%;
+            margin-top: 8px;
+            filter: blur(3px);
+            animation: ghostShadowPulse 2.8s ease-in-out infinite;
+        }
+
+        @keyframes ghostFloatWobble {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+
+            25% {
+                transform: translateY(-7px) rotate(-3.5deg) scale(1.02);
+            }
+
+            50% {
+                transform: translateY(-11px) rotate(0deg) scale(1.03);
+            }
+
+            75% {
+                transform: translateY(-6px) rotate(3.5deg) scale(1.02);
+            }
+        }
+
+        @keyframes ghostShadowPulse {
+
+            0%,
+            100% {
+                transform: scaleX(1);
+                opacity: 0.55;
+            }
+
+            50% {
+                transform: scaleX(0.75);
+                opacity: 0.28;
+            }
+        }
+
+        /* كبسولة النص العريض المتناسق باللون الكحلي تحت الشبح الكرتوني */
+        .ghost-navy-caption-pill {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffe4d6 100%);
+            border: 2px solid var(--orange-main);
+            border-radius: 18px;
+            padding: 14px 22px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45), 0 0 18px var(--orange-soft);
+            max-width: 440px;
+            width: 100%;
+        }
+
+        .ghost-navy-caption-text {
+            color: var(--navy-deep);
+            font-size: 1.12rem;
+            font-weight: 900;
+            line-height: 1.65;
+            letter-spacing: 0.2px;
         }
 
         .header-search-categories {
@@ -1106,46 +1233,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
             gap: 1.35rem;
-        }
-
-        .empty-folder-panel {
-            grid-column: 1 / -1;
-            background: linear-gradient(145deg, var(--navy-card), var(--navy-primary));
-            border: 1.5px dashed rgba(249, 115, 22, 0.45);
-            border-radius: 26px;
-            padding: 3.8rem 1.8rem;
-            max-width: 520px;
-            width: 100%;
-            margin: 2.5rem auto;
-            text-align: center;
-            box-shadow: 0 22px 45px rgba(0, 0, 0, 0.55);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .empty-folder-icon-circle {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: var(--orange-soft);
-            border: 2px solid var(--orange-main);
-            color: var(--orange-main);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.6rem;
-            box-shadow: 0 12px 28px var(--orange-glow);
-            margin-bottom: 0.3rem;
-        }
-
-        .empty-folder-panel h3 {
-            font-size: 1.25rem;
-            font-weight: 900;
-            color: var(--text-white);
-            line-height: 1.6;
         }
 
         .product-card {
@@ -1448,7 +1535,6 @@
             }
         }
 
-        /* (تعديل 11): زر المشاركة العام الموحد (Share Sheet) أسفل كل منشور */
         .btn-unified-share-sheet {
             width: 100%;
             margin-top: 10px;
@@ -1528,13 +1614,13 @@
             display: none !important;
         }
 
-        /* (تعديل 8): زر ناعم وعائم للعودة للأعلى (Back to Top) يظهر عند النزول لمسافة بعيدة */
+        /* زر العودة للأعلى (Back to Top) يظهر فوق زر الإضافة العائم عند التمرير */
         .floating-back-to-top {
             position: fixed;
-            bottom: 88px;
-            right: 20px;
-            width: 48px;
-            height: 48px;
+            bottom: 160px;
+            right: 27px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             background: var(--navy-card);
             border: 2px solid var(--orange-main);
@@ -1542,7 +1628,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px var(--orange-glow);
             z-index: 140;
             cursor: pointer;
@@ -1564,9 +1650,7 @@
             transform: translateY(-4px) scale(1.06);
         }
 
-        /* ====================================================
-           (تعديل 12): تصميم رسالة التراجع عن الحذف أسفل الشاشة (Brand Snackbar)
-           ==================================================== */
+        /* شريط التراجع عن الحذف أسفل الشاشة (Brand Snackbar) */
         .brand-snackbar {
             position: fixed;
             bottom: 84px;
@@ -2110,6 +2194,10 @@
                 height: 54px;
                 font-size: 1.35rem;
             }
+
+            .ghost-navy-caption-text {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -2119,13 +2207,13 @@
     <div class="ambient-glow"></div>
     <div class="toast-box" id="toastBox"></div>
 
-    <!-- (تعديل 4): شريط حلقة التحميل العصرية أثناء العمليات السحابية -->
+    <!-- شريط حلقة التحميل العصرية أثناء العمليات السحابية -->
     <div class="global-loading-pill" id="globalLoaderPill">
         <span class="modern-loader-ring light-spinner"></span>
         <span id="globalLoaderText">جاري المعالجة...</span>
     </div>
 
-    <!-- (تعديل 12): رسالة التراجع عن الحذف أسفل الشاشة (Snackbar) بألوان الهوية الفخمة لمدة 5 ثوانٍ -->
+    <!-- رسالة التراجع عن الحذف أسفل الشاشة (Snackbar) بألوان الهوية الفخمة لمدة 5 ثوانٍ -->
     <div class="brand-snackbar" id="undoDeleteSnackbar">
         <div class="snackbar-text-wrap">
             <i class="fa-solid fa-trash-arrow-up"></i>
@@ -2174,7 +2262,7 @@
     </section>
 
     <!-- ====================================================
-         2. الصفحة الثانية: (سجل بياناتك الآن) + القائمة المخصصة للمحافظات (تعديل 13) + أيقونة العين (تعديل 5)
+         2. الصفحة الثانية: (سجل بياناتك الآن) + القائمة المخصصة للمحافظات + أيقونة العين
          ==================================================== -->
     <section id="data-screen" class="screen">
         <div class="card-container">
@@ -2187,7 +2275,6 @@
                 <h2 id="authMainHeading">سجل بياناتك الآن</h2>
             </div>
 
-            <!-- التبديل بين التسجيل الجديد وتسجيل الدخول -->
             <div class="auth-mode-switcher">
                 <button type="button" class="auth-mode-btn active" id="tabRegisterBtn"
                     onclick="switchAuthMode('register')">حساب جديد</button>
@@ -2205,7 +2292,6 @@
                     </div>
                 </div>
 
-                <!-- كيبورد الأرقام التلقائي لرقم الهاتف -->
                 <div class="form-group">
                     <label for="phoneNumber">رقم الهاتف</label>
                     <div class="input-wrapper">
@@ -2215,7 +2301,6 @@
                     </div>
                 </div>
 
-                <!-- (تعديل 5): حقل كلمة المرور مع أيقونة "العين" لإظهار وإخفاء الرمز -->
                 <div class="form-group">
                     <label for="registerPassword">كلمة المرور</label>
                     <div class="input-wrapper">
@@ -2230,7 +2315,6 @@
                     </div>
                 </div>
 
-                <!-- (تعديل 13): قائمة المحافظات المخصصة بالكامل (Custom Dropdown) بألوان الهوية وتأثير Glow -->
                 <div class="form-group">
                     <label>المحافظة</label>
                     <input type="hidden" id="provinceSelect" value="">
@@ -2242,7 +2326,6 @@
                             <i class="fa-solid fa-chevron-down trigger-arrow-icon"></i>
                         </div>
                         <div class="custom-dropdown-menu" id="registerProvinceMenu">
-                            <!-- يتم توليد المحافظات الـ 14 بتصميم مخصص متوهج -->
                             <div class="custom-dropdown-option"
                                 onclick="selectCustomProvince('register', 'دمشق', this)"><span>دمشق</span></div>
                             <div class="custom-dropdown-option"
@@ -2302,7 +2385,6 @@
                     </div>
                 </div>
 
-                <!-- حقل وزر ربط حساب التليجرام الرسمي في حال نسيان كلمة المرور -->
                 <div class="telegram-bind-field-wrapper">
                     <button type="button" id="btnRegisterBindTelegram" class="btn-bind-telegram-official"
                         onclick="startRegistrationTelegramBinding()">
@@ -2318,7 +2400,7 @@
                 <button type="submit" class="btn-next-official">التالي</button>
             </form>
 
-            <!-- ب) نموذج تسجيل الدخول الفوري (مع تعديل 1 و 4 و 5) -->
+            <!-- ب) نموذج تسجيل الدخول الفوري -->
             <form id="studentLoginForm" style="display: none;" onsubmit="handleSessionSyncLogin(event)">
                 <div class="form-group">
                     <label for="loginPhoneInput">رقم الهاتف المسجل</label>
@@ -2329,7 +2411,6 @@
                     </div>
                 </div>
 
-                <!-- (تعديل 5): حقل كلمة المرور في شاشة الدخول مع أيقونة "العين" -->
                 <div class="form-group">
                     <label for="loginPasswordInput">كلمة المرور</label>
                     <div class="input-wrapper">
@@ -2356,7 +2437,7 @@
     </section>
 
     <!-- ====================================================
-         نافذة استعادة كلمة المرور للطالب نفسه (مع أيقونة العين في المرحلة 3)
+         نافذة استعادة كلمة المرور للطالب نفسه
          ==================================================== -->
     <div class="modal-overlay" id="forgotPasswordModal">
         <div class="modal-card" style="text-align: right;">
@@ -2369,7 +2450,6 @@
 
             <div id="verifyErrorAlert" class="verify-alert-box"></div>
 
-            <!-- المرحلة 1: إدخال رقم الهاتف -->
             <div id="recoveryStep1Phone">
                 <div class="form-group">
                     <label>رقم الهاتف</label>
@@ -2386,7 +2466,6 @@
                 </button>
             </div>
 
-            <!-- المرحلة 2: الـ 5 مربعات المنفصلة التي تتلون حوافها الخارجية تتابعياً بالأخضر الصافي -->
             <div id="recoveryStep2Boxes" style="display: none;">
                 <p class="code-verify-instruction">تم ارسال رمز التحقق. ادخل الرمز لتعيين كلمة مرور جديدة</p>
 
@@ -2409,7 +2488,6 @@
                 </div>
             </div>
 
-            <!-- المرحلة 3: تعيين كلمة مرور جديدة مع أيقونة العين (تعديل 5) -->
             <div id="recoveryStep3NewPass" style="display: none;">
                 <div class="form-group">
                     <label>كلمة المرور الجديدة</label>
@@ -2513,7 +2591,7 @@
     </section>
 
     <!-- ====================================================
-         5. الصفحة الخامسة: السوق الرئيسي والواجهة الداخلية المحدثة
+         5. الصفحة الخامسة: السوق الرئيسي + الزر العائم الذكي لإضافة منشور (تعديل 1 الجديد)
          ==================================================== -->
     <section id="app-screen" class="screen">
         <header class="app-header">
@@ -2531,12 +2609,6 @@
                     <i class="fa-solid fa-location-dot"></i>
                     <span>سوق Zone العام • <strong id="headerProvinceName">حلب</strong></span>
                 </div>
-
-                <!-- (تعديل 6): زر إضافة منشور جديد بتصميمه الأصلي ويختفي في صفحة "أنا" -->
-                <button type="button" id="headerAddPostBtn" class="btn-add-product-header" onclick="openAddPostModal()">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>إضافة منشور جديد</span>
-                </button>
             </div>
 
             <div class="header-search-categories" id="marketHeaderControls">
@@ -2637,13 +2709,22 @@
             </div>
         </main>
 
+        <!-- (تعديل 1 الجديد): زر إضافة منشور جديد الدائري الفخم والعائم في الزاوية السفلية بإشارة (+) بيضاء نحيفة وعصرية -->
+        <button type="button" id="smartAddPostFab" class="smart-add-post-fab" onclick="openAddPostModal()"
+            title="إضافة منشور جديد">
+            <svg class="thin-plus-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="12" y1="4" x2="12" y2="20" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+            </svg>
+        </button>
+
         <!-- الدائرة البرتقالية العائمة للدعم بالرئيسية فقط -->
         <a href="https://t.me/zoneapplication" target="_blank" rel="noopener noreferrer" id="floatingSupportCircle"
             class="floating-telegram-support" onclick="openDirectSupportTelegram(event)" title="الدعم الفني المباشر">
             <i class="fa-brands fa-telegram"></i>
         </a>
 
-        <!-- (تعديل 8): زر ناعم وعائم للعودة للأعلى (Back to Top) يظهر عند التمرير لأسفل -->
+        <!-- زر ناعم وعائم للعودة للأعلى (Back to Top) -->
         <button type="button" id="backToTopBtn" class="floating-back-to-top" onclick="scrollToTopSmoothly()"
             title="العودة للأعلى">
             <i class="fa-solid fa-arrow-up"></i>
@@ -2831,7 +2912,7 @@
     </div>
 
     <!-- ====================================================
-         9. نافذة منبثقة: تعديل بيانات الطالب (مع القائمة المخصصة للمحافظات تعديل 13)
+         9. نافذة منبثقة: تعديل بيانات الطالب
          ==================================================== -->
     <div class="modal-overlay" id="editProfileModal">
         <div class="modal-card" style="text-align: right;">
@@ -2860,7 +2941,6 @@
                     </div>
                 </div>
 
-                <!-- (تعديل 13): قائمة المحافظات المخصصة في نافذة التعديل أيضاً مع Glow Effect -->
                 <div class="form-group">
                     <label>المحافظة</label>
                     <input type="hidden" id="editProvince" value="حلب">
@@ -2937,7 +3017,7 @@
         </div>
     </div>
     <!-- ====================================================
-         10. المنطق البرمجي الشامل + تشغيل كافة التعديلات الـ 13 (JavaScript)
+         10. المنطق البرمجي الشامل + حركة الـ FAB الذكية عند السكرول + الشبح الكرتوني اللطيف (JavaScript)
          ==================================================== -->
     <script>
         // إعدادات بوت التلغرام الرسمي المعتمد
@@ -2985,10 +3065,14 @@
         let recoveryTargetPhone = null;
         let isSequentialAnimationRunning = false;
 
-        // متغيرات شريط التراجع عن الحذف (Snackbar - تعديل 12)
+        // متغيرات شريط التراجع عن الحذف (Snackbar)
         let lastDeletedPostBackup = null;
         let lastDeletedPostIndex = 0;
         let snackbarTimeoutId = null;
+
+        // متغيرات مراقبة حركة التمرير الذكية للزر العائم (Smart FAB Scroll Detector)
+        let lastScrollYPosition = 0;
+        let scrollStopTimerId = null;
 
         let studentProfile = {
             id: "",
@@ -3019,9 +3103,8 @@
         }
 
         // ====================================================
-        // أ. (تعديل 4، 5، 8، 13): دوال الواجهة التفاعلية (العين، القائمة المخصصة، اللودر، العودة للأعلى)
+        // أ. دوال الواجهة التفاعلية + حركة الزر الدائري العائم الذكي (تعديل 1 الجديد)
         // ====================================================
-        // (تعديل 4): إظهار وإخفاء حلقة التحميل العصرية
         function showGlobalLoader(text = "جاري المعالجة...") {
             const pill = document.getElementById('globalLoaderPill');
             const label = document.getElementById('globalLoaderText');
@@ -3034,7 +3117,6 @@
             if (pill) pill.classList.remove('active');
         }
 
-        // (تعديل 5): تبديل إظهار وإخفاء كلمة السر عبر أيقونة "العين"
         function togglePasswordVisibility(inputId, btnEl) {
             const inputEl = document.getElementById(inputId);
             if (!inputEl) return;
@@ -3051,7 +3133,6 @@
             }
         }
 
-        // (تعديل 13): إدارة القائمة المنسدلة المخصصة للمحافظات (Custom Dropdown) مع تأثير الإضاءة (Glow Effect)
         function toggleCustomProvinceDropdown(dropdownId) {
             const container = document.getElementById(dropdownId);
             if (!container) return;
@@ -3096,25 +3177,51 @@
             }
         }
 
-        // إغلاق القائمة المخصصة عند النقر خارجها
         document.addEventListener('click', (event) => {
             if (!event.target.closest('.custom-dropdown-container')) {
                 document.querySelectorAll('.custom-dropdown-container').forEach(el => el.classList.remove('open'));
             }
         });
 
-        // (تعديل 8): مراقبة التمرير لإظهار زر العودة للأعلى (Back to Top) عند النزول لمسافة بعيدة
+        // (تعديل 1 الجديد): مراقبة التمرير الذكية لتقليص الزر العائم وإدخاله لجانب الشاشة عند النزول (Scroll Down)، وإعادته لحجمه الطبيعي الكامل عند التوقف أو الصعود (Scroll Up)
         window.addEventListener('scroll', () => {
             const backToTopBtn = document.getElementById('backToTopBtn');
+            const smartFabBtn = document.getElementById('smartAddPostFab');
             const appScreen = document.getElementById('app-screen');
-            if (!backToTopBtn || !appScreen) return;
+            if (!appScreen || !appScreen.classList.contains('active')) return;
 
-            if (appScreen.classList.contains('active') && window.scrollY > 360) {
-                backToTopBtn.classList.add('visible-scroll');
-            } else {
-                backToTopBtn.classList.remove('visible-scroll');
+            const currentScrollY = window.scrollY || window.pageYOffset;
+
+            // إظهار زر العودة للأعلى عند النزول لمسافة بعيدة
+            if (backToTopBtn) {
+                if (currentScrollY > 360) {
+                    backToTopBtn.classList.add('visible-scroll');
+                } else {
+                    backToTopBtn.classList.remove('visible-scroll');
+                }
             }
-        });
+
+            // منطق حركة الزر الدائري العائم لإضافة منشور جديد
+            if (smartFabBtn && !smartFabBtn.classList.contains('hidden-in-profile')) {
+                const scrollDelta = currentScrollY - lastScrollYPosition;
+
+                if (scrollDelta > 6 && currentScrollY > 60) {
+                    // المستخدم ينزل للأسفل (Scroll Down) -> يتقلص الزر ويدخل لجانب الشاشة تلقائياً
+                    smartFabBtn.classList.add('scrolling-down-docked');
+                } else if (scrollDelta < -4 || currentScrollY <= 40) {
+                    // المستخدم يصعد للأعلى (Scroll Up) -> يعود الزر ليفتح ويظهر بحجمه الطبيعي الكامل فوراً
+                    smartFabBtn.classList.remove('scrolling-down-docked');
+                }
+
+                // بمجرد التوقف عن السحب يعود الزر ليفتح ويظهر بحجمه الطبيعي الكامل تلقائياً
+                if (scrollStopTimerId) clearTimeout(scrollStopTimerId);
+                scrollStopTimerId = setTimeout(() => {
+                    smartFabBtn.classList.remove('scrolling-down-docked');
+                }, 420);
+            }
+
+            lastScrollYPosition = Math.max(0, currentScrollY);
+        }, { passive: true });
 
         function scrollToTopSmoothly() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3255,7 +3362,7 @@
         }
 
         // ====================================================
-        // د. إدارة الحسابات السحابية وتطبيق (تعديل 1 و 2 و 4) في شاشة تسجيل الدخول
+        // د. إدارة الحسابات السحابية وشاشة تسجيل الدخول
         // ====================================================
         async function fetchCloudUsersDirectory() {
             for (const endpoint of GLOBAL_USERS_DB_ENDPOINTS) {
@@ -3364,7 +3471,6 @@
             }
         }
 
-        // (تعديل 1، 2، 4): استبدال العبارة بـ "جاري تسجيل الدخول..." مع حلقة التحميل، وتعديل رسالة النجاح إلى "أهلاً بك يا [اسم المستخدم]، تم فتح حسابك" بدون كلمة فوراً
         async function handleSessionSyncLogin(event) {
             event.preventDefault();
             const phoneVal = document.getElementById('loginPhoneInput').value.trim();
@@ -3405,7 +3511,6 @@
                 switchBottomTab('home');
                 startGlobalLiveFeedSync();
                 startTelegramPolling(studentProfile.id);
-                // (تعديل 2): الرسالة بالفصحى وبدون كلمة "فوراً" تماماً
                 showToast(`أهلاً بك يا ${studentProfile.name}، تم فتح حسابك`);
             } else if (matchedAccount.status === 'pending') {
                 localStorage.setItem('zone_status', 'pending');
@@ -3882,7 +3987,6 @@
                 switchBottomTab('home');
                 startGlobalLiveFeedSync();
                 startTelegramPolling(studentProfile.id);
-                // (تعديل 2): رسالة الترحيب بالفصحى بدون كلمة "فوراً"
                 showToast(`أهلاً بك يا ${studentProfile.name}، تم فتح حسابك`);
                 return;
             }
@@ -4198,7 +4302,6 @@
             switchBottomTab('home');
             startGlobalLiveFeedSync();
 
-            // (تعديل 2): رسالة التفعيل بالفصحى بدون كلمة "فوراً"
             showToast(`أهلاً بك يا ${studentProfile.name}، تم فتح حسابك`);
         }
 
@@ -4280,7 +4383,7 @@
         }
 
         // ====================================================
-        // ي. عرض المنشورات العامة + زر المشاركة العام الموحد (تعديل 11) + شريط التراجع عن الحذف (تعديل 12)
+        // ي. عرض المنشورات العامة + واجهة الشبح الكرتوني اللطيف عند خلو القسم (تعديل 2 الجديد)
         // ====================================================
         function getRemainingDaysForPost(createdAt) {
             const created = createdAt || Date.now();
@@ -4313,13 +4416,41 @@
                 return matchCat && matchQuery;
             });
 
+            // (تعديل 2 الجديد): واجهة القسم الفارغ الكرتونية اللطيفة (رسمة الشبح الأبيض الشفاف والناعم المهتز + العبارة الكحلية العريضة)
             if (filtered.length === 0) {
                 container.innerHTML = `
-                    <div class="empty-folder-panel">
-                        <div class="empty-folder-icon-circle">
-                            <i class="fa-regular fa-folder-open"></i>
+                    <div class="cute-ghost-empty-state">
+                        <div class="cute-ghost-figure-wrap">
+                            <svg class="cute-cartoon-ghost-svg" viewBox="0 0 120 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="softGhostWhite" x1="60" y1="10" x2="60" y2="120" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.93"/>
+                                        <stop offset="65%" stop-color="#f1f5f9" stop-opacity="0.82"/>
+                                        <stop offset="100%" stop-color="#cbd5e1" stop-opacity="0.65"/>
+                                    </linearGradient>
+                                </defs>
+                                <!-- جسم الشبح الكرتوني اللطيف والناعم -->
+                                <path d="M24 58 C24 28, 96 28, 96 58 L96 108 C96 114, 88 114, 84 107 C80 100, 73 100, 69 107 C65 114, 55 114, 51 107 C47 100, 40 100, 36 107 C32 114, 24 114, 24 108 Z" fill="url(#softGhostWhite)" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+                                <!-- يدا الشبح الصغيرتان اللطيفتان -->
+                                <ellipse cx="19" cy="68" rx="7" ry="4.5" transform="rotate(-22 19 68)" fill="rgba(255,255,255,0.85)"/>
+                                <ellipse cx="101" cy="68" rx="7" ry="4.5" transform="rotate(22 101 68)" fill="rgba(255,255,255,0.85)"/>
+                                <!-- العيون الكحلية الكرتونية اللطيفة مع لمعة بيضاء -->
+                                <circle cx="46" cy="57" r="5.5" fill="#050a14"/>
+                                <circle cx="44" cy="55" r="2" fill="#ffffff"/>
+                                <circle cx="74" cy="57" r="5.5" fill="#050a14"/>
+                                <circle cx="72" cy="55" r="2" fill="#ffffff"/>
+                                <!-- خدود برتقالية ناعمة وخفيفة -->
+                                <ellipse cx="37" cy="64" rx="4.5" ry="2.4" fill="rgba(249, 115, 22, 0.38)"/>
+                                <ellipse cx="83" cy="64" rx="4.5" ry="2.4" fill="rgba(249, 115, 22, 0.38)"/>
+                                <!-- فم كرتوني صغير لطيف -->
+                                <path d="M55 64 Q60 69 65 64" stroke="#050a14" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+                            </svg>
+                            <div class="ghost-floor-shadow"></div>
                         </div>
-                        <h3>لا توجد عروض اليوم.. كن أول من ينشر إعلانه هنا!</h3>
+
+                        <div class="ghost-navy-caption-pill">
+                            <p class="ghost-navy-caption-text">المكان مهجور تماماً.. اكسر الصمت وانشر أول إعلان هلق!</p>
+                        </div>
                     </div>
                 `;
                 return;
@@ -4407,7 +4538,6 @@
                                 </button>
                             </div>
 
-                            <!-- (تعديل 11): أيقونة وزر مشاركة عام موحد (Share Sheet) يفتح قائمة المشاركة الرسمية الخاصة بالنظام -->
                             <button type="button" class="btn-unified-share-sheet" onclick="openNativeShareSheet(${prod.id})">
                                 <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
                                 <span>مشاركة المنشور</span>
@@ -4489,7 +4619,6 @@
             renderMarketProducts();
         }
 
-        // (تعديل 11): فتح قائمة المشاركة الرسمية الموحدة الخاصة بالنظام (Native Share Sheet)
         async function openNativeShareSheet(productId) {
             const prod = marketProducts.find(item => item.id === productId);
             if (!prod) return;
@@ -4537,18 +4666,15 @@
                 }
             }
 
-            // في حال فتح الموقع من متصفح سطح مكتب لا يدعم نافذة النظام، يفتح المشاركة السريعة
             const waShareUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
             window.open(waShareUrl, '_blank');
             showToast("تم نسخ تفاصيل المنشور للمشاركة!");
         }
 
-        // (تعديل 12): حذف المنشور مع إظهار رسالة التراجع الفخمة (Snackbar: "تم حذف المنشور.. تراجع؟") لمدة 5 ثوانٍ
         async function markAsSoldAndDeletePost(productId) {
             const targetIndex = marketProducts.findIndex(item => item.id === productId);
             if (targetIndex === -1) return;
 
-            // حفظ نسخة احتياطية مؤقتة لإمكانية التراجع خلال 5 ثوانٍ
             lastDeletedPostBackup = { ...marketProducts[targetIndex] };
             lastDeletedPostIndex = targetIndex;
 
@@ -4566,7 +4692,6 @@
                 clearTimeout(snackbarTimeoutId);
             }
 
-            // إعادة تفعيل أنيميشن الشريط التنازلي لـ 5 ثوانٍ
             snackbar.classList.remove('show-snackbar');
             void snackbar.offsetWidth;
             snackbar.classList.add('show-snackbar');
@@ -4859,13 +4984,14 @@
             document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
         }
 
+        // إخفاء الزر العائم لإضافة منشور والدائرة العائمة للدعم داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
         function switchBottomTab(tabName) {
             const homeTab = document.getElementById('home-tab');
             const profileTab = document.getElementById('profile-tab');
             const navHome = document.getElementById('navBtnHome');
             const navProfile = document.getElementById('navBtnProfile');
             const headerControls = document.getElementById('marketHeaderControls');
-            const headerAddPostBtn = document.getElementById('headerAddPostBtn');
+            const smartAddPostFab = document.getElementById('smartAddPostFab');
             const floatingSupportCircle = document.getElementById('floatingSupportCircle');
 
             if (tabName === 'home') {
@@ -4874,7 +5000,10 @@
                 navHome.classList.add('active');
                 navProfile.classList.remove('active');
                 headerControls.style.display = 'flex';
-                if (headerAddPostBtn) headerAddPostBtn.classList.remove('hidden-in-profile');
+                if (smartAddPostFab) {
+                    smartAddPostFab.classList.remove('hidden-in-profile');
+                    smartAddPostFab.classList.remove('scrolling-down-docked');
+                }
                 if (floatingSupportCircle) floatingSupportCircle.classList.remove('hidden-in-profile');
             } else {
                 profileTab.classList.add('active');
@@ -4882,7 +5011,7 @@
                 navProfile.classList.add('active');
                 navHome.classList.remove('active');
                 headerControls.style.display = 'none';
-                if (headerAddPostBtn) headerAddPostBtn.classList.add('hidden-in-profile');
+                if (smartAddPostFab) smartAddPostFab.classList.add('hidden-in-profile');
                 if (floatingSupportCircle) floatingSupportCircle.classList.add('hidden-in-profile');
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
