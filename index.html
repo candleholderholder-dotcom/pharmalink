@@ -27,6 +27,11 @@
             --orange-light: #fb923c;
             --orange-soft: rgba(249, 115, 22, 0.14);
             --orange-glow: rgba(249, 115, 22, 0.35);
+
+            --pure-green: #10b981;
+            --pure-green-soft: rgba(16, 185, 129, 0.14);
+            --pure-green-glow: rgba(16, 185, 129, 0.42);
+
             --gold-crown: #fbbf24;
             --reject-color: #ff4500;
 
@@ -311,15 +316,15 @@
         }
 
         /* ====================================================
-           تصميم الـ 5 مربعات المنفصلة لرمز التحقق (5-Digit Boxes)
+           (شرط 1): تصميم الـ 5 مربعات المنفصلة وحركة الحواف الخضراء المتدرجة
            ==================================================== */
         .code-verify-instruction {
-            font-size: 0.95rem;
+            font-size: 0.96rem;
             color: var(--orange-light);
             margin-bottom: 1.2rem;
             font-weight: 800;
             text-align: center;
-            line-height: 1.6;
+            line-height: 1.65;
         }
 
         .five-digits-boxes-container {
@@ -331,29 +336,38 @@
             margin: 1rem 0 1.4rem;
         }
 
+        /* الحواف الافتراضية باللون البرتقالي المعتمد للتطبيق */
         .digit-box-input {
             width: 52px;
-            height: 58px;
+            height: 60px;
             background: var(--navy-primary);
-            border: 2px solid var(--navy-border);
+            border: 2px solid var(--orange-main);
             border-radius: var(--radius-md);
-            color: var(--orange-main);
-            font-size: 1.5rem;
+            color: var(--orange-light);
+            font-size: 1.55rem;
             font-weight: 900;
             text-align: center;
             outline: none;
-            transition: var(--transition);
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.18);
+            transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.35s ease,
+                transform 0.3s ease;
         }
 
         .digit-box-input:focus {
-            border-color: var(--orange-main);
-            box-shadow: 0 0 0 4px var(--orange-soft);
+            box-shadow: 0 0 0 4px var(--orange-soft), 0 6px 16px var(--orange-glow);
             transform: translateY(-2px);
         }
 
-        .digit-box-input.filled {
-            border-color: var(--orange-light);
-            background: rgba(249, 115, 22, 0.08);
+        /* تحول الحواف بالتدريج للون الأخضر الصافي فور كتابة الرقم الصحيح بداخل المربع */
+        .digit-box-input.correct-green {
+            border-color: var(--pure-green) !important;
+            background-color: var(--pure-green-soft) !important;
+            color: var(--pure-green) !important;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2), 0 8px 20px var(--pure-green-glow) !important;
+            transform: translateY(-3px) scale(1.03);
         }
 
         .btn-next-official {
@@ -1894,7 +1908,7 @@
     </section>
 
     <!-- ====================================================
-         (شرط 1 و 2): نافذة استعادة كلمة المرور (بدون كلمة OTP + 5 مربعات تلقائية)
+         (شرط 1 و 2): نافذة استعادة كلمة المرور والـ 5 مربعات ذات الحواف الخضراء المتحركة
          ==================================================== -->
     <div class="modal-overlay" id="forgotPasswordModal">
         <div class="modal-card" style="text-align: right;">
@@ -1925,7 +1939,7 @@
                 </button>
             </div>
 
-            <!-- المرحلة 2: النص المباشر المطلوب + الـ 5 مربعات المنفصلة مع Auto-focus / Auto-advance -->
+            <!-- المرحلة 2: النص المباشر فقط + الـ 5 مربعات المنفصلة بحواف برتقالية تتحول للأخضر الصافي تدريجياً -->
             <div id="recoveryStep2Boxes" style="display: none;">
                 <p class="code-verify-instruction">تم ارسال رمز التحقق. ادخل الرمز لتعيين كلمة مرور جديدة</p>
 
@@ -1948,7 +1962,7 @@
                 </div>
             </div>
 
-            <!-- المرحلة 3: تفتح تلقائياً فور اكتمال الـ 5 أرقام بشكل صحيح لتعيين كلمة مرور جديدة -->
+            <!-- المرحلة 3: تفتح تلقائياً فور اكتمال الـ 5 أرقام الصحيحة لتعيين كلمة مرور جديدة -->
             <div id="recoveryStep3NewPass" style="display: none;">
                 <div class="form-group">
                     <label>كلمة المرور الجديدة</label>
@@ -2453,7 +2467,7 @@
     </div>
 
     <!-- ====================================================
-         10. المنطق البرمجي الكامل والشامل + الـ 5 مربعات التلقائية + مزامنة الجلسات (JavaScript)
+         10. المنطق البرمجي الكامل والشامل + حركة الحواف الخضراء للـ 5 مربعات + مزامنة الجلسات (JavaScript)
          ==================================================== -->
     <script>
         // إعدادات بوت التلغرام الرسمي للتطبيق
@@ -2466,11 +2480,11 @@
 
         // نقاط الاتصال السحابية الحية:
         // 1) جدول المنشورات العام لجميع الأجهزة على كوكب الأرض لايف (Global Live Feed)
-        const GLOBAL_CLOUD_FEED_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_global_live_posts_v4";
+        const GLOBAL_CLOUD_FEED_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_global_live_posts_v5";
         // 2) جدول الحسابات والجلسات السحابي لمزامنة الدخول واستعادة كلمة المرور (Session Sync & Recovery DB)
-        const GLOBAL_CLOUD_USERS_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_cloud_users_db_v2";
+        const GLOBAL_CLOUD_USERS_URL = "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_syria_cloud_users_db_v3";
 
-        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v4') : null;
+        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v5') : null;
 
         const PENDING_TIMEOUT_MS = 48 * 60 * 60 * 1000;
         const POST_LIFETIME_DAYS = 30;
@@ -2595,13 +2609,13 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data && typeof data === 'object') {
-                        localStorage.setItem('zone_cached_users_dir_v2', JSON.stringify(data));
+                        localStorage.setItem('zone_cached_users_dir_v3', JSON.stringify(data));
                         return data;
                     }
                 }
             } catch (e) { }
 
-            const localDir = localStorage.getItem('zone_cached_users_dir_v2');
+            const localDir = localStorage.getItem('zone_cached_users_dir_v3');
             if (localDir) {
                 try { return JSON.parse(localDir); } catch (e) { }
             }
@@ -2617,7 +2631,7 @@
                 normalizedPhone: normPhone,
                 updatedAt: Date.now()
             };
-            localStorage.setItem('zone_cached_users_dir_v2', JSON.stringify(directory));
+            localStorage.setItem('zone_cached_users_dir_v3', JSON.stringify(directory));
 
             try {
                 await fetch(GLOBAL_CLOUD_USERS_URL, {
@@ -2709,7 +2723,7 @@
         }
 
         // ====================================================
-        // د. (شرط 1 و 2): استعادة كلمة المرور برمز من 5 أرقام حصراً + 5 مربعات Auto-advance
+        // د. (شرط 1 و 2): استعادة كلمة المرور + حركة الحواف الخضراء للمربعات الـ 5
         // ====================================================
         function openForgotPasswordModal() {
             const loginPhone = document.getElementById('loginPhoneInput').value.trim();
@@ -2730,7 +2744,7 @@
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
             boxes.forEach(box => {
                 box.value = "";
-                box.classList.remove('filled');
+                box.classList.remove('correct-green');
             });
         }
 
@@ -2765,7 +2779,7 @@
             generated5DigitCode = String(Math.floor(10000 + Math.random() * 90000));
             recoveryTargetPhone = normPhone;
 
-            // الصياغة الصارمة للرسالة بدون أي حشو أو أسماء:
+            // الصياغة الحصرية المجردة دون أي حشو:
             // Zone Verification Code
             // [الرمز المكون من 5 أرقام]
             const strictVerificationMessage = `Zone Verification Code\n${generated5DigitCode}`;
@@ -2789,12 +2803,11 @@
             document.getElementById('recoveryStep3NewPass').style.display = 'none';
             clearFiveDigitBoxes();
 
-            // تركيز المؤشر تلقائياً في المربع الأول
             const firstBox = document.querySelector('#fiveDigitsContainer .digit-box-input[data-index="0"]');
             if (firstBox) setTimeout(() => firstBox.focus(), 100);
         }
 
-        // التعبئة التلقائية والانتقال السلس بين الـ 5 مربعات (Auto-focus / Auto-advance)
+        // التعبئة التلقائية (Auto-advance) وتغيير حواف المربع للون الأخضر الصافي عند كتابة الرقم الصحيح
         function handleDigitBoxInput(event, index) {
             const input = event.target;
             const digit = input.value.replace(/\D/g, '').slice(-1);
@@ -2806,13 +2819,19 @@
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
 
             if (digit) {
-                input.classList.add('filled');
+                // فحص ما إذا كان الرقم المدخل في هذا المربع مطابقاً للرقم المقابل في الرمز المكون من 5 أرقام
+                if (generated5DigitCode && digit === generated5DigitCode.charAt(index)) {
+                    input.classList.add('correct-green');
+                } else {
+                    input.classList.remove('correct-green');
+                }
+
                 // الانتقال التلقائي الفوري للمربع الذي يليه
                 if (index < 4 && boxes[index + 1]) {
                     boxes[index + 1].focus();
                 }
             } else {
-                input.classList.remove('filled');
+                input.classList.remove('correct-green');
             }
 
             checkIfAllFiveDigitsCompleted();
@@ -2822,7 +2841,7 @@
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
             if (event.key === 'Backspace' && !event.target.value && index > 0) {
                 boxes[index - 1].value = "";
-                boxes[index - 1].classList.remove('filled');
+                boxes[index - 1].classList.remove('correct-green');
                 boxes[index - 1].focus();
             }
         }
@@ -2836,15 +2855,22 @@
             for (let i = 0; i < 5; i++) {
                 if (pasted[i]) {
                     boxes[i].value = pasted[i];
-                    boxes[i].classList.add('filled');
+                    // تلوين الحواف بالأخضر الصافي بالتدريج مربعاً وراء مربع
+                    setTimeout(() => {
+                        if (generated5DigitCode && pasted[i] === generated5DigitCode.charAt(i)) {
+                            boxes[i].classList.add('correct-green');
+                        } else {
+                            boxes[i].classList.remove('correct-green');
+                        }
+                    }, i * 90);
                 }
             }
             const nextEmptyIndex = Math.min(pasted.length, 4);
             boxes[nextEmptyIndex].focus();
-            checkIfAllFiveDigitsCompleted();
+            setTimeout(() => checkIfAllFiveDigitsCompleted(), 5 * 95);
         }
 
-        // فحص تلقائي فور اكتمال الـ 5 أرقام لفتح واجهة تعيين كلمة المرور الجديدة تلقائياً
+        // بمجرد اكتمال الـ 5 أرقام الصحيحة تفتح واجهة تعيين كلمة مرور جديدة تلقائياً
         function checkIfAllFiveDigitsCompleted() {
             const boxes = Array.from(document.querySelectorAll('#fiveDigitsContainer .digit-box-input'));
             const enteredCode = boxes.map(b => b.value).join('');
@@ -2852,14 +2878,19 @@
             if (enteredCode.length === 5) {
                 const alertBox = document.getElementById('verifyErrorAlert');
                 if (enteredCode === generated5DigitCode) {
+                    boxes.forEach(b => b.classList.add('correct-green'));
                     alertBox.classList.remove('show');
-                    document.getElementById('recoveryStep2Boxes').style.display = 'none';
-                    document.getElementById('recoveryStep3NewPass').style.display = 'block';
-                    const newPassInput = document.getElementById('recoveryNewPasswordInput');
-                    if (newPassInput) {
-                        newPassInput.value = "";
-                        setTimeout(() => newPassInput.focus(), 100);
-                    }
+
+                    // انتقال سلس بعد رؤية اكتمال الضوء الأخضر الفخم للمربعات الخمسة
+                    setTimeout(() => {
+                        document.getElementById('recoveryStep2Boxes').style.display = 'none';
+                        document.getElementById('recoveryStep3NewPass').style.display = 'block';
+                        const newPassInput = document.getElementById('recoveryNewPasswordInput');
+                        if (newPassInput) {
+                            newPassInput.value = "";
+                            newPassInput.focus();
+                        }
+                    }, 360);
                 } else {
                     alertBox.textContent = "رمز التحقق غير صحيح، يرجى التأكد والمحاولة مجدداً.";
                     alertBox.classList.add('show');
@@ -2937,14 +2968,14 @@
                         }
                         lastKnownPostCount = cleaned.length;
                         marketProducts = cleaned;
-                        localStorage.setItem('zone_global_cached_posts_v4', JSON.stringify(marketProducts));
+                        localStorage.setItem('zone_global_cached_posts_v5', JSON.stringify(marketProducts));
                         renderMarketProducts();
                         return;
                     }
                 }
             } catch (err) { }
 
-            const cached = localStorage.getItem('zone_global_cached_posts_v4');
+            const cached = localStorage.getItem('zone_global_cached_posts_v5');
             if (cached) {
                 try {
                     marketProducts = cleanExpired30DaysPosts(JSON.parse(cached));
@@ -2962,7 +2993,7 @@
             const cleaned = cleanExpired30DaysPosts(updatedList);
             marketProducts = cleaned;
             lastKnownPostCount = cleaned.length;
-            localStorage.setItem('zone_global_cached_posts_v4', JSON.stringify(cleaned));
+            localStorage.setItem('zone_global_cached_posts_v5', JSON.stringify(cleaned));
 
             if (broadcastChannel) {
                 broadcastChannel.postMessage({ type: 'SYNC_POSTS', payload: cleaned });
