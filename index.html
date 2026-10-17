@@ -29,9 +29,6 @@
             --orange-glow: rgba(249, 115, 22, 0.35);
 
             --pure-green: #10b981;
-            --pure-green-soft: rgba(16, 185, 129, 0.16);
-            --pure-green-glow: rgba(16, 185, 129, 0.48);
-
             --gold-crown: #fbbf24;
             --reject-color: #ff4500;
 
@@ -316,7 +313,7 @@
         }
 
         /* ====================================================
-           (شرط 2): تصميم الـ 5 مربعات المنفصلة والأنيميشن التدريجي للحواف الخضراء
+           (شرط 3): حواف المربعات الـ 5 البرتقالية التي تتحول حوافها الخارجية فقط للأخضر الصافي معاً عند النجاح
            ==================================================== */
         .code-verify-instruction {
             font-size: 0.96rem;
@@ -336,52 +333,33 @@
             margin: 1rem 0 1.4rem;
         }
 
-        /* الحواف الافتراضية باللون البرتقالي المعتمد للتطبيق */
+        /* أثناء الكتابة تظل الحواف برتقالية والداخل بلونه الكحلي الطبيعي بدون أي تغيير لوني */
         .digit-box-input {
             width: 52px;
             height: 60px;
-            background: var(--navy-primary);
+            background-color: var(--navy-primary) !important;
             border: 2px solid var(--orange-main);
             border-radius: var(--radius-md);
-            color: var(--orange-light);
+            color: var(--text-white);
             font-size: 1.55rem;
             font-weight: 900;
             text-align: center;
             outline: none;
-            box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
-            transition: border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                color 0.35s ease,
-                transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: none;
+            transition: border-color 0.45s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .digit-box-input:focus {
-            box-shadow: 0 0 0 4px var(--orange-soft), 0 6px 16px var(--orange-glow);
-            transform: translateY(-2px);
+            border-color: var(--orange-main);
+            background-color: var(--navy-primary) !important;
         }
 
-        /* تحول الحواف بالتدريج للون الأخضر الصافي مربعاً وراء مربع تزامناً مع الكتابة الصحيحة */
-        .digit-box-input.correct-green {
+        /* لقطة النجاح: تتغير الحواف الخارجية فقط للـ 5 مربعات كلها معاً إلى الأخضر الصافي بينما يظل الداخل بلونه الطبيعي تماماً */
+        .digit-box-input.all-success-green-border {
             border-color: var(--pure-green) !important;
-            background-color: var(--pure-green-soft) !important;
-            color: var(--pure-green) !important;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), 0 8px 22px var(--pure-green-glow) !important;
-            transform: translateY(-3px) scale(1.04);
-        }
-
-        .telegram-link-activate-box {
-            background: var(--navy-primary);
-            border: 1px dashed var(--orange-main);
-            border-radius: var(--radius-md);
-            padding: 12px;
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
-
-        .telegram-link-activate-box.show {
-            display: block;
+            background-color: var(--navy-primary) !important;
+            color: var(--text-white) !important;
+            box-shadow: none !important;
         }
 
         .btn-next-official {
@@ -1464,11 +1442,61 @@
             color: var(--text-white);
         }
 
+        /* صندوق ربط التليجرام المجاني داخل نافذة الإعدادات ⚙️ */
+        .settings-telegram-link-card {
+            background: var(--navy-primary);
+            border: 1.5px dashed var(--orange-main);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-bottom: 1.2rem;
+            text-align: right;
+        }
+
+        .settings-telegram-link-card h4 {
+            color: var(--orange-light);
+            font-size: 0.92rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-telegram-link-card p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .btn-link-tg-free {
+            width: 100%;
+            background: var(--orange-soft);
+            border: 1px solid var(--orange-main);
+            color: var(--orange-light);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-link-tg-free:hover {
+            background: var(--orange-main);
+            color: var(--text-white);
+        }
+
         .colleges-checkbox-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin: 1rem 0 1.4rem;
+            margin: 0.8rem 0 1.4rem;
             text-align: right;
         }
 
@@ -1797,11 +1825,11 @@
                         <use href="#zone-split-z-logo"></use>
                     </svg>
                 </div>
-                <!-- (شرط 10): العنوان الرئيسي العريض (سجل بياناتك الآن) -->
+                <!-- (شرط 11): العنوان الرئيسي العريض (سجل بياناتك الآن) -->
                 <h2 id="authMainHeading">سجل بياناتك الآن</h2>
             </div>
 
-            <!-- التبديل بين التسجيل الجديد وتسجيل الدخول لمزامنة الجلسات -->
+            <!-- التبديل بين التسجيل الجديد وتسجيل الدخول -->
             <div class="auth-mode-switcher">
                 <button type="button" class="auth-mode-btn active" id="tabRegisterBtn"
                     onclick="switchAuthMode('register')">حساب جديد</button>
@@ -1819,7 +1847,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 5): كيبورد الأرقام التلقائي لرقم الهاتف -->
+                <!-- (شرط 6): كيبورد الأرقام التلقائي لرقم الهاتف -->
                 <div class="form-group">
                     <label for="phoneNumber">رقم الهاتف</label>
                     <div class="input-wrapper">
@@ -1871,7 +1899,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 10): جملة (الفرع الدراسي) فقط بدل كلمة الكلية -->
+                <!-- (شرط 11): جملة (الفرع الدراسي) فقط بدل كلمة الكلية -->
                 <div class="form-group">
                     <label for="majorInput">الفرع الدراسي</label>
                     <div class="input-wrapper">
@@ -1881,7 +1909,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="telegramUserInput">معرف التليجرام للتواصل واستلام رمز التحقق</label>
+                    <label for="telegramUserInput">معرف التليجرام للتواصل</label>
                     <div class="input-wrapper">
                         <i class="fa-brands fa-telegram"></i>
                         <input type="text" id="telegramUserInput" class="form-control"
@@ -1892,7 +1920,7 @@
                 <button type="submit" class="btn-next-official">التالي</button>
             </form>
 
-            <!-- ب) نموذج تسجيل الدخول الفوري ومزامنة الجلسة (Session Sync) -->
+            <!-- ب) نموذج تسجيل الدخول الفوري ومزامنة الجلسة -->
             <form id="studentLoginForm" style="display: none;" onsubmit="handleSessionSyncLogin(event)">
                 <div class="form-group">
                     <label for="loginPhoneInput">رقم الهاتف المسجل</label>
@@ -1922,7 +1950,7 @@
     </section>
 
     <!-- ====================================================
-         (شرط 1 و 2): نافذة استعادة كلمة المرور للطالب نفسه (بدون كلمة OTP + 5 مربعات بحواف خضراء تدريجية)
+         (شرط 2 و 3 و 4): نافذة استعادة كلمة المرور للطالب نفسه (بدون كلمة OTP + حواف خضراء خارجية فقط عند النجاح)
          ==================================================== -->
     <div class="modal-overlay" id="forgotPasswordModal">
         <div class="modal-card" style="text-align: right;">
@@ -1936,7 +1964,7 @@
             <!-- مربع التنبيه الصارم إذا كان الرقم غير مسجل أو الرمز خاطئ -->
             <div id="verifyErrorAlert" class="verify-alert-box"></div>
 
-            <!-- المرحلة 1: إدخال رقم الهاتف لفحصه في قاعدة البيانات وإرسال الرمز للطالب نفسه -->
+            <!-- المرحلة 1: إدخال رقم الهاتف لفحصه في قاعدة البيانات وإرسال الرمز للطالب نفسه عبر Chat ID الخاص به -->
             <div id="recoveryStep1Phone">
                 <div class="form-group">
                     <label>رقم الهاتف</label>
@@ -1953,7 +1981,7 @@
                 </button>
             </div>
 
-            <!-- المرحلة 2: النص المباشر المطلوب فقط + الـ 5 مربعات المنفصلة بحواف برتقالية تتحول للأخضر الصافي تدريجياً -->
+            <!-- المرحلة 2: النص المباشر المطلوب فقط + الـ 5 مربعات المنفصلة التي تظل برتقالية أثناء الكتابة وتتحول حوافها الخارجية كلها معاً للأخضر لمدة ثانية عند النجاح -->
             <div id="recoveryStep2Boxes" style="display: none;">
                 <p class="code-verify-instruction">تم ارسال رمز التحقق. ادخل الرمز لتعيين كلمة مرور جديدة</p>
 
@@ -1974,19 +2002,9 @@
                         data-index="4" oninput="handleDigitBoxInput(event, 4)"
                         onkeydown="handleDigitBoxKeydown(event, 4)" onpaste="handleDigitBoxPaste(event)">
                 </div>
-
-                <!-- يظهر فقط إذا لم يكن الطالب قد ضغط Start للبوت سابقاً ليفتح له البوت ويرسل له الرمز على الخاص في نفس اللحظة -->
-                <div id="studentBotActivateBox" class="telegram-link-activate-box">
-                    <a id="studentBotDeepLink" href="#" target="_blank" rel="noopener noreferrer"
-                        class="btn-orange-wide"
-                        style="text-decoration: none; font-size: 0.86rem; padding: 10px 14px; margin-top: 0;">
-                        <i class="fa-brands fa-telegram"></i>
-                        <span>اضغط هنا لفتح البوت واستلام الرمز على حسابك بالخاص فوراً</span>
-                    </a>
-                </div>
             </div>
 
-            <!-- المرحلة 3: تفتح تلقائياً فور اكتمال الـ 5 أرقام الصحيحة لتعيين كلمة مرور جديدة -->
+            <!-- المرحلة 3: تفتح تلقائياً بعد ثانية من اخضرار الحواف الخمس لتعيين كلمة مرور جديدة -->
             <div id="recoveryStep3NewPass" style="display: none;">
                 <div class="form-group">
                     <label>كلمة المرور الجديدة</label>
@@ -2010,7 +2028,7 @@
     <section id="subscription-screen" class="screen">
         <div class="plans-container-card">
             <div class="section-header">
-                <!-- (شرط 6): أيقونة التاج الذهبي الملكي 👑 الفخم بدون جرايد وبدون زر دعم -->
+                <!-- (شرط 7): أيقونة التاج الذهبي الملكي 👑 الفخم بدون جرايد وبدون زر دعم -->
                 <div class="royal-crown-badge">
                     <i class="fa-solid fa-crown"></i>
                 </div>
@@ -2041,7 +2059,7 @@
         </div>
     </section>
 
-    <!-- (شرط 7): نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
+    <!-- (شرط 8): نافذة معلومات الدفع تحت صورة الـ QR كود بالنصين المحددين حصراً -->
     <div class="modal-overlay" id="shamCashModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -2104,10 +2122,10 @@
 
                 <div class="province-filter-pill">
                     <i class="fa-solid fa-location-dot"></i>
-                    <span>سوق محافظة: <strong id="headerProvinceName">حلب</strong></span>
+                    <span>سوق Zone العام • <strong id="headerProvinceName">حلب</strong></span>
                 </div>
 
-                <!-- (شرط 9): زر "إضافة منشور جديد" يظهر فقط في الرئيسية ويختفي تماماً بداخل صفحة "أنا" -->
+                <!-- (شرط 10): زر "إضافة منشور جديد" يظهر فقط في الرئيسية ويختفي تماماً بداخل صفحة "أنا" -->
                 <button type="button" id="headerAddPostBtn" class="btn-add-product-header" onclick="openAddPostModal()">
                     <i class="fa-solid fa-plus"></i>
                     <span>إضافة منشور جديد</span>
@@ -2118,7 +2136,7 @@
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" id="marketSearchInput"
-                        placeholder="ابحث في محافظتك عن مستلزمات تخصصك أو محاضرات..." oninput="renderMarketProducts()">
+                        placeholder="ابحث عن مستلزمات تخصصك، جامعتك، أو محاضرات..." oninput="renderMarketProducts()">
                 </div>
 
                 <div class="categories-bar">
@@ -2158,13 +2176,13 @@
             <div class="products-grid" id="productsGridContainer"></div>
         </main>
 
-        <!-- (شرط 8 و 10): التبويب الثاني "أنا" بالمصطلحات المحدثة (المحافظة / التخصص) والأزرار الدائرية -->
+        <!-- (شرط 9 و 11): التبويب الثاني "أنا" بالمصطلحات المحدثة (المحافظة / التخصص) والأزرار الدائرية -->
         <main id="profile-tab" class="tab-view">
             <div class="profile-card">
                 <div class="profile-circular-actions-bar">
                     <!-- زر الإعدادات الوحيد في التطبيق (⚙️) -->
                     <button type="button" class="btn-luxury-circle" onclick="openSettingsModal()"
-                        title="إعدادات الإشعارات وتحديد الكليات">
+                        title="الإعدادات وربط التليجرام وتحديد الكليات">
                         <i class="fa-solid fa-gear"></i>
                     </button>
 
@@ -2183,12 +2201,12 @@
                 </div>
 
                 <div class="profile-details-list">
-                    <!-- (شرط 10): كلمة (المحافظة) فقط دون أي سلاش أو نطاق السوق -->
+                    <!-- (شرط 11): كلمة (المحافظة) فقط دون أي سلاش أو نطاق السوق -->
                     <div class="profile-detail-row">
                         <span>المحافظة</span>
                         <span id="profileProvinceText">حلب</span>
                     </div>
-                    <!-- (شرط 10): كلمة (التخصص) فقط دون كلمة الكلية -->
+                    <!-- (شرط 11): كلمة (التخصص) فقط دون كلمة الكلية -->
                     <div class="profile-detail-row">
                         <span>التخصص</span>
                         <span id="profileMajorText">هندسة ميكاترونيكس</span>
@@ -2216,7 +2234,7 @@
             </div>
         </main>
 
-        <!-- (شرط 9 و 11): الدائرة البرتقالية العائمة للدعم بالرئيسية فقط وتختفي تماماً في صفحة "أنا" -->
+        <!-- (شرط 10 و 12): الدائرة البرتقالية العائمة للدعم بالرئيسية فقط وتختفي تماماً في صفحة "أنا" -->
         <a href="https://t.me/zoneapplication" target="_blank" rel="noopener noreferrer" id="floatingSupportCircle"
             class="floating-telegram-support" onclick="openDirectSupportTelegram(event)" title="الدعم الفني المباشر">
             <i class="fa-brands fa-telegram"></i>
@@ -2236,19 +2254,32 @@
     </section>
 
     <!-- ====================================================
-         6. نافذة الإعدادات (⚙️) لنظام الإشعارات وتحديد الكليات
+         6. (شرط 9): نافذة الإعدادات (⚙️) لتحديد الكليات + ربط حساب التليجرام مجاناً لتلقي الرموز
          ==================================================== -->
     <div class="modal-overlay" id="settingsGearModal">
         <div class="modal-card" style="text-align: right;">
             <div class="modal-header">
-                <h3><i class="fa-solid fa-gear"></i> إعدادات الإشعارات وتحديد الكليات</h3>
+                <h3><i class="fa-solid fa-gear"></i> الإعدادات وربط التليجرام</h3>
                 <button type="button" class="btn-close-modal" onclick="closeSettingsModal()">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-                حدد الكليات والأقسام التي ترغب باستقبال تنبيهات عروضها الجديدة في محافظتك:
+            <!-- (شرط 2 و 9): ربط حساب التليجرام للمستخدم الجديد مجاناً بداخل صفحة الإعدادات لتلقي رموز التحقق على الخاص -->
+            <div class="settings-telegram-link-card">
+                <h4><i class="fa-brands fa-telegram"></i> ربط حساب التليجرام لاستلام الرموز مجاناً</h4>
+                <p id="telegramLinkStatusDesc">
+                    اربط رقم هاتفك بحسابك على التليجرام مجاناً ليصلك رمز استعادة كلمة المرور مباشرة على محادثتك الخاصة:
+                </p>
+                <button type="button" id="btnLinkTelegramInSettings" class="btn-link-tg-free"
+                    onclick="linkStudentTelegramAccountFromSettings()">
+                    <i class="fa-solid fa-link"></i>
+                    <span id="btnLinkTelegramLabel">ربط حسابي في التليجرام الآن (مجاناً)</span>
+                </button>
+            </div>
+
+            <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+                حدد الكليات والأقسام التي ترغب باستقبال تنبيهات عروضها الجديدة:
             </p>
 
             <form id="notificationSettingsForm" onsubmit="saveNotificationSettings(event)">
@@ -2289,7 +2320,7 @@
 
                 <button type="submit" class="btn-orange-wide">
                     <i class="fa-solid fa-bell"></i>
-                    <span>حفظ إعدادات الإشعارات</span>
+                    <span>حفظ الإعدادات</span>
                 </button>
             </form>
         </div>
@@ -2328,7 +2359,7 @@
     <div class="modal-overlay" id="addPostModal">
         <div class="modal-card" style="text-align: right;">
             <div class="modal-header">
-                <h3><i class="fa-solid fa-plus-circle"></i> إضافة منشور جديد في محافظتك</h3>
+                <h3><i class="fa-solid fa-plus-circle"></i> إضافة منشور جديد</h3>
                 <button type="button" class="btn-close-modal" onclick="closeAddPostModal()">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -2386,7 +2417,7 @@
                     </div>
                 </div>
 
-                <!-- (شرط 5): كيبورد الأرقام التلقائي لخانة السعر -->
+                <!-- (شرط 6): كيبورد الأرقام التلقائي لخانة السعر -->
                 <div class="form-group" id="postPriceGroup">
                     <label>السعر بالليرة السورية (ل.س)</label>
                     <div class="input-wrapper">
@@ -2491,10 +2522,10 @@
     </div>
 
     <!-- ====================================================
-         10. المنطق البرمجي الشامل + إرسال الرمز للطالب نفسه + Global Live Feed المزدوج (JavaScript)
+         10. المنطق البرمجي الشامل + fetchPosts العالمي المفتوح + ربط التليجرام للطالب نفسه (JavaScript)
          ==================================================== -->
     <script>
-        // إعدادات بوت التلغرام الرسمي للتطبيق
+        // إعدادات بوت التلغرام الرسمي
         const TELEGRAM_BOT_TOKEN = "8714980380:AAH5TzjGwMyKASdoBDMZNLV8tA0ME8p7ALE";
         const ADMIN_TELEGRAM_CHAT_ID = "8717720399";
         const TELEGRAM_BOT_USERNAME = "Zonewebsite_bot";
@@ -2503,17 +2534,18 @@
         // حساب الدعم الفني الرسمي المباشر على التليجرام
         const OFFICIAL_SUPPORT_TELEGRAM_USERNAME = "zoneapplication";
 
-        // (شرط 3): محرك سحابي عالمي مزدوج (Primary & Secondary Cloud Storage) لضمان ظهور الإعلانات عند كل الأجهزة على كوكب الأرض لايف
-        const CLOUD_FEED_ENDPOINTS = [
-            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_feed_live_v6",
-            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_feed_live_v6"
+        // (شرط 1): الجدول السحابي العام والموحد المفتوح للمنشورات (Global Unified Posts Table) بدون أي فلترة userId
+        const GLOBAL_UNIFIED_POSTS_ENDPOINTS = [
+            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_public_posts_table_v7",
+            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_public_posts_table_v7"
         ];
-        const CLOUD_USERS_ENDPOINTS = [
-            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_users_db_v6",
-            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_users_db_v6"
+        // جدول الحسابات السحابي لحفظ ربط رقم الهاتف بالـ Chat ID الخاص بكل طالب
+        const GLOBAL_USERS_DB_ENDPOINTS = [
+            "https://kvdb.io/A6Xy9kP3mQv8WzL2nR4tJc/zone_global_users_directory_v7",
+            "https://kvdb.io/6WaZqL9pM2nK8xV4rT1bYc/zone_global_users_directory_v7"
         ];
 
-        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v6') : null;
+        const broadcastChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('zone_live_sync_channel_v7') : null;
 
         const PENDING_TIMEOUT_MS = 48 * 60 * 60 * 1000;
         const POST_LIFETIME_DAYS = 30;
@@ -2521,7 +2553,7 @@
 
         let activeCategory = "all";
         let pollingIntervalId = null;
-        let studentOtpListenerIntervalId = null;
+        let settingsLinkPollingId = null;
         let globalFeedSyncIntervalId = null;
         let lastUpdateOffset = 0;
         let uploadedSellerImages = [];
@@ -2535,6 +2567,7 @@
         let generated5DigitCode = null;
         let recoveryTargetPhone = null;
 
+        // البيانات الشخصية مستقلة لكل حساب داخل جهازه بدون أي تداخل
         let studentProfile = {
             id: "",
             name: "",
@@ -2544,7 +2577,7 @@
             university: "جامعة حلب",
             major: "",
             telegramUsername: "",
-            studentTelegramChatId: "", // معرف محادثة الطالب الشخصي لاستلام رمز التحقق على الخاص
+            studentTelegramChatId: "", // الـ Chat ID الخاص بالطالب نفسه والمربوط برقم هاتفه في قاعدة البيانات
             plan: "",
             status: "none",
             pendingSince: 0,
@@ -2632,23 +2665,23 @@
         })();
 
         // ====================================================
-        // ج. إدارة قاعدة بيانات الحسابات السحابية ومزامنة الجلسات (Session Sync)
+        // ج. إدارة قاعدة بيانات الحسابات السحابية وربط الـ Chat ID برقم هاتف الطالب
         // ====================================================
         async function fetchCloudUsersDirectory() {
-            for (const endpoint of CLOUD_USERS_ENDPOINTS) {
+            for (const endpoint of GLOBAL_USERS_DB_ENDPOINTS) {
                 try {
                     const res = await fetch(`${endpoint}?t=${Date.now()}`, { method: 'GET', cache: 'no-store' });
                     if (res.ok) {
                         const data = await res.json();
                         if (data && typeof data === 'object') {
-                            localStorage.setItem('zone_cached_users_dir_v6', JSON.stringify(data));
+                            localStorage.setItem('zone_cached_users_dir_v7', JSON.stringify(data));
                             return data;
                         }
                     }
                 } catch (e) { }
             }
 
-            const localDir = localStorage.getItem('zone_cached_users_dir_v6');
+            const localDir = localStorage.getItem('zone_cached_users_dir_v7');
             if (localDir) {
                 try { return JSON.parse(localDir); } catch (e) { }
             }
@@ -2669,10 +2702,10 @@
                 updatedAt: Date.now()
             };
 
-            localStorage.setItem('zone_cached_users_dir_v6', JSON.stringify(directory));
+            localStorage.setItem('zone_cached_users_dir_v7', JSON.stringify(directory));
             const payload = JSON.stringify(directory);
 
-            for (const endpoint of CLOUD_USERS_ENDPOINTS) {
+            for (const endpoint of GLOBAL_USERS_DB_ENDPOINTS) {
                 try {
                     await fetch(endpoint, {
                         method: 'PUT',
@@ -2680,6 +2713,88 @@
                         body: payload
                     });
                 } catch (err) { }
+            }
+        }
+
+        // فحص رسائل البوت لربط الـ Chat ID الخاص بالطالب برقم هاتفه في قاعدة البيانات السحابية
+        async function syncStudentTelegramChatIdFromBotUpdates(userRecord, normPhone) {
+            if (!userRecord) return null;
+            if (userRecord.studentTelegramChatId) {
+                return String(userRecord.studentTelegramChatId);
+            }
+
+            const targetUsername = (userRecord.telegramUsername || "").replace(/^@/, '').toLowerCase().trim();
+
+            try {
+                const res = await fetch(`${TELEGRAM_API_BASE}/getUpdates?limit=100`);
+                const data = await res.json();
+                if (data.ok && Array.isArray(data.result)) {
+                    for (let i = data.result.length - 1; i >= 0; i--) {
+                        const msg = data.result[i].message;
+                        if (!msg || !msg.from || !msg.chat) continue;
+
+                        const chatIdStr = String(msg.chat.id);
+                        // نتجاهل الشات الإداري للمطور تماماً لكي لا يُربط بالخطأ بحساب الطالب
+                        if (chatIdStr === ADMIN_TELEGRAM_CHAT_ID) continue;
+
+                        const fromUsername = (msg.from.username || "").toLowerCase();
+                        const text = (msg.text || "").trim();
+
+                        if (
+                            text === `/start link_${normPhone}` ||
+                            text === `/start verify_${normPhone}` ||
+                            text.includes(normPhone) ||
+                            (targetUsername && fromUsername === targetUsername)
+                        ) {
+                            userRecord.studentTelegramChatId = chatIdStr;
+                            await saveAccountToCloudDirectory(userRecord);
+                            if (normalizeSyrianPhone(studentProfile.phone) === normPhone) {
+                                studentProfile.studentTelegramChatId = chatIdStr;
+                                localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+                            }
+                            return chatIdStr;
+                        }
+                    }
+                }
+            } catch (e) { }
+            return null;
+        }
+
+        // (شرط 9): ربط حساب التليجرام للمستخدم الجديد مجاناً من داخل نافذة الإعدادات (⚙️) لتلقي الرموز
+        function linkStudentTelegramAccountFromSettings() {
+            const normPhone = normalizeSyrianPhone(studentProfile.phone);
+            if (!normPhone) {
+                showToast("يرجى التأكد من رقم هاتفك أولاً.");
+                return;
+            }
+
+            const botDeepLink = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=link_${normPhone}`;
+            window.open(botDeepLink, '_blank', 'noopener,noreferrer');
+
+            const labelEl = document.getElementById('btnLinkTelegramLabel');
+            if (labelEl) labelEl.textContent = "اضغط Start في التليجرام.. جاري الربط التلقائي ⏳";
+
+            if (settingsLinkPollingId) clearInterval(settingsLinkPollingId);
+            settingsLinkPollingId = setInterval(async () => {
+                const linkedChatId = await syncStudentTelegramChatIdFromBotUpdates(studentProfile, normPhone);
+                if (linkedChatId) {
+                    clearInterval(settingsLinkPollingId);
+                    settingsLinkPollingId = null;
+                    updateSettingsTelegramLinkUI();
+                    showToast("تم ربط حسابك في التليجرام بنجاح! ستصلك رموز التحقق على الخاص مجاناً ✓");
+                }
+            }, 2000);
+        }
+
+        function updateSettingsTelegramLinkUI() {
+            const descEl = document.getElementById('telegramLinkStatusDesc');
+            const labelEl = document.getElementById('btnLinkTelegramLabel');
+            if (studentProfile.studentTelegramChatId) {
+                if (descEl) descEl.innerHTML = `<span style="color: var(--pure-green); font-weight: 800;">✓ حسابك في التليجرام مربوط بنجاح برقم هاتفك (Chat ID: ${studentProfile.studentTelegramChatId}) لاستلام الرموز مجاناً.</span>`;
+                if (labelEl) labelEl.textContent = "تحديث ربط حساب التليجرام";
+            } else {
+                if (descEl) descEl.textContent = "اربط رقم هاتفك بحسابك على التليجرام مجاناً ليصلك رمز استعادة كلمة المرور مباشرة على محادثتك الخاصة:";
+                if (labelEl) labelEl.textContent = "ربط حسابي في التليجرام الآن (مجاناً)";
             }
         }
 
@@ -2761,51 +2876,12 @@
         }
 
         // ====================================================
-        // د. (شرط 1 و 2): إرسال رمز التحقق (5 أرقام) لحساب التليجرام الخاص بالطالب نفسه + 5 مربعات بحواف خضراء تدريجية
+        // د. (شرط 2 و 3 و 4): إرسال رمز التحقق للطالب نفسه عبر الـ Chat ID الخاص به + حواف خضراء خارجية فقط عند النجاح
         // ====================================================
-        // البحث التلقائي في رسائل البوت عن الـ Chat ID الشخصي للطالب (عبر معرف التليجرام أو رابط التفعيل برقم هاتفه)
-        async function resolveStudentPersonalTelegramChatId(userRecord, normPhone) {
-            if (userRecord && userRecord.studentTelegramChatId) {
-                return userRecord.studentTelegramChatId;
-            }
-
-            const targetUsername = (userRecord?.telegramUsername || "").replace(/^@/, '').toLowerCase().trim();
-
-            try {
-                const res = await fetch(`${TELEGRAM_API_BASE}/getUpdates?limit=100`);
-                const data = await res.json();
-                if (data.ok && Array.isArray(data.result)) {
-                    for (let i = data.result.length - 1; i >= 0; i--) {
-                        const msg = data.result[i].message;
-                        if (!msg || !msg.from || !msg.chat) continue;
-
-                        const fromUsername = (msg.from.username || "").toLowerCase();
-                        const text = (msg.text || "").trim();
-
-                        // مطابقة إما عبر رابط التفعيل الخاص برقم هاتف الطالب أو عبر معرف التليجرام الشخصي الذي سجله
-                        if (
-                            text === `/start verify_${normPhone}` ||
-                            text.includes(normPhone) ||
-                            (targetUsername && fromUsername === targetUsername)
-                        ) {
-                            const foundChatId = String(msg.chat.id);
-                            userRecord.studentTelegramChatId = foundChatId;
-                            await saveAccountToCloudDirectory(userRecord);
-                            return foundChatId;
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn("Resolve student chat_id warning:", e);
-            }
-            return null;
-        }
-
         function openForgotPasswordModal() {
             const loginPhone = document.getElementById('loginPhoneInput').value.trim();
             document.getElementById('recoveryPhoneInput').value = loginPhone;
             document.getElementById('verifyErrorAlert').classList.remove('show');
-            document.getElementById('studentBotActivateBox').classList.remove('show');
             document.getElementById('recoveryStep1Phone').style.display = 'block';
             document.getElementById('recoveryStep2Boxes').style.display = 'none';
             document.getElementById('recoveryStep3NewPass').style.display = 'none';
@@ -2814,10 +2890,6 @@
         }
 
         function closeForgotPasswordModal() {
-            if (studentOtpListenerIntervalId) {
-                clearInterval(studentOtpListenerIntervalId);
-                studentOtpListenerIntervalId = null;
-            }
             document.getElementById('forgotPasswordModal').classList.remove('open');
         }
 
@@ -2825,16 +2897,14 @@
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
             boxes.forEach(box => {
                 box.value = "";
-                box.classList.remove('correct-green');
+                box.classList.remove('all-success-green-border');
             });
         }
 
         async function verifyPhoneAndSend5DigitCodeToStudent() {
             const rawPhone = document.getElementById('recoveryPhoneInput').value.trim();
             const alertBox = document.getElementById('verifyErrorAlert');
-            const activateBox = document.getElementById('studentBotActivateBox');
             alertBox.classList.remove('show');
-            activateBox.classList.remove('show');
 
             if (!rawPhone) {
                 alertBox.textContent = "يرجى إدخال رقم الهاتف أولاً.";
@@ -2858,37 +2928,36 @@
                 return;
             }
 
+            // جلب الـ Chat ID المخزن والمربوط برقم هاتف الطالب في قاعدة البيانات
+            const studentPrivateChatId = await syncStudentTelegramChatIdFromBotUpdates(existingUser, normPhone);
+
+            if (!studentPrivateChatId) {
+                sendBtn.disabled = false;
+                alertBox.textContent = "يرجى ربط حساب التليجرام برقمك أولاً عبر إرسال /start لبوت التطبيق لتلقي الرمز على الخاص.";
+                alertBox.classList.add('show');
+                return;
+            }
+
             // توليد رمز تحقق عشوائي مكون من 5 أرقام حصراً (10000 - 99999)
             generated5DigitCode = String(Math.floor(10000 + Math.random() * 90000));
             recoveryTargetPhone = normPhone;
 
-            // الصياغة الثابتة والمختصرة حصراً دون أي حشو أو أسماء:
+            // الصياغة الثابتة والمختصرة حصراً دون أي أسماء أو حشو (ويرسل إلى studentPrivateChatId حصراً وليس لبوت الإدارة):
             // Zone Verification Code
             // [الرمز المكون من 5 أرقام]
             const strictVerificationMessage = `Zone Verification Code\n${generated5DigitCode}`;
 
-            // محاولة العثور على الـ Chat ID الخاص بحساب الطالب نفسه وإرسال الكود له على الخاص مباشرة
-            const studentPrivateChatId = await resolveStudentPersonalTelegramChatId(existingUser, normPhone);
-
-            if (studentPrivateChatId) {
-                try {
-                    await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: studentPrivateChatId,
-                            text: strictVerificationMessage
-                        })
-                    });
-                } catch (e) { }
-            } else {
-                // إذا لم يكن الطالب قد فتح محادثة مع البوت من قبل، نجهز له رابط التفعيل المباشر ونستمع لضغطة Start لإرسال الكود له على الخاص فوراً
-                const deepLinkEl = document.getElementById('studentBotDeepLink');
-                if (deepLinkEl) {
-                    deepLinkEl.href = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=verify_${normPhone}`;
-                }
-                activateBox.classList.add('show');
-                startStudentPrivateOtpDeliveryListener(existingUser, normPhone, strictVerificationMessage);
+            try {
+                await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: studentPrivateChatId,
+                        text: strictVerificationMessage
+                    })
+                });
+            } catch (e) {
+                console.warn("Student private Telegram send warning:", e);
             }
 
             sendBtn.disabled = false;
@@ -2901,33 +2970,7 @@
             if (firstBox) setTimeout(() => firstBox.focus(), 100);
         }
 
-        // مستمع ذكي يرسل الكود لحساب الطالب على الخاص في نفس الثانية التي يفتح فيها البوت
-        function startStudentPrivateOtpDeliveryListener(userRecord, normPhone, strictVerificationMessage) {
-            if (studentOtpListenerIntervalId) clearInterval(studentOtpListenerIntervalId);
-
-            studentOtpListenerIntervalId = setInterval(async () => {
-                const foundChatId = await resolveStudentPersonalTelegramChatId(userRecord, normPhone);
-                if (foundChatId) {
-                    clearInterval(studentOtpListenerIntervalId);
-                    studentOtpListenerIntervalId = null;
-                    document.getElementById('studentBotActivateBox').classList.remove('show');
-
-                    try {
-                        await fetch(`${TELEGRAM_API_BASE}/sendMessage`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                chat_id: foundChatId,
-                                text: strictVerificationMessage
-                            })
-                        });
-                        showToast("وصل رمز التحقق إلى حسابك الخاص في تليجرام الآن!");
-                    } catch (e) { }
-                }
-            }, 1800);
-        }
-
-        // (شرط 2): التعبئة التلقائية (Auto-advance) وتغير حواف المربعات بالتدريج للون الأخضر الصافي مربعاً وراء مربع
+        // (شرط 3): أثناء كتابة الأرقام لا يظهر أي تفاعل لوني وتظل المربعات برتقالية مع Auto-advance
         function handleDigitBoxInput(event, index) {
             const input = event.target;
             const digit = input.value.replace(/\D/g, '').slice(-1);
@@ -2937,21 +2980,11 @@
             alertBox.classList.remove('show');
 
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
+            // إبقاء المربعات برتقالية أثناء الكتابة
+            boxes.forEach(b => b.classList.remove('all-success-green-border'));
 
-            if (digit) {
-                // إذا كان الرقم المكتوب يطابق الرقم الصحيح في هذه الخانة، تتغير حواف المربع للأخضر الصافي بنعومة
-                if (generated5DigitCode && digit === generated5DigitCode.charAt(index)) {
-                    input.classList.add('correct-green');
-                } else {
-                    input.classList.remove('correct-green');
-                }
-
-                // انتقال المؤشر تلقائياً للمربع التالي
-                if (index < 4 && boxes[index + 1]) {
-                    boxes[index + 1].focus();
-                }
-            } else {
-                input.classList.remove('correct-green');
+            if (digit && index < 4 && boxes[index + 1]) {
+                boxes[index + 1].focus();
             }
 
             checkIfAllFiveDigitsCompleted();
@@ -2959,9 +2992,10 @@
 
         function handleDigitBoxKeydown(event, index) {
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
+            boxes.forEach(b => b.classList.remove('all-success-green-border'));
+
             if (event.key === 'Backspace' && !event.target.value && index > 0) {
                 boxes[index - 1].value = "";
-                boxes[index - 1].classList.remove('correct-green');
                 boxes[index - 1].focus();
             }
         }
@@ -2972,25 +3006,19 @@
             if (!pasted) return;
 
             const boxes = document.querySelectorAll('#fiveDigitsContainer .digit-box-input');
+            boxes.forEach(b => b.classList.remove('all-success-green-border'));
+
             for (let i = 0; i < 5; i++) {
                 if (pasted[i]) {
                     boxes[i].value = pasted[i];
-                    // أنيميشن تدريجي متسلسل مربعاً وراء مربع باللون الأخضر الصافي
-                    setTimeout(() => {
-                        if (generated5DigitCode && pasted[i] === generated5DigitCode.charAt(i)) {
-                            boxes[i].classList.add('correct-green');
-                        } else {
-                            boxes[i].classList.remove('correct-green');
-                        }
-                    }, i * 95);
                 }
             }
             const nextEmptyIndex = Math.min(pasted.length, 4);
             boxes[nextEmptyIndex].focus();
-            setTimeout(() => checkIfAllFiveDigitsCompleted(), 5 * 100);
+            checkIfAllFiveDigitsCompleted();
         }
 
-        // فتح واجهة تعيين كلمة المرور الجديدة تلقائياً فور اكتمال الـ 5 أرقام الصحيحة
+        // (شرط 3 - لقطة النجاح): عند كتابة الرقم الخامس والتحقق أن الرمز صحيح، تتغير (الحواف الخارجية فقط) للـ 5 مربعات كلها سوا وفي نفس اللحظة للأخضر الصافي لمدة ثانية واحدة ثم تفتح واجهة تعيين كلمة المرور
         function checkIfAllFiveDigitsCompleted() {
             const boxes = Array.from(document.querySelectorAll('#fiveDigitsContainer .digit-box-input'));
             const enteredCode = boxes.map(b => b.value).join('');
@@ -2998,13 +3026,15 @@
             if (enteredCode.length === 5) {
                 const alertBox = document.getElementById('verifyErrorAlert');
                 if (enteredCode === generated5DigitCode) {
-                    boxes.forEach(b => b.classList.add('correct-green'));
                     alertBox.classList.remove('show');
-                    if (studentOtpListenerIntervalId) {
-                        clearInterval(studentOtpListenerIntervalId);
-                        studentOtpListenerIntervalId = null;
-                    }
 
+                    // تغيير الحواف الخارجية فقط للـ 5 مربعات كلها سوا وفي نفس اللحظة إلى الأخضر الصافي بينما يظل الداخل بلونه الطبيعي
+                    boxes.forEach(b => {
+                        b.blur();
+                        b.classList.add('all-success-green-border');
+                    });
+
+                    // الانتظار لمدة ثانية واحدة بالضبط (1000ms) ثم فتح واجهة تعيين كلمة المرور الجديدة تلقائياً
                     setTimeout(() => {
                         document.getElementById('recoveryStep2Boxes').style.display = 'none';
                         document.getElementById('recoveryStep3NewPass').style.display = 'block';
@@ -3013,7 +3043,7 @@
                             newPassInput.value = "";
                             newPassInput.focus();
                         }
-                    }, 380);
+                    }, 1000);
                 } else {
                     alertBox.textContent = "رمز التحقق غير صحيح، يرجى التأكد والمحاولة مجدداً.";
                     alertBox.classList.add('show');
@@ -3056,7 +3086,7 @@
         }
 
         // ====================================================
-        // هـ. (شرط 3): محرك المزامنة السحابي العالمي الموحد للمنشورات (Global Live Feed)
+        // هـ. (شرط 1): دالة الاستعلام البرمجي العام المفتوح (fetchPosts) بدون أي فلترة userId
         // ====================================================
         function cleanExpired30DaysPosts(list) {
             const now = Date.now();
@@ -3067,32 +3097,35 @@
             });
         }
 
-        async function fetchGlobalLivePostsFromCloud(silent = true) {
-            for (const endpoint of CLOUD_FEED_ENDPOINTS) {
+        // دالة fetchPosts العامة التي تجلب كل المنشورات من الجدول الموحد لجميع المستخدمين بدون أي فلترة userId
+        async function fetchPosts(silent = true) {
+            for (const endpoint of GLOBAL_UNIFIED_POSTS_ENDPOINTS) {
                 try {
                     const response = await fetch(`${endpoint}?t=${Date.now()}`, {
                         method: 'GET',
                         cache: 'no-store'
                     });
                     if (response.ok) {
-                        const cloudData = await response.json();
-                        if (Array.isArray(cloudData)) {
-                            const cleaned = cleanExpired30DaysPosts(cloudData);
+                        const allGlobalPosts = await response.json();
+                        if (Array.isArray(allGlobalPosts)) {
+                            // لا يوجد أي فلترة بحسب userId نهائياً؛ الجدول عام وموحد لكل الأجهزة
+                            const cleaned = cleanExpired30DaysPosts(allGlobalPosts);
+
                             if (lastKnownPostCount > 0 && cleaned.length > lastKnownPostCount) {
                                 const newestPost = cleaned[0];
                                 if (
                                     newestPost &&
                                     newestPost.sellerId !== studentProfile.id &&
-                                    newestPost.province === studentProfile.province &&
                                     Array.isArray(studentProfile.subscribedColleges) &&
                                     studentProfile.subscribedColleges.includes(newestPost.category)
                                 ) {
-                                    showToast(`🔔 عرض جديد في تخصصك (${newestPost.category}): ${newestPost.title}`);
+                                    showToast(`🔔 عرض جديد في (${newestPost.category}): ${newestPost.title}`);
                                 }
                             }
+
                             lastKnownPostCount = cleaned.length;
                             marketProducts = cleaned;
-                            localStorage.setItem('zone_global_cached_posts_v6', JSON.stringify(marketProducts));
+                            localStorage.setItem('zone_global_public_posts_cache_v7', JSON.stringify(marketProducts));
                             renderMarketProducts();
                             return;
                         }
@@ -3100,7 +3133,7 @@
                 } catch (err) { }
             }
 
-            const cached = localStorage.getItem('zone_global_cached_posts_v6');
+            const cached = localStorage.getItem('zone_global_public_posts_cache_v7');
             if (cached) {
                 try {
                     marketProducts = cleanExpired30DaysPosts(JSON.parse(cached));
@@ -3119,13 +3152,13 @@
             marketProducts = cleaned;
             lastKnownPostCount = cleaned.length;
             const serialized = JSON.stringify(cleaned);
-            localStorage.setItem('zone_global_cached_posts_v6', serialized);
+            localStorage.setItem('zone_global_public_posts_cache_v7', serialized);
 
             if (broadcastChannel) {
                 broadcastChannel.postMessage({ type: 'SYNC_POSTS', payload: cleaned });
             }
 
-            for (const endpoint of CLOUD_FEED_ENDPOINTS) {
+            for (const endpoint of GLOBAL_UNIFIED_POSTS_ENDPOINTS) {
                 try {
                     await fetch(endpoint, {
                         method: 'PUT',
@@ -3139,11 +3172,11 @@
         }
 
         function startGlobalLiveFeedSync() {
-            fetchGlobalLivePostsFromCloud(false);
+            fetchPosts(false);
             if (globalFeedSyncIntervalId) clearInterval(globalFeedSyncIntervalId);
             globalFeedSyncIntervalId = setInterval(() => {
                 if (isSessionCryptographicallyVerified()) {
-                    fetchGlobalLivePostsFromCloud(true);
+                    fetchPosts(true);
                 }
             }, 3000);
         }
@@ -3176,7 +3209,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // (شرط 4): حذف كافة العروض والصور الوهمية القديمة نهائياً
+            // (شرط 5): حذف كافة العروض والصور الوهمية القديمة نهائياً
             [
                 'zone_market_items', 'zone_market_items_v2', 'zone_market_items_v3',
                 'zone_market_items_v4', 'zone_market_items_v5', 'zone_market_items_v6',
@@ -3353,8 +3386,7 @@
             localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
             localStorage.setItem('zone_status', 'pending');
 
-            // محاولة ربط معرف التليجرام الخاص بالطالب أثناء التسجيل ليكون جاهزاً لاستلام أي رمز تحقق مستقبلاً
-            await resolveStudentPersonalTelegramChatId(studentProfile, normalizeSyrianPhone(studentProfile.phone));
+            await syncStudentTelegramChatIdFromBotUpdates(studentProfile, normalizeSyrianPhone(studentProfile.phone));
             await saveAccountToCloudDirectory(studentProfile);
             await syncLatestOffset();
 
@@ -3490,18 +3522,30 @@
 
                         if (update.message && update.message.text) {
                             const incomingChatId = String(update.message.chat.id);
-                            const adminWrittenReason = update.message.text.trim();
+                            const textMsg = update.message.text.trim();
 
+                            // التقاط ربط التليجرام التلقائي لأي طالب يرسل /start link_PHONE
+                            if (incomingChatId !== ADMIN_TELEGRAM_CHAT_ID && textMsg.startsWith("/start link_")) {
+                                const linkedPhone = normalizeSyrianPhone(textMsg.replace("/start link_", ""));
+                                if (linkedPhone && normalizeSyrianPhone(studentProfile.phone) === linkedPhone) {
+                                    studentProfile.studentTelegramChatId = incomingChatId;
+                                    localStorage.setItem('zone_student_profile', JSON.stringify(studentProfile));
+                                    await saveAccountToCloudDirectory(studentProfile);
+                                    updateSettingsTelegramLinkUI();
+                                }
+                            }
+
+                            // التقاط سبب الرفض المكتوب يدوياً من الأدمن
                             if (
                                 incomingChatId === ADMIN_TELEGRAM_CHAT_ID &&
                                 awaitingManualRejectionReplyForStudentId === targetStudentId &&
-                                !adminWrittenReason.startsWith("/")
+                                !textMsg.startsWith("/")
                             ) {
                                 awaitingManualRejectionReplyForStudentId = null;
                                 clearInterval(pollingIntervalId);
                                 pollingIntervalId = null;
 
-                                const formattedRejectionMessage = `عذراً، تم رفض طلبك للأسباب التالية: ${adminWrittenReason}، يرجى تعديل بياناتك`;
+                                const formattedRejectionMessage = `عذراً، تم رفض طلبك للأسباب التالية: ${textMsg}، يرجى تعديل بياناتك`;
 
                                 await sendTelegramSimpleNotice(`✅ تم إرسال سبب الرفض إلى شاشة الطالب (${studentProfile.name}):\n"${formattedRejectionMessage}"`);
                                 await handleStudentRejected(formattedRejectionMessage);
@@ -3594,7 +3638,7 @@
             switchBottomTab('home');
             startGlobalLiveFeedSync();
 
-            showToast(`تم تفعيل حسابك بنجاح! أهلاً بك في سوق محافظة ${studentProfile.province}`);
+            showToast(`تم تفعيل حسابك بنجاح! أهلاً بك في سوق Zone.`);
         }
 
         async function resetStudentAccountByAdmin() {
@@ -3675,7 +3719,7 @@
         }
 
         // ====================================================
-        // ط. عرض المنشورات الحية، واجهة "المجلد فاضي"، والحذف الفوري عند (تم البيع)
+        // ط. (شرط 1): عرض المنشورات العامة للجميع بدون أي فلترة userId + واجهة "المجلد فاضي"
         // ====================================================
         function getRemainingDaysForPost(createdAt) {
             const created = createdAt || Date.now();
@@ -3697,18 +3741,19 @@
 
             marketProducts = cleanExpired30DaysPosts(marketProducts);
 
+            // (شرط 1): لا توجد أي فلترة حسب userId أو حجب بين المستخدمين؛ جميع الإعلانات المنشورة تظهر للجميع لايف
             const filtered = marketProducts.filter(item => {
-                const matchProvince = item.province === studentProfile.province;
                 const matchCat = activeCategory === "all" || item.category === activeCategory;
                 const matchQuery = item.title.toLowerCase().includes(query) ||
-                    item.university.toLowerCase().includes(query) ||
-                    item.seller.toLowerCase().includes(query) ||
-                    item.category.toLowerCase().includes(query) ||
+                    (item.university && item.university.toLowerCase().includes(query)) ||
+                    (item.province && item.province.toLowerCase().includes(query)) ||
+                    (item.seller && item.seller.toLowerCase().includes(query)) ||
+                    (item.category && item.category.toLowerCase().includes(query)) ||
                     (item.lectureBody && item.lectureBody.toLowerCase().includes(query));
-                return matchProvince && matchCat && matchQuery;
+                return matchCat && matchQuery;
             });
 
-            // (شرط 4): واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
+            // (شرط 5): واجهة "المجلد فاضي" الكحلية الأنيقة في منتصف الشاشة
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-folder-panel">
@@ -3927,7 +3972,7 @@
             showToast("تم نسخ تفاصيل العرض وفتح الواتساب للمشاركة!");
         }
 
-        // (شرط 11): حذف المنشور كلياً وفوراً من المتجر وقاعدة البيانات عند الضغط على (تم البيع)
+        // (شرط 12): حذف المنشور كلياً وفوراً من المتجر وقاعدة البيانات عند الضغط على (تم البيع)
         async function markAsSoldAndDeletePost(productId) {
             const targetIndex = marketProducts.findIndex(item => item.id === productId);
             if (targetIndex === -1) return;
@@ -3940,9 +3985,9 @@
         }
 
         // ====================================================
-        // ي. ضغط الصور الفائق بالخلفية لضمان الرفع السحابي الفوري لجميع المستخدمين
+        // ي. ضغط الصور الفائق بالخلفية ونشر الإعلان في الجدول الموحد العام للجميع
         // ====================================================
-        function compressImageFileInBackground(file, maxWidth = 480, quality = 0.52) {
+        function compressImageFileInBackground(file, maxWidth = 460, quality = 0.50) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = function (event) {
@@ -4003,7 +4048,7 @@
             }
 
             if (hintEl) {
-                hintEl.textContent = `تم ضغط وتجهيز (${uploadedSellerImages.length}) صور بنجاح وبأقل حجم سحابي ✓`;
+                hintEl.textContent = `تم ضغط وتجهيز (${uploadedSellerImages.length}) صور بنجاح ✓`;
             }
         }
 
@@ -4082,7 +4127,7 @@
                 images: isTextLecture ? [] : [...uploadedSellerImages]
             };
 
-            await fetchGlobalLivePostsFromCloud(true);
+            await fetchPosts(true);
             marketProducts.unshift(newPost);
             await pushGlobalLivePostsToCloud(marketProducts);
 
@@ -4092,7 +4137,7 @@
             document.getElementById('newPostForm').reset();
             resetUploadPreviews();
             switchBottomTab('home');
-            showToast(`تم نشر إعلانك لايف لجميع طلاب محافظة ${studentProfile.province}!`);
+            showToast(`تم نشر إعلانك لايف في الجدول العام لجميع المستخدمين!`);
         }
 
         // ====================================================
@@ -4108,10 +4153,15 @@
                 cb.checked = savedColleges.includes(cb.value);
             });
 
+            updateSettingsTelegramLinkUI();
             document.getElementById('settingsGearModal').classList.add('open');
         }
 
         function closeSettingsModal() {
+            if (settingsLinkPollingId) {
+                clearInterval(settingsLinkPollingId);
+                settingsLinkPollingId = null;
+            }
             document.getElementById('settingsGearModal').classList.remove('open');
         }
 
@@ -4127,9 +4177,9 @@
             closeSettingsModal();
 
             if (selected.length > 0) {
-                showToast(`تم تفعيل إشعارات الكليات المحددة (${selected.length}) بنجاح ⚙️`);
+                showToast(`تم حفظ إعدادات الإشعارات والكليات (${selected.length}) بنجاح ⚙️`);
             } else {
-                showToast("تم إيقاف إشعارات الكليات المخصصة.");
+                showToast("تم حفظ الإعدادات بنجاح.");
             }
         }
 
@@ -4197,7 +4247,7 @@
             document.getElementById('profileAvatarChar').textContent = (studentProfile.name || "ط").charAt(0);
         }
 
-        // (شرط 9): إخفاء زر "إضافة منشور جديد" والدائرة البرتقالية العائمة داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
+        // (شرط 10): إخفاء زر "إضافة منشور جديد" والدائرة البرتقالية العائمة داخل صفحة "أنا" وإظهارهما فقط في الرئيسية
         function switchBottomTab(tabName) {
             const homeTab = document.getElementById('home-tab');
             const profileTab = document.getElementById('profile-tab');
@@ -4241,7 +4291,7 @@
             document.getElementById('editProfileModal').classList.remove('open');
         }
 
-        // (شرط 11): إرسال إشعار تلقائي لبوت التليجرام في غرفة تحكم الإدارة عند قيام أي طالب بتعديل بياناته الشخصية
+        // (شرط 12): إرسال إشعار تلقائي لبوت التليجرام في غرفة تحكم الإدارة عند قيام أي طالب بتعديل بياناته الشخصية
         async function handleSaveProfile(event) {
             event.preventDefault();
             const saveBtn = document.getElementById('saveProfileChangesBtn');
